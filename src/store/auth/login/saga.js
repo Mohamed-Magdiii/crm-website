@@ -1,5 +1,5 @@
 import { call, put, takeEvery, takeLatest } from "redux-saga/effects"
-
+import {useSelector, useDispatch } from "react-redux"
 // Login Redux States
 import { LOGIN_USER, LOGOUT_USER, SOCIAL_LOGIN } from "./actionTypes"
 import { apiError, loginSuccess, logoutUserSuccess } from "./actions"
@@ -79,9 +79,47 @@ function* socialLogin({ payload: { data, history, type } }) {
     yield put(apiError(error))
   }
 }
+async function fetchData(values){
+ const result=await fetch('http://localhost:3001/login',{
+    method:'POST',
+    mode:'cors',
+    
+    headers:{  
+      'Content-Type':'application/json',
+      'Accept':'application/json'
+    },
+    body:JSON.stringify({email:values.email,password:values.password})
+    
+})
 
+ const data=await result.json()
+ 
+  return data
+}
+ function * loginWithAPI({payload: {values, history}}){
+ 
+  try{
+    const data =yield call(fetchData,values)
+    
+    
+    const {message,result}=data
+    if(message==='Login successfull'){
+      localStorage.setItem('authUser',JSON.stringify(result))
+      history.push('/dashboard')
+    }
+   else{
+    yield put(apiError('Invalid Credentials'))
+   }
+  }
+   catch(error){
+    console.log('inside catch')
+    yield put(apiError(error))
+  } 
+
+  
+}
 function* authSaga() {
-  yield takeEvery(LOGIN_USER, loginUser)
+  yield takeEvery(LOGIN_USER, loginWithAPI)
   yield takeLatest(SOCIAL_LOGIN, socialLogin)
   yield takeEvery(LOGOUT_USER, logoutUser)
 }
