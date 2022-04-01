@@ -9,6 +9,7 @@ import {
 const initialState = {
   error: "",
   loading: false,
+  user:null
 }
 
 const login = (state = initialState, action) => {
@@ -17,6 +18,8 @@ const login = (state = initialState, action) => {
       state = {
         ...state,
         loading: true,
+        user:action.payload.values,
+        
       }
       break
     case LOGIN_SUCCESS:
