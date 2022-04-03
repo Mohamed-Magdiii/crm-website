@@ -88,7 +88,7 @@ const UserProfile = props => {
                           className="img-thumbnail rounded-circle img-thumbnail"
                         />
                       </div>
-                      <svg style={{ width: "25px", marginTop: "25px", height: "25px" }} focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path></svg>
+                      <svg  style={{ width: "25px", marginTop: "25px", height: "25px" }} focusable="false" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path></svg>
                     </div>
 
                     <div className="d-flex justify-content-around">
@@ -124,39 +124,48 @@ const UserProfile = props => {
                         </div>
                         <div class="card-header">
                           <div class="card-title">
-                            <h4>Password</h4>
+                            <h4>Role</h4>
 
                           </div>
                           <div class="card-subtitle">
-                            {/* {new Array(passwordLength).join('*')} */}
-                            ***********
+                            roleId
                           </div>
                         </div>
+
                       </div>
-                      <div className="  flex-column">
+
+
+
+                    </div>
+
+                    {/* <div className="text-muted m-2">
+
                         <div class="card-header">
                           <div class="card-title">
-                            <h4>Mobile</h4>
-
+                            email
                           </div>
                           <div class="card-subtitle">
-                            mobile
+                            {email}
                           </div>
                         </div>
                         <div class="card-header">
                           <div class="card-title">
-                            <h4>Phone</h4>
-
+                            email
                           </div>
                           <div class="card-subtitle">
-                            phone
+                            {email}
                           </div>
                         </div>
-                      </div> 
-                    </div>  
+                        <h4>{name}</h4>
+                        <h5 className="mb-1 ">{email}</h5>
+                        <p className="mb-0">Id no: #{idx}</p>
+                      </div> */}
+
                   </div>
                 </CardBody>
-              </Card>  
+              </Card>
+              {/* *************************** */}
+
             </Col>
           </Row>
 
