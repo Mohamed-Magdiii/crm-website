@@ -25,6 +25,12 @@ import avatar from "../../assets/images/users/avatar-1.jpg"
 // actions
 import { editProfile, resetProfileFlag } from "../../store/actions"
 
+import { del, get, post, put } from "../../helpers/api_helper"
+import * as url from "../../helpers/url_helper"
+
+
+
+
 const UserProfile = props => {
   const dispatch = useDispatch()
 
@@ -33,29 +39,34 @@ const UserProfile = props => {
     success: state.Profile.success,
   }))
 
+
+  const [fristName, setfristName] = useState("")
+  const [lastName, setlastName] = useState("")
   const [email, setemail] = useState("")
-  const [name, setname] = useState("")
-  const [idx, setidx] = useState(1)
+  const [roleId, setroleId] = useState("")
+  const [idx, setidx] = useState(0)
 
   useEffect(() => {
-    if (localStorage.getItem("authUser")) {
-      const obj = JSON.parse(localStorage.getItem("authUser"))
-      if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-        setname(obj.displayName)
-        setemail(obj.email)
-        setidx(obj.uid)
-      } else if (
-        process.env.REACT_APP_DEFAULTAUTH === "fake" ||
-        process.env.REACT_APP_DEFAULTAUTH === "jwt"
-      ) {
-        setname(obj.username)
-        setemail(obj.email)
-        setidx(obj.uid)
+    //we get user id from local storage after login
+    const userID="62497bbefe330b4478b1b1db"
+    const getProfileData = get(url.PROFILE + userID)
+
+
+    getProfileData.then((value) => {
+      if (value.result != null) {
+        setfristName(value.result.firstName)
+        setlastName(value.result.lastName)
+        setemail(value.result.email)
+        setroleId(value.result.roleId)
+        setidx(value.result._id)
+
       }
-      setTimeout(() => {
-        dispatch(resetProfileFlag())
-      }, 3000)
-    }
+
+      console.log(value)
+    })
+
+
+
   }, [dispatch, success])
 
   function handleValidSubmit(event, values) {
