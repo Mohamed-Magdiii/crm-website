@@ -80,7 +80,7 @@ function* socialLogin({ payload: { data, history, type } }) {
   }
 }
 async function fetchData(values){
- const result=await fetch('http://localhost:3001/login',{
+ const result=await fetch('http://localhost:3001/api/v1/crm/auth/login',{
     method:'POST',
     mode:'cors',
     
