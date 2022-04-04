@@ -6,6 +6,7 @@ import { apiError, loginSuccess, logoutUserSuccess } from "./actions"
 
 //Include Both Helper File with needed methods
 import { getFirebaseBackend } from "../../../helpers/firebase_helper"
+import * as authApi from '../../../apis/auth';
 import {
   postFakeLogin,
   postJwtLogin,
@@ -79,27 +80,11 @@ function* socialLogin({ payload: { data, history, type } }) {
     yield put(apiError(error))
   }
 }
-async function fetchData(values){
- const result=await fetch('http://localhost:3001/api/v1/crm/auth/login',{
-    method:'POST',
-    mode:'cors',
-    
-    headers:{  
-      'Content-Type':'application/json',
-      'Accept':'application/json'
-    },
-    body:JSON.stringify({email:values.email,password:values.password})
-    
-})
 
- const data=await result.json()
- 
-  return data
-}
  function * loginWithAPI({payload: {values, history}}){
  
   try{
-    const data =yield call(fetchData,values)
+    const data =yield call(authApi.loginUser,values)
     
     
     const {message,result}=data
