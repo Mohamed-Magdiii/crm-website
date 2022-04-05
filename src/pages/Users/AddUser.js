@@ -8,7 +8,9 @@ import {
     CardBody,
     Button
 } from "reactstrap"
-import Select from "react-select" 
+import Select from "react-select"
+import { useHistory } from "react-router-dom";
+
 import { AvForm, AvField } from "availity-reactstrap-validation"
 
 //Import Breadcrumb
@@ -19,7 +21,23 @@ import MetaTags from "react-meta-tags"
 
 
 const AddUser = () => {
- 
+
+
+    const [selectedGroup, setselectedGroup] = useState(null)
+    function handleSelectGroup(selectedGroup) {
+        console.log(selectedGroup); 
+        setselectedGroup(selectedGroup)
+    }
+
+
+    let history = useHistory();
+    // handel form data
+    const handleValidSubmit = (event, values) => { 
+        console.log(values);
+        // back to users page
+        history.push("/users");
+      }
+
     return (
         <React.Fragment>
 
@@ -36,7 +54,10 @@ const AddUser = () => {
                                 <CardBody>
                                     {/* <CardTitle>Validation type</CardTitle> */}
                                     <AvForm 
-                                    className='p-4'              
+                                    className='p-4'
+                                    onValidSubmit={(e, v) => {
+                                        handleValidSubmit(e, v)
+                                      }}
                                       >
                                         <div className="mb-3">
                                             <AvField
@@ -83,7 +104,11 @@ const AddUser = () => {
                                         </div>
                                         <div className="mb-3">
                                             <label >Role</label>
-                                            <Select 
+                                            <Select
+                                                value={selectedGroup}
+                                                onChange={(selected) => {
+                                                    handleSelectGroup(selected)
+                                                }}
                                                 options={[
                                                     { label: "Admin", value: "Admin" },
                                                     { label: "Client", value: "Client" }
