@@ -31,7 +31,9 @@ import { useSelector, useDispatch } from "react-redux"
 const UsersList = props => {
   const dispatch = useDispatch()
 
-    
+  // const { users } = useSelector(state => ({
+  //   users: state.contacts.users
+  // }));  
   const { users } = require('../../common/data/contacts');
   
   console.log(users);
@@ -83,7 +85,7 @@ const UsersList = props => {
       sort: true,
       formatter: (cellContent, user) => (
         <div className="d-flex gap-3">
-          <Input type="checkbox" id={user.id} switch="none" defaultChecked={user.isActive}   />
+          <Input type="checkbox" id={user.id} switch="none" defaultChecked={user.isActive} onClick={() => handleStatusUser(user)} />
           <Label className="me-1" htmlFor={user.id} data-on-label="Active" data-off-label=""></Label>
 
         </div>
@@ -99,13 +101,15 @@ const UsersList = props => {
           <Link className="text-success" to="#">
             <i
               className="mdi mdi-pencil font-size-18"
-              id="edittooltip" 
+              id="edittooltip"
+              onClick={() => handleEditUser(user)}
             ></i>
           </Link>
           <Link className="text-danger" to="#">
             <i
               className="mdi mdi-delete font-size-18"
-              id="deletetooltip" 
+              id="deletetooltip"
+              onClick={() => handleDeleteUser(user)}
             ></i>
           </Link>
         </div>
@@ -119,7 +123,21 @@ const UsersList = props => {
     }
   }, [dispatch, users])
 
-  
+  const handleAddUserClick = arg => {
+    console.log("add user");
+  }
+
+  const handleDeleteUser = (user) => {
+    console.log("delete user" + user.id);
+  }
+
+  const handleStatusUser = (user) => {
+    console.log("status user" + user.isActive);
+  }
+
+  const handleEditUser = (user) => {
+    console.log("edit user" + user.id);
+  }
 
   return (
     <React.Fragment>
@@ -163,7 +181,7 @@ const UsersList = props => {
                                 <div className="col-md-6">
                                   <div className="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
                                     <div>
-                                      <Link to="/users/create" className="btn btn-light"  ><i className="bx bx-plus me-1"></i> Add New</Link>
+                                      <Link to="/users/create" className="btn btn-light" onClick={handleAddUserClick}><i className="bx bx-plus me-1"></i> Add New</Link>
                                     </div>
                                   </div>
 
