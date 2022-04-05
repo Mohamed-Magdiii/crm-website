@@ -10,6 +10,7 @@ import Login from "../pages/Authentication/Login"
 import Logout from "../pages/Authentication/Logout"
 import Register from "../pages/Authentication/Register"
 import ForgetPwd from "../pages/Authentication/ForgetPassword"
+import ClientList from "../components/Client/client.record.list.component";
 
 const userRoutes = [
 
@@ -18,7 +19,7 @@ const userRoutes = [
 
   //profile
   { path: "/profile", component: userProfile },
-
+   {path:"/clients",  component:ClientList},
   // this route should be at the end of all other routes
   { path: "/", exact: true, component: () => <Redirect to="/dashboard" /> },
 ]
@@ -28,7 +29,8 @@ const authRoutes = [
   { path: "/logout", component: Logout },
   { path: "/login", component: Login },
   { path: "/forgot-password", component: ForgetPwd },
-  { path: "/register", component: Register },
+  { path: "/register", component: Register }
+   
 ]
 
 export { userRoutes, authRoutes }
