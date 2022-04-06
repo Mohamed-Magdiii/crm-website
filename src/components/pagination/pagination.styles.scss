@@ -1,14 +1,22 @@
+.pagination-section{
+    display:flex;
+    align-items: center;
+}
 .pagination{
     display:flex;
     justify-content: center;
     gap:0.5rem;
     width:90%;
-    margin:0 auto;
+    margin-top:2rem;
     text-align: center;
     
 
     .page-item{
         cursor: pointer;
         font-weight:bold;
+        color:white;
+        background-color:rgb(179, 179, 243);
+        border-radius: 50%;
+        padding:0.5rem 1rem;
     }
 }

@@ -2,7 +2,7 @@
 function ClientRecord({client}){
   const date=new Date(client.createdAt)
   let registerDate=date.toLocaleDateString()
-  const {kycUpload,kycApproved,kycRejected}=client.stages
+  const {kycApproved,kycRejected}=client.stages
   function kycStatus(){
    
      if(kycApproved){
