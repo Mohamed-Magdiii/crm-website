@@ -1,5 +1,5 @@
-import MetaTags from "react-meta-tags"
-import React, { useState, useEffect } from "react"
+import MetaTags from "react-meta-tags";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Row,
@@ -7,60 +7,72 @@ import {
   Card,
   Alert,
   CardBody,
-  Button,
-} from "reactstrap"
-
+  Modal,
+  ModalHeader,
+  ModalBody,
+} from "reactstrap";
 // availity-reactstrap-validation
-import { AvForm, AvField } from "availity-reactstrap-validation"
+import { AvForm, AvField } from "availity-reactstrap-validation";
 
 //redux
-import { useSelector, useDispatch } from "react-redux"
+import { useSelector, useDispatch } from "react-redux";
 
-import { withRouter } from "react-router-dom"
+import { withRouter } from "react-router-dom";
 
 //Import Breadcrumb
-import Breadcrumb from "../../components/Common/Breadcrumb"
+import Breadcrumb from "../../components/Common/Breadcrumb";
 
-import avatar from "../../assets/images/users/avatar-1.jpg"
+import avatar from "../../assets/images/users/avatar-1.jpg";
 // actions
-import { editProfile, resetProfileFlag } from "../../store/actions"
+import { editProfile, resetProfileFlag } from "../../store/actions";
 
-const UserProfile = props => {
-  const dispatch = useDispatch()
+import { del, get, post, put } from "../../helpers/api_helper";
+import * as url from "../../helpers/url_helper";
 
-  const { error, success } = useSelector(state => ({
+const UserProfile = (props) => {
+  const dispatch = useDispatch();
+
+  const { error, success } = useSelector((state) => ({
     error: state.Profile.error,
     success: state.Profile.success,
-  }))
+  }));
 
-  const [email, setemail] = useState("")
-  const [name, setname] = useState("")
-  const [idx, setidx] = useState(1)
+  const [fristName, setfristName] = useState("");
+  const [lastName, setlastName] = useState("");
+  const [email, setemail] = useState("");
+  const [roleId, setroleId] = useState("");
+  const [idx, setidx] = useState(0);
+  const [modal, setModal] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem("authUser")) {
-      const obj = JSON.parse(localStorage.getItem("authUser"))
-      if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-        setname(obj.displayName)
-        setemail(obj.email)
-        setidx(obj.uid)
-      } else if (
-        process.env.REACT_APP_DEFAULTAUTH === "fake" ||
-        process.env.REACT_APP_DEFAULTAUTH === "jwt"
-      ) {
-        setname(obj.username)
-        setemail(obj.email)
-        setidx(obj.uid)
-      }
-      setTimeout(() => {
-        dispatch(resetProfileFlag())
-      }, 3000)
-    }
-  }, [dispatch, success])
 
-  function handleValidSubmit(event, values) {
-    dispatch(editProfile(values))
-  }
+    //we get user id from local storage after login
+    const userID = "62497bbefe330b4478b1b1db";
+
+    const getProfileData = get(url.PROFILE + userID);
+
+    getProfileData.then((value) => {
+      if (value.result != null) {
+        setfristName(value.result.firstName);
+        setlastName(value.result.lastName);
+        setemail(value.result.email);
+        setroleId(value.result.roleId);
+        setidx(value.result._id);
+      }
+
+      console.log(value);
+    });
+  }, [dispatch, success]);
+
+
+  // function handleValidSubmit(event, values) {
+  //   dispatch(editProfile(values));
+  // }
+
+  // toggle modal
+  const toggle = () => {
+    setModal(!modal);
+  };
 
   return (
     <React.Fragment>
@@ -79,61 +91,160 @@ const UserProfile = props => {
 
               <Card>
                 <CardBody>
-                  <div className="d-flex">
-                    <div className="ms-3">
-                      <img
-                        src={avatar}
-                        alt=""
-                        className="avatar-md rounded-circle img-thumbnail"
-                      />
+                  <div className="  flex-column">
+                    <div className="d-flex justify-content-between">
+                      <div className="ms-3 ">
+                        <img
+                          src={avatar}
+                          alt=""
+                          className="img-thumbnail rounded-circle img-thumbnail"
+                        />
+                      </div>
+                      <svg
+                        onClick={toggle}
+                        style={{
+                          width: "25px",
+                          marginTop: "25px",
+                          height: "25px",
+                        }}
+                        focusable="false"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
+                      </svg>
                     </div>
-                    <div className="flex-grow-1 align-self-center ms-3">
-                      <div className="text-muted">
-                        <h5>{name}</h5>
-                        <p className="mb-1">{email}</p>
-                        <p className="mb-0">Id no: #{idx}</p>
+
+                    <div className="d-flex justify-content-around">
+                      <div className="  flex-column">
+                        <div class="card-header">
+                          <div class="card-title">
+                            <h4>First Name</h4>
+                          </div>
+                          <div class="card-subtitle">{fristName}</div>
+                        </div>
+                        <div class="card-header">
+                          <div class="card-title">
+                            <h4>E-Mail</h4>
+                          </div>
+                          <div class="card-subtitle">{email}</div>
+                        </div>
+                      </div>
+                      <div className="  flex-column"> 
+                      <div class="card-header">
+                          <div class="card-title">
+                            <h4> Last Name</h4>
+                          </div>
+                          <div class="card-subtitle">{lastName}</div>
+                        </div>
+                        <div class="card-header">
+                          <div class="card-title">
+                            <h4>Role</h4>
+                          </div>
+                          <div class="card-subtitle">{roleId}</div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </CardBody>
               </Card>
+              {/* ************ modal Edit User form*************** */}
+
+              <Modal isOpen={modal} toggle={toggle}>
+                <ModalHeader toggle={toggle} tag="h4">
+                  Edit Profile
+                  {/* {!!isEdit ? "Edit User" : "Add User"} */}
+                </ModalHeader>
+                <ModalBody>
+                  <AvForm
+                  // onValidSubmit={handleValidUserSubmit}
+                  >
+                    <Row form>
+                      <Col xs={12}>
+                        <div className="mb-3">
+                          <AvField
+                            name="fristname"
+                            label="Frist Name"
+                            type="text"
+                            errorMessage="Invalid name"
+                            validate={{
+                              required: { value: true },
+                            }}
+                            value={fristName || ""}
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <AvField
+                            name="lastname"
+                            label="Last Name"
+                            type="text"
+                            errorMessage="Invalid lastname"
+                            validate={{
+                              required: { value: true },
+                            }}
+                            value={lastName || ""}
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <AvField
+                            name="role"
+                            label="Role"
+                            type="text"
+                            errorMessage="Invalid lastname"
+                            validate={{
+                              required: { value: true },
+                            }}
+                            value={roleId || ""}
+                          />
+                        </div>
+
+                        <div className="mb-3">
+                          <AvField
+                            name="currentPassword"
+                            label="Current password"
+                            type="password"
+                            errorMessage="Invalid password"
+                            validate={{
+                              required: { value: true },
+                            }}
+                            value={""}
+                          />
+                        </div>
+                        <div className="mb-3">
+                          <AvField
+                            name="newPassword"
+                            label="New Password"
+                            type="password"
+                            errorMessage="Invalid"
+                            validate={{
+                              required: { value: true },
+                            }}
+                            value={""}
+                          />
+                        </div>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col>
+                        <div className="text-end">
+                          <button
+                            type="submit"
+                            className="btn btn-success save-user"
+                          >
+                            Save
+                          </button>
+                        </div>
+                      </Col>
+                    </Row>
+                  </AvForm>
+                </ModalBody>
+              </Modal>
             </Col>
           </Row>
-
-          <h4 className="card-title mb-4">Change User Name</h4>
-
-          <Card>
-            <CardBody>
-              <AvForm
-                className="form-horizontal"
-                onValidSubmit={(e, v) => {
-                  handleValidSubmit(e, v)
-                }}
-              >
-                <div className="form-group">
-                  <AvField
-                    name="username"
-                    label="User Name"
-                    value={name}
-                    className="form-control"
-                    placeholder="Enter User Name"
-                    type="text"
-                    required
-                  />
-                  <AvField name="idx" value={idx} type="hidden" />
-                </div>
-                <div className="text-center mt-4">
-                  <Button type="submit" color="danger">
-                    Update User Name
-                  </Button>
-                </div>
-              </AvForm>
-            </CardBody>
-          </Card>
         </Container>
       </div>
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default withRouter(UserProfile)
+export default withRouter(UserProfile);
