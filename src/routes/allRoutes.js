@@ -11,6 +11,8 @@ import Logout from "../pages/Authentication/Logout"
 import Register from "../pages/Authentication/Register"
 import ForgetPwd from "../pages/Authentication/ForgetPassword"
 import ClientList from "../components/Client/client.record.list.component";
+import UsersList from "../pages/Users/UsersList"
+import AddUser from "../pages/Users/AddUser"
 
 const userRoutes = [
 
@@ -20,6 +22,13 @@ const userRoutes = [
   //profile
   { path: "/profile", component: userProfile },
    {path:"/clients",  component:ClientList},
+
+    //users
+    { path: "/users", component: UsersList },
+
+    // users/create
+    { path: "/users/create", component: AddUser },
+
   // this route should be at the end of all other routes
   { path: "/", exact: true, component: () => <Redirect to="/dashboard" /> },
 ]
