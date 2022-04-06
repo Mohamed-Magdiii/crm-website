@@ -1,11 +1,12 @@
 import { call, put, takeEvery, takeLatest } from "redux-saga/effects"
-
+import {useSelector, useDispatch } from "react-redux"
 // Login Redux States
 import { LOGIN_USER, LOGOUT_USER, SOCIAL_LOGIN } from "./actionTypes"
 import { apiError, loginSuccess, logoutUserSuccess } from "./actions"
 
 //Include Both Helper File with needed methods
 import { getFirebaseBackend } from "../../../helpers/firebase_helper"
+import * as authApi from '../../../apis/auth';
 import {
   postFakeLogin,
   postJwtLogin,
@@ -80,8 +81,30 @@ function* socialLogin({ payload: { data, history, type } }) {
   }
 }
 
+ function * loginWithAPI({payload: {values, history}}){
+ 
+  try{
+    const data =yield call(authApi.loginUser,values)
+    
+    
+    const {message,result}=data
+    if(message==='Login successfull'){
+      localStorage.setItem('authUser',JSON.stringify(result))
+      history.push('/dashboard')
+    }
+   else{
+    yield put(apiError('Invalid Credentials'))
+   }
+  }
+   catch(error){
+    console.log('inside catch')
+    yield put(apiError(error))
+  } 
+
+  
+}
 function* authSaga() {
-  yield takeEvery(LOGIN_USER, loginUser)
+  yield takeEvery(LOGIN_USER, loginWithAPI)
   yield takeLatest(SOCIAL_LOGIN, socialLogin)
   yield takeEvery(LOGOUT_USER, logoutUser)
 }

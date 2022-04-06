@@ -7,10 +7,10 @@ import {
   SOCIAL_LOGIN,
 } from "./actionTypes"
 
-export const loginUser = (user, history) => {
+export const loginUser = (values, history) => {
   return {
     type: LOGIN_USER,
-    payload: { user, history },
+    payload: { values, history },
   }
 }
 
