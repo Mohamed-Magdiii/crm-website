@@ -10,6 +10,7 @@ import Login from "../pages/Authentication/Login"
 import Logout from "../pages/Authentication/Logout"
 import Register from "../pages/Authentication/Register"
 import ForgetPwd from "../pages/Authentication/ForgetPassword"
+import ClientList from "../components/Client/client.record.list.component";
 import UsersList from "../pages/Users/UsersList"
 import AddUser from "../pages/Users/AddUser"
 
@@ -20,6 +21,7 @@ const userRoutes = [
 
   //profile
   { path: "/profile", component: userProfile },
+   {path:"/clients",  component:ClientList},
 
     //users
     { path: "/users", component: UsersList },
@@ -36,7 +38,8 @@ const authRoutes = [
   { path: "/logout", component: Logout },
   { path: "/login", component: Login },
   { path: "/forgot-password", component: ForgetPwd },
-  { path: "/register", component: Register },
+  { path: "/register", component: Register }
+   
 ]
 
 export { userRoutes, authRoutes }
