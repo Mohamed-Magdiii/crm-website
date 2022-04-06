@@ -2,34 +2,32 @@
     width:fit-content;
     display:flex;
     flex-direction: column;
-    gap:0.5rem;
-    background-color:rgba(202, 193, 193,0.4);
+    min-width:800px;
+    background-color:white;
     border-radius:5px;
-    height:500px;
-    padding:0 0rem 1rem 0rem;
+    padding:0 0rem 4rem 0rem;
    margin:auto;
-   margin-top:6rem;
-   overflow-x: scroll;
-   overflow-y: scroll;
+   margin-top:7rem;
+   
+   
 }
 .client-table-content{
-    border-collapse: separate;
-    border-spacing: 0 0.5rem;
-    margin:5px 0;
+   
+    
     font-size:0.9em;
     display:block;
     
-    width:98%;
+    
     margin:0 auto;
    
     thead tr{
-        background-color: rgb(206, 206, 238);
-        color:rgb(98, 98, 235);
+        background-color:white;
         text-align:left;
         font-weight:bold;    
         margin:0.5rem ;
         th{
             padding:12px 15px;
+            border-bottom: 1px solid rgb(235, 230, 230);
         }   
     }
    
@@ -45,4 +43,5 @@
         padding:12px 15px;
         
     }
+    
 }
