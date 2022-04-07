@@ -6,12 +6,16 @@ import ClientTableHeader from './clients-table-header'
 import Pagination from '../pagination/pagination'
 import ClientContainerTitle from './client.container-title'
 import ClientTableActions from './client.table.actions.component'
+import { fetchClients ,fetchClientsSuccess,apiError} from '../../store/client/actions'
+import {useDispatch,useSelector} from 'react-redux'
 function ClientList(){
-    const [clients,setClients]=useState([])
-    const [loading,setLoading]=useState(false)
+    
+    
     const [currentPage,setCurrentPage]=useState(1)
     const [clientsPerPage,setClientsPerPage]=useState(10)
+    const {clients,loading,error}=useSelector(state=>state.clientReducer)
     
+    const dispatch=useDispatch()
     const paginate=(number)=>{
          setCurrentPage(number)
     }
@@ -24,26 +28,27 @@ function ClientList(){
       setClientsPerPage(number)
     }
     useEffect(()=>{
-         setLoading(true)
+         
         fetch('http://localhost:3001/api/v1/crm/clients')
         .then(result=>result.json())
         .then(data=>{
-            if(data.result.docs.length===0){
-              
-            }
-            setClients(data.result.docs);
-            setLoading(false)
+            dispatch(fetchClients(data.result.docs))
+            dispatch(fetchClientsSuccess(false))
         }).catch(error=>{
-              
+              dispatch(error)
         })
     },[])
     const indexOfLastClient=currentPage*clientsPerPage
     const indexOfFirstClient=indexOfLastClient-clientsPerPage
-    const currentClients=clients.slice(indexOfFirstClient,indexOfLastClient)
+   
+  
+     const currentClients=clients.slice(indexOfFirstClient,indexOfLastClient)
+    
+    
   return (
-      <div  className="clients-container">
+        <div  className="clients-container">
 
-        <ClientContainerTitle/>
+         <ClientContainerTitle/>
           <ClientTableActions clients={clients.length}/>
     
             {loading? 'loading':  <table className="client-table-content">
