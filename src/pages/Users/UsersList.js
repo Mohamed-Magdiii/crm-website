@@ -9,13 +9,23 @@ import {
   Row,
   Input,
   Label,
-} from "reactstrap"
+  Modal,
+  ModalHeader,
+  ModalBody,
+  Button
+} from "reactstrap" 
+
+import Select from "react-select"
 
 import paginationFactory, {
   PaginationListStandalone,
   PaginationProvider,
   SizePerPageDropdownStandalone
 } from "react-bootstrap-table2-paginator"
+
+
+import { AvForm, AvField } from "availity-reactstrap-validation";
+
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit"
 import BootstrapTable from "react-bootstrap-table-next"
 
@@ -34,8 +44,29 @@ const UsersList = props => {
   // const { users } = useSelector(state => ({
   //   users: state.contacts.users
   // }));  
+
+  const [modal, setModal] = useState(true);
+  // toggle modal
+  const toggle = () => {
+    setModal(!modal);
+  };
+
+  const [selectedGroup, setselectedGroup] = useState(null)
+  function handleSelectGroup(selectedGroup) {
+    console.log(selectedGroup);
+    setselectedGroup(selectedGroup)
+  }
+
+
+  // handel form data
+  const handleValidSubmit = (event, values) => {
+    console.log(values);
+  }
+
+
+
   const { users } = require('../../common/data/contacts');
-  
+
   console.log(users);
   const { SearchBar } = Search
 
@@ -212,9 +243,9 @@ const UsersList = props => {
                               <Col className="inner-custom-pagination d-flex w-100 ">
                                 <div className="text-md-right  flex-grow-1 ">
                                   <div className="pagination pagination-rounded d-flex justify-content-center ">
-                                      <PaginationListStandalone
-                                        {...paginationProps}
-                                      />
+                                    <PaginationListStandalone
+                                      {...paginationProps}
+                                    />
                                   </div>
 
                                 </div>
@@ -235,6 +266,88 @@ const UsersList = props => {
               </Card>
             </Col>
           </Row>
+
+
+
+
+
+          <Modal isOpen={modal} toggle={toggle}>
+            <ModalHeader toggle={toggle} tag="h4">
+              Add New User
+              {/* {!!isEdit ? "Edit User" : "Add User"} */}
+            </ModalHeader>
+            <ModalBody>
+              <AvForm
+                className='p-4'
+                onValidSubmit={(e, v) => {
+                  handleValidSubmit(e, v)
+                }}
+              >
+                <div className="mb-3">
+                  <AvField
+                    name="fristname"
+                    label="Frist Name  "
+                    placeholder="Frist Name"
+                    type="text"
+                    errorMessage="Enter Frist Name"
+                    validate={{ required: { value: true } }}
+                  />
+                </div>
+                <div className="mb-3">
+                  <AvField
+                    name="lastname"
+                    label="Last Name  "
+                    placeholder="Last Name"
+                    type="text"
+                    errorMessage="Enter Last Name"
+                    validate={{ required: { value: true } }}
+                  />
+                </div>
+                <div className="mb-3">
+                  <AvField
+                    name="email"
+                    label="Email"
+                    placeholder="Enter Valid Email"
+                    type="email"
+                    errorMessage="Invalid Email"
+                    validate={{
+                      required: { value: true },
+                      email: { value: true },
+                    }}
+                  />
+                </div>
+                <div className="mb-3">
+                  <Label>Password</Label>
+                  <AvField
+                    name="password"
+                    type="password"
+                    placeholder="Password"
+                    errorMessage="Enter password"
+                    validate={{ required: { value: true } }}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label >Role</label>
+                  <Select
+                    value={selectedGroup}
+                    onChange={(selected) => {
+                      handleSelectGroup(selected)
+                    }}
+                    options={[
+                      { label: "Admin", value: "Admin" },
+                      { label: "Client", value: "Client" }
+                    ]}
+                    classNamePrefix="select2-selection"
+                  />
+                </div>
+                <div className='text-center p-5'>
+                  <Button type="submit" color="primary" className="">
+                    Add New User
+                  </Button>
+                </div>
+              </AvForm>
+            </ModalBody>
+          </Modal>
         </Container>
       </div>
     </React.Fragment>

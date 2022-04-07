@@ -7,7 +7,7 @@ function Pagination({clientsPerPage,totalClients,paginate,next,changeClientsPerP
     }
    return(
        <div className="pagination-section">
-        <ul className="pagination">
+        <ul className="pagination2">
          
           {pageNumbers.map(number=>{
               return <li key={number} onClick={()=>paginate(number)} className="page-item">
