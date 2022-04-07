@@ -1,10 +1,31 @@
 import axios from "axios"
-import accessToken from "./jwt-token-access/accessToken"
+import * as url from "./url_helper";
 
-// const authUser=JSON.parse(localStorage.getItem("authUser")) 
+const authUser = JSON.parse(localStorage.getItem("authUser"))
+console.log("hi from api helper");
 
-// //pass new generated access token here
-// const token = authUser.token
+let token;
+
+if (authUser) {
+  try {
+    token = authUser.token
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
+
+export const loginCheck = function () {
+  if (authUser) {
+    return true
+  } else {
+    return false
+  }
+};
+export const redirectToLogin = function () {
+  return window.location.replace(url.LOGIN);
+
+};
 
 //apply base url for axios
 const API_URL = "http://localhost:3001"
@@ -13,7 +34,7 @@ const axiosApi = axios.create({
   baseURL: API_URL,
 })
 
-axiosApi.defaults.headers.common["Authorization"] = accessToken
+axiosApi.defaults.headers.common["Authorization"] = token
 
 axiosApi.interceptors.response.use(
   response => response,
