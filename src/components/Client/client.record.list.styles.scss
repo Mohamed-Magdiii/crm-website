@@ -2,12 +2,17 @@
     width:fit-content;
     display:flex;
     flex-direction: column;
-    min-width:800px;
+    min-width:600px;
+    height:75vh;
+    overflow-y: scroll;
     background-color:white;
     border-radius:5px;
     padding:0 0rem 4rem 0rem;
    margin:auto;
    margin-top:7rem;
+   
+   padding:1rem 3rem;
+
    
    
 }
