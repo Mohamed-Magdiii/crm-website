@@ -12,8 +12,8 @@ export const SOCIAL_LOGIN = "/social-login"
 export const POST_EDIT_JWT_PROFILE = "/post-jwt-profile"
 export const POST_EDIT_PROFILE = "/post-fake-profile"
 
-
-export const PROFILE = "/api/v1/crm/users/"
+//GET PROFILE DATA
+export const PROFILE = "/api/v1/crm/auth/profile"
 
 //PRODUCTS
 export const GET_PRODUCTS = "/products"

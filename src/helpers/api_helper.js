@@ -1,8 +1,10 @@
 import axios from "axios"
-import accessToken from "./jwt-token-access/accessToken"
+// import accessToken from "./jwt-token-access/accessToken"
+
+const authUser=JSON.parse(localStorage.getItem("authUser")) 
 
 //pass new generated access token here
-const token = accessToken
+const token = authUser.token
 
 //apply base url for axios
 const API_URL = "http://localhost:3001"
