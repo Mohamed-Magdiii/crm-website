@@ -6,9 +6,19 @@
     padding:1rem 2rem;
     background-color: white;
     margin:0;
-    
+    .input-box{
+        position:relative;
+        .icon{
+            position:absolute;
+            top:0.8rem;
+            left:0.7rem;
+        }
+    }
     .search-input{
         width:20%;
+        padding: 0.5rem 2rem;
+        border:2px solid rgb(226, 220, 220);
+        outline:none;
     }
     .actions{
         display:flex;

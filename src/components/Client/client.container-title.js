@@ -1,8 +1,9 @@
 import './client-container-title.styles.scss'
+
 function ClientContainerTitle(){
     return(
     <div className="title">
-          <h3>User List</h3>
+          <h3>Users</h3>
           <p>Contacts {`>`} User List</p>
         </div>
     )
