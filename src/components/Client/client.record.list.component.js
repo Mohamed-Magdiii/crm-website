@@ -46,29 +46,33 @@ function ClientList(){
     
     
   return (
+        <React.Fragment>
+        <ClientContainerTitle/>
         <div  className="clients-container">
 
-         <ClientContainerTitle/>
-          <ClientTableActions clients={clients.length}/>
-    
-            {loading? 'loading':  <table className="client-table-content">
-            <ClientTableHeader/>
-             <tbody>
-            {currentClients.map(client=>{
-              return <ClientRecord key={client.id} client={client}/>
-             })}
-         </tbody>
-       
-        </table>}
         
-         <Pagination clientsPerPage={clientsPerPage} 
-                    totalClients={clients.length} 
-                    paginate={paginate}
-                     next={next}
-                     changeClientsPerPage={changeClientsPerPage}
-                     /> 
-            
-      </div>
+         <ClientTableActions clients={clients.length}/>
+   
+           {loading? 'loading':  <table className="client-table-content">
+           <ClientTableHeader/>
+            <tbody>
+           {currentClients.map(client=>{
+             return <ClientRecord key={client.id} client={client}/>
+            })}
+        </tbody>
+      
+       </table>}
+       
+        <Pagination clientsPerPage={clientsPerPage} 
+                   totalClients={clients.length} 
+                   paginate={paginate}
+                    next={next}
+                    changeClientsPerPage={changeClientsPerPage}
+                    /> 
+           
+     </div>
+        </React.Fragment>
+        
       
     
   )
