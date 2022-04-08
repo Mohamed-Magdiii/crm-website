@@ -112,95 +112,95 @@ const SidebarContent = (props) => {
              </Link> 
             </li>
             <li>
-            <Link to='/#' className="">
+            <Link to='/leads' className="">
             <FeatherIcon icon="user"/>
             <span>{props.t('Leads')}</span> 
              </Link> 
             </li>
             <li>
-              <Link to="/#" className="has-arrow">
+              <Link to="/transactions" className="has-arrow">
                 <FeatherIcon icon="trending-up" />
                 <span>{props.t("Transactions")}</span>
               </Link>
               <ul className="sub-menu">
                 <li>
-                  <Link to="/#">{props.t("Deposit")}</Link>
+                  <Link to="/transactions/deposit">{props.t("Deposit")}</Link>
                 </li>
                 <li>
-                  <Link to="/#">{props.t("Withdrawals")}</Link>
+                  <Link to="/transactions/withdrawals">{props.t("Withdrawals")}</Link>
                 </li>   
               </ul>
             </li>
             <li>
-            <Link to='/#' className="">
+            <Link to='/positions' className="">
             <FeatherIcon icon="cast"/>
             <span>{props.t('Positions')}</span> 
              </Link> 
             </li>
             <li>
-              <Link to="/#" className="has-arrow">
+              <Link to="/calendar" className="has-arrow">
                 <FeatherIcon icon="calendar" />
                 <span>{props.t("Reminders/Notes")}</span>
               </Link>
               <ul className="sub-menu">
                 <li>
-                  <Link to="/#">{props.t("Todos")}</Link>
+                  <Link to="/calendar/todos">{props.t("Todos")}</Link>
                 </li>
                 <li>
-                  <Link to="/#">{props.t("Reminders")}</Link>
+                  <Link to="/calendar/reminders">{props.t("Reminders")}</Link>
                 </li>   
               </ul>
             </li>
             <li>
-            <Link to='/#' className="">
+            <Link to='/marketing' className="">
             <FeatherIcon icon="link-2"/>
             <span>{props.t('Marketing')}</span> 
              </Link> 
             </li> 
             <li>
-              <Link to="/#" className="has-arrow">
+              <Link to="/requests" className="has-arrow">
                 <FeatherIcon icon="clipboard" />
                 <span>{props.t("Requests")}</span>
               </Link>
               <ul className="sub-menu">
                 <li>
-                  <Link to="/#">{props.t("List Coin")}</Link>
+                  <Link to="/requests/list-coin">{props.t("List Coin")}</Link>
                 </li>
                 <li>
-                  <Link to="/#">{props.t("OTC Request")}</Link>
+                  <Link to="/requests/otc">{props.t("OTC Request")}</Link>
                 </li>   
               </ul>
             </li> 
           
             <li>
-              <Link to="/#" className="has-arrow">
+              <Link to="/settings" className="has-arrow">
                 <FeatherIcon icon="tool" />
                 <span>{props.t("Settings")}</span>
               </Link>
               <ul className="sub-menu">
                 <li>
-                  <Link to="/#">{props.t("Users")}</Link>
+                  <Link to="/users">{props.t("Users")}</Link>
                 </li>
                 <li>
-                  <Link to="/#">{props.t("Roles")}</Link>
+                  <Link to="/roles">{props.t("Roles")}</Link>
                 </li>   
                 <li>
-                  <Link to="/#">{props.t("Email Templates")}</Link>
+                  <Link to="/email-templates">{props.t("Email Templates")}</Link>
                 </li>
                 <li>
-                  <Link to="/#">{props.t("User Logs")}</Link>
+                  <Link to="/user-logs">{props.t("User Logs")}</Link>
                 </li>   
                 <li>
-                  <Link to="/#">{props.t("Teams")}</Link>
+                  <Link to="/teams">{props.t("Teams")}</Link>
                 </li>
                 <li>
-                  <Link to="/#">{props.t("Banners")}</Link>
+                  <Link to="/banners">{props.t("Banners")}</Link>
                 </li>   
                 <li>
-                  <Link to="/#">{props.t("Symbols")}</Link>
+                  <Link to="/symbols">{props.t("Symbols")}</Link>
                 </li>
                 <li>
-                  <Link to="/#">{props.t("Currency Pairs")}</Link>
+                  <Link to="/currency-pairs">{props.t("Currency Pairs")}</Link>
                 </li>   
               </ul>
             </li> 
