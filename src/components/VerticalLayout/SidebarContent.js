@@ -111,366 +111,107 @@ const SidebarContent = (props) => {
             <span>{props.t('Clients')}</span> 
              </Link> 
             </li>
+            <li>
+            <Link to='/#' className="">
+            <FeatherIcon icon="user"/>
+            <span>{props.t('Leads')}</span> 
+             </Link> 
+            </li>
+            <li>
+              <Link to="/#" className="has-arrow">
+                <FeatherIcon icon="trending-up" />
+                <span>{props.t("Transactions")}</span>
+              </Link>
+              <ul className="sub-menu">
+                <li>
+                  <Link to="/#">{props.t("Deposit")}</Link>
+                </li>
+                <li>
+                  <Link to="/#">{props.t("Withdrawals")}</Link>
+                </li>   
+              </ul>
+            </li>
+            <li>
+            <Link to='/#' className="">
+            <FeatherIcon icon="cast"/>
+            <span>{props.t('Positions')}</span> 
+             </Link> 
+            </li>
+            <li>
+              <Link to="/#" className="has-arrow">
+                <FeatherIcon icon="calendar" />
+                <span>{props.t("Reminders/Notes")}</span>
+              </Link>
+              <ul className="sub-menu">
+                <li>
+                  <Link to="/#">{props.t("Todos")}</Link>
+                </li>
+                <li>
+                  <Link to="/#">{props.t("Reminders")}</Link>
+                </li>   
+              </ul>
+            </li>
+            <li>
+            <Link to='/#' className="">
+            <FeatherIcon icon="link-2"/>
+            <span>{props.t('Marketing')}</span> 
+             </Link> 
+            </li> 
+            <li>
+              <Link to="/#" className="has-arrow">
+                <FeatherIcon icon="clipboard" />
+                <span>{props.t("Requests")}</span>
+              </Link>
+              <ul className="sub-menu">
+                <li>
+                  <Link to="/#">{props.t("List Coin")}</Link>
+                </li>
+                <li>
+                  <Link to="/#">{props.t("OTC Request")}</Link>
+                </li>   
+              </ul>
+            </li> 
+          
+            <li>
+              <Link to="/#" className="has-arrow">
+                <FeatherIcon icon="tool" />
+                <span>{props.t("Settings")}</span>
+              </Link>
+              <ul className="sub-menu">
+                <li>
+                  <Link to="/#">{props.t("Users")}</Link>
+                </li>
+                <li>
+                  <Link to="/#">{props.t("Roles")}</Link>
+                </li>   
+                <li>
+                  <Link to="/#">{props.t("Email Templates")}</Link>
+                </li>
+                <li>
+                  <Link to="/#">{props.t("User Logs")}</Link>
+                </li>   
+                <li>
+                  <Link to="/#">{props.t("Teams")}</Link>
+                </li>
+                <li>
+                  <Link to="/#">{props.t("Banners")}</Link>
+                </li>   
+                <li>
+                  <Link to="/#">{props.t("Symbols")}</Link>
+                </li>
+                <li>
+                  <Link to="/#">{props.t("Currency Pairs")}</Link>
+                </li>   
+              </ul>
+            </li> 
+ 
+  
+
+          
+ 
+
             
-            <li>
-              <Link to="/#" className="has-arrow">
-                <FeatherIcon icon="grid" />
-                <span>{props.t("Apps")}</span>
-              </Link>
-              <ul className="sub-menu">
-                <li>
-                  <Link to="/#">{props.t("Calendar")}</Link>
-                </li>
-                <li>
-                  <Link to="/#">{props.t("Chat")}</Link>
-                </li>
-                <li>
-                  <Link to="/#" className="has-arrow">
-                    <span>{props.t("Email")}</span>
-                  </Link>
-                  <ul className="sub-menu">
-                    <li>
-                      <Link to="/#">{props.t("Inbox")}</Link>
-                    </li>
-                    <li>
-                      <Link to="/#">{props.t("Read Email")} </Link>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <Link to="/#" className="has-arrow">
-                    <span>{props.t("Invoices")}</span>
-                  </Link>
-                  <ul className="sub-menu">
-                    <li>
-                      <Link to="/#">{props.t("Invoice List")}</Link>
-                    </li>
-                    <li>
-                      <Link to="/#">{props.t("Invoice Detail")}</Link>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <Link to="/#" className="has-arrow ">
-                    <span>{props.t("Contacts")}</span>
-                  </Link>
-                  <ul className="sub-menu">
-                    <li>
-                      <Link to="/#">{props.t("User Grid")}</Link>
-                    </li>
-                    <li>
-                      <Link to="/#">{props.t("User List")}</Link>
-                    </li>
-                    <li>
-                      <Link to="/#">{props.t("Profile")}</Link>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-
-            <li>
-              <Link to="/#" className="has-arrow">
-                <FeatherIcon icon="users" />
-                <span>{props.t("Authentication")}</span>
-              </Link>
-              <ul className="sub-menu">
-                <li>
-                  <Link to="#">{props.t("Login")}</Link>
-                </li>
-                <li>
-                  <Link to="#">{props.t("Register")}</Link>
-                </li>
-                <li>
-                  <Link to="#">{props.t("Recover Password")}</Link>
-                </li>
-                <li>
-                  <Link to="#">{props.t("Lock Screen")}</Link>
-                </li>
-                <li>
-                  <Link to="#">{props.t("Confirm Mail")}</Link>
-                </li>
-                <li>
-                  <Link to="#">{props.t("Email Verification")}</Link>
-                </li>
-                <li>
-                  <Link to="#">{props.t("Two Step Verification")}</Link>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <Link to="/#" className="has-arrow ">
-                <FeatherIcon icon="file-text" />
-                <span>{props.t("Pages")}</span>
-              </Link>
-              <ul className="sub-menu">
-                <li>
-                  <Link to="/#">{props.t("Starter Page")}</Link>
-                </li>
-                <li>
-                  <Link to="/#">{props.t("Maintenance")}</Link>
-                </li>
-                <li>
-                  <Link to="/#">{props.t("Coming Soon")}</Link>
-                </li>
-                <li>
-                  <Link to="/#">{props.t("Timeline")}</Link>
-                </li>
-                <li>
-                  <Link to="/#">{props.t("FAQs")}</Link>
-                </li>
-                <li>
-                  <Link to="/#">{props.t("Pricing")}</Link>
-                </li>
-                <li>
-                  <Link to="/#">{props.t("Error 404")}</Link>
-                </li>
-                <li>
-                  <Link to="/#">{props.t("Error 500")}</Link>
-                </li>
-              </ul>
-            </li>
-
-            <li className="menu-title">{props.t("Elements")}</li>
-
-            <li>
-              <Link to="/#" className="has-arrow ">
-                <FeatherIcon icon="briefcase" />
-                <span>{props.t("Components")}</span>
-              </Link>
-              <ul className="sub-menu">
-                <li>
-                  <Link to="/#">{props.t("Alerts")}</Link>
-                </li>
-                <li>
-                  <Link to="/#">{props.t("Buttons")}</Link>
-                </li>
-                <li>
-                  <Link to="/#">{props.t("Cards")}</Link>
-                </li>
-                <li>
-                  <Link to="/#">{props.t("Carousel")}</Link>
-                </li>
-                <li>
-                  <Link to="/#">{props.t("Dropdowns")}</Link>
-                </li>
-                <li>
-                  <Link to="/#">{props.t("Grid")}</Link>
-                </li>
-                <li>
-                  <Link to="/#">{props.t("Images")}</Link>
-                </li>
-                <li>
-                  <Link to="/#">{props.t("Modals")}</Link>
-                </li>
-                <li>
-                  <Link to="/#">{props.t("Drawer")}</Link>
-                </li>
-                <li>
-                  <Link to="/#">{props.t("Progress Bars")}</Link>
-                </li>
-                <li>
-                  <Link to="/#">{props.t("Tabs & Accordions")}</Link>
-                </li>
-                <li>
-                  <Link to="#">{props.t("Typography")}</Link>
-                </li>
-                <li>
-                  <Link to="#">{props.t("Video")}</Link>
-                </li>
-                <li>
-                  <Link to="#">{props.t("General")}</Link>
-                </li>
-                <li>
-                  <Link to="#">{props.t("Colors")}</Link>
-                </li>
-              </ul>
-            </li>
-
-            <li>
-              <Link to="/#" className="has-arrow ">
-                <FeatherIcon icon="gift" />
-                <span>{props.t("Extended")}</span>
-              </Link>
-              <ul className="sub-menu">
-                <li>
-                  <Link to="#">{props.t("Lightbox")}</Link>
-                </li>
-                <li>
-                  <Link to="#">{props.t("Range Slider")}</Link>
-                </li>
-                <li>
-                  <Link to="#">{props.t("Sweet Alert")}</Link>
-                </li>
-                <li>
-                  <Link to="#">{props.t("Session Timeout")}</Link>
-                </li>
-                <li>
-                  <Link to="#">{props.t("Rating")}</Link>
-                </li>
-                <li>
-                  <Link to="#">{props.t("Notifications")}</Link>
-                </li>
-              </ul>
-            </li>
-
-            <li>
-              <Link to="/#" className="">
-                <FeatherIcon icon="box" />
-                <span className="badge rounded-pill bg-soft-danger text-danger float-end">
-                  7
-                </span>
-                <span>{props.t("Forms")}</span>
-              </Link>
-              <ul className="sub-menu">
-                <li>
-                  <Link to="#">{props.t("Basic Elements")}</Link>
-                </li>
-                <li>
-                  <Link to="#">{props.t("Validation")}</Link>
-                </li>
-                <li>
-                  <Link to="#">{props.t("Advanced Plugins")}</Link>
-                </li>
-                <li>
-                  <Link to="#">{props.t("Editors")}</Link>
-                </li>
-                <li>
-                  <Link to="#">{props.t("File Upload")} </Link>
-                </li>
-                <li>
-                  <Link to="#">{props.t("Form Wizard")}</Link>
-                </li>
-                <li>
-                  <Link to="#">{props.t("Form Mask")}</Link>
-                </li>
-              </ul>
-            </li>
-
-            <li>
-              <Link to="/#" className="has-arrow ">
-                <FeatherIcon icon="sliders" />
-                <span>{props.t("Tables")}</span>
-              </Link>
-              <ul className="sub-menu">
-                <li>
-                  <Link to="#">{props.t("Bootstrap Basic")}</Link>
-                </li>
-                <li>
-                  <Link to="#">{props.t("DataTables")}</Link>
-                </li>
-                <li>
-                  <Link to="#">{props.t("Responsive")}</Link>
-                </li>
-                <li>
-                  <Link to="#">{props.t("Editable")}</Link>
-                </li>
-              </ul>
-            </li>
-
-            <li>
-              <Link to="/#" className="has-arrow ">
-                <FeatherIcon icon="pie-chart" />
-                <span>{props.t("Charts")}</span>
-              </Link>
-
-              <ul className="sub-menu">
-                <li>
-                  <Link to="#">{props.t("Apexcharts")}</Link>
-                </li>
-                <li>
-                  <Link to="#">{props.t("Echarts")}</Link>
-                </li>
-                <li>
-                  <Link to="#">{props.t("Chartjs")}</Link>
-                </li>
-                <li>
-                  <Link to="#">{props.t("Sparkline")}</Link>
-                </li>
-              </ul>
-            </li>
-
-            <li>
-              <Link to="/#" className="has-arrow ">
-                <FeatherIcon icon="cpu" />
-                <span>{props.t("Icons")}</span>
-              </Link>
-              <ul className="sub-menu">
-                <li>
-                  <Link to="#">{props.t("Boxicons")}</Link>
-                </li>
-                <li>
-                  <Link to="#">{props.t("Material Design")}</Link>
-                </li>
-                <li>
-                  <Link to="#">{props.t("Dripicons")}</Link>
-                </li>
-                <li>
-                  <Link to="#">{props.t("Font awesome")}</Link>
-                </li>
-              </ul>
-            </li>
-
-            <li>
-              <Link to="/#" className="has-arrow ">
-                <FeatherIcon icon="map" />
-                <span>{props.t("Maps")}</span>
-              </Link>
-              <ul className="sub-menu">
-                <li>
-                  <Link to="#">{props.t("Google")}</Link>
-                </li>
-                <li>
-                  <Link to="#">{props.t("Vector")}</Link>
-                </li>
-                <li>
-                  <Link to="#">{props.t("Leaflet")}</Link>
-                </li>
-              </ul>
-            </li>
-
-            <li>
-              <Link to="/#" className="has-arrow ">
-                <FeatherIcon icon="share-2" />
-                <span>{props.t("Multi Level")}</span>
-              </Link>
-              <ul className="sub-menu">
-                <li>
-                  <Link to="/#">{props.t("Level 1.1")}</Link>
-                </li>
-                <li>
-                  <Link to="/#" className="has-arrow">
-                    {props.t("Level 1.2")}
-                  </Link>
-                  <ul className="sub-menu">
-                    <li>
-                      <Link to="/#">{props.t("Level 2.1")}</Link>
-                    </li>
-                    <li>
-                      <Link to="/#">{props.t("Level 2.2")}</Link>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-          </ul>
-          <div className="card sidebar-alert border-0 text-center mx-4 mb-0 mt-5">
-            <div className="card-body">
-              <img src={giftBox} alt="" />
-              <div className="mt-4">
-                <h5 className="alertcard-title font-size-16">
-                  Unlimited Access
-                </h5>
-                <p className="font-size-13">
-                  Upgrade your plan from a Free trial, to select ‘Business
-                  Plan’.
-                </p>
-                <a href="#!" className="btn btn-primary mt-2">
-                  Upgrade Now
-                </a>
-              </div>
-            </div>
-          </div>
+          </ul> 
         </div>
       </SimpleBar>
     </React.Fragment>
