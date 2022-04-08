@@ -26,8 +26,8 @@ import avatar from "../../assets/images/users/avatar-1.jpg";
 // actions
 import { editProfile, resetProfileFlag } from "../../store/actions";
 
-import { del, get, post, put } from "../../helpers/api_helper";
-import * as url from "../../helpers/url_helper";
+import { del, get, post, put, redirectToLogin } from "../../apis/api_helper";
+import * as url from "../../apis/url_helper";
 
 const UserProfile = (props) => {
   const dispatch = useDispatch();
@@ -44,19 +44,24 @@ const UserProfile = (props) => {
   const [idx, setidx] = useState(0);
   const [modal, setModal] = useState(false);
 
-  useEffect(() => { 
-    const getProfileData = get(url.PROFILE ); 
+  useEffect(() => {
+    const getProfileData = get(url.PROFILE);
+    
     getProfileData.then((userData) => {
-      console.log(userData.result);
-      if (userData.result != null) {
-        setfristName(userData.result.firstName);
-        setlastName(userData.result.lastName);
-        setemail(userData.result.email);
-        setroleId(userData.result.roleId.title);
-        setidx(userData.result._id);
+      if (userData.status) {
+        if (userData.result != null) {
+          setfristName(userData.result.firstName);
+          setlastName(userData.result.lastName);
+          setemail(userData.result.email);
+          setroleId(userData.result.roleId.title);
+          setidx(userData.result._id);
+        }
+
       }
- 
-    });
+    }).catch(err => { redirectToLogin() })
+
+
+
   }, [dispatch, success]);
 
 
@@ -125,8 +130,8 @@ const UserProfile = (props) => {
                           <div className="card-subtitle">{email}</div>
                         </div>
                       </div>
-                      <div className="  flex-column"> 
-                      <div className="card-header">
+                      <div className="  flex-column">
+                        <div className="card-header">
                           <div className="card-title">
                             <h4> Last Name</h4>
                           </div>
