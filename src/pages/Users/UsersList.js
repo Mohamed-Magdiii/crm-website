@@ -42,7 +42,7 @@ import { useSelector, useDispatch } from "react-redux"
 const UsersList = props => {
   const dispatch = useDispatch()
 
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState({docs: []});
   const [roles, setRoles] = useState([]);
   const [selectedGroup, setselectedGroup] = useState(null)
   const [addModal, setAddUserModal] = useState(false);
@@ -71,11 +71,7 @@ const UsersList = props => {
 
 
   useEffect(() => {
-    const getProfileData = get("/api/v1/crm/users");
-    getProfileData.then((usersData) => {
-      setUsers(usersData.result)
-      // console.log(usersData);
-    })
+    getUsers();
 
     const getRoles = get("/api/v1/crm/roles");
     getRoles.then((rolesData) => {
@@ -86,6 +82,15 @@ const UsersList = props => {
 
   }, [update])
 
+
+  const getUsers = async(page = 1, size = 10) => {
+    console.log('ajajaja ', page, size)
+    const getProfileData = get("/api/v1/crm/users");
+    getProfileData.then((usersData) => {
+      setUsers(usersData.result)
+      // console.log(usersData);
+    })
+  }
 
   // const getRoleById = (roleId) => {
   //   const getRole = get("/api/v1/crm/roles/"+roleId);
@@ -143,7 +148,7 @@ const UsersList = props => {
 
   const pageOptions = {
     sizePerPage: 10,
-    totalSize: users.length, // replace later with size(users),
+    totalSize: users.totalDocs, // replace later with size(users),
     custom: true,
   }
   const defaultSorted = [
@@ -175,7 +180,7 @@ const UsersList = props => {
       sort: true,
     },
     {
-      dataField: "roleId",
+      dataField: "roleId.title",
       text: "RoleId",
       sort: true,
     },
@@ -233,12 +238,13 @@ const UsersList = props => {
                     pagination={paginationFactory(pageOptions)}
                     keyField="id"
                     columns={contactListColumns}
-                    data={users}
+                    data={users.docs}
+                    onPageChange = {getUsers}
                   >
                     {({ paginationProps, paginationTableProps }) => (
                       <ToolkitProvider
                         keyField="id"
-                        data={users}
+                        data={users.docs}
                         columns={contactListColumns}
                         bootstrap4
                         search
