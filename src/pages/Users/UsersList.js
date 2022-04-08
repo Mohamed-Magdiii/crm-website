@@ -9,15 +9,26 @@ import {
   Row,
   Input,
   Label,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  Button
 } from "reactstrap"
+
+import Select from "react-select"
 
 import paginationFactory, {
   PaginationListStandalone,
   PaginationProvider,
   SizePerPageDropdownStandalone
 } from "react-bootstrap-table2-paginator"
+
+
+import { AvForm, AvField } from "availity-reactstrap-validation";
+
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit"
 import BootstrapTable from "react-bootstrap-table-next"
+import { del, patch, get, post, put } from "../../helpers/api_helper";
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
@@ -31,27 +42,116 @@ import { useSelector, useDispatch } from "react-redux"
 const UsersList = props => {
   const dispatch = useDispatch()
 
-  // const { users } = useSelector(state => ({
-  //   users: state.contacts.users
-  // }));  
-  const { users } = require('../../common/data/contacts');
-  
+  const [users, setUsers] = useState([]);
+  const [roles, setRoles] = useState([]);
+  const [selectedGroup, setselectedGroup] = useState(null)
+  const [addModal, setAddUserModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
+  const [selectUser, setSelectUser] = useState({});
+  const [update, setUpdate] = useState(false);
+
+  // toggle modal
+  const toggleAddModal = () => {
+    setAddUserModal(!addModal);
+  };
+  // toggle Edit modal
+  const toggleEditModal = () => {
+    setEditModal(!editModal);
+  };
+  const handleSelectGroup = (selectedGroup) => {
+    console.log(selectedGroup);
+    setselectedGroup(selectedGroup.value)
+  }
+
+
+
   console.log(users);
   const { SearchBar } = Search
+
+
+
+  useEffect(() => {
+    const getProfileData = get("/api/v1/crm/users");
+    getProfileData.then((usersData) => {
+      setUsers(usersData.result)
+      // console.log(usersData);
+    })
+
+    const getRoles = get("/api/v1/crm/roles");
+    getRoles.then((rolesData) => {
+      setRoles(rolesData.result)
+      // console.log(rolesData.result);
+      // console.log(roles);
+    })
+
+  }, [update])
+
+
+  // const getRoleById = (roleId) => {
+  //   const getRole = get("/api/v1/crm/roles/"+roleId);
+  //   getRole.then((roleData) => {
+  //     // setRoles(roleData.result)
+  //     // console.log(rolesData.result);
+  //     console.log(roleData.result.title);
+  //     return roleData.result.title
+  //   }).catch(err=>{return null})
+
+  // }
+  const handleAddUser = (event, userData) => {
+    userData = { ...userData, roleId: selectedGroup }
+    console.log(userData);
+    const addUser = post("api/v1/crm/users/", userData);
+    addUser.then((response) => {
+      console.log(response);
+    })
+    console.log("add user");
+    setUpdate(!update)
+    toggleAddModal()
+  }
+
+  const EditUser = (event, userData) => {
+    delete userData.password
+    userData = { ...userData, roleId: selectedGroup }
+    console.log(userData);
+    const editUser = patch("api/v1/crm/users/" + selectUser._id, userData);
+    editUser.then((response) => {
+      console.log(response);
+    })
+    console.log("edit user");
+    setUpdate(!update)
+    toggleEditModal()
+  }
+
+  const handleDeleteUser = (user) => {
+    console.log("delete user" + user._id);
+  }
+
+  const handleStatusUser = (user) => {
+    console.log("status user" + user.isActive);
+  }
+
+  const handleEditUser = (user) => {
+
+    let rol = { value: user.roleId }
+    setSelectUser(user)
+
+    toggleEditModal()
+    handleSelectGroup(rol)
+    console.log(user);
+  }
+
 
   const pageOptions = {
     sizePerPage: 10,
     totalSize: users.length, // replace later with size(users),
     custom: true,
   }
-
   const defaultSorted = [
     {
       dataField: "id", // if dataField is not match to any column you defined, it will be ignored.
       order: "asc", // desc or asc
     },
   ]
-
   const contactListColumns = [
     {
       text: "ID",
@@ -116,29 +216,6 @@ const UsersList = props => {
       ),
     },
   ]
-
-  useEffect(() => {
-    if (users && !users.length) {
-      dispatch(onGetUsers())
-    }
-  }, [dispatch, users])
-
-  const handleAddUserClick = arg => {
-    console.log("add user");
-  }
-
-  const handleDeleteUser = (user) => {
-    console.log("delete user" + user.id);
-  }
-
-  const handleStatusUser = (user) => {
-    console.log("status user" + user.isActive);
-  }
-
-  const handleEditUser = (user) => {
-    console.log("edit user" + user.id);
-  }
-
   return (
     <React.Fragment>
       <div className="page-content">
@@ -181,7 +258,7 @@ const UsersList = props => {
                                 <div className="col-md-6">
                                   <div className="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
                                     <div>
-                                      <Link to="/users/create" className="btn btn-light" onClick={handleAddUserClick}><i className="bx bx-plus me-1"></i> Add New</Link>
+                                      <Link to="#" className="btn btn-light" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> Add New</Link>
                                     </div>
                                   </div>
 
@@ -198,6 +275,7 @@ const UsersList = props => {
                                     {...toolkitProps.baseProps}
                                     {...paginationTableProps}
                                     defaultSorted={defaultSorted}
+                                    keyField={"_id"}
                                     classes={
                                       "table align-middle table-nowrap table-hover"
                                     }
@@ -212,9 +290,9 @@ const UsersList = props => {
                               <Col className="inner-custom-pagination d-flex w-100 ">
                                 <div className="text-md-right  flex-grow-1 ">
                                   <div className="pagination pagination-rounded d-flex justify-content-center ">
-                                      <PaginationListStandalone
-                                        {...paginationProps}
-                                      />
+                                    <PaginationListStandalone
+                                      {...paginationProps}
+                                    />
                                   </div>
 
                                 </div>
@@ -235,6 +313,175 @@ const UsersList = props => {
               </Card>
             </Col>
           </Row>
+
+
+
+
+
+          <Modal isOpen={addModal} toggle={toggleAddModal}>
+            <ModalHeader toggle={toggleAddModal} tag="h4">
+              Add New User
+              {/* {!!isEdit ? "Edit User" : "Add User"} */}
+            </ModalHeader>
+            <ModalBody>
+              <AvForm
+                className='p-4'
+                onValidSubmit={(e, v) => {
+                  handleAddUser(e, v)
+                }}
+              >
+                <div className="mb-3">
+                  <AvField
+                    name="firstName"
+                    label="Frist Name  "
+                    placeholder="Frist Name"
+                    type="text"
+                    errorMessage="Enter Frist Name"
+                    validate={{ required: { value: true } }}
+                  />
+                </div>
+                <div className="mb-3">
+                  <AvField
+                    name="lastName"
+                    label="Last Name  "
+                    placeholder="Last Name"
+                    type="text"
+                    errorMessage="Enter Last Name"
+                    validate={{ required: { value: true } }}
+                  />
+                </div>
+                <div className="mb-3">
+                  <AvField
+                    name="email"
+                    label="Email"
+                    placeholder="Enter Valid Email"
+                    type="email"
+                    errorMessage="Invalid Email"
+                    validate={{
+                      required: { value: true },
+                      email: { value: true },
+                    }}
+                  />
+                </div>
+                <div className="mb-3">
+                  <Label>Password</Label>
+                  <AvField
+                    name="password"
+                    type="password"
+                    placeholder="Password"
+                    errorMessage="Enter password"
+                    validate={{ required: { value: true } }}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label >Role</label>
+                  <Select
+                    value={selectedGroup}
+                    onChange={(selected) => {
+                      handleSelectGroup(selected)
+                    }}
+                    options={[
+                      { label: "Admin", value: "624ec3f8a32d3c13fcedcdb8" },
+                      { label: "Client", value: "624f50c9cd61366cafe75e0d" }
+                    ]}
+                    classNamePrefix="select2-selection"
+                  />
+                </div>
+                <div className='text-center p-5'>
+                  <Button type="submit" color="primary" className="">
+                    Add New User
+                  </Button>
+                </div>
+              </AvForm>
+            </ModalBody>
+          </Modal>
+
+
+
+
+
+          <Modal isOpen={editModal} toggle={toggleEditModal}>
+            <ModalHeader toggle={toggleEditModal} tag="h4">
+              Edit User
+            </ModalHeader>
+            <ModalBody>
+              <AvForm
+                className='p-4'
+                onValidSubmit={(e, v) => {
+                  EditUser(e, v)
+                }}
+              >
+                <div className="mb-3">
+                  <AvField
+                    name="firstName"
+                    label="Frist Name  "
+                    placeholder="Frist Name"
+                    type="text"
+                    errorMessage="Enter Frist Name"
+                    validate={{ required: { value: true } }}
+                    value={selectUser.firstName || ""}
+                  />
+                </div>
+                <div className="mb-3">
+                  <AvField
+                    name="lastName"
+                    label="Last Name  "
+                    placeholder="Last Name"
+                    type="text"
+                    errorMessage="Enter Last Name"
+                    validate={{ required: { value: true } }}
+                    value={selectUser.lastName || ""}
+                  />
+                </div>
+                <div className="mb-3">
+                  <AvField
+                    name="email"
+                    label="Email"
+                    placeholder="Enter Valid Email"
+                    type="email"
+                    errorMessage="Invalid Email"
+                    validate={{
+                      required: { value: true },
+                      email: { value: true },
+                    }}
+                    value={selectUser.email || ""}
+                  />
+                </div>
+                <div className="mb-3">
+                  <Label>Password</Label>
+                  <AvField
+                    name="password"
+                    type="password"
+                    placeholder="Password"
+                    errorMessage="Enter password"
+                    validate={{ required: { value: true } }}
+                    value={selectUser.password || ""}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label >Role</label>
+                  <Select
+                    value={selectUser.roleId || ""}
+                    onChange={(selected) => {
+                      console.log("changedddddd");
+                      handleSelectGroup(selected)
+                    }}
+                    options={[
+                      { label: "Admin", value: "624ec3f8a32d3c13fcedcdb8" },
+                      { label: "Client", value: "624f50c9cd61366cafe75e0d" }
+                    ]}
+                    classNamePrefix="select2-selection"
+                  />
+                </div>
+                <div className='text-center p-5'>
+                  <Button type="submit" color="primary" className="">
+                    EditUser
+                  </Button>
+                </div>
+              </AvForm>
+            </ModalBody>
+          </Modal>
+
         </Container>
       </div>
     </React.Fragment>

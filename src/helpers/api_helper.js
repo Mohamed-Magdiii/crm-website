@@ -35,6 +35,11 @@ export async function put(url, data, config = {}) {
     .put(url, { ...data }, { ...config })
     .then(response => response.data)
 }
+export async function patch(url, data, config = {}) {
+  return axiosApi
+    .patch(url, { ...data }, { ...config })
+    .then(response => response.data)
+}
 
 export async function del(url, config = {}) {
   return await axiosApi
