@@ -21,6 +21,7 @@ import invoices from "./invoices/reducer"
 //contacts
 import contacts from "./contacts/reducer"
 import clientReducer from './client/reducer'
+import leadReducer from './leads/reducer'
 const rootReducer = combineReducers({
   // public
   Layout,
@@ -32,7 +33,8 @@ const rootReducer = combineReducers({
   chat,
   invoices,
   contacts,
-  clientReducer
+  clientReducer,
+  leadReducer
 })
 
 export default rootReducer
