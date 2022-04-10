@@ -13,7 +13,7 @@ import ForgetPwd from "../pages/Authentication/ForgetPassword"
 import ClientList from "../components/Client/client.record.list.component";
 import UsersList from "../pages/Users/UsersList"
 import AddUser from "../pages/Users/AddUser"
-
+import LeadsList from "../components/Leads/lead.record.list.component";
 const userRoutes = [
 
   //dashboard
@@ -22,7 +22,7 @@ const userRoutes = [
   //profile
   { path: "/profile", component: userProfile },
    {path:"/clients",  component:ClientList},
-
+   {path:'/leads',component:LeadsList},
     //users
     { path: "/users", component: UsersList },
 
