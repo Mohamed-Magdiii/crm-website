@@ -64,6 +64,8 @@ function ClientList(){
     
     const {clients}=useSelector(state=>state.clientReducer)
     const [sizePerPage,setSizePerPage]=useState(10)
+    const [totalDocs,setTotalDocs]=useState(0)
+    const [currentPage,setCurrentPage]=useState(1)
     const customizedClients=clients.map(client=>{
       const date=new Date(client.createdAt)
   
@@ -76,8 +78,8 @@ function ClientList(){
     const dispatch=useDispatch()
     const pageOptions = {
       sizePerPage: sizePerPage,
-      totalSize: clients.length,
-      custom: true,
+      totalSize: totalDocs,
+      custom: true
     }
   
     const selectRow = {
@@ -87,15 +89,20 @@ function ClientList(){
 
     useEffect(()=>{
          
-        fetch('http://localhost:3001/api/v1/crm/clients')
+        fetch(`http://localhost:3001/api/v1/crm/clients?limit=${sizePerPage}&page=${currentPage}`)
         .then(result=>result.json())
         .then(data=>{
             dispatch(fetchClients(data.result.docs))
+            setTotalDocs(data.result.totalDocs)
+            console.log(data.result.docs)
             dispatch(fetchClientsSuccess(false))
         }).catch(error=>{
               dispatch(error)
         })
-    },[])
+    },[currentPage,sizePerPage,dispatch])
+    console.log('currentPage',currentPage)
+    
+    
    return(
     <React.Fragment>
     <div className="page-content">
@@ -107,7 +114,7 @@ function ClientList(){
           <Col className="col-12">
             <Card>
               <CardHeader className="d-flex justify-content-between  align-items-center">
-                 <CardTitle>Clients List({clients.length})</CardTitle>
+                 <CardTitle>Clients List({totalDocs})</CardTitle>
                   <button className="add-btn">Add+</button>
               </CardHeader>
               <CardBody>
@@ -170,6 +177,12 @@ function ClientList(){
                             <PaginationListStandalone 
                               {...paginationProps }
                               
+                              onPageChange={(currentPage)=>{
+                                  
+                                setCurrentPage(currentPage)
+                              }}
+                              
+                              
                             />
                               </div>
                               <div>Records:{pageOptions.sizePerPage}</div>
@@ -177,7 +190,12 @@ function ClientList(){
                                 <SizePerPageDropdownStandalone
                                   {...paginationProps}
                                   className="custom-background"
-                                  onSizePerPageChange={(pageSize)=>setSizePerPage(pageSize)}
+                                  onSizePerPageChange={(pageSize)=>{
+                                    setSizePerPage(pageSize)
+                                    setCurrentPage(1)}
+                                  }
+                                  
+                                  
                                 />
                               </div>
                               
