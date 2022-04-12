@@ -1,6 +1,5 @@
 import React from 'react'
 import { useEffect,useState } from 'react'
-import { fetchClients ,fetchClientsSuccess} from '../../store/client/actions'
 import {useDispatch,useSelector} from 'react-redux'
 import { Row, Col, Card, CardBody, CardTitle, CardHeader } from "reactstrap"
 import BootstrapTable from 'react-bootstrap-table-next';
@@ -10,7 +9,7 @@ import paginationFactory, {
 } from 'react-bootstrap-table2-paginator';
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 import './clients.page.custom.styles.scss'
-
+import { fetchClientsFromAPI } from '../../store/client/actions'
 
 function ClientList(){
   const columns = [{
@@ -79,7 +78,8 @@ function ClientList(){
     const pageOptions = {
       sizePerPage: sizePerPage,
       totalSize: totalDocs,
-      custom: true
+      custom: true,
+      
     }
   
     const selectRow = {
@@ -88,19 +88,9 @@ function ClientList(){
     const { SearchBar } = Search;
 
     useEffect(()=>{
-         
-        fetch(`http://localhost:3001/api/v1/crm/clients?limit=${sizePerPage}&page=${currentPage}`)
-        .then(result=>result.json())
-        .then(data=>{
-            dispatch(fetchClients(data.result.docs))
-            setTotalDocs(data.result.totalDocs)
-            console.log(data.result.docs)
-            dispatch(fetchClientsSuccess(false))
-        }).catch(error=>{
-              dispatch(error)
-        })
+        fetchClientsFromAPI(dispatch,setTotalDocs,sizePerPage,currentPage)
     },[currentPage,sizePerPage,dispatch])
-    console.log('currentPage',currentPage)
+    
     
     
    return(
@@ -176,16 +166,15 @@ function ClientList(){
                             <div className='custom-div'>
                             <PaginationListStandalone 
                               {...paginationProps }
-                              
+                            
                               onPageChange={(currentPage)=>{
                                   
                                 setCurrentPage(currentPage)
                               }}
-                              
-                              
+                              page={currentPage}
                             />
                               </div>
-                              <div>Records:{pageOptions.sizePerPage}</div>
+                              <div>Records:{clients.length}</div>
                               <div >
                                 <SizePerPageDropdownStandalone
                                   {...paginationProps}
@@ -195,7 +184,7 @@ function ClientList(){
                                     setCurrentPage(1)}
                                   }
                                   
-                                  
+                                  page={currentPage}
                                 />
                               </div>
                               
