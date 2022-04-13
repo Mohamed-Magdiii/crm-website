@@ -60,6 +60,16 @@ const App = props => {
     <React.Fragment>
       <Router>
         <Switch>
+          {userRoutes.map((route, idx) => (
+            <Authmiddleware
+              path={route.path}
+              layout={Layout}
+              component={route.component}
+              key={idx}
+              isAuthProtected={true}
+              exact
+            />
+          ))}
           {authRoutes.map((route, idx) => (
             <Authmiddleware
               path={route.path}
@@ -71,16 +81,6 @@ const App = props => {
             />
           ))}
 
-          {userRoutes.map((route, idx) => (
-            <Authmiddleware
-              path={route.path}
-              layout={Layout}
-              component={route.component}
-              key={idx}
-              isAuthProtected={true}
-              exact
-            />
-          ))}
           
         </Switch>
       </Router>
