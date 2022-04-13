@@ -21,3 +21,15 @@ export const apiError=(error)=>{
         payload:{error}
     }
 }
+export const fetchLeadsFromAPI=(dispatch,setTotalDocs,sizePerPage,currentPage)=>{
+    
+    fetch(`http://localhost:3001/api/v1/crm/leads?limit=${sizePerPage}&page=${currentPage}`)
+    .then(result=>result.json())
+    .then(data=>{
+        dispatch(fetchLeads(data.result.docs))
+        setTotalDocs(data.result.totalDocs)
+        dispatch(fetchLeadsSuccess(false))
+    }).catch(error=>{
+          dispatch(error)
+    })
+}
