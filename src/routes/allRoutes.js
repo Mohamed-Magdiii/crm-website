@@ -11,7 +11,8 @@ import Logout from "../pages/Authentication/Logout"
 import Register from "../pages/Authentication/Register"
 import ForgetPwd from "../pages/Authentication/ForgetPassword"
 import ClientList from "../components/Client/client.record.list.component";
-import UsersList from "../pages/Users/UsersList";
+import UsersList from "../pages/Users/UsersList"
+import LeadsList from "../components/Leads/lead.record.list.component";
 import Page404 from "../pages/Authentication/Page404";
 
 const userRoutes = [
@@ -22,7 +23,7 @@ const userRoutes = [
   //profile
   { path: "/profile", component: userProfile },
    {path:"/clients",  component:ClientList},
-
+   {path:'/leads',component:LeadsList},
     //users
     { path: "/users", component: UsersList },
 
