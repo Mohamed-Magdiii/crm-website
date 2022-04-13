@@ -1,6 +1,5 @@
 import { useEffect,useState } from 'react'
 import React from 'react'
-import { fetchLeads ,fetchLeadsSuccess} from '../../store/leads/actions'
 import {useDispatch,useSelector} from 'react-redux'
 import { Row, Col, Card, CardBody, CardTitle, CardHeader } from "reactstrap"
 
@@ -12,8 +11,8 @@ import paginationFactory, {
 
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 import './lead.page.custom.styles.scss'
+import { fetchLeadsFromAPI } from '../../store/leads/actions'
 
-import "./datatables.scss"
 function LeadsList(){
   const columns = [{
     dataField: 'createdAt',
@@ -53,6 +52,8 @@ function LeadsList(){
     
     const {leads}=useSelector(state=>state.leadReducer)
     const [sizePerPage,setSizePerPage]=useState(10)
+    const [totalDocs,setTotalDocs]=useState(0)
+    const [currentPage,setCurrentPage]=useState(1)
     const customizedLeads=leads.map(lead=>{
       const date=new Date(lead.createdAt)
   
@@ -62,7 +63,7 @@ function LeadsList(){
     const dispatch=useDispatch()
     const pageOptions = {
       sizePerPage: sizePerPage,
-      totalSize: leads.length,
+      totalSize: totalDocs,
       custom: true,
     }
   
@@ -72,15 +73,9 @@ function LeadsList(){
     const { SearchBar } = Search;
     useEffect(()=>{
          
-        fetch('http://localhost:3001/api/v1/crm/leads')
-        .then(result=>result.json())
-        .then(data=>{
-            dispatch(fetchLeads(data.result.docs))
-            dispatch(fetchLeadsSuccess(false))
-        }).catch(error=>{
-              dispatch(error)
-        })
-    },[])
+        
+        fetchLeadsFromAPI(dispatch,setTotalDocs,sizePerPage,currentPage)
+    },[sizePerPage,currentPage,dispatch])
    return(
     <React.Fragment>
     <div className="page-content">
@@ -92,7 +87,7 @@ function LeadsList(){
           <Col className="col-12">
             <Card>
               <CardHeader className="d-flex justify-content-between  align-items-center">
-                 <CardTitle>Leads List({leads.length})</CardTitle>
+                 <CardTitle>Leads List ({totalDocs})</CardTitle>
                   <button className="add-btn">Add+</button>
               </CardHeader>
               <CardBody>
@@ -154,15 +149,19 @@ function LeadsList(){
                             <div className='custom-div'>
                             <PaginationListStandalone 
                               {...paginationProps }
-                              
+                              onPageChange={(page)=>setCurrentPage(page)}
+                              page={currentPage}
                             />
                               </div>
-                              <div>Records:{pageOptions.sizePerPage}</div>
+                              <div>Records:{leads.length}</div>
                               <div >
                                 <SizePerPageDropdownStandalone
                                   {...paginationProps}
                                   className="custom-background"
-                                  onSizePerPageChange={(pageSize)=>setSizePerPage(pageSize)}
+                                  onSizePerPageChange={(pageSize)=>
+                                    {setSizePerPage(pageSize)
+                                      setCurrentPage(1)
+                                  }}
                                 />
                               </div>
                               
