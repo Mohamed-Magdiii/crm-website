@@ -26,8 +26,8 @@ import avatar from "../../assets/images/users/avatar-1.jpg";
 // actions
 import { editProfile, resetProfileFlag } from "../../store/actions";
 
-import { del, get, post, put } from "../../helpers/api_helper";
-import * as url from "../../helpers/url_helper";
+import { del, get, post, put, redirectToLogin } from "../../apis/api_helper";
+import * as url from "../../apis/url_helper";
 
 const UserProfile = (props) => {
   const dispatch = useDispatch();
@@ -45,23 +45,23 @@ const UserProfile = (props) => {
   const [modal, setModal] = useState(false);
 
   useEffect(() => {
+    const getProfileData = get(url.PROFILE);
+    
+    getProfileData.then((userData) => {
+      if (userData.status) {
+        if (userData.result != null) {
+          setfristName(userData.result.firstName);
+          setlastName(userData.result.lastName);
+          setemail(userData.result.email);
+          setroleId(userData.result.roleId.title);
+          setidx(userData.result._id);
+        }
 
-    //we get user id from local storage after login
-    const userID = "62497bbefe330b4478b1b1db";
-
-    const getProfileData = get(url.PROFILE + userID);
-
-    getProfileData.then((value) => {
-      if (value.result != null) {
-        setfristName(value.result.firstName);
-        setlastName(value.result.lastName);
-        setemail(value.result.email);
-        setroleId(value.result.roleId);
-        setidx(value.result._id);
       }
+    }).catch(err => { redirectToLogin() })
 
-      console.log(value);
-    });
+
+
   }, [dispatch, success]);
 
 
@@ -117,31 +117,31 @@ const UserProfile = (props) => {
 
                     <div className="d-flex justify-content-around">
                       <div className="  flex-column">
-                        <div class="card-header">
-                          <div class="card-title">
+                        <div className="card-header">
+                          <div className="card-title">
                             <h4>First Name</h4>
                           </div>
-                          <div class="card-subtitle">{fristName}</div>
+                          <div className="card-subtitle">{fristName}</div>
                         </div>
-                        <div class="card-header">
-                          <div class="card-title">
+                        <div className="card-header">
+                          <div className="card-title">
                             <h4>E-Mail</h4>
                           </div>
-                          <div class="card-subtitle">{email}</div>
+                          <div className="card-subtitle">{email}</div>
                         </div>
                       </div>
-                      <div className="  flex-column"> 
-                      <div class="card-header">
-                          <div class="card-title">
+                      <div className="  flex-column">
+                        <div className="card-header">
+                          <div className="card-title">
                             <h4> Last Name</h4>
                           </div>
-                          <div class="card-subtitle">{lastName}</div>
+                          <div className="card-subtitle">{lastName}</div>
                         </div>
-                        <div class="card-header">
-                          <div class="card-title">
+                        <div className="card-header">
+                          <div className="card-title">
                             <h4>Role</h4>
                           </div>
-                          <div class="card-subtitle">{roleId}</div>
+                          <div className="card-subtitle">{roleId}</div>
                         </div>
                       </div>
                     </div>

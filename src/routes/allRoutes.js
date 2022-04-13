@@ -11,8 +11,8 @@ import Logout from "../pages/Authentication/Logout"
 import Register from "../pages/Authentication/Register"
 import ForgetPwd from "../pages/Authentication/ForgetPassword"
 import ClientList from "../components/Client/client.record.list.component";
-import UsersList from "../pages/Users/UsersList"
-import AddUser from "../pages/Users/AddUser"
+import UsersList from "../pages/Users/UsersList";
+import Page404 from "../pages/Authentication/Page404";
 
 const userRoutes = [
 
@@ -26,11 +26,9 @@ const userRoutes = [
     //users
     { path: "/users", component: UsersList },
 
-    // users/create
-    { path: "/users/create", component: AddUser },
+    { path: "/", exact: true, component: () => <Redirect to="/dashboard" /> },
 
   // this route should be at the end of all other routes
-  { path: "/", exact: true, component: () => <Redirect to="/dashboard" /> },
 ]
 
 const authRoutes = [
@@ -38,8 +36,9 @@ const authRoutes = [
   { path: "/logout", component: Logout },
   { path: "/login", component: Login },
   { path: "/forgot-password", component: ForgetPwd },
-  { path: "/register", component: Register }
-   
+  { path: "/register", component: Register },
+  { path: "*", exact: true, component: Page404 },
+  
 ]
 
 export { userRoutes, authRoutes }
