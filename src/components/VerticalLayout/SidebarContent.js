@@ -1,5 +1,7 @@
 import PropTypes from "prop-types";
-import React, { useEffect, useRef, useCallback } from "react";
+import React, {
+  useEffect, useRef, useCallback 
+} from "react";
 
 //Import Icons
 import FeatherIcon from "feather-icons-react";
@@ -8,15 +10,14 @@ import FeatherIcon from "feather-icons-react";
 import SimpleBar from "simplebar-react";
 
 //Import images
-import giftBox from "../../assets/images/giftbox.png";
+// import giftBox from "../../assets/images/giftbox.png";
 
 //i18n
 import { withTranslation } from "react-i18next";
 
 // MetisMenu
 import MetisMenu from "metismenujs";
-import { withRouter } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 
 const SidebarContent = (props) => {
   const ref = useRef();
@@ -106,23 +107,23 @@ const SidebarContent = (props) => {
               </Link>
             </li>
             <li>
-            <Link to="/leads" className="">
-              <FeatherIcon icon="monitor" />
-              <span>{props.t("Leads")}</span>
-            </Link>
-          </li>
+              <Link to="/leads" className="">
+                <FeatherIcon icon="monitor" />
+                <span>{props.t("Leads")}</span>
+              </Link>
+            </li>
 
             <li>
-            <Link to='/clients' className="">
-            <FeatherIcon icon="users"/>
-            <span>{props.t('Clients')}</span> 
-             </Link> 
+              <Link to='/clients' className="">
+                <FeatherIcon icon="users"/>
+                <span>{props.t("Clients")}</span> 
+              </Link> 
             </li>
             <li>
-            <Link to='/leads' className="">
-            <FeatherIcon icon="user"/>
-            <span>{props.t('Leads')}</span> 
-             </Link> 
+              <Link to='/leads' className="">
+                <FeatherIcon icon="user"/>
+                <span>{props.t("Leads")}</span> 
+              </Link> 
             </li>
             <li>
               <Link to="/transactions" className="has-arrow">
@@ -139,10 +140,10 @@ const SidebarContent = (props) => {
               </ul>
             </li>
             <li>
-            <Link to='/positions' className="">
-            <FeatherIcon icon="cast"/>
-            <span>{props.t('Positions')}</span> 
-             </Link> 
+              <Link to='/positions' className="">
+                <FeatherIcon icon="cast"/>
+                <span>{props.t("Positions")}</span> 
+              </Link> 
             </li>
             <li>
               <Link to="/calendar" className="has-arrow">
@@ -159,10 +160,10 @@ const SidebarContent = (props) => {
               </ul>
             </li>
             <li>
-            <Link to='/marketing' className="">
-            <FeatherIcon icon="link-2"/>
-            <span>{props.t('Marketing')}</span> 
-             </Link> 
+              <Link to='/marketing' className="">
+                <FeatherIcon icon="link-2"/>
+                <span>{props.t("Marketing")}</span> 
+              </Link> 
             </li> 
             <li>
               <Link to="/requests" className="has-arrow">
@@ -211,11 +212,6 @@ const SidebarContent = (props) => {
                 </li>   
               </ul>
             </li> 
- 
-  
-
-          
- 
 
             
           </ul> 

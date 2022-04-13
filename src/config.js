@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   google: {
     API_KEY: "",
     CLIENT_ID: "",
@@ -7,4 +7,4 @@ module.exports = {
   facebook: {
     APP_ID: "",
   },
-}
+};

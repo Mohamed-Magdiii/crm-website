@@ -22,12 +22,18 @@ export const getEvents = () => ({
 
 export const apiSuccess = (actionType, data) => ({
   type: API_SUCCESS,
-  payload: { actionType, data },
+  payload: {
+    actionType,
+    data 
+  },
 });
 
 export const apiFail = (actionType, error) => ({
   type: API_FAIL,
-  payload: { actionType, error },
+  payload: {
+    actionType,
+    error 
+  },
 });
 
 

@@ -1,14 +1,14 @@
-import { all, fork } from "redux-saga/effects"
+import { all, fork } from "redux-saga/effects";
 
 //public
-import AccountSaga from "./auth/register/saga"
-import AuthSaga from "./auth/login/saga"
-import ForgetSaga from "./auth/forgetpwd/saga"
-import ProfileSaga from "./auth/profile/saga"
-import LayoutSaga from "./layout/saga"
-import calendarSaga from "./calendar/saga"
-import chatSaga from "./chat/saga"
-import invoiceSaga from "./invoices/saga"
+import AccountSaga from "./auth/register/saga";
+import AuthSaga from "./auth/login/saga";
+import ForgetSaga from "./auth/forgetpwd/saga";
+import ProfileSaga from "./auth/profile/saga";
+import LayoutSaga from "./layout/saga";
+import calendarSaga from "./calendar/saga";
+import chatSaga from "./chat/saga";
+import invoiceSaga from "./invoices/saga";
 import contactsSaga from "./contacts/saga";
 
 export default function* rootSaga() {
@@ -23,5 +23,5 @@ export default function* rootSaga() {
     fork(chatSaga),
     fork(invoiceSaga),
     fork(contactsSaga)
-  ])
+  ]);
 }

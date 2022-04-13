@@ -1,18 +1,20 @@
-import React, { useState } from "react"
-import PropTypes from 'prop-types'
-import ReactDrawer from 'react-drawer';
-import 'react-drawer/lib/react-drawer.css';
-import { connect } from "react-redux"
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import ReactDrawer from "react-drawer";
+import "react-drawer/lib/react-drawer.css";
+import { connect } from "react-redux";
 
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
 //Import Icons
 import FeatherIcon from "feather-icons-react";
 
 // Redux Store
-import { showRightSidebarAction, toggleLeftmenu } from "../../store/actions"
+import { showRightSidebarAction, toggleLeftmenu } from "../../store/actions";
 // reactstrap
-import { Row, Col, Dropdown, DropdownToggle, DropdownMenu } from "reactstrap"
+import {
+  Row, Col, Dropdown, DropdownToggle, DropdownMenu 
+} from "reactstrap";
 
 // Import menuDropdown
 import LanguageDropdown from "../CommonForBoth/TopbarDropdown/LanguageDropdown";
@@ -23,31 +25,31 @@ import LightDark from "../CommonForBoth/Menus/LightDark";
 
 // import images
 import logo from "../../assets/images/logo-sm.svg";
-import github from "../../assets/images/brands/github.png"
-import bitbucket from "../../assets/images/brands/bitbucket.png"
-import dribbble from "../../assets/images/brands/dribbble.png"
-import dropbox from "../../assets/images/brands/dropbox.png"
-import mail_chimp from "../../assets/images/brands/mail_chimp.png"
-import slack from "../../assets/images/brands/slack.png"
+import github from "../../assets/images/brands/github.png";
+import bitbucket from "../../assets/images/brands/bitbucket.png";
+import dribbble from "../../assets/images/brands/dribbble.png";
+import dropbox from "../../assets/images/brands/dropbox.png";
+import mail_chimp from "../../assets/images/brands/mail_chimp.png";
+import slack from "../../assets/images/brands/slack.png";
 
 //i18n
-import { withTranslation } from "react-i18next"
+import { withTranslation } from "react-i18next";
 
 const Header = props => {
   const { onChangeLayoutMode } = props;
-  const [isSearch, setSearch] = useState(false)
-  const [socialDrp, setsocialDrp] = useState(false)
+  const [isSearch, setSearch] = useState(false);
+  const [socialDrp, setsocialDrp] = useState(false);
   const [position, setPosition] = useState();
   const [open, setOpen] = useState(false);
 
   const toggleTopDrawer = () => {
-    setPosition('right');
-    setOpen(!open)
-  }
+    setPosition("right");
+    setOpen(!open);
+  };
 
   const onDrawerClose = () => {
     setOpen(false);
-  }
+  };
   return (
     <React.Fragment>
       <header id="page-topbar">
@@ -80,7 +82,7 @@ const Header = props => {
               className="btn btn-sm px-3 font-size-16 d-lg-none header-item"
               data-toggle="collapse"
               onClick={() => {
-                props.toggleLeftmenu(!props.leftMenu)
+                props.toggleLeftmenu(!props.leftMenu);
               }}
               data-target="#topnav-menu-content"
             >
@@ -138,13 +140,13 @@ const Header = props => {
             <LanguageDropdown />
 
             {/* light / dark mode */}
-            <LightDark layoutMode={props['layoutMode']} onChangeLayoutMode={onChangeLayoutMode} />
+            <LightDark layoutMode={props["layoutMode"]} onChangeLayoutMode={onChangeLayoutMode} />
 
             <Dropdown
               className="d-none d-lg-inline-block ms-1"
               isOpen={socialDrp}
               toggle={() => {
-                setsocialDrp(!socialDrp)
+                setsocialDrp(!socialDrp);
               }}
             >
               <DropdownToggle
@@ -228,8 +230,8 @@ const Header = props => {
         <RightSidebar onClose={onDrawerClose} onChangeLayoutMode={onChangeLayoutMode} />
       </ReactDrawer>
     </React.Fragment>
-  )
-}
+  );
+};
 
 Header.propTypes = {
   leftMenu: PropTypes.any,
@@ -237,13 +239,13 @@ Header.propTypes = {
   showRightSidebarAction: PropTypes.func,
   t: PropTypes.any,
   toggleLeftmenu: PropTypes.func
-}
+};
 
 const mapStatetoProps = state => {
-  return { ...state.Layout }
-}
+  return { ...state.Layout };
+};
 
 export default connect(mapStatetoProps, {
   showRightSidebarAction,
   toggleLeftmenu,
-})(withTranslation()(Header))
+})(withTranslation()(Header));

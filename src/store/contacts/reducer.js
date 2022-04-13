@@ -9,13 +9,13 @@ import {
   DELETE_USER_FAIL,
   GET_USER_PROFILE_SUCCESS,
   GET_USER_PROFILE_FAIL,
-} from "./actionTypes"
+} from "./actionTypes";
 
 const INIT_STATE = {
   users: [],
   userProfile: {},
   error: {},
-}
+};
 
 const contacts = (state = INIT_STATE, action) => {
   switch (action.type) {
@@ -23,48 +23,51 @@ const contacts = (state = INIT_STATE, action) => {
       return {
         ...state,
         users: action.payload,
-      }
+      };
 
     case GET_USERS_FAIL:
       return {
         ...state,
         error: action.payload,
-      }
+      };
 
     case ADD_USER_SUCCESS:
 
       return {
         ...state,
         users: [...state.users, action.payload],
-      }
+      };
 
     case ADD_USER_FAIL:
       return {
         ...state,
         error: action.payload,
-      }
+      };
 
     case GET_USER_PROFILE_SUCCESS:
       return {
         ...state,
         userProfile: action.payload,
-      }
+      };
 
     case UPDATE_USER_SUCCESS:
       return {
         ...state,
         users: state.users.map(user =>
           user.id.toString() === action.payload.id.toString()
-            ? { user, ...action.payload }
+            ? {
+              user,
+              ...action.payload 
+            }
             : user
         ),
-      }
+      };
 
     case UPDATE_USER_FAIL:
       return {
         ...state,
         error: action.payload,
-      }
+      };
 
     case DELETE_USER_SUCCESS:
       return {
@@ -72,23 +75,23 @@ const contacts = (state = INIT_STATE, action) => {
         users: state.users.filter(
           user => user.id.toString() !== action.payload.id.toString()
         ),
-      }
+      };
 
     case DELETE_USER_FAIL:
       return {
         ...state,
         error: action.payload,
-      }
+      };
 
     case GET_USER_PROFILE_FAIL:
       return {
         ...state,
         error: action.payload,
-      }
+      };
 
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default contacts
+export default contacts;

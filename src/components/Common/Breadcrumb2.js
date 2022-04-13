@@ -1,11 +1,13 @@
-import React from "react"
-import PropTypes from 'prop-types'
-import { Link } from "react-router-dom"
-import { Row, Col, BreadcrumbItem } from "reactstrap"
+import React from "react";
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import {
+  Row, Col, BreadcrumbItem 
+} from "reactstrap";
 
 const Breadcrumb = props => {
-  const { title, breadcrumbItems } = props
-  const itemLength = breadcrumbItems.length
+  const { title, breadcrumbItems } = props;
+  const itemLength = breadcrumbItems.length;
 
   return (
     <Row>
@@ -24,12 +26,12 @@ const Breadcrumb = props => {
         </div>
       </Col>
     </Row>
-  )
-}
+  );
+};
 
 Breadcrumb.propTypes = {
   breadcrumbItems: PropTypes.array,
   title: PropTypes.string
-}
+};
 
-export default Breadcrumb
+export default Breadcrumb;

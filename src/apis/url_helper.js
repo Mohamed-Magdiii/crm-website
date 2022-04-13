@@ -1,7 +1,7 @@
  
 //GET PROFILE DATA
-export const PROFILE = "/api/v1/crm/auth/profile"
+export const PROFILE = "/api/v1/crm/auth/profile";
  
 
 // LOGIN PAGE
-export const LOGIN = "/login"
+export const LOGIN = "/login";

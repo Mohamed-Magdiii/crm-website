@@ -1,5 +1,7 @@
 // @flow
-import { all, call, fork, takeEvery, put } from "redux-saga/effects";
+import {
+  all, call, fork, takeEvery, put 
+} from "redux-saga/effects";
 
 import {
   CHANGE_LAYOUT,

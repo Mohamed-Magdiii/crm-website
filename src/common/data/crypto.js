@@ -30,8 +30,15 @@ const wallet = {
   options: {
     chart: { toolbar: { show: !1 } },
     dataLabels: { enabled: !1 },
-    stroke: { curve: "smooth", width: 2, dashArray: [0, 0, 3] },
-    fill: { type: "solid", opacity: [0.15, 0.05, 1] },
+    stroke: {
+      curve: "smooth",
+      width: 2,
+      dashArray: [0, 0, 3] 
+    },
+    fill: {
+      type: "solid",
+      opacity: [0.15, 0.05, 1] 
+    },
     xaxis: {
       categories: [
         "Jan",
@@ -148,7 +155,7 @@ const wallet = {
       amountinUSD: "$ 9067.62",
     },
   ],
-}
+};
 
 const cryptoOrders = [
   {
@@ -279,6 +286,6 @@ const cryptoOrders = [
     valueinUSD: "$ 1773.01",
     status: "completed",
   },
-]
+];
 
-export { wallet, cryptoOrders }
+export { wallet, cryptoOrders };

@@ -1,36 +1,38 @@
-import PropTypes from 'prop-types'
-import React, { useState } from "react"
-import { connect } from "react-redux"
-import { Link } from "react-router-dom"
+import PropTypes from "prop-types";
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 //import drawer
-import ReactDrawer from 'react-drawer';
-import 'react-drawer/lib/react-drawer.css';
+import ReactDrawer from "react-drawer";
+import "react-drawer/lib/react-drawer.css";
 
 //Import Icons
 import FeatherIcon from "feather-icons-react";
 
 // Reactstrap
-import { Dropdown, DropdownToggle, DropdownMenu, Row, Col } from "reactstrap"
+import {
+  Dropdown, DropdownToggle, DropdownMenu, Row, Col 
+} from "reactstrap";
 
 // Import menuDropdown
-import LanguageDropdown from "../CommonForBoth/TopbarDropdown/LanguageDropdown"
-import NotificationDropdown from "../CommonForBoth/TopbarDropdown/NotificationDropdown"
-import ProfileMenu from "../CommonForBoth/TopbarDropdown/ProfileMenu"
-import RightSidebar from "../CommonForBoth/RightSidebar"
+import LanguageDropdown from "../CommonForBoth/TopbarDropdown/LanguageDropdown";
+import NotificationDropdown from "../CommonForBoth/TopbarDropdown/NotificationDropdown";
+import ProfileMenu from "../CommonForBoth/TopbarDropdown/ProfileMenu";
+import RightSidebar from "../CommonForBoth/RightSidebar";
 import LightDark from "../CommonForBoth/Menus/LightDark";
 
 // import images
-import logoSvg from "../../assets/images/logo-sm.svg"
-import github from "../../assets/images/brands/github.png"
-import bitbucket from "../../assets/images/brands/bitbucket.png"
-import dribbble from "../../assets/images/brands/dribbble.png"
-import dropbox from "../../assets/images/brands/dropbox.png"
-import mail_chimp from "../../assets/images/brands/mail_chimp.png"
-import slack from "../../assets/images/brands/slack.png"
+import logoSvg from "../../assets/images/logo-sm.svg";
+import github from "../../assets/images/brands/github.png";
+import bitbucket from "../../assets/images/brands/bitbucket.png";
+import dribbble from "../../assets/images/brands/dribbble.png";
+import dropbox from "../../assets/images/brands/dropbox.png";
+import mail_chimp from "../../assets/images/brands/mail_chimp.png";
+import slack from "../../assets/images/brands/slack.png";
 
 //i18n
-import { withTranslation } from "react-i18next"
+import { withTranslation } from "react-i18next";
 
 // Redux Store
 import {
@@ -38,12 +40,12 @@ import {
   toggleLeftmenu,
   changeSidebarType,
   changelayoutMode
-} from "../../store/actions"
+} from "../../store/actions";
 
 const Header = props => {
   const { onChangeLayoutMode } = props;
-  const [search, setsearch] = useState(false)
-  const [socialDrp, setsocialDrp] = useState(false)
+  const [search, setsearch] = useState(false);
+  const [socialDrp, setsocialDrp] = useState(false);
   const [isClick, setClick] = useState(true);
   const [position, setPosition] = useState();
   const [open, setOpen] = useState(false);
@@ -52,13 +54,13 @@ const Header = props => {
    * Rightsidebar drawer
    */
   const toggleTopDrawer = () => {
-    setPosition('right');
-    setOpen(!open)
-  }
+    setPosition("right");
+    setOpen(!open);
+  };
 
   const onDrawerClose = () => {
     setOpen(false);
-  }
+  };
 
   /*** Sidebar menu icon and default menu set */
   function tToggle() {
@@ -66,10 +68,10 @@ const Header = props => {
     setClick(!isClick);
     if (isClick === true) {
       body.classList.add("sidebar-enable");
-      document.body.setAttribute('data-sidebar-size', 'sm');
+      document.body.setAttribute("data-sidebar-size", "sm");
     } else {
       body.classList.remove("sidebar-enable");
-      document.body.setAttribute('data-sidebar-size', 'lg');
+      document.body.setAttribute("data-sidebar-size", "lg");
     }
   }
 
@@ -100,7 +102,7 @@ const Header = props => {
 
             <button
               onClick={() => {
-                tToggle()
+                tToggle();
               }}
               type="button" className="btn btn-sm px-3 font-size-16 header-item" id="vertical-menu-btn">
               <i className="fa fa-fw fa-bars"></i>
@@ -143,7 +145,7 @@ const Header = props => {
             <div className="dropdown d-inline-block d-lg-none ms-2">
               <button
                 onClick={() => {
-                  setsearch(!search)
+                  setsearch(!search);
                 }}
                 type="button"
                 className="btn header-item noti-icon "
@@ -182,13 +184,13 @@ const Header = props => {
             <LanguageDropdown />
 
             {/* light / dark mode */}
-            <LightDark layoutMode={props['layoutMode']} onChangeLayoutMode={onChangeLayoutMode} />
+            <LightDark layoutMode={props["layoutMode"]} onChangeLayoutMode={onChangeLayoutMode} />
 
             <Dropdown
               className="d-none d-lg-inline-block ms-1"
               isOpen={socialDrp}
               toggle={() => {
-                setsocialDrp(!socialDrp)
+                setsocialDrp(!socialDrp);
               }}
             >
               <DropdownToggle
@@ -275,8 +277,8 @@ const Header = props => {
         <RightSidebar onClose={onDrawerClose} onChangeLayoutMode={onChangeLayoutMode} />
       </ReactDrawer>
     </React.Fragment>
-  )
-}
+  );
+};
 
 Header.propTypes = {
   changeSidebarType: PropTypes.func,
@@ -288,7 +290,7 @@ Header.propTypes = {
   toggleLeftmenu: PropTypes.func,
   changelayoutMode: PropTypes.func,
   layoutMode: PropTypes.any,
-}
+};
 
 const mapStatetoProps = state => {
   const {
@@ -297,13 +299,19 @@ const mapStatetoProps = state => {
     leftMenu,
     leftSideBarType,
     layoutMode
-  } = state.Layout
-  return { layoutType, showRightSidebar, leftMenu, leftSideBarType, layoutMode }
-}
+  } = state.Layout;
+  return {
+    layoutType,
+    showRightSidebar,
+    leftMenu,
+    leftSideBarType,
+    layoutMode 
+  };
+};
 
 export default connect(mapStatetoProps, {
   showRightSidebarAction,
   changelayoutMode,
   toggleLeftmenu,
   changeSidebarType,
-})(withTranslation()(Header))
+})(withTranslation()(Header));

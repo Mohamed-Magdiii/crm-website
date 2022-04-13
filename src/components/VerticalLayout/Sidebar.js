@@ -17,19 +17,19 @@ const Sidebar = props => {
         </div>
       </div>
     </React.Fragment>
-  )
-}
+  );
+};
 
 Sidebar.propTypes = {
   type: PropTypes.string,
-}
+};
 
 const mapStatetoProps = state => {
   return {
     layout: state.Layout,
-  }
-}
+  };
+};
 export default connect(
   mapStatetoProps,
   {}
-)(withRouter(withTranslation()(Sidebar)))
+)(withRouter(withTranslation()(Sidebar)));

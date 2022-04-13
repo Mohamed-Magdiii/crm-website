@@ -1,39 +1,41 @@
-import React, { useEffect } from "react"
-import MetaTags from "react-meta-tags"
-import { Row, Col, Alert, Container } from "reactstrap"
+import React, { useEffect } from "react";
+import MetaTags from "react-meta-tags";
+import {
+  Row, Col, Alert, Container 
+} from "reactstrap";
 
 // availity-reactstrap-validation
-import { AvForm, AvField } from "availity-reactstrap-validation"
+import { AvForm, AvField } from "availity-reactstrap-validation";
 
 // action
-import { registerUser, apiError } from "../../store/actions"
+import { registerUser, apiError } from "../../store/actions";
 
 //redux
-import { useSelector, useDispatch } from "react-redux"
+import { useSelector, useDispatch } from "react-redux";
 
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
 // import images
-import logo from "../../assets/images/logo-sm.svg"
-import CarouselPage from "./CarouselPage"
+import logo from "../../assets/images/logo-sm.svg";
+import CarouselPage from "./CarouselPage";
 
-const Register = props => {
-  const dispatch = useDispatch()
+const Register = () => {
+  const dispatch = useDispatch();
 
   const { user, registrationError } = useSelector(state => ({
     user: state.Account.user,
     registrationError: state.Account.registrationError,
     loading: state.Account.loading,
-  }))
+  }));
 
   // handleValidSubmit
   const handleValidSubmit = values => {
-    dispatch(registerUser(values))
-  }
+    dispatch(registerUser(values));
+  };
 
   useEffect(() => {
-    dispatch(apiError(""))
-  }, [dispatch])
+    dispatch(apiError(""));
+  }, [dispatch]);
 
   return (
     <React.Fragment>
@@ -60,7 +62,7 @@ const Register = props => {
                       <AvForm
                         className="needs-validation custom-form mt-4 pt-2"
                         onValidSubmit={(e, v) => {
-                          handleValidSubmit(v)
+                          handleValidSubmit(v);
                         }}>
                         {user && user ? (
                           <Alert color="success">
@@ -127,7 +129,7 @@ const Register = props => {
         </Container>
       </div>
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default Register
+export default Register;

@@ -1,6 +1,8 @@
-import React from "react"
-import { Link } from "react-router-dom"
-import { Container, Row, Col } from "reactstrap"
+import React from "react";
+import { Link } from "react-router-dom";
+import {
+  Container, Row, Col 
+} from "reactstrap";
 
 const Footer = () => {
   return (
@@ -21,7 +23,7 @@ const Footer = () => {
         </Container>
       </footer>
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;

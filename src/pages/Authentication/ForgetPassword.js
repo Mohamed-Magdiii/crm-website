@@ -1,33 +1,35 @@
-import PropTypes from "prop-types"
-import MetaTags from "react-meta-tags"
-import React from "react"
-import { Row, Col, Alert, Container } from "reactstrap"
+import PropTypes from "prop-types";
+import MetaTags from "react-meta-tags";
+import React from "react";
+import {
+  Row, Col, Alert, Container 
+} from "reactstrap";
 
 //redux
-import { useSelector, useDispatch } from "react-redux"
+import { useSelector, useDispatch } from "react-redux";
 
-import { withRouter, Link } from "react-router-dom"
+import { withRouter, Link } from "react-router-dom";
 
 // availity-reactstrap-validation
-import { AvForm, AvField } from "availity-reactstrap-validation"
+import { AvForm, AvField } from "availity-reactstrap-validation";
 
 // action
-import { userForgetPassword } from "../../store/actions"
+import { userForgetPassword } from "../../store/actions";
 
 // import images
-import logo from "../../assets/images/logo-sm.svg"
-import CarouselPage from "./CarouselPage"
+import logo from "../../assets/images/logo-sm.svg";
+import CarouselPage from "./CarouselPage";
 
 const ForgetPasswordPage = props => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const { forgetError, forgetSuccessMsg } = useSelector(state => ({
     forgetError: state.ForgetPassword.forgetError,
     forgetSuccessMsg: state.ForgetPassword.forgetSuccessMsg,
-  }))
+  }));
 
   function handleValidSubmit(event, values) {
-    dispatch(userForgetPassword(values, props.history))
+    dispatch(userForgetPassword(values, props.history));
   }
 
   return (
@@ -101,11 +103,11 @@ const ForgetPasswordPage = props => {
         </Container>
       </div>
     </React.Fragment>
-  )
-}
+  );
+};
 
 ForgetPasswordPage.propTypes = {
   history: PropTypes.object,
-}
+};
 
-export default withRouter(ForgetPasswordPage)
+export default withRouter(ForgetPasswordPage);

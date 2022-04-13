@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react"
-import MetaTags from "react-meta-tags"
-import { withRouter, Link } from "react-router-dom"
+import React, { useEffect, useState } from "react";
+import MetaTags from "react-meta-tags";
+import { withRouter, Link } from "react-router-dom";
 import {
   Card,
   CardBody,
@@ -13,38 +13,47 @@ import {
   ModalHeader,
   ModalBody,
   Button
-} from "reactstrap"
+} from "reactstrap";
 
-import Select from "react-select"
+import Select from "react-select";
 
 import paginationFactory, {
   PaginationListStandalone,
   PaginationProvider,
   SizePerPageDropdownStandalone
-} from "react-bootstrap-table2-paginator"
+} from "react-bootstrap-table2-paginator";
 
 
 import { AvForm, AvField } from "availity-reactstrap-validation";
 
-import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit"
-import BootstrapTable from "react-bootstrap-table-next"
-import { del, patch, get, post, put } from "../../helpers/api_helper";
+import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+import BootstrapTable from "react-bootstrap-table-next";
+import {
+  // del, 
+  patch, 
+  get, 
+  post, 
+  // put 
+} from "../../helpers/api_helper";
 
 //Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import Breadcrumbs from "../../components/Common/Breadcrumb";
 
-import {
-  getUsers as onGetUsers,
-} from "../../store/actions"
+// import {
+//   getUsers as onGetUsers,
+// } from "../../store/actions";
 //redux
-import { useSelector, useDispatch } from "react-redux"
+import { 
+  // useSelector, 
+  useDispatch 
+} from "react-redux";
 
-const UsersList = props => {
-  const dispatch = useDispatch()
+const UsersList = () => {
+  const dispatch = useDispatch();
 
-  const [users, setUsers] = useState({docs: []});
+  const [users, setUsers] = useState({ docs: [] });
   const [roles, setRoles] = useState([]);
-  const [selectedGroup, setselectedGroup] = useState(null)
+  const [selectedGroup, setselectedGroup] = useState(null);
   const [addModal, setAddUserModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [selectUser, setSelectUser] = useState({});
@@ -59,15 +68,11 @@ const UsersList = props => {
     setEditModal(!editModal);
   };
   const handleSelectGroup = (selectedGroup) => {
-    console.log(selectedGroup);
-    setselectedGroup(selectedGroup.value)
-  }
+    setselectedGroup(selectedGroup.value);
+  };
 
 
-
-  console.log(users);
-  const { SearchBar } = Search
-
+  const { SearchBar } = Search;
 
 
   useEffect(() => {
@@ -75,22 +80,21 @@ const UsersList = props => {
 
     const getRoles = get("/api/v1/crm/roles");
     getRoles.then((rolesData) => {
-      setRoles(rolesData.result)
+      setRoles(rolesData.result);
       // console.log(rolesData.result);
       // console.log(roles);
-    })
+    });
 
-  }, [update])
+  }, [update]);
 
 
   const getUsers = async(page = 1, size = 10) => {
-    console.log('ajajaja ', page, size)
     const getProfileData = get("/api/v1/crm/users");
     getProfileData.then((usersData) => {
-      setUsers(usersData.result)
+      setUsers(usersData.result);
       // console.log(usersData);
-    })
-  }
+    });
+  };
 
   // const getRoleById = (roleId) => {
   //   const getRole = get("/api/v1/crm/roles/"+roleId);
@@ -103,60 +107,61 @@ const UsersList = props => {
 
   // }
   const handleAddUser = (event, userData) => {
-    userData = { ...userData, roleId: selectedGroup }
-    console.log(userData);
+    userData = {
+      ...userData,
+      roleId: selectedGroup 
+    };
     const addUser = post("api/v1/crm/users/", userData);
     addUser.then((response) => {
       console.log(response);
-    })
-    console.log("add user");
-    setUpdate(!update)
-    toggleAddModal()
-  }
+    });
+    setUpdate(!update);
+    toggleAddModal();
+  };
 
   const EditUser = (event, userData) => {
-    delete userData.password
-    userData = { ...userData, roleId: selectedGroup }
-    console.log(userData);
+    delete userData.password;
+    userData = {
+      ...userData,
+      roleId: selectedGroup 
+    };
     const editUser = patch("api/v1/crm/users/" + selectUser._id, userData);
     editUser.then((response) => {
       console.log(response);
-    })
-    console.log("edit user");
-    setUpdate(!update)
-    toggleEditModal()
-  }
+    });
+    setUpdate(!update);
+    toggleEditModal();
+  };
 
   const handleDeleteUser = (user) => {
-    console.log("delete user" + user._id);
-  }
+    // console.log("delete user" + user._id);
+  };
 
   const handleStatusUser = (user) => {
-    console.log("status user" + user.isActive);
-  }
+    // console.log("status user" + user.isActive);
+  };
 
   const handleEditUser = (user) => {
 
-    let rol = { value: user.roleId }
-    setSelectUser(user)
+    let rol = { value: user.roleId };
+    setSelectUser(user);
 
-    toggleEditModal()
-    handleSelectGroup(rol)
-    console.log(user);
-  }
+    toggleEditModal();
+    handleSelectGroup(rol);
+  };
 
 
   const pageOptions = {
     sizePerPage: 10,
     totalSize: users.totalDocs, // replace later with size(users),
     custom: true,
-  }
+  };
   const defaultSorted = [
     {
       dataField: "id", // if dataField is not match to any column you defined, it will be ignored.
       order: "asc", // desc or asc
     },
-  ]
+  ];
   const contactListColumns = [
     {
       text: "ID",
@@ -220,7 +225,7 @@ const UsersList = props => {
         </div>
       ),
     },
-  ]
+  ];
   return (
     <React.Fragment>
       <div className="page-content">
@@ -321,9 +326,6 @@ const UsersList = props => {
           </Row>
 
 
-
-
-
           <Modal isOpen={addModal} toggle={toggleAddModal}>
             <ModalHeader toggle={toggleAddModal} tag="h4">
               Add New User
@@ -333,7 +335,7 @@ const UsersList = props => {
               <AvForm
                 className='p-4'
                 onValidSubmit={(e, v) => {
-                  handleAddUser(e, v)
+                  handleAddUser(e, v);
                 }}
               >
                 <div className="mb-3">
@@ -384,11 +386,17 @@ const UsersList = props => {
                   <Select
                     value={selectedGroup}
                     onChange={(selected) => {
-                      handleSelectGroup(selected)
+                      handleSelectGroup(selected);
                     }}
                     options={[
-                      { label: "Admin", value: "624ec3f8a32d3c13fcedcdb8" },
-                      { label: "Client", value: "624f50c9cd61366cafe75e0d" }
+                      {
+                        label: "Admin",
+                        value: "624ec3f8a32d3c13fcedcdb8" 
+                      },
+                      {
+                        label: "Client",
+                        value: "624f50c9cd61366cafe75e0d" 
+                      }
                     ]}
                     classNamePrefix="select2-selection"
                   />
@@ -403,9 +411,6 @@ const UsersList = props => {
           </Modal>
 
 
-
-
-
           <Modal isOpen={editModal} toggle={toggleEditModal}>
             <ModalHeader toggle={toggleEditModal} tag="h4">
               Edit User
@@ -414,7 +419,7 @@ const UsersList = props => {
               <AvForm
                 className='p-4'
                 onValidSubmit={(e, v) => {
-                  EditUser(e, v)
+                  EditUser(e, v);
                 }}
               >
                 <div className="mb-3">
@@ -470,11 +475,17 @@ const UsersList = props => {
                     value={selectUser.roleId || ""}
                     onChange={(selected) => {
                       console.log("changedddddd");
-                      handleSelectGroup(selected)
+                      handleSelectGroup(selected);
                     }}
                     options={[
-                      { label: "Admin", value: "624ec3f8a32d3c13fcedcdb8" },
-                      { label: "Client", value: "624f50c9cd61366cafe75e0d" }
+                      {
+                        label: "Admin",
+                        value: "624ec3f8a32d3c13fcedcdb8" 
+                      },
+                      {
+                        label: "Client",
+                        value: "624f50c9cd61366cafe75e0d" 
+                      }
                     ]}
                     classNamePrefix="select2-selection"
                   />
@@ -491,7 +502,7 @@ const UsersList = props => {
         </Container>
       </div>
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default withRouter(UsersList)
+export default withRouter(UsersList);

@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import {
+  connect, useSelector, useDispatch 
+} from "react-redux";
 
 //actions
 import {
@@ -11,9 +13,6 @@ import {
   changelayoutMode,
   changeLayoutPosition
 } from "../../store/actions";
-
-//redux
-import { useSelector, useDispatch } from "react-redux";
 
 //components
 import Navbar from "./Navbar";

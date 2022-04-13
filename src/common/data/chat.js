@@ -98,41 +98,82 @@ const chats = [
     description: "Nice to meet you",
     time: "24 min",
   },
-]
+];
 
 const groups = [
-  { id: 1, image: "G", name: "General" },
-  { id: 2, image: "R", name: "Reporting" },
-  { id: 3, image: "M", name: "Meeting" },
-  { id: 4, image: "A", name: "Project A" },
-  { id: 5, image: "B", name: "Project B" },
-]
+  {
+    id: 1,
+    image: "G",
+    name: "General" 
+  },
+  {
+    id: 2,
+    image: "R",
+    name: "Reporting" 
+  },
+  {
+    id: 3,
+    image: "M",
+    name: "Meeting" 
+  },
+  {
+    id: 4,
+    image: "A",
+    name: "Project A" 
+  },
+  {
+    id: 5,
+    image: "B",
+    name: "Project B" 
+  },
+];
 
 const contacts = [
   {
     category: "A",
     child: [
-      { id: 1, name: "Adam Miller" },
-      { id: 2, name: "Alfonso Fisher" },
+      {
+        id: 1,
+        name: "Adam Miller" 
+      },
+      {
+        id: 2,
+        name: "Alfonso Fisher" 
+      },
     ],
   },
   {
     category: "B",
-    child: [{ id: 1, name: "Bonnie Harney" }],
+    child: [{
+      id: 1,
+      name: "Bonnie Harney" 
+    }],
   },
   {
     category: "C",
     child: [
-      { id: 1, name: "Charles Brown" },
-      { id: 2, name: "Carmella Jones" },
-      { id: 3, name: "Carrie Williams" },
+      {
+        id: 1,
+        name: "Charles Brown" 
+      },
+      {
+        id: 2,
+        name: "Carmella Jones" 
+      },
+      {
+        id: 3,
+        name: "Carrie Williams" 
+      },
     ],
   },
   {
     category: "D",
-    child: [{ id: 4, name: "Dolores Minter" }],
+    child: [{
+      id: 4,
+      name: "Dolores Minter" 
+    }],
   },
-]
+];
 
 const messages = [
   {
@@ -233,6 +274,8 @@ const messages = [
     message: "What about our next meeting?!",
     createdAt: "2020-04-02T17:07:21.529Z",
   },
-]
+];
 
-export { chats, messages, contacts, groups }
+export {
+  chats, messages, contacts, groups 
+};

@@ -193,7 +193,7 @@ const tasks = [
       },
     ],
   },
-]
+];
 
 const series = [
   {
@@ -206,12 +206,25 @@ const series = [
     type: "line",
     data: [23, 11, 34, 27, 17, 22, 62, 32, 44, 22, 39],
   },
-]
+];
 
 const options = {
-  chart: { height: 280, type: "line", stacked: !1, toolbar: { show: !1 } },
-  stroke: { width: [0, 2, 5], curve: "smooth" },
-  plotOptions: { bar: { columnWidth: "20%", endingShape: "rounded" } },
+  chart: {
+    height: 280,
+    type: "line",
+    stacked: !1,
+    toolbar: { show: !1 } 
+  },
+  stroke: {
+    width: [0, 2, 5],
+    curve: "smooth" 
+  },
+  plotOptions: {
+    bar: {
+      columnWidth: "20%",
+      endingShape: "rounded" 
+    } 
+  },
   colors: ["#556ee6", "#34c38f"],
   fill: {
     gradient: {
@@ -238,13 +251,15 @@ const options = {
   ],
   markers: { size: 0 },
   yaxis: { min: 0 },
-}
+};
 
 const statusClasses = {
   waiting: "badge-soft-secondary",
   approved: "badge-soft-primary",
   complete: "badge-soft-success",
   pending: "badge-soft-warning",
-}
+};
 
-export { tasks, series, options, statusClasses }
+export {
+  tasks, series, options, statusClasses 
+};

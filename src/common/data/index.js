@@ -1,8 +1,8 @@
 // import React from "react"
-import { cryptoOrders, wallet } from "./crypto"
-import { invoiceList } from "./invoices"
-import { projects } from "./projects"
-import { tasks } from "./tasks"
+import { cryptoOrders, wallet } from "./crypto";
+import { invoiceList } from "./invoices";
+import { projects } from "./projects";
+import { tasks } from "./tasks";
 import {
   inboxmails,
   starredmails,
@@ -10,10 +10,12 @@ import {
   draftmails,
   sentmails,
   trashmails,
-} from "./mails"
-import { chats, contacts, groups, messages } from "./chat"
-import { calenderDefaultCategories, events } from "./calender"
-import { users, userProfile } from "./contacts"
+} from "./mails";
+import {
+  chats, contacts, groups, messages 
+} from "./chat";
+import { calenderDefaultCategories, events } from "./calender";
+import { users, userProfile } from "./contacts";
 
 import {
   janTopSellingData,
@@ -25,7 +27,7 @@ import {
   novEarningData,
   octEarningData,
   chatData,
-} from "./dashboard-saas"
+} from "./dashboard-saas";
 
 export {
   events,
@@ -56,4 +58,4 @@ export {
   novEarningData,
   octEarningData,
   chatData,
-}
+};

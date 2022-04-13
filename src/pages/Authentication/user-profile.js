@@ -24,12 +24,18 @@ import Breadcrumb from "../../components/Common/Breadcrumb";
 
 import avatar from "../../assets/images/users/avatar-1.jpg";
 // actions
-import { editProfile, resetProfileFlag } from "../../store/actions";
+// import { editProfile, resetProfileFlag } from "../../store/actions";
 
-import { del, get, post, put, redirectToLogin } from "../../apis/api_helper";
+import {
+  // del, 
+  get, 
+  // post, 
+  // put, 
+  redirectToLogin 
+} from "../../apis/api_helper";
 import * as url from "../../apis/url_helper";
 
-const UserProfile = (props) => {
+const UserProfile = () => {
   const dispatch = useDispatch();
 
   const { error, success } = useSelector((state) => ({
@@ -58,8 +64,7 @@ const UserProfile = (props) => {
         }
 
       }
-    }).catch(err => { redirectToLogin() })
-
+    }).catch(() => { redirectToLogin() });
 
 
   }, [dispatch, success]);
@@ -215,6 +220,7 @@ const UserProfile = (props) => {
                             name="newPassword"
                             label="New Password"
                             type="password"
+                            idx={idx}
                             errorMessage="Invalid"
                             validate={{
                               required: { value: true },

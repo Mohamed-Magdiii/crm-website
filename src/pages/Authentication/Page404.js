@@ -1,17 +1,13 @@
-import PropTypes from "prop-types"
-import MetaTags from "react-meta-tags"
+import PropTypes from "prop-types";
+import MetaTags from "react-meta-tags";
 import React, { useState } from "react";
-import { Carousel, CarouselItem, CarouselIndicators } from "reactstrap";
+import {
+  Carousel, CarouselItem, CarouselIndicators, Row, Container
+} from "reactstrap";
 
 import img1 from "../../assets/images/users/avatar-1.jpg";
 
-
-import { Row, Container } from "reactstrap"
-
-//redux
-import { useSelector } from "react-redux"
-
-import { withRouter } from "react-router-dom"
+import { withRouter } from "react-router-dom";
 
 // availity-reactstrap-validation
 
@@ -23,17 +19,16 @@ import { withRouter } from "react-router-dom"
 //Import config
 
 
-
 const items = [
-    {
-      id: 1,
-      img: img1,
-      name: "Exiniti CRM",
-      designation: "Support",
-      description:
+  {
+    id: 1,
+    img: img1,
+    name: "Exiniti CRM",
+    designation: "Support",
+    description:
         "Uh-oh. Whatever you're looking for doesn't seem to exist. Which begs the question: How certain are you that what you're looking for is actually what you need?",
-    },
-  ];
+  },
+];
 
 const Login = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -91,10 +86,10 @@ const Login = () => {
       </CarouselItem>
     );
   });
-  const { error } = useSelector(state => ({
-    error: state.Login.error,
-  }))
- console.log(error)
+  // const { error } = useSelector(state => ({
+  //   error: state.Login.error,
+  // }));
+  // console.log(error);
   // handleValidSubmit
 
   
@@ -107,56 +102,56 @@ const Login = () => {
         <Container fluid className="p-0">
           <Row className="g-0">
             
-          <div className="col-xxl-12 col-lg-12 col-md-12">
-        <div className="auth-bg pt-md-5 p-4 d-flex">
-          <div className="bg-overlay bg-primary"></div>
-          <ul className="bg-bubbles">
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-          </ul>
-          <div className="row justify-content-center align-items-center">
-            <div className="col-xl-7">
-              <div className="p-0 p-sm-4 px-xl-0">
-                <div
-                  id="reviewcarouselIndicators"
-                  className="carousel slide"
-                  data-bs-ride="carousel"
-                >
-                  <CarouselIndicators
-                    items={items}
-                    activeIndex={activeIndex}
-                    onClickHandler={goToIndex}
-                  />
-                  <Carousel
-                    activeIndex={activeIndex}
-                    next={next}
-                    previous={previous}
-                  >
-                    {slides}
-                  </Carousel>
+            <div className="col-xxl-12 col-lg-12 col-md-12">
+              <div className="auth-bg pt-md-5 p-4 d-flex">
+                <div className="bg-overlay bg-primary"></div>
+                <ul className="bg-bubbles">
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                  <li></li>
+                </ul>
+                <div className="row justify-content-center align-items-center">
+                  <div className="col-xl-7">
+                    <div className="p-0 p-sm-4 px-xl-0">
+                      <div
+                        id="reviewcarouselIndicators"
+                        className="carousel slide"
+                        data-bs-ride="carousel"
+                      >
+                        <CarouselIndicators
+                          items={items}
+                          activeIndex={activeIndex}
+                          onClickHandler={goToIndex}
+                        />
+                        <Carousel
+                          activeIndex={activeIndex}
+                          next={next}
+                          previous={previous}
+                        >
+                          {slides}
+                        </Carousel>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
           </Row>
         </Container>
       </div>
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default withRouter(Login)
+export default withRouter(Login);
 
 Login.propTypes = {
   history: PropTypes.object,
-}
+};

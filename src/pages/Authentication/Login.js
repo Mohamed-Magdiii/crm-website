@@ -1,41 +1,42 @@
-import PropTypes from "prop-types"
-import MetaTags from "react-meta-tags"
-import React from "react"
+import PropTypes from "prop-types";
+import MetaTags from "react-meta-tags";
+import React from "react";
 
-import { Row, Col, Alert, Container } from "reactstrap"
+import {
+  Row, Col, Alert, Container 
+} from "reactstrap";
 
 //redux
-import { useSelector, useDispatch } from "react-redux"
+import { useSelector, useDispatch } from "react-redux";
 
-import { withRouter, Link } from "react-router-dom"
+import { withRouter, Link } from "react-router-dom";
 
 // availity-reactstrap-validation
-import { AvForm, AvField } from "availity-reactstrap-validation"
+import { AvForm, AvField } from "availity-reactstrap-validation";
 
 
 // actions
-import { loginUser } from "../../store/actions"
+import { loginUser } from "../../store/actions";
 
 // import images
-import logo from "../../assets/images/logo-sm.svg"
+import logo from "../../assets/images/logo-sm.svg";
 
 //Import config
 
-import CarouselPage from "./CarouselPage"
+import CarouselPage from "./CarouselPage";
 
 const Login = props => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const { error } = useSelector(state => ({
     error: state.Login.error,
-  }))
- console.log(error)
+  }));
   // handleValidSubmit
   const handleValidSubmit = (event, values) => {
     
-    event.preventDefault()
-    dispatch(loginUser(values, props.history))
-  }
+    event.preventDefault();
+    dispatch(loginUser(values, props.history));
+  };
 
   
   return (
@@ -56,60 +57,59 @@ const Login = props => {
                       </Link>
                     </div>
                     
-                      <AvForm
-                        className="custom-form mt-4 pt-2"
-                        onValidSubmit={(e, v) => {
-                          handleValidSubmit(e, v)
-                        }}
-                      >
-                        {error ? <Alert color="danger">{error}</Alert> : null}
+                    <AvForm
+                      className="custom-form mt-4 pt-2"
+                      onValidSubmit={(e, v) => {
+                        handleValidSubmit(e, v);
+                      }}
+                    >
+                      {error ? <Alert color="danger">{error}</Alert> : null}
+                      <div className="mb-3">
+                        <AvField
+                          name="email"
+                          label="Email"
+                          value="admin@themesbrand.com"
+                          className="form-control"
+                          placeholder="Enter email"
+                          type="email"
+                          required
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <div className="d-flex align-items-start">
+                          <div className="flex-grow-1">
+                            <label className="form-label">Password</label>
+                          </div>
+                            
+                        </div>
+
                         <div className="mb-3">
                           <AvField
-                            name="email"
-                            label="Email"
-                            value="admin@themesbrand.com"
+                            name="password"
+                            value="123456"
+                            type="password"
                             className="form-control"
-                            placeholder="Enter email"
-                            type="email"
                             required
+                            placeholder="Enter Password"
                           />
                         </div>
-                        <div className="mb-3">
-                          <div className="d-flex align-items-start">
-                            <div className="flex-grow-1">
-                              <label className="form-label">Password</label>
-                            </div>
-                            
-                          </div>
-
-                          <div className="mb-3">
-                            <AvField
-                              name="password"
-                              value="123456"
-                              type="password"
-                              className="form-control"
-                              required
-                              placeholder="Enter Password"
-                            />
-                          </div>
-                        </div>
+                      </div>
                         
-                        <div className="mb-3">
-                          <button className="btn btn-primary w-100 waves-effect waves-light" type="submit">Log In</button>
-                        </div>
-                      </AvForm>
-
+                      <div className="mb-3">
+                        <button className="btn btn-primary w-100 waves-effect waves-light" type="submit">Log In</button>
+                      </div>
+                    </AvForm>
                      
 
-                      <div className="mt-5 text-center">
-                        <p className="text-muted mb-0">Don't have an account ? <Link to="/register"
-                          className="text-primary fw-semibold"> Signup now </Link> </p>
-                      </div>
-                    </div>
-                    <div className="mt-4 mt-md-5 text-center">
-                      <p className="mb-0">© {new Date().getFullYear()} Minia . Crafted with <i className="mdi mdi-heart text-danger"></i> by Themesbrand</p>
+                    <div className="mt-5 text-center">
+                      <p className="text-muted mb-0">Don&#39;t have an account ? <Link to="/register"
+                        className="text-primary fw-semibold"> Signup now </Link> </p>
                     </div>
                   </div>
+                  <div className="mt-4 mt-md-5 text-center">
+                    <p className="mb-0">© {new Date().getFullYear()} Minia . Crafted with <i className="mdi mdi-heart text-danger"></i> by Themesbrand</p>
+                  </div>
+                </div>
                 
               </div>
             </Col>
@@ -118,11 +118,11 @@ const Login = props => {
         </Container>
       </div>
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default withRouter(Login)
+export default withRouter(Login);
 
 Login.propTypes = {
   history: PropTypes.object,
-}
+};

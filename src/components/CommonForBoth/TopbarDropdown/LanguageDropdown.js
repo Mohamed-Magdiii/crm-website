@@ -20,18 +20,18 @@ const LanguageDropdown = () => {
   useEffect(() => {
     const currentLanguage = localStorage.getItem("I18N_LANGUAGE");
     setSelectedLang(currentLanguage);
-  }, [])
+  }, []);
 
   const changeLanguageAction = lang => {
     //set language as i18n
     i18n.changeLanguage(lang);
     localStorage.setItem("I18N_LANGUAGE", lang);
     setSelectedLang(lang);
-  }
+  };
 
   const toggle = () => {
     setMenu(!menu);
-  }
+  };
 
   return (
     <>
@@ -50,7 +50,7 @@ const LanguageDropdown = () => {
               key={key}
               onClick={() => changeLanguageAction(key)}
               className={`notify-item ${selectedLang === key ? "active" : "none"
-                }`}
+              }`}
             >
               <img
                 src={get(languages, `${key}.flag`)}
@@ -66,7 +66,7 @@ const LanguageDropdown = () => {
         </DropdownMenu>
       </Dropdown>
     </>
-  )
-}
+  );
+};
 
-export default withTranslation()(LanguageDropdown)
+export default withTranslation()(LanguageDropdown);

@@ -1,4 +1,4 @@
-const users=[
+const users = [
   {
     id: 1, 
     firstName: "test",
@@ -208,7 +208,7 @@ const users=[
     isActive: true,
   },
    
-]
+];
 
 const users2 = [
   {
@@ -329,7 +329,7 @@ const users2 = [
     projects: "145",
     tags: ["Html", "Css", "Java"],
   },
-]
+];
 const userProfile = {
   id: 1,
   name: "Cynthia Price",
@@ -416,5 +416,7 @@ const userProfile = {
       budget: "$94",
     },
   ],
-}
-export { users, userProfile }
+};
+export {
+  users, users2, userProfile 
+};

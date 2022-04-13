@@ -1,4 +1,6 @@
-import { takeEvery, put, call, all, fork } from "redux-saga/effects"
+import {
+  takeEvery, put, call, all, fork 
+} from "redux-saga/effects";
 
 // Calender Redux States
 import {
@@ -7,7 +9,7 @@ import {
   GET_CATEGORIES,
   GET_EVENTS,
   UPDATE_EVENT,
-} from "./actionTypes"
+} from "./actionTypes";
 import {
   apiSuccess, apiFail,
   updateEventSuccess,
@@ -16,7 +18,7 @@ import {
   deleteEventFail,
   getCategoriesSuccess,
   getCategoriesFail,
-} from "./actions"
+} from "./actions";
 
 //Include Both Helper File with needed methods
 import {
@@ -25,7 +27,7 @@ import {
   updateEvent,
   deleteEvent,
   getCategories,
-} from "../../helpers/fakebackend_helper"
+} from "../../helpers/fakebackend_helper";
 
 function* fetchEvents() {
   try {
@@ -38,37 +40,37 @@ function* fetchEvents() {
 
 function* onAddNewEvent({ payload: event }) {
   try {
-    const response = yield call(addNewEvent, event)
-    yield put(apiSuccess(ADD_NEW_EVENT, response))
+    const response = yield call(addNewEvent, event);
+    yield put(apiSuccess(ADD_NEW_EVENT, response));
   } catch (error) {
-    yield put(apiFail(ADD_NEW_EVENT, error))
+    yield put(apiFail(ADD_NEW_EVENT, error));
   }
 }
 
 function* onUpdateEvent({ payload: event }) {
   try {
-    const response = yield call(updateEvent, event)
-    yield put(updateEventSuccess(response))
+    const response = yield call(updateEvent, event);
+    yield put(updateEventSuccess(response));
   } catch (error) {
-    yield put(updateEventFail(error))
+    yield put(updateEventFail(error));
   }
 }
 
 function* onDeleteEvent({ payload: event }) {
   try {
-    const response = yield call(deleteEvent, event)
-    yield put(deleteEventSuccess(response))
+    const response = yield call(deleteEvent, event);
+    yield put(deleteEventSuccess(response));
   } catch (error) {
-    yield put(deleteEventFail(error))
+    yield put(deleteEventFail(error));
   }
 }
 
 function* onGetCategories() {
   try {
-    const response = yield call(getCategories)
-    yield put(getCategoriesSuccess(response))
+    const response = yield call(getCategories);
+    yield put(getCategoriesSuccess(response));
   } catch (error) {
-    yield put(getCategoriesFail(error))
+    yield put(getCategoriesFail(error));
   }
 }
 
@@ -98,4 +100,4 @@ function* calendarSaga() {
   yield all([fork(watchOnGetCategories)]);
 }
 
-export default calendarSaga
+export default calendarSaga;

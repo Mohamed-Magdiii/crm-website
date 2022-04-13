@@ -377,6 +377,6 @@ const invoiceList = [
       total: "$1410.00",
     },
   },
-]
+];
 
-export { invoiceList }
+export { invoiceList };
