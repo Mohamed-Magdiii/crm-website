@@ -1,60 +1,84 @@
-import { useEffect, useState } from "react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
-  useDispatch, useSelector, connect
+  useDispatch, connect
 } from "react-redux";
+import { Link } from "react-router-dom";
 
 import {
-  Row, Col, Card, CardBody, CardTitle, CardHeader, CardSubtitle
+  Row, Col, Card, CardBody, CardTitle, CardHeader, Spinner, Input, Label
 } from "reactstrap";
-
-import BootstrapTable from "react-bootstrap-table-next";
-import paginationFactory, {
-  PaginationProvider, PaginationListStandalone,
-  SizePerPageDropdownStandalone
-} from "react-bootstrap-table2-paginator";
 
 import {
   Table, Thead, Tbody, Tr, Th, Td
 } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 
-import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import { fetchRoles } from "../../store/roles/actions";
+import CustomPagination from "../../components/Common/CustomPagination";
+import TableLoader from "../../components/Common/TableLoader";
 
 function RolesList(props){
   const columns = [
     {
       dataField: "createdAt",
       text: "Created Date",
+      formatter: (val) => {return new Date(val.createdAt).toDateString()}
     }, 
     {
       dataField:"title",
       text:"Title"
-    }];
- 
-  const { leads } = useSelector(state=>state.leadReducer);
-  const [sizePerPage, setSizePerPage] = useState(3);
-  // const [totalDocs,setTotalDocs]=useState(props.totalDocs || 0)
-  const [currentPage, setCurrentPage] = useState(1);
+    },
+    {
+      dataField: "isActive",
+      text: "Status",
+      formatter: (item) => (
+        <div className="d-flex gap-3">
+          <Input type="checkbox" id={item.id} switch="none" defaultChecked={item.isActive} onClick={() => {}} />
+          <Label className="me-1" htmlFor={item.id} data-on-label="Active" data-off-label=""></Label>
 
+        </div>
+      ),
+    },
+    {
+      dataField: "",
+      isDummyField: true,
+      editable: false,
+      text: "Action",
+      formatter: (item) => (
+        <div className="d-flex gap-3">
+          <Link className="text-success" to="#">
+            <i
+              className="mdi mdi-pencil font-size-18"
+              id="edittooltip"
+              onClick={() => {}}
+            ></i>
+          </Link>
+          <Link className="text-danger" to="#">
+            <i
+              className="mdi mdi-delete font-size-18"
+              id="deletetooltip"
+              onClick={() => {}}
+            ></i>
+          </Link>
+        </div>
+      ),
+    },
+  ];
+ 
+  const [sizePerPage, setSizePerPage] = useState(5);
   const dispatch = useDispatch();
-  const pageOptions = {
-    sizePerPage: sizePerPage,
-    totalSize: props.totalDocs,
-    custom: true,
-  };
   
-  const selectRow = {
-    mode: "checkbox"
-  };
-  const { SearchBar } = Search;
   useEffect(()=>{
+    loadRoles(1, sizePerPage);
+  }, [sizePerPage, 1]);
+
+  const loadRoles = (page, limit) => {
     dispatch(fetchRoles({
-      page: currentPage,
-      limit: sizePerPage
+      page,
+      limit,
     }));
-  }, [sizePerPage, currentPage]);
+  };
+
   return (
     <React.Fragment>
       <div className="page-content">
@@ -69,89 +93,6 @@ function RolesList(props){
                   <button className="add-btn">Add+</button>
                 </CardHeader>
                 <CardBody>
-                  <PaginationProvider
-                    pagination={paginationFactory(pageOptions)}
-                    keyField='id'
-                    columns={columns}
-                    data={props.docs}
-                  >
-                    {({ paginationProps, paginationTableProps }) => (
-                      <ToolkitProvider
-                        keyField='id'
-                        columns={columns}
-                        data={props.docs}
-                        search
-                      >
-                        {toolkitProps => (
-                          <React.Fragment>
-                            <Row className="mb-2">
-                              <Col md="4">
-                                <div className="search-box me-2 mb-2 d-inline-block">
-                                  <div className="position-relative">
-                                    <SearchBar
-                                      {...toolkitProps.searchProps}
-                                    />
-                                    <i className="bx bx-search-alt search-icon" />
-                                  </div>
-                                </div>
-                              </Col>
-                            </Row>
-
-                            <Row>
-                              <Col xl="12">
-                                <div className="table-responsive">
-                                  <BootstrapTable
-                                    keyField={"id"}
-                                    responsive
-                                    bordered={false}
-                                    striped={false}
-                                    selectRow={selectRow}
-                                    classes={
-                                      "table align-middle table-nowrap"
-                                    }
-                                    headerWrapperClasses={"thead-light"}
-                                    {...toolkitProps.baseProps}
-                                    {...paginationTableProps}
-                                  />
-
-                                </div>
-                              </Col>
-                            </Row>
-
-                            <Row className="align-items-md-center mt-30">
-                              <div className="p-2 border">
-                                <Col className="pagination pagination-rounded gap-4 d-flex align-items-md-center" >
-                                  <div className='custom-div'>
-                                    <PaginationListStandalone 
-                                      {...paginationProps }
-                                      onPageChange={(page)=>setCurrentPage(page)}
-                                      page={currentPage}
-                                    />
-                                  </div>
-                                  <div>Records:{props.docs.length}</div>
-                                  <div >
-                                    <SizePerPageDropdownStandalone
-                                      {...paginationProps}
-                                      className="custom-background"
-                                      onSizePerPageChange={(pageSize)=>
-                                      {setSizePerPage(pageSize);
-                                        setCurrentPage(1);
-                                      }}
-                                    />
-                                  </div>
-                              
-                                </Col>
-                                
-                              </div>
-                            </Row>
-                          </React.Fragment>
-                        )
-                        }
-                      </ToolkitProvider>
-                    )
-                    }</PaginationProvider>
-
-
                   <div className="table-rep-plugin">
                     <div
                       className="table-responsive mb-0"
@@ -159,7 +100,7 @@ function RolesList(props){
                     >
                       <Table
                         id="tech-companies-1"
-                        className="table table-striped "
+                        className="table "
                       >
                         <Thead>
                           <Tr>
@@ -169,15 +110,24 @@ function RolesList(props){
                           </Tr>
                         </Thead>
                         <Tbody>
-                          {props.docs.map((row, rowIndex) =>
+                          {props.loading && <TableLoader colSpan={4} />}
+                          {!props.loading && props.docs.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
                               {columns.map((column, index) =>
-                                <Td key={`${rowIndex}-${index}`}>{row[column.dataField]}</Td>
+                                <Td key={`${rowIndex}-${index}`}>
+                                  { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
+                                </Td>
                               )}
                             </Tr>
                           )}
                         </Tbody>
                       </Table>
+                      <CustomPagination
+                        {...props}
+                        setSizePerPage={setSizePerPage}
+                        sizePerPage={sizePerPage}
+                        onChange={loadRoles}
+                      />
                     </div>
                   </div>
 
@@ -195,10 +145,17 @@ function RolesList(props){
 
 
 const mapStateToProps = (state) => ({
-  rolesReducer: state.rolesReducer,
+  loading: state.rolesReducer.loading || false,
   docs: state.rolesReducer.docs || [],
   page: state.rolesReducer.page || 1,
   totalDocs: state.rolesReducer.totalDocs || 0,
   totalPages: state.rolesReducer.totalPages || 0,
+  hasNextPage: state.rolesReducer.hasNextPage,
+  hasPrevPage: state.rolesReducer.hasPrevPage,
+  limit: state.rolesReducer.limit,
+  nextPage: state.rolesReducer.nextPage,
+  pagingCounter: state.rolesReducer.pagingCounter,
+  prevPage: state.rolesReducer.prevPage,
+
 });
 export default connect(mapStateToProps, null)(RolesList);

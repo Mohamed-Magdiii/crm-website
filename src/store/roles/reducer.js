@@ -26,7 +26,15 @@ const leadReducer = (state = initialState, action)=>{
         ...state,
         docs: [...action.payload.docs],
         totalDocs: action.payload.totalDocs,
-        // loading: false,
+        hasNextPage: action.payload.hasNextPage,
+        hasPrevPage: action.payload.hasPrevPage,
+        limit: action.payload.limit,
+        nextPage: action.payload.nextPage,
+        page: action.payload.page,
+        pagingCounter: action.payload.pagingCounter,
+        prevPage: action.payload.prevPage,
+        totalPages: action.payload.totalPages,
+        loading: false,
       };
       break;
     case FETCH_ROLES_ERROR:
