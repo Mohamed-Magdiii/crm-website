@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import React from "react";
 import {
-  Row, Col, Card, CardBody, CardTitle, CardHeader 
+  useDispatch, useSelector, connect
+} from "react-redux";
+
+import {
+  Row, Col, Card, CardBody, CardTitle, CardHeader, CardSubtitle
 } from "reactstrap";
 
 import BootstrapTable from "react-bootstrap-table-next";
@@ -10,74 +14,34 @@ import paginationFactory, {
   SizePerPageDropdownStandalone
 } from "react-bootstrap-table2-paginator";
 
-import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
-import "./lead.page.custom.styles.scss";
-import { fetchLeadsFromAPI } from "../../store/leads/actions";
+import {
+  Table, Thead, Tbody, Tr, Th, Td
+} from "react-super-responsive-table";
+import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 
-function LeadsList(){
-  const columns = [{
-    dataField: "createdAt",
-    text: "Register Date",
-    
-  }, 
-  {
-    dataField:"name",
-    text:"Name"
-  },
-  {
-    dataField: "email",
-    text: "Email",
-    
-  },
-  {
-    dataField: "phone",
-    text: "Phone",
-    
-  },
-  {
-    dataField: "language",
-    text: "Language",
-    
-  },
-  {
-    dataField: "callStatus",
-    text: "Call Status",
-    
-  },
-  {
-    dataField: "country",
-    text: "Country",
-  
-  }, 
-  {
-    dataField:"agent",
-    text:"Sales Agent" 
-  },
-  {
-    dataField:"source",
-    text:"Source"
-  }];
+import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+import { fetchRoles } from "../../store/roles/actions";
+
+function RolesList(props){
+  const columns = [
+    {
+      dataField: "createdAt",
+      text: "Created Date",
+    }, 
+    {
+      dataField:"title",
+      text:"Title"
+    }];
  
-    
   const { leads } = useSelector(state=>state.leadReducer);
-  const [sizePerPage, setSizePerPage] = useState(10);
-  const [totalDocs, setTotalDocs] = useState(0);
+  const [sizePerPage, setSizePerPage] = useState(3);
+  // const [totalDocs,setTotalDocs]=useState(props.totalDocs || 0)
   const [currentPage, setCurrentPage] = useState(1);
-  const customizedLeads = leads.map(lead=>{
-    const date = new Date(lead.createdAt);
-  
-    return {
-      ...lead,
-      name:`${lead.firstName} ${lead.lastName}`,
-      createdAt:date.toLocaleDateString(),
-      agent:lead.agent ? lead.agent._id : "-" 
-    };
-  });
-    
+
   const dispatch = useDispatch();
   const pageOptions = {
     sizePerPage: sizePerPage,
-    totalSize: totalDocs,
+    totalSize: props.totalDocs,
     custom: true,
   };
   
@@ -86,38 +50,36 @@ function LeadsList(){
   };
   const { SearchBar } = Search;
   useEffect(()=>{
-         
-        
-    fetchLeadsFromAPI(dispatch, setTotalDocs, sizePerPage, currentPage);
-  }, [sizePerPage, currentPage, dispatch]);
+    dispatch(fetchRoles({
+      page: currentPage,
+      limit: sizePerPage
+    }));
+  }, [sizePerPage, currentPage]);
   return (
     <React.Fragment>
       <div className="page-content">
       
         <div className="container-fluid">
-          <h2>Leads</h2>
-
+          <h2>Roles</h2>
           <Row>
             <Col className="col-12">
               <Card>
                 <CardHeader className="d-flex justify-content-between  align-items-center">
-                  <CardTitle>Leads List ({totalDocs})</CardTitle>
+                  <CardTitle>Roles List ({props.totalDocs})</CardTitle>
                   <button className="add-btn">Add+</button>
                 </CardHeader>
                 <CardBody>
-                
-
                   <PaginationProvider
                     pagination={paginationFactory(pageOptions)}
                     keyField='id'
                     columns={columns}
-                    data={customizedLeads}
+                    data={props.docs}
                   >
                     {({ paginationProps, paginationTableProps }) => (
                       <ToolkitProvider
                         keyField='id'
                         columns={columns}
-                        data={customizedLeads}
+                        data={props.docs}
                         search
                       >
                         {toolkitProps => (
@@ -166,7 +128,7 @@ function LeadsList(){
                                       page={currentPage}
                                     />
                                   </div>
-                                  <div>Records:{leads.length}</div>
+                                  <div>Records:{props.docs.length}</div>
                                   <div >
                                     <SizePerPageDropdownStandalone
                                       {...paginationProps}
@@ -179,6 +141,7 @@ function LeadsList(){
                                   </div>
                               
                                 </Col>
+                                
                               </div>
                             </Row>
                           </React.Fragment>
@@ -187,6 +150,37 @@ function LeadsList(){
                       </ToolkitProvider>
                     )
                     }</PaginationProvider>
+
+
+                  <div className="table-rep-plugin">
+                    <div
+                      className="table-responsive mb-0"
+                      data-pattern="priority-columns"
+                    >
+                      <Table
+                        id="tech-companies-1"
+                        className="table table-striped "
+                      >
+                        <Thead>
+                          <Tr>
+                            {columns.map((column, index) =>
+                              <Th data-priority={index} key={index}>{column.text}</Th>
+                            )}
+                          </Tr>
+                        </Thead>
+                        <Tbody>
+                          {props.docs.map((row, rowIndex) =>
+                            <Tr key={rowIndex}>
+                              {columns.map((column, index) =>
+                                <Td key={`${rowIndex}-${index}`}>{row[column.dataField]}</Td>
+                              )}
+                            </Tr>
+                          )}
+                        </Tbody>
+                      </Table>
+                    </div>
+                  </div>
+
 
                 </CardBody>
               </Card>
@@ -197,4 +191,14 @@ function LeadsList(){
     </React.Fragment>
   );
 }
-export default LeadsList;
+// export default RolesList
+
+
+const mapStateToProps = (state) => ({
+  rolesReducer: state.rolesReducer,
+  docs: state.rolesReducer.docs || [],
+  page: state.rolesReducer.page || 1,
+  totalDocs: state.rolesReducer.totalDocs || 0,
+  totalPages: state.rolesReducer.totalPages || 0,
+});
+export default connect(mapStateToProps, null)(RolesList);
