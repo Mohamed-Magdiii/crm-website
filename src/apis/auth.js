@@ -1,7 +1,9 @@
 
 
+import { API_BASE } from "./url_helper";
+
 export const loginUser = async(values) => {
-  const result = await fetch("http://localhost:3001/api/v1/crm/auth/login", {
+  const result = await fetch(`${API_BASE}/auth/login`, {
     method:"POST",
     mode:"cors",
        

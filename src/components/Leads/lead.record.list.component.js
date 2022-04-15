@@ -122,7 +122,6 @@ function LeadsList(){
                       >
                         {toolkitProps => (
                           <React.Fragment>
-
                             <Row className="mb-2">
                               <Col md="4">
                                 <div className="search-box me-2 mb-2 d-inline-block">
