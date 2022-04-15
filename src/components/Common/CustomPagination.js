@@ -24,7 +24,7 @@ function PaginationComponent({
 }){
   return (
     <React.Fragment>
-      {totalDocs > 0 &&
+      {totalDocs > 0 && totalPages > 1 &&
         <div className="align-items-md-center mt-30">
           <div className="p-2 border">
             <Col className="pagination pagination-rounded gap-4 d-flex align-items-md-center" >

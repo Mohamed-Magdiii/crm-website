@@ -5,7 +5,7 @@ import {
 import { Link } from "react-router-dom";
 
 import {
-  Row, Col, Card, CardBody, CardTitle, CardHeader, Spinner, Input, Label
+  Row, Col, Card, CardBody, CardTitle, CardHeader, Input, Label,
 } from "reactstrap";
 
 import {
@@ -13,11 +13,18 @@ import {
 } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 
-import { fetchRoles } from "../../store/roles/actions";
-import CustomPagination from "../../components/Common/CustomPagination";
-import TableLoader from "../../components/Common/TableLoader";
+import { fetchRoles, deleteRoles } from "store/roles/actions";
+import CustomPagination from "components/Common/CustomPagination";
+import TableLoader from "components/Common/TableLoader";
+import DeleteModal from "components/Common/DeleteModal";
+import RolesAdd from "./RolesAdd";
+import RolesEdit from "./RolesEdit";
 
 function RolesList(props){
+ 
+  const [editModal, setEditUserModal] = useState(false);
+  const [deleteModal, setDeleteUserModal] = useState(false);
+  const [selectedRole, setSelectedRole] = useState();
   const columns = [
     {
       dataField: "createdAt",
@@ -29,13 +36,17 @@ function RolesList(props){
       text:"Title"
     },
     {
+      dataField: "createdBy",
+      text: "Created By",
+      formatter: (val) => {return (val.createdBy && val.createdBy.firstName) ? `${val.createdBy.firstName} ${val.createdBy.lastName}` : ""},
+    },
+    {
       dataField: "isActive",
       text: "Status",
       formatter: (item) => (
         <div className="d-flex gap-3">
           <Input type="checkbox" id={item.id} switch="none" defaultChecked={item.isActive} onClick={() => {}} />
           <Label className="me-1" htmlFor={item.id} data-on-label="Active" data-off-label=""></Label>
-
         </div>
       ),
     },
@@ -50,21 +61,20 @@ function RolesList(props){
             <i
               className="mdi mdi-pencil font-size-18"
               id="edittooltip"
-              onClick={() => {}}
+              onClick={() => {setSelectedRole(item); setEditUserModal(true)}}
             ></i>
           </Link>
           <Link className="text-danger" to="#">
             <i
               className="mdi mdi-delete font-size-18"
               id="deletetooltip"
-              onClick={() => {}}
+              onClick={() => { setSelectedRole(item); setDeleteUserModal(true)}}
             ></i>
           </Link>
         </div>
       ),
     },
   ];
- 
   const [sizePerPage, setSizePerPage] = useState(5);
   const dispatch = useDispatch();
   
@@ -79,10 +89,19 @@ function RolesList(props){
     }));
   };
 
+  const deleteRole = () => {
+    dispatch(deleteRoles(selectedRole._id));
+  };
+
+  useEffect(()=>{
+    if (props.deleteClearingCounter > 0 && deleteModal) {
+      setDeleteUserModal(false);
+    }
+  }, [props.deleteClearingCounter]);
+
   return (
     <React.Fragment>
       <div className="page-content">
-      
         <div className="container-fluid">
           <h2>Roles</h2>
           <Row>
@@ -90,7 +109,7 @@ function RolesList(props){
               <Card>
                 <CardHeader className="d-flex justify-content-between  align-items-center">
                   <CardTitle>Roles List ({props.totalDocs})</CardTitle>
-                  <button className="add-btn">Add+</button>
+                  <RolesAdd />
                 </CardHeader>
                 <CardBody>
                   <div className="table-rep-plugin">
@@ -136,6 +155,8 @@ function RolesList(props){
               </Card>
             </Col>
           </Row>
+          {<RolesEdit open={editModal}  role={selectedRole} onClose={()=>{setEditUserModal(false)}} />}
+          {<DeleteModal loading={props.deleteLoading} onDeleteClick={deleteRole} show={deleteModal} onCloseClick={()=>{setDeleteUserModal(false)}} />}
         </div>
       </div>
     </React.Fragment>
@@ -156,6 +177,9 @@ const mapStateToProps = (state) => ({
   nextPage: state.rolesReducer.nextPage,
   pagingCounter: state.rolesReducer.pagingCounter,
   prevPage: state.rolesReducer.prevPage,
+
+  deleteLoading: state.rolesReducer.deleteLoading,
+  deleteClearingCounter: state.rolesReducer.deleteClearingCounter,
 
 });
 export default connect(mapStateToProps, null)(RolesList);
