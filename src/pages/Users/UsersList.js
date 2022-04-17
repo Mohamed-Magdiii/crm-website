@@ -114,7 +114,7 @@ function UsersList(props) {
       sort: true,
       formatter: (user) => (
         <div className="d-flex gap-3">
-          <Input type="checkbox" id={user.id} switch="none" defaultChecked={user.isActive} onClick={() => { }} />
+          <Input type="checkbox" id={user.id} switch="none" defaultChecked={user.isActive} onClick={() => { setSelectedUser(user); statusUser(user) }} />
           <Label className="me-1" htmlFor={user.id} data-on-label="Active" data-off-label=""></Label>
         </div>
       ),
@@ -169,7 +169,16 @@ function UsersList(props) {
   const deleteUser = () => {
     dispatch(deleteUsers(selectedUser._id));
   };
- 
+
+  const statusUser = (user) => {
+    const values = { "isActive": !user.isActive };
+    dispatch(editUser({
+      id: user._id,
+      values
+    }));
+
+  };
+
   useEffect(() => {
     if (deleteClearingCounter > 0 && deleteModal) {
       setDeleteUserModal(false);
