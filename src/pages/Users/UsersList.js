@@ -18,12 +18,14 @@ import {
 } from "store/users/actions";
 import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
+import DeleteModal from "components/Common/DeleteModal";
 import UsersAddModal from "./UsersAddModal";
 import UsersEditModal from "./UsersEditModal";
 
 function UsersList(props) {
 
   const [editModal, setEditUserModal] = useState(false);
+  const [deleteModal, setDeleteUserModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState();
   const [btnprimary1, setBtnprimary1] = useState(false);
 
@@ -39,6 +41,8 @@ function UsersList(props) {
     nextPage,
     pagingCounter,
     prevPage,
+    deleteLoading,
+    deleteClearingCounter,
     roles,
     clearingCounter,
     editClearingCounter,
@@ -54,6 +58,8 @@ function UsersList(props) {
     nextPage: state.usersReducer.nextPage,
     pagingCounter: state.usersReducer.pagingCounter,
     prevPage: state.usersReducer.prevPage,
+    deleteLoading: state.usersReducer.deleteLoading,
+    deleteClearingCounter: state.usersReducer.deleteClearingCounter,
     roles: state.usersReducer.rolesData,
     clearingCounter: state.usersReducer.clearingCounter,
     editClearingCounter: state.usersReducer.editClearingCounter,
@@ -131,7 +137,7 @@ function UsersList(props) {
             <i
               className="mdi mdi-delete font-size-18"
               id="deletetooltip"
-              onClick={() => { }}
+              onClick={() => { setSelectedUser(user); setDeleteUserModal(true) }}
             ></i>
           </Link>
         </div>
@@ -160,6 +166,15 @@ function UsersList(props) {
     }));
 
   };
+  const deleteUser = () => {
+    dispatch(deleteUsers(selectedUser._id));
+  };
+ 
+  useEffect(() => {
+    if (deleteClearingCounter > 0 && deleteModal) {
+      setDeleteUserModal(false);
+    }
+  }, [deleteClearingCounter]);
 
   return (
     <React.Fragment>
@@ -239,6 +254,7 @@ function UsersList(props) {
             </Col>
           </Row>
           {<UsersEditModal open={editModal} user={selectedUser} usersRoles={roles} onClose={() => { setEditUserModal(false) }} />}
+          {<DeleteModal loading={deleteLoading} onDeleteClick={deleteUser} show={deleteModal} onCloseClick={() => { setDeleteUserModal(false) }} />}
         </div>
       </div>
     </React.Fragment>
