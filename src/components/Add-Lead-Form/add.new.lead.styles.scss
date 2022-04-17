@@ -1,0 +1,65 @@
+.lead-form{
+    position: absolute;
+    z-index:5000;
+    top:33%;
+    left:55%;
+    transform:translate(-50%,-50%);
+    margin-top: 1rem;
+    margin-left: 2rem;
+}
+.success{
+  background-color: rgb(193, 238, 193);
+  border-radius: 5px;
+  padding:0.5rem 1rem;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+.error{
+   background-color: rgb(241, 171, 171);
+   border-radius: 5px;
+   padding:0.5rem 1rem;
+   margin-bottom: 0.5rem;
+   font-weight: bold;
+}
+.lead-modal{
+    position: absolute;
+
+    top:0%;
+    left:0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(black,0.1);
+    z-index: 3000;
+    
+}
+.hide-form{
+  display:none;
+}
+select,input {
+  border-top-style: hidden !important;
+  border-right-style:hidden !important;
+  border-left-style:hidden !important;
+  border-radius: 0 !important;
+  border-bottom: 2px solid rgb(164, 162, 162) !important;
+}
+select:focus:invalid ,input:focus:invalid {
+  outline: none !important;
+  border-bottom-color:  #db0a0a !important;
+  box-shadow: none !important;
+  
+}
+
+.reverse-form{
+  display: flex;
+  flex-direction: column;
+}
+.reverse-form :nth-child(1) { order: 2; }
+.reverse-form :nth-child(2) { order: 1; }
+input:focus:invalid + label{
+  color:#db0a0a;
+}
+.buttons-div{
+  display: flex;
+  justify-content: flex-end;
+  gap:1rem;
+}
