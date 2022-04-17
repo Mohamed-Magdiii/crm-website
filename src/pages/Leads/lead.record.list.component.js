@@ -13,7 +13,7 @@ import paginationFactory, {
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import "./lead.page.custom.styles.scss";
 import { fetchLeadsFromAPI } from "../../store/leads/actions";
-
+import LeadForm from "components/Add-Lead-Form/add.lead.form.component";
 function LeadsList(){
   const columns = [{
     dataField: "createdAt",
@@ -63,6 +63,12 @@ function LeadsList(){
   const [sizePerPage, setSizePerPage] = useState(10);
   const [totalDocs, setTotalDocs] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const toggleAddLeadForm = ()=>{
+    
+    setShowAddForm(preValue=>!preValue);
+    
+  };
   const customizedLeads = leads.map(lead=>{
     const date = new Date(lead.createdAt);
   
@@ -93,16 +99,17 @@ function LeadsList(){
   return (
     <React.Fragment>
       <div className="page-content">
-      
+        
         <div className="container-fluid">
+          {showAddForm && <LeadForm/>}
           <h2>Leads</h2>
-
+          
           <Row>
             <Col className="col-12">
               <Card>
                 <CardHeader className="d-flex justify-content-between  align-items-center">
                   <CardTitle>Leads List ({totalDocs})</CardTitle>
-                  <button className="add-btn">Add+</button>
+                  <button className="add-btn" onClick = {toggleAddLeadForm}>Add+</button>
                 </CardHeader>
                 <CardBody>
                 
