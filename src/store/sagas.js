@@ -11,6 +11,7 @@ import chatSaga from "./chat/saga";
 import invoiceSaga from "./invoices/saga";
 import contactsSaga from "./contacts/saga";
 import rolesSaga from "./roles/saga";
+import usersSaga from "./users/saga";
 
 export default function* rootSaga() {
   yield all([
@@ -24,6 +25,7 @@ export default function* rootSaga() {
     fork(chatSaga),
     fork(invoiceSaga),
     fork(contactsSaga),
-    fork(rolesSaga)
+    fork(rolesSaga),
+    fork(usersSaga)
   ]);
 }
