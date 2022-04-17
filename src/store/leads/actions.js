@@ -1,7 +1,9 @@
 import {
   FETCH_LEADS,
   FETCH_LEADS_SUCCESS,
-  API_ERROR
+  API_ERROR,
+  ADD_NEW_LEAD,
+  ADD_NEW_LEAD_SUCCESS
 } from "./actionsType";
 export const fetchLeads = (leads)=>{
   return {
@@ -19,6 +21,18 @@ export const apiError = (error)=>{
   return {
     type:API_ERROR,
     payload:{ error }
+  };
+};
+export const addNewLead = (newLead)=>{
+  return {
+    type: ADD_NEW_LEAD,
+    payload:{ newLead }
+  }; 
+};
+export const addNewLeadSuccess = (message)=>{
+  return {
+    type:ADD_NEW_LEAD_SUCCESS,
+    payload:{ message }
   };
 };
 export const fetchLeadsFromAPI = (dispatch, setTotalDocs, sizePerPage, currentPage)=>{

@@ -1,6 +1,7 @@
 const initialState = {
   loading:false,
   error:"",
+  successMessage:"",
   leads:[]
 };
 const leadReducer = (state = initialState, action)=>{
@@ -21,9 +22,32 @@ const leadReducer = (state = initialState, action)=>{
     case "API_ERROR":
       state = {
         ...state,
-        error:action.payload.error
+        error:action.payload.error,
+        successMessage:""
       };
       break;
+    case "ADD_NEW_LEAD":
+      state = {
+        ...state,
+        error:"",
+        successMessage:"",
+        leads:[{ 
+          createdAt:new Date().toLocaleDateString(), 
+          ...action.payload.newLead 
+        },
+        ...state.leads],
+        
+      };
+      break;
+    case "ADD_NEW_LEAD_SUCCESS":
+      state = {
+        ...state,
+        error:"",
+        loading:false,
+        successMessage:action.payload.message
+      };
+      break;
+  
     default:
       state = { ...state };
 
