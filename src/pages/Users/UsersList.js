@@ -14,14 +14,16 @@ import {
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 
 import {
-  fetchUsers, deleteUsers, fetchUsersRoles,
+  fetchUsers, deleteUsers, fetchUsersRoles, editUser,
 } from "store/users/actions";
 import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
 import UsersAddModal from "./UsersAddModal";
+import UsersEditModal from "./UsersEditModal";
 
 function UsersList(props) {
 
+  const [editModal, setEditUserModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState();
   const [btnprimary1, setBtnprimary1] = useState(false);
 
@@ -37,9 +39,9 @@ function UsersList(props) {
     nextPage,
     pagingCounter,
     prevPage,
-    deleteClearingCounter,
     roles,
     clearingCounter,
+    editClearingCounter,
   } = useSelector((state) => ({
     loading: state.usersReducer.loading || false,
     docs: state.usersReducer.docs || [],
@@ -54,6 +56,7 @@ function UsersList(props) {
     prevPage: state.usersReducer.prevPage,
     roles: state.usersReducer.rolesData,
     clearingCounter: state.usersReducer.clearingCounter,
+    editClearingCounter: state.usersReducer.editClearingCounter,
   }));
 
   const columns = [
@@ -121,7 +124,7 @@ function UsersList(props) {
             <i
               className="mdi mdi-pencil font-size-18"
               id="edittooltip"
-              onClick={() => { }}
+              onClick={() => { setSelectedUser(user); setEditUserModal(true) }}
             ></i>
           </Link>
           <Link className="text-danger" to="#">
@@ -141,7 +144,7 @@ function UsersList(props) {
   useEffect(() => {
     loadUsers(1, sizePerPage);
     loadRoles(1, 100);
-  }, [sizePerPage, 1, clearingCounter]);
+  }, [sizePerPage, 1, clearingCounter, editClearingCounter]);
 
   const loadUsers = (page, limit) => {
     dispatch(fetchUsers({
@@ -235,6 +238,7 @@ function UsersList(props) {
               </Card>
             </Col>
           </Row>
+          {<UsersEditModal open={editModal} user={selectedUser} usersRoles={roles} onClose={() => { setEditUserModal(false) }} />}
         </div>
       </div>
     </React.Fragment>
