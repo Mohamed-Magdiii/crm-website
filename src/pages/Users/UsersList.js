@@ -145,14 +145,16 @@ function UsersList(props) {
     },
   ];
   const [sizePerPage, setSizePerPage] = useState(10);
+  const [currentPage, setcurrentPagePage] = useState(1);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    loadUsers(1, sizePerPage);
+    loadUsers(currentPage, sizePerPage);
     loadRoles(1, 100);
   }, [sizePerPage, 1, clearingCounter, editClearingCounter]);
 
   const loadUsers = (page, limit) => {
+    setcurrentPagePage(page);
     dispatch(fetchUsers({
       page,
       limit,
