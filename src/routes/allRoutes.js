@@ -15,6 +15,9 @@ import UsersList from "../pages/Users/UsersList";
 import LeadsList from "../components/Leads/lead.record.list.component";
 import Page404 from "../pages/Authentication/Page404";
 
+// email templates related pages
+import emailTemplatesList from "../pages/EmailTemplate/EmailTemplatesList";
+
 const userRoutes = [
 
   //dashboard
@@ -40,6 +43,12 @@ const userRoutes = [
   {
     path: "/users",
     component: UsersList 
+  },
+
+  // email templates routes, it could be moved to other location but for now let's keep them here 
+  {
+    path: "email-templates",
+    component: emailTemplatesList
   },
 
   {

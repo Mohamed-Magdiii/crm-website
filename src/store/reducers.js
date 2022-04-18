@@ -22,6 +22,10 @@ import invoices from "./invoices/reducer";
 import contacts from "./contacts/reducer";
 import clientReducer from "./client/reducer";
 import leadReducer from "./leads/reducer";
+
+// email templates 
+import emailTemplateReducer from "./emailTemplate/reducer";
+
 const rootReducer = combineReducers({
   // public
   Layout,
@@ -34,7 +38,8 @@ const rootReducer = combineReducers({
   invoices,
   contacts,
   clientReducer,
-  leadReducer
+  leadReducer,
+  emailTemplateReducer
 });
 
 export default rootReducer;

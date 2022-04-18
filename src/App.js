@@ -56,6 +56,7 @@ const App = props => {
   }
 
   const Layout = getLayout();
+  // "here it is showing the dashboard component but not my component the EmailItem not sure why but this needs to be figured out either this way or by creating a new route to the Emil module which needs to be done eventually"
   return (
     <React.Fragment>
       <Router>
