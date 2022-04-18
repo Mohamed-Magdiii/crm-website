@@ -28,7 +28,7 @@ export const fetchClientsFromAPI = (dispatch, setTotalDocs, sizePerPage, current
   fetch(`http://localhost:3001/api/v1/crm/clients?limit=${sizePerPage}&page=${currentPage}`)
     .then(result=>result.json())
     .then(data=>{
-      dispatch(fetchClients(data.result.docs));
+      dispatch(fetchClients(data.result.docs)); 
       setTotalDocs(data.result.totalDocs);
       dispatch(fetchClientsSuccess(false));
     }).catch(error=>{

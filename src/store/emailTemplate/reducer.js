@@ -3,7 +3,7 @@ const initialState = {
   loading:false,
   emailTemplates:[]
 };
-  
+
 // the state represents all email templates 
 // so if the action is FETCH_EMAIL_TEMPLATES 
 // then this is to get all templates for display
@@ -19,14 +19,14 @@ const emailTemplateReducer = (state = initialState, action) => {
         error: "",
         emailTemplates: action.payload.emailTemplates
       };
-  
+
       break;
     default:
       // using spread operator to make a copy so I won't break the immutability rule 
       state = { ...state };
   }
-  
+
   return state;
 };
-  
+
 export default emailTemplateReducer;

@@ -55,8 +55,7 @@ const App = props => {
     return layoutCls;
   }
 
-  const Layout = getLayout();
-  // "here it is showing the dashboard component but not my component the EmailItem not sure why but this needs to be figured out either this way or by creating a new route to the Emil module which needs to be done eventually"
+  const Layout = getLayout(); // layout = layoutCls 
   return (
     <React.Fragment>
       <Router>
@@ -80,14 +79,13 @@ const App = props => {
               isAuthProtected={false}
               exact
             />
-          ))}
-
-          
+          ))}  
         </Switch>
       </Router>
     </React.Fragment>
   );
 };
+
 
 App.propTypes = {
   layout: PropTypes.any
@@ -98,5 +96,6 @@ const mapStateToProps = state => {
     layout: state.Layout,
   };
 };
+
 
 export default connect(mapStateToProps, null)(App);

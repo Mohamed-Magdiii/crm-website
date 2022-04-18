@@ -25,8 +25,8 @@ export const apiError = (error) => {
 
 
 export const fetchEmailTemplateFromApi = (dispatch, setTotalDocs, sizePerPage, currentPage) => {
-// this needs to be handled because it's not easy to be sure what it dose it client/actions.js
-// but here goes nothing
+  // this needs to be handled because it's not easy to be sure what it dose it client/actions.js
+  // but here goes nothing
   fetch(`http://localhost:3001/api/v1/crm/emailTemplates?limit=${sizePerPage}&page=${currentPage}`)
     .then(result => result.json())
     .then(data => {

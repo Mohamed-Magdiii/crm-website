@@ -23,9 +23,8 @@ import contacts from "./contacts/reducer";
 import clientReducer from "./client/reducer";
 import leadReducer from "./leads/reducer";
 
-// email templates 
+// email tempaltes 
 import emailTemplateReducer from "./emailTemplate/reducer";
-
 const rootReducer = combineReducers({
   // public
   Layout,

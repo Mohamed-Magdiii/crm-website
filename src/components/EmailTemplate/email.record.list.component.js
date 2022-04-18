@@ -197,5 +197,4 @@ function EmailTemplateList(){
     </React.Fragment>
   );
 }
-
 export default EmailTemplateList;
