@@ -217,7 +217,7 @@ function UsersList(props) {
                           </Tr>
                         </Thead>
                         <Tbody>
-                          {loading && <TableLoader colSpan={4} />}
+                          {loading && <TableLoader colSpan={6} />}
                           {!loading && docs.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
                               {columns.map((column, index) =>
