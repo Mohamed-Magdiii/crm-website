@@ -161,6 +161,9 @@ function UsersList(props) {
     }));
 
   };
+  const numPageRows = (numOfRows) => {
+    setSizePerPage(numOfRows);
+  };
   const loadRoles = (page, limit) => {
     dispatch(fetchUsersRoles({
       page,
@@ -242,7 +245,7 @@ function UsersList(props) {
                         nextPage={nextPage}
                         limit={limit}
                         pagingCounter={pagingCounter}
-                        setSizePerPage={setSizePerPage}
+                        setSizePerPage={numPageRows}
                         onChange={loadUsers}
                       />
                       {/* <Dropdown
