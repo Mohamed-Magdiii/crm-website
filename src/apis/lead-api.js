@@ -19,3 +19,9 @@ export const addNewLead = async(values) => {
   const data = await result.json();
   return data;
 };
+export const fetchLeadsFromAPI = async ( { sizePerPage, currentPage })=>{
+  
+  const result = await  fetch(`http://localhost:3001/api/v1/crm/leads?limit=${sizePerPage}&page=${currentPage}`);
+  const leads = await result.json();
+  return leads;
+};

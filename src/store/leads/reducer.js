@@ -2,21 +2,24 @@ const initialState = {
   loading:false,
   error:"",
   successMessage:"",
-  leads:[]
+  leads:[],
+  totalDocs:0
 };
 const leadReducer = (state = initialState, action)=>{
   switch (action.type){
-    case "FETCH_LEADS":
+    case "FETCH_LEADS_START":
       state = {
         ...state,
         loading:true,
-        leads:action.payload.leads
+        
       };
       break;
     case "FETCH_LEADS_SUCCESS":
       state = {
         ...state,
-        loading:action.payload.loading
+        leads: [...action.payload.result.docs],
+        totalDocs: action.payload.result.totalDocs,
+        loading: false,
       };
       break;
     case "API_ERROR":
