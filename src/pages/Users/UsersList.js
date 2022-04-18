@@ -145,16 +145,16 @@ function UsersList(props) {
     },
   ];
   const [sizePerPage, setSizePerPage] = useState(10);
-  const [currentPage, setcurrentPagePage] = useState(1);
+  // const [currentPage, setcurrentPagePage] = useState(1);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    loadUsers(currentPage, sizePerPage);
+    loadUsers(1, sizePerPage);
     loadRoles(1, 100);
-  }, [sizePerPage, 1, clearingCounter, editClearingCounter]);
+  }, [sizePerPage, 1, clearingCounter]);
 
   const loadUsers = (page, limit) => {
-    setcurrentPagePage(page);
+    // setcurrentPagePage(page);
     dispatch(fetchUsers({
       page,
       limit,
@@ -199,7 +199,8 @@ function UsersList(props) {
             <Col className="col-12">
               <Card>
                 <CardHeader className="d-flex justify-content-between  align-items-center">
-                  <CardTitle> </CardTitle>
+                  <CardTitle>Users List ({totalDocs})</CardTitle>
+
                   <UsersAddModal usersRoles={roles} />
                 </CardHeader>
                 <CardBody>
