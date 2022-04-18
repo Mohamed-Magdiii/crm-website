@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { 
+  useDispatch, useSelector, connect 
+} from "react-redux";
 import {
   Row, Col, Card, CardBody, CardTitle, CardHeader 
 } from "reactstrap";
@@ -12,8 +14,9 @@ import paginationFactory, {
 
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import "./lead.page.custom.styles.scss";
-import { fetchLeadsFromAPI } from "../../store/leads/actions";
+import { fetchLeadsStart } from "../../store/leads/actions";
 import LeadForm from "components/Add-Lead-Form/add.lead.form.component";
+import "./datatables.scss";
 function LeadsList(){
   const columns = [{
     dataField: "createdAt",
@@ -59,9 +62,8 @@ function LeadsList(){
   }];
  
     
-  const { leads } = useSelector(state=>state.leadReducer);
+  const { leads, totalDocs } = useSelector(state=>state.leadReducer);
   const [sizePerPage, setSizePerPage] = useState(10);
-  const [totalDocs, setTotalDocs] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [showAddForm, setShowAddForm] = useState(false);
   const toggleAddLeadForm = ()=>{
@@ -92,10 +94,13 @@ function LeadsList(){
   };
   const { SearchBar } = Search;
   useEffect(()=>{
-         
+    dispatch(fetchLeadsStart({
+      sizePerPage,
+      currentPage 
+    })) ;
         
-    fetchLeadsFromAPI(dispatch, setTotalDocs, sizePerPage, currentPage);
-  }, [sizePerPage, currentPage, dispatch]);
+    
+  }, [sizePerPage, currentPage]);
   return (
     <React.Fragment>
       <div className="page-content">
@@ -204,5 +209,7 @@ function LeadsList(){
       </div>
     </React.Fragment>
   );
+  
 }
-export default LeadsList;
+
+export default (LeadsList);
