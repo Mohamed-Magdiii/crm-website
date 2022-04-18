@@ -19,20 +19,16 @@ function EmailTemplateList(){
     text: "Register Date"
   }, 
   {
-    dataField:"activationEvent",
-    text:"Activation event"
+    dataField: "templateContent",
+    text: "Email template content",
   },
   {
     dataField: "emailTemplateStatus", // active or inactive 
     text: "Template status",
-  },
-  {
-    dataField: "templateContent",
-    text: "Email template content",
   }, 
   {
-    dataField: "action", // update and delete buttons
-    text: "Action"
+    dataField: "actions", // update and delete buttons
+    text: "Actions"
   }];
   
   // needs to be converted to bring all email templates instead of clients 
@@ -41,7 +37,9 @@ function EmailTemplateList(){
   // maybe all these could be benefitial if converted to work with email templates
   // instead of clients 
   // but first I need to know how do they parse clients ? I can't see any for loops or iterations so how
-  // do they do it ? I need to know to keep going 
+  // do they do it ? I need to know to keep going
+  // this is OK for now nothing seems to break so keep it this way until eventually you'll be 
+  // faces with the logic and the data that's when you'll have to check them 
   const { emailTemplates } = useSelector(state=>state.emailTemplateReducer);
   // gonna use the same variable until they turn out to be misfits 
   const [sizePerPage, setSizePerPage] = useState(10);

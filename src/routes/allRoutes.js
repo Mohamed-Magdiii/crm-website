@@ -13,9 +13,13 @@ import ForgetPwd from "../pages/Authentication/ForgetPassword";
 import ClientList from "../components/Client/client.record.list.component";
 import UsersList from "../pages/Users/UsersList";
 import LeadsList from "../components/Leads/lead.record.list.component";
+import Page404 from "../pages/Authentication/Page404";
+
+// Email template related pages
 import EmailTemplatesList from "../pages/EmailTemplate/EmailTemplatesList";
 import UpdateEmailTemplate from "../pages/EmailTemplate/UpdateEmailTemplate";
-import Page404 from "../pages/Authentication/Page404";
+import AddNewEmailTemplate from "../pages/EmailTemplate/AddNewEmailTemplate";
+
 const userRoutes = [
 
   //dashboard
@@ -42,7 +46,9 @@ const userRoutes = [
     path: "/users",
     component: UsersList 
   },
+
   // email templates listing
+  // might be relocated later but for now let's keep them here 
   {
     path: "/email-templates",
     component: EmailTemplatesList
@@ -50,6 +56,10 @@ const userRoutes = [
   {
     path: "/update-email-template",
     component: UpdateEmailTemplate
+  },
+  {
+    path: "/add-new-email-template",
+    component: AddNewEmailTemplate
   },
 
   {
