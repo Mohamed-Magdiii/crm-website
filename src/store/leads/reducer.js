@@ -42,6 +42,7 @@ const leadReducer = (state = initialState, action)=>{
         ...state,
         error:"",
         successMessage:"",
+        totalDocs : state.totalDocs + 1,
         leads:[{ 
           createdAt:new Date().toLocaleDateString(), 
           ...action.payload.newLead 
