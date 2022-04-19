@@ -16,7 +16,8 @@ import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import "./lead.page.custom.styles.scss";
 import { fetchLeadsStart } from "../../store/leads/actions";
 import LeadForm from "components/Add-Lead-Form/add.lead.form.component";
-import "./datatables.scss";
+
+
 function LeadsList(){
   const columns = [{
     dataField: "createdAt",
@@ -62,10 +63,11 @@ function LeadsList(){
   }];
  
     
-  const { leads, totalDocs } = useSelector(state=>state.leadReducer);
+  const { leads, totalDocs} = useSelector(state=>state.leadReducer);
   const [sizePerPage, setSizePerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [showAddForm, setShowAddForm] = useState(false);
+  
   const toggleAddLeadForm = ()=>{
     
     setShowAddForm(preValue=>!preValue);
@@ -83,24 +85,29 @@ function LeadsList(){
   });
     
   const dispatch = useDispatch();
-  const pageOptions = {
-    sizePerPage: sizePerPage,
-    totalSize: totalDocs,
-    custom: true,
-  };
+  
   
   const selectRow = {
     mode: "checkbox"
   };
   const { SearchBar } = Search;
   useEffect(()=>{
+    loadLeads(sizePerPage, currentPage);
+  
+  }, [currentPage, sizePerPage]);
+  
+  const loadLeads = (sizePerPage, currentPage)=>{
     dispatch(fetchLeadsStart({
       sizePerPage,
-      currentPage 
+      currentPage
     })) ;
-        
+  };
+  const pageOptions = {
+    sizePerPage:sizePerPage,
+    totalSize:Number(totalDocs) || 0,
+    custom: true,
     
-  }, [sizePerPage, currentPage]);
+  };
   return (
     <React.Fragment>
       <div className="page-content">
@@ -175,7 +182,11 @@ function LeadsList(){
                                   <div className='custom-div'>
                                     <PaginationListStandalone 
                                       {...paginationProps }
-                                      onPageChange={(page)=>setCurrentPage(page)}
+                          
+                                      onPageChange={(currentPage)=>{
+                                
+                                        setCurrentPage(currentPage);
+                                      }}
                                       page={currentPage}
                                     />
                                   </div>
@@ -184,13 +195,15 @@ function LeadsList(){
                                     <SizePerPageDropdownStandalone
                                       {...paginationProps}
                                       className="custom-background"
-                                      onSizePerPageChange={(pageSize)=>
-                                      {setSizePerPage(pageSize);
-                                        setCurrentPage(1);
-                                      }}
+                                      onSizePerPageChange={(pageSize)=>{
+                                        setSizePerPage(pageSize);
+                                        setCurrentPage(1);}
+                                      }
+                                
+                                      page={currentPage}
                                     />
                                   </div>
-                              
+                            
                                 </Col>
                               </div>
                             </Row>

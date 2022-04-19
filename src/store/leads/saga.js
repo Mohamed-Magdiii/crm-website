@@ -11,6 +11,7 @@ function * fetchLeads({ payload }){
   try {
     
     const data = yield call(fetchLeadsFromAPI, payload);
+    console.log("leads", data);
     yield put(fetchLeadsSuccess(data));
   } catch (error){
     yield put(apiError("Oppos there is a problem in the server"));

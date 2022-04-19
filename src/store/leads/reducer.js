@@ -19,7 +19,15 @@ const leadReducer = (state = initialState, action)=>{
         ...state,
         leads: [...action.payload.result.docs],
         totalDocs: action.payload.result.totalDocs,
-        loading: false,
+        hasNextPage: action.payload.result.hasNextPage,
+        hasPrevPage: action.payload.result.hasPrevPage,
+        limit: action.payload.result.limit,
+        nextPage: action.payload.result.nextPage,
+        page: action.payload.result.page,
+        prevPage: action.payload.result.prevPage,
+        totalPages: action.payload.result.totalPages,
+        loading: false
+        
       };
       break;
     case "API_ERROR":

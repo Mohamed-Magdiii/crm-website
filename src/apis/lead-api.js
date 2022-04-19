@@ -1,3 +1,4 @@
+import * as axiosHelper from "./api_helper";
 export const addNewLead = async(values) => {
   const result = await fetch("http://localhost:3001/api/v1/crm/leads", {
     method:"POST",
@@ -21,7 +22,7 @@ export const addNewLead = async(values) => {
 };
 export const fetchLeadsFromAPI = async ( { sizePerPage, currentPage })=>{
   
-  const result = await  fetch(`http://localhost:3001/api/v1/crm/leads?limit=${sizePerPage}&page=${currentPage}`);
-  const leads = await result.json();
-  return leads;
+  const result = await  axiosHelper.get(`/api/v1/crm/leads?limit=${sizePerPage}&page=${currentPage}`);
+  
+  return result;
 };

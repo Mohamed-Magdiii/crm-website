@@ -35,27 +35,24 @@
 .hide-form{
   display:none;
 }
-select,input {
+select,.lead-form-input {
   border-top-style: hidden !important;
   border-right-style:hidden !important;
   border-left-style:hidden !important;
   border-radius: 0 !important;
   border-bottom: 2px solid rgb(164, 162, 162) !important;
 }
-select:focus:invalid ,input:focus:invalid {
+.lead-form-select:focus:invalid ,.lead-form-input:focus:invalid {
   outline: none !important;
   border-bottom-color:  #db0a0a !important;
   box-shadow: none !important;
   
 }
 
-.reverse-form{
-  display: flex;
-  flex-direction: column;
+.lead-form-input:focus:invalid + label{
+  color:#db0a0a;
 }
-.reverse-form :nth-child(1) { order: 2; }
-.reverse-form :nth-child(2) { order: 1; }
-input:focus:invalid + label{
+.lead-form-select:focus:invalid + label{
   color:#db0a0a;
 }
 .buttons-div{

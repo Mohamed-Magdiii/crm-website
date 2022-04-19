@@ -63,7 +63,7 @@ function LeadForm(){
                       errorMessage="First name is required"
                       validate={{ required: { value: true } }}
                       label="First Name"
-
+                      className="lead-form-input"
                     />
                     
                   </FormGroup>
@@ -78,6 +78,7 @@ function LeadForm(){
                       validate={{ required: { value: true } }}
                       id="validationCustom02"
                       label="Last Name"
+                      className="lead-form-input"
                     />
                     
                   </FormGroup>
@@ -93,6 +94,7 @@ function LeadForm(){
                       validate={{ required: { value: true } }}
                       id="validationCustom03"
                       label="Email"
+                      className="lead-form-input"
                     />
                    
                   </FormGroup>
@@ -106,7 +108,7 @@ function LeadForm(){
                       validate={{ required: { value: true } }}
                       id="validationCustom04"
                       label="Phone"
-                    
+                      className="lead-form-input"
                     />
                     
                   
@@ -125,6 +127,7 @@ function LeadForm(){
                     validate={{ required: { value: true } }}
                     id="validationCustom04"
                     label="Password"
+                    className="lead-form-input"
                   />
                   
                 </FormGroup>
