@@ -22,22 +22,19 @@ function * fetchLeads({ payload }){
 function *addNewLeadSaga({ payload:{ newLead } }){
   try {
     const data = yield call(addNewLead, newLead);
+    console.log(data);
     const { status } = data;
     const { code } = data;
       
     if (status === true){
       yield put (addNewLeadSuccess("Lead is added successfully"));
       
-    }
-    if ( code === 500){
-      yield put(apiError("Please Enter Valid Data"));
-    }
-         
+    }        
   }
   catch (error){
           
           
-    yield put(apiError("Oppos,Error in the server"));
+    yield put(apiError("Please Enter Valid data"));
   } 
       
 }
