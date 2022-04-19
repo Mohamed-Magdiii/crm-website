@@ -25,6 +25,9 @@ import leadReducer from "./leads/reducer";
 
 // email tempaltes 
 import emailTemplateReducer from "./emailTemplate/reducer";
+import rolesReducer from "./roles/reducer";
+import usersReducer from "./users/reducer";
+
 const rootReducer = combineReducers({
   // public
   Layout,
@@ -38,7 +41,9 @@ const rootReducer = combineReducers({
   contacts,
   clientReducer,
   leadReducer,
-  emailTemplateReducer
+  emailTemplateReducer,
+  rolesReducer,
+  usersReducer
 });
 
 export default rootReducer;

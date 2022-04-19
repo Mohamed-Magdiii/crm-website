@@ -1,9 +1,7 @@
 import React from "react";
 import MetaTags from "react-meta-tags";
 import { Container } from "reactstrap";
-import {
-  Button, Form, FormGroup, Label, Input, FormText 
-} from "reactstrap";
+
 
 import Breadcrumb from "../../components/Common/Breadcrumb";
 
