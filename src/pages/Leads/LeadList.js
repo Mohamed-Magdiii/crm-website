@@ -5,67 +5,72 @@ import {
 import {
   Row, Col, Card, CardBody, CardTitle, CardHeader 
 } from "reactstrap";
-
-import BootstrapTable from "react-bootstrap-table-next";
-import paginationFactory, {
-  PaginationProvider, PaginationListStandalone,
-  SizePerPageDropdownStandalone
-} from "react-bootstrap-table2-paginator";
-
-import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+import {
+  Table, Thead, Tbody, Tr, Th, Td
+} from "react-super-responsive-table";
+import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
+import CustomPagination from "components/Common/CustomPagination";
+import TableLoader from "components/Common/TableLoader";
+import { Search } from "react-bootstrap-table2-toolkit";
 import "./lead.page.custom.styles.scss";
 import { fetchLeadsStart } from "../../store/leads/actions";
-import LeadForm from "components/Add-Lead-Form/add.lead.form.component";
+import LeadForm from "components/Add-Lead-Form/AddLeadForm";
 
 
-function LeadsList(){
-  const columns = [{
-    dataField: "createdAt",
-    text: "Register Date",
+function LeadsList(props){
+  const columns = [
+    {
+      dataField:"checkbox",
+      text:<input type="checkbox"/>
+    },
+    {
+      dataField: "createdAt",
+      text: "Date",
+      formatter: (val) => {return new Date(val.createdAt).toLocaleDateString()}
+    }, 
+    {
+      dataField:"name",
+      text:"Name",
+      formatter: (val) => {return  `${val.firstName} ${val.lastName}` },
+    },
+    {
+      dataField: "email",
+      text: "Email",
     
-  }, 
-  {
-    dataField:"name",
-    text:"Name"
-  },
-  {
-    dataField: "email",
-    text: "Email",
+    },
+    {
+      dataField: "phone",
+      text: "Phone",
     
-  },
-  {
-    dataField: "phone",
-    text: "Phone",
+    },
+    {
+      dataField: "language",
+      text: "Language",
     
-  },
-  {
-    dataField: "language",
-    text: "Language",
+    },
+    {
+      dataField: "callStatus",
+      text: "Status",
     
-  },
-  {
-    dataField: "callStatus",
-    text: "Call Status",
-    
-  },
-  {
-    dataField: "country",
-    text: "Country",
+    },
+    {
+      dataField: "country",
+      text: "Country",
   
-  }, 
-  {
-    dataField:"agent",
-    text:"Sales Agent" 
-  },
-  {
-    dataField:"source",
-    text:"Source"
-  }];
+    }, 
+    {
+      dataField:"agent",
+      text:"Agent",
+      formatter:(val)=>{return val.agent ? val.agent._id : "-" },
+    },
+    {
+      dataField:"source",
+      text:"Source"
+    }];
  
     
-  const { leads, totalDocs} = useSelector(state=>state.leadReducer);
+  const {totalDocs} = useSelector(state=>state.leadReducer);
   const [sizePerPage, setSizePerPage] = useState(10);
-  const [currentPage, setCurrentPage] = useState(1);
   const [showAddForm, setShowAddForm] = useState(false);
   
   const toggleAddLeadForm = ()=>{
@@ -73,16 +78,7 @@ function LeadsList(){
     setShowAddForm(preValue=>!preValue);
     
   };
-  const customizedLeads = leads.map(lead=>{
-    const date = new Date(lead.createdAt);
-  
-    return {
-      ...lead,
-      name:`${lead.firstName} ${lead.lastName}`,
-      createdAt:date.toLocaleDateString(),
-      agent:lead.agent ? lead.agent._id : "-" 
-    };
-  });
+ 
     
   const dispatch = useDispatch();
   
@@ -92,131 +88,90 @@ function LeadsList(){
   };
   const { SearchBar } = Search;
   useEffect(()=>{
-    loadLeads(sizePerPage, currentPage);
+    loadLeads(1, sizePerPage);
   
-  }, [currentPage, sizePerPage]);
+  }, [sizePerPage, 1]);
   
-  const loadLeads = (sizePerPage, currentPage)=>{
+  const loadLeads = ( currentPage, sizePerPage)=>{
     dispatch(fetchLeadsStart({
       sizePerPage,
       currentPage
     })) ;
   };
-  const pageOptions = {
-    sizePerPage:sizePerPage,
-    totalSize:Number(totalDocs) || 0,
-    custom: true,
-    
-  };
+  
   return (
     <React.Fragment>
-      <div className="page-content">
-        
+      <div className="page-content"> 
         <div className="container-fluid">
-          {showAddForm && <LeadForm/>}
-          <h2>Leads</h2>
-          
+          <h2>Leads List</h2>
           <Row>
             <Col className="col-12">
+              {showAddForm && <LeadForm/>}
               <Card>
-                <CardHeader className="d-flex justify-content-between  align-items-center">
-                  <CardTitle>Leads List ({totalDocs})</CardTitle>
-                  <button className="add-btn" onClick = {toggleAddLeadForm}>Add+</button>
+                <CardHeader className="d-flex flex-column gap-3">
+                  <div className="d-flex justify-content-between  align-items-center">
+                    <CardTitle>Leads List ({totalDocs})</CardTitle>
+                    <button onClick={toggleAddLeadForm} className="add-btn">Add+</button>
+                  </div>
+                  <div className="search-bar"> 
+                    <SearchBar />
+                  </div>
+                  
+                  
                 </CardHeader>
                 <CardBody>
-                
-
-                  <PaginationProvider
-                    pagination={paginationFactory(pageOptions)}
-                    keyField='id'
-                    columns={columns}
-                    data={customizedLeads}
-                  >
-                    {({ paginationProps, paginationTableProps }) => (
-                      <ToolkitProvider
-                        keyField='id'
-                        columns={columns}
-                        data={customizedLeads}
-                        search
+                  <div className="table-rep-plugin">
+                    <div
+                      className="table-responsive mb-0"
+                      data-pattern="priority-columns"
+                    >
+                      <Table
+                        id="tech-companies-1"
+                        className="table "
                       >
-                        {toolkitProps => (
-                          <React.Fragment>
-                            <Row className="mb-2">
-                              <Col md="4">
-                                <div className="search-box me-2 mb-2 d-inline-block">
-                                  <div className="position-relative">
-                                    <SearchBar
-                                      {...toolkitProps.searchProps}
-                                    />
-                                    <i className="bx bx-search-alt search-icon" />
-                                  </div>
-                                </div>
-                              </Col>
-                            </Row>
-
-                            <Row>
-                              <Col xl="12">
-                                <div className="table-responsive">
-                                  <BootstrapTable
-                                    keyField={"id"}
-                                    responsive
-                                    bordered={false}
-                                    striped={false}
-                                    selectRow={selectRow}
-                                    classes={
-                                      "table align-middle table-nowrap"
-                                    }
-                                    headerWrapperClasses={"thead-light"}
-                                    {...toolkitProps.baseProps}
-                                    {...paginationTableProps}
-                                  />
-
-                                </div>
-                              </Col>
-                            </Row>
-
-                            <Row className="align-items-md-center mt-30">
-                              <div className="p-2 border">
-                                <Col className="pagination pagination-rounded gap-4 d-flex align-items-md-center" >
-                                  <div className='custom-div'>
-                                    <PaginationListStandalone 
-                                      {...paginationProps }
-                          
-                                      onPageChange={(currentPage)=>{
+                        <Thead>
+                          <Tr>
+                            {columns.map((column, index) =>
+                              <Th data-priority={index} key={index}>{column.text}</Th>
+                            )}
+                          </Tr>
+                        </Thead>
+                        <Tbody>
+                          {props.loading && <TableLoader colSpan={4} />}
+                          {!props.loading && props.leads.map((row, rowIndex) =>
+                            <Tr key={rowIndex}>
+                              
+                              {columns.map((column, index) =>
                                 
-                                        setCurrentPage(currentPage);
-                                      }}
-                                      page={currentPage}
-                                    />
-                                  </div>
-                                  <div>Records:{leads.length}</div>
-                                  <div >
-                                    <SizePerPageDropdownStandalone
-                                      {...paginationProps}
-                                      className="custom-background"
-                                      onSizePerPageChange={(pageSize)=>{
-                                        setSizePerPage(pageSize);
-                                        setCurrentPage(1);}
-                                      }
                                 
-                                      page={currentPage}
-                                    />
-                                  </div>
-                            
-                                </Col>
-                              </div>
-                            </Row>
-                          </React.Fragment>
-                        )
-                        }
-                      </ToolkitProvider>
-                    )
-                    }</PaginationProvider>
+                                <Td key={`${rowIndex}-${index}`}>
+
+                                  { column.dataField === "checkbox" ? <input type="checkbox"/> : ""}
+                                  {column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
+                                </Td>
+                              
+                                
+                              )}
+                            </Tr>
+                          )}
+                        </Tbody>
+                      </Table>
+                      <CustomPagination
+                        {...props}
+                        setSizePerPage={setSizePerPage}
+                        sizePerPage={sizePerPage}
+                        onChange={loadLeads}
+                        docs={props.leads}
+                      />
+                    </div>
+                  </div>
+
 
                 </CardBody>
               </Card>
             </Col>
           </Row>
+       
         </div>
       </div>
     </React.Fragment>
@@ -224,4 +179,18 @@ function LeadsList(){
   
 }
 
-export default (LeadsList);
+const mapStateToProps = (state) => ({
+  loading: state.leadReducer.loading || false,
+  leads: state.leadReducer.leads || [],
+  page: state.leadReducer.page || 1,
+  totalDocs: state.leadReducer.totalDocs || 0,
+  totalPages: state.leadReducer.totalPages || 0,
+  hasNextPage: state.leadReducer.hasNextPage,
+  hasPrevPage: state.leadReducer.hasPrevPage,
+  limit: state.leadReducer.limit,
+  nextPage: state.leadReducer.nextPage,
+  pagingCounter: state.leadReducer.pagingCounter,
+  prevPage: state.leadReducer.prevPage,
+
+});
+export default connect(mapStateToProps, null)(LeadsList);
