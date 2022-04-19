@@ -42,12 +42,6 @@ const leadReducer = (state = initialState, action)=>{
         ...state,
         error:"",
         successMessage:"",
-        totalDocs : state.totalDocs + 1,
-        leads:[{ 
-          createdAt:new Date().toLocaleDateString(), 
-          ...action.payload.newLead 
-        },
-        ...state.leads],
         
       };
       break;
@@ -56,7 +50,17 @@ const leadReducer = (state = initialState, action)=>{
         ...state,
         error:"",
         loading:false,
-        successMessage:action.payload.message
+        successMessage:action.payload.message,
+        totalDocs:action.payload.newLead ? state.totalDocs + 1 : state.totalDocs,
+        leads: action.payload.newLead ? [{ 
+          createdAt:new Date().toLocaleDateString(), 
+          language:"en-gb",
+          source:"REGISTER_DEMO",
+          ...action.payload.newLead 
+        },
+        ...state.leads] : [...state.leads],
+        
+      
       };
       break;
   

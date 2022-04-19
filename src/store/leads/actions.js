@@ -30,9 +30,12 @@ export const addNewLead = (newLead)=>{
     payload:{ newLead }
   }; 
 };
-export const addNewLeadSuccess = (message)=>{
+export const addNewLeadSuccess = (message, newLead)=>{
   return {
     type:ADD_NEW_LEAD_SUCCESS,
-    payload:{ message }
+    payload:{ 
+      message, 
+      newLead 
+    }
   };
 };

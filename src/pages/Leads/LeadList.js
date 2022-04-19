@@ -14,7 +14,7 @@ import TableLoader from "components/Common/TableLoader";
 import { Search } from "react-bootstrap-table2-toolkit";
 import "./lead.page.custom.styles.scss";
 import { fetchLeadsStart } from "../../store/leads/actions";
-import LeadForm from "components/Add-Lead-Form/AddLeadForm";
+import LeadForm from "pages/Leads/Add-Lead-Form/AddLeadForm";
 
 
 function LeadsList(props){
@@ -71,21 +71,10 @@ function LeadsList(props){
     
   const {totalDocs} = useSelector(state=>state.leadReducer);
   const [sizePerPage, setSizePerPage] = useState(10);
-  const [showAddForm, setShowAddForm] = useState(false);
-  
-  const toggleAddLeadForm = ()=>{
-    
-    setShowAddForm(preValue=>!preValue);
-    
-  };
- 
-    
+
   const dispatch = useDispatch();
   
   
-  const selectRow = {
-    mode: "checkbox"
-  };
   const { SearchBar } = Search;
   useEffect(()=>{
     loadLeads(1, sizePerPage);
@@ -106,18 +95,16 @@ function LeadsList(props){
           <h2>Leads List</h2>
           <Row>
             <Col className="col-12">
-              {showAddForm && <LeadForm/>}
+              
               <Card>
                 <CardHeader className="d-flex flex-column gap-3">
                   <div className="d-flex justify-content-between  align-items-center">
                     <CardTitle>Leads List ({totalDocs})</CardTitle>
-                    <button onClick={toggleAddLeadForm} className="add-btn">Add+</button>
+                    <LeadForm/>
                   </div>
                   <div className="search-bar"> 
                     <SearchBar />
-                  </div>
-                  
-                  
+                  </div>  
                 </CardHeader>
                 <CardBody>
                   <div className="table-rep-plugin">

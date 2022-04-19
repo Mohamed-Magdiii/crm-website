@@ -11,7 +11,6 @@ function * fetchLeads({ payload }){
   try {
     
     const data = yield call(fetchLeadsFromAPI, payload);
-    console.log("leads", data);
     yield put(fetchLeadsSuccess(data));
   } catch (error){
     yield put(apiError("Oppos there is a problem in the server"));
@@ -22,14 +21,14 @@ function * fetchLeads({ payload }){
 function *addNewLeadSaga({ payload:{ newLead } }){
   try {
     const data = yield call(addNewLead, newLead);
-    console.log(data);
     const { status } = data;
-    const { code } = data;
+    
+    if (status){
       
-    if (status === true){
-      yield put (addNewLeadSuccess("Lead is added successfully"));
+      yield put (addNewLeadSuccess("Lead is added successfully", newLead));
       
     }        
+    
   }
   catch (error){
           
