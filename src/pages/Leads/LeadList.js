@@ -12,9 +12,9 @@ import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
 import { Search } from "react-bootstrap-table2-toolkit";
-import "./lead.page.custom.styles.scss";
+import "./LeadList.scss";
 import { fetchLeadsStart } from "../../store/leads/actions";
-import LeadForm from "pages/Leads/Add-Lead-Form/AddLeadForm";
+import LeadForm from "pages/Leads/LeadAdd";
 
 
 function LeadsList(props){

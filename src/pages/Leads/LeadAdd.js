@@ -14,8 +14,8 @@ import { Link } from "react-router-dom";
 import React, { useState, useEffect} from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { apiError, addNewLeadSuccess } from "store/leads/actions";
-import { addNewLead} from "../../../store/leads/actions";
-import CountryDropDown from "./country-dropdown.component";
+import { addNewLead} from "../../store/leads/actions";
+import CountryDropDown from "../../components/Common/CountryDropDown";
 function LeadForm(props){
   const dispatch = useDispatch();
   
