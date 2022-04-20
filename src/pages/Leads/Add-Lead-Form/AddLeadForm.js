@@ -34,7 +34,10 @@ function LeadForm(props){
   };
   useEffect(()=>{
     if (props.successMessage  && addModal) {
-      setAddUserModal(false);
+      setTimeout(()=>{
+        setAddUserModal(false);
+      }, 2000);
+      
     }
   }, [props.successMessage]);
   return (
