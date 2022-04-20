@@ -13,13 +13,9 @@ import ForgetPwd from "../pages/Authentication/ForgetPassword";
 import ClientList from "../components/Client/client.record.list.component";
 import UsersList from "../pages/Users/UsersList";
 import RolesList from "../pages/Roles/RolesList";
+import EmailTemplatesList from "../pages/EmailTemplate/EmailTemplatesList";
 import LeadsList from "../components/Leads/lead.record.list.component";
 import Page404 from "../pages/Authentication/Page404";
-
-// Email template related pages
-import EmailTemplatesList from "../pages/EmailTemplate/EmailTemplatesList";
-import UpdateEmailTemplate from "../pages/EmailTemplate/UpdateEmailTemplate";
-import AddNewEmailTemplate from "../pages/EmailTemplate/AddNewEmailTemplate";
 
 const userRoutes = [
 
@@ -51,22 +47,11 @@ const userRoutes = [
     path: "/roles",
     component: RolesList 
   },
-
-  // email templates listing
-  // might be relocated later but for now let's keep them here 
+  // email templates
   {
     path: "/email-templates",
     component: EmailTemplatesList
   },
-  {
-    path: "/update-email-template",
-    component: UpdateEmailTemplate
-  },
-  {
-    path: "/add-new-email-template",
-    component: AddNewEmailTemplate
-  },
-
   {
     path: "/",
     exact: true,

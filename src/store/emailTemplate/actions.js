@@ -1,40 +1,101 @@
 import {
-  FETCH_EMAIL_TEMPLATES, FETCH_EMAIL_TEMPLATES_SUCCESS, API_ERROR 
+  FETCH_EMAIL_TEMPLATES_REQUESTED,
+  FETCH_EMAIL_TEMPLATES_SUCCESS,
+  FETCH_EMAIL_TEMPLATES_FAIL,
+
+  ADD_EMAIL_TEMPLATE_REQUESTED,
+  ADD_EMAIL_TEMPLATE_SUCCESS,
+  ADD_EMAIL_TEMPLATE_FAIL,
+
+  DELETE_EMAIL_TEMPLATE_REQUESTED,
+  DELETE_EMAIL_TEMPLATE_SUCCESS,
+  DELETE_EMAIL_TEMPLATE_FAIL,
+
+  EDIT_EMAIL_TEMPLATE_REQUESTED,
+  EDIT_EMAIL_TEMPLATE_SUCCESS,
+  EDIT_EMAIL_TEMPLATE_FAIL
 } from "./actionTypes";
 
-export const fetchEmailTemplates = (emailTemplates) => {
+export const fetchEmailTemplates = (params = {}) => {
   return {
-    type: FETCH_EMAIL_TEMPLATES,
-    payload: { emailTemplates }
+    type: FETCH_EMAIL_TEMPLATES_REQUESTED,
+    payload: params 
   };
 };
 
-export const fetchEmailTemplatesSuccess = (loading) => {
+export const fetchEmailTemplatesSuccess = (data) => {
   return {
     type: FETCH_EMAIL_TEMPLATES_SUCCESS,
-    payload: { loading }
+    payload: data
   };
 };
 
-export const apiError = (error) => {
+export const fetchEmailTemplatesFail = (error) => {
   return {
-    type: API_ERROR,
+    type: FETCH_EMAIL_TEMPLATES_FAIL,
     payload: { error }
   };
 };
 
+export const addEmailTemplate = (params = {}) => {
+  return {
+    type: ADD_EMAIL_TEMPLATE_REQUESTED,
+    payload: params
+  };
+};
 
-export const fetchEmailTemplateFromApi = (dispatch, setTotalDocs, sizePerPage, currentPage) => {
-  // this needs to be handled because it's not easy to be sure what it dose it client/actions.js
-  // but here goes nothing
-  fetch(`http://localhost:3001/api/v1/crm/emailTemplates?limit=${sizePerPage}&page=${currentPage}`)
-    .then(result => result.json())
-    .then(data => {
-      dispatch(fetchEmailTemplates(data.result.docs)); // emailTemplates = data.result.docs
-      // this is a state that needs to be handled it's not gonna work out most likely  
-      // no it's handled in the email.record file initialized and handled 
-      setTotalDocs(data.result.totalDocs); 
-    }).catch(error => {
-      dispatch(error);
-    });
+export const addEmailTemplateSuccess = (data) => {
+  return {
+    type: ADD_EMAIL_TEMPLATE_SUCCESS,
+    payload: data
+  };
+};
+
+export const addEmailTemplateFail = (error) => {
+  return {
+    type: ADD_EMAIL_TEMPLATE_FAIL,
+    payload: { error }
+  };
+};
+
+export const deleteEmailTemplate = (params = {}) => {
+  return {
+    type: DELETE_EMAIL_TEMPLATE_REQUESTED,
+    payload: params
+  };
+};
+
+export const deleteEmailTemplateSuccess = (data) => {
+  return {
+    type: DELETE_EMAIL_TEMPLATE_SUCCESS,
+    payload: data
+  };
+};
+
+export const deleteEmailTemplateFail = (error) => {
+  return {
+    type: DELETE_EMAIL_TEMPLATE_FAIL,
+    payload: { error }
+  };
+};
+
+export const editEmailTemplate = (params = {}) => {
+  return {
+    type: EDIT_EMAIL_TEMPLATE_REQUESTED,
+    payload: params
+  };
+};
+
+export const editEmailTemplateSuccess = (data) => {
+  return {
+    type: EDIT_EMAIL_TEMPLATE_SUCCESS,
+    payload: data
+  };
+};
+
+export const editEmailTemplateFail = (error) => {
+  return {
+    type: EDIT_EMAIL_TEMPLATE_FAIL,
+    payload: { error }
+  };
 };
