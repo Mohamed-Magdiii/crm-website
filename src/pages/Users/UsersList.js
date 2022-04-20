@@ -91,9 +91,7 @@ function UsersList() {
       dataField: "roleId.title",
       sort: true,
       formatter: (user) => (
-        <>
-          {/* {console.log("ghgfffffffffffffffffffffffffff")}
-          {console.log(user)} */}
+        <> 
           {user.roleId ? (
             <div className="d-flex gap-3">
               <Label className="me-1" htmlFor={user.id} data-on-label="Active" data-off-label="">{user.roleId.title}</Label>
@@ -144,7 +142,7 @@ function UsersList() {
     },
   ];
   const [sizePerPage, setSizePerPage] = useState(10);
-  // const [searchInput, setSearchInput] = useState('');
+  const [SearchInputValue, setSearchInputValue] = useState("");
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -152,21 +150,19 @@ function UsersList() {
     loadRoles(1, 100);
   }, [sizePerPage, 1, clearingCounter]);
 
-  const loadUsers = (page, limit, searchText) => {
-    if (searchText) {
+  const loadUsers = (page, limit) => {
+    if (SearchInputValue !== "") {
       dispatch(fetchUsers({
         page,
         limit,
-        searchText,
+        searchText: SearchInputValue,
       }));
     } else {
       dispatch(fetchUsers({
         page,
         limit,
       }));
-    }
-    // setcurrentPagePage(page);
-
+    } 
   };
   const numPageRows = (numOfRows) => {
     setSizePerPage(numOfRows);
@@ -190,19 +186,9 @@ function UsersList() {
     }));
 
   };
-  const searchHandel = (event) => {
+  const searchHandelEnterClik = (event) => {
     if (event.keyCode === 13) {
-      const searchKey = event.target.value;
-      loadUsers(1, 10, searchKey);
-
-      // const page = 1;
-      // const limit = 3;
-      // console.log(event.target.value);
-      // dispatch(fetchUsers({
-      //   page,
-      //   limit,
-      //   searchText,
-      // }));
+      loadUsers(1, sizePerPage);
     }
   };
   useEffect(() => {
@@ -225,9 +211,9 @@ function UsersList() {
                       <div className="position-relative">
                         <label htmlFor="search-bar-0" className="search-label">
                           <span id="search-bar-0-label" className="sr-only">Search this table</span>
-                          <input onKeyDown={(e) => searchHandel(e)} id="search-bar-0" type="text" aria-labelledby="search-bar-0-label" className="form-control " placeholder="Search" />
+                          <input onChange={(e) => setSearchInputValue(e.target.value)} onKeyDown={(e) => searchHandelEnterClik(e)} id="search-bar-0" type="text" aria-labelledby="search-bar-0-label" className="form-control " placeholder="Search" />
                         </label>
-                        <i className="bx bx-search-alt search-icon" /></div>
+                        <i onClick={() => loadUsers(1, sizePerPage)} className="bx bx-search-alt search-icon" /></div>
                     </div>
                     Users List ({totalDocs})
                   </CardTitle>
@@ -260,8 +246,7 @@ function UsersList() {
                                 </Td>
                               )}
                             </Tr>
-                          )}
-                          {/* {console.log(docs)} */}
+                          )} 
                         </Tbody>
                       </Table>
                       <CustomPagination
@@ -278,20 +263,7 @@ function UsersList() {
                         pagingCounter={pagingCounter}
                         setSizePerPage={numPageRows}
                         onChange={loadUsers}
-                      />
-                      {/* <Dropdown
-                        isOpen={btnprimary1}
-                        toggle={() => setBtnprimary1(!btnprimary1)}
-                      >
-                        <DropdownToggle tag="button" className="btn btn-secondary ">
-                          <i className="mdi mdi-chevron-down" />
-                        </DropdownToggle>
-                        <DropdownMenu>
-                          <DropdownItem>10</DropdownItem>
-                          <DropdownItem>20</DropdownItem>
-                          <DropdownItem>30</DropdownItem>
-                        </DropdownMenu>
-                      </Dropdown> */}
+                      /> 
                     </div>
                   </div>
                 </CardBody>
