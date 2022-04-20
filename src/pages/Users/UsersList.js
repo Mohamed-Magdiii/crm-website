@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import {
-  useDispatch, connect, useSelector
+  useDispatch, useSelector
 } from "react-redux";
 import { Link } from "react-router-dom";
 
 import {
-  Row, Col, Card, CardBody, CardTitle, CardHeader, Input, Label, Dropdown, DropdownToggle, DropdownItem, DropdownMenu,
+  Row, Col, Card, CardBody, CardTitle, CardHeader, Input, Label
 } from "reactstrap";
 
 import {
@@ -22,12 +22,11 @@ import DeleteModal from "components/Common/DeleteModal";
 import UsersAddModal from "./UsersAddModal";
 import UsersEditModal from "./UsersEditModal";
 
-function UsersList(props) {
+function UsersList() {
 
   const [editModal, setEditUserModal] = useState(false);
   const [deleteModal, setDeleteUserModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState();
-  const [btnprimary1, setBtnprimary1] = useState(false);
 
   const {
     loading,
@@ -45,7 +44,7 @@ function UsersList(props) {
     deleteClearingCounter,
     roles,
     clearingCounter,
-    editClearingCounter,
+    // editClearingCounter,
   } = useSelector((state) => ({
     loading: state.usersReducer.loading || false,
     docs: state.usersReducer.docs || [],
@@ -62,7 +61,7 @@ function UsersList(props) {
     deleteClearingCounter: state.usersReducer.deleteClearingCounter,
     roles: state.usersReducer.rolesData,
     clearingCounter: state.usersReducer.clearingCounter,
-    editClearingCounter: state.usersReducer.editClearingCounter,
+    // editClearingCounter: state.usersReducer.editClearingCounter,
   }));
 
   const columns = [

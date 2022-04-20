@@ -6,11 +6,10 @@ import {
   Modal, Button,
   ModalHeader,
   ModalBody,
-  UncontrolledAlert,
-  Label,
+  UncontrolledAlert, 
 } from "reactstrap";
 import {
-  AvForm, AvField, AvInput
+  AvForm, AvField
 } from "availity-reactstrap-validation";
 import { editUser } from "store/users/actions";
 
