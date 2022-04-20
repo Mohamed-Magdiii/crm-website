@@ -13,7 +13,7 @@ import {
 import { Link } from "react-router-dom";
 import React, { useState, useEffect} from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
-
+import { apiError, addNewLeadSuccess } from "store/leads/actions";
 import { addNewLead} from "../../../store/leads/actions";
 import CountryDropDown from "./country-dropdown.component";
 function LeadForm(props){
@@ -23,7 +23,10 @@ function LeadForm(props){
      
     event.preventDefault();
     dispatch(addNewLead(values));
-   
+    setTimeout(()=>{
+      dispatch(addNewLeadSuccess(""));
+      dispatch(apiError(""));
+    }, 2000);
   }; 
   const [addModal, setAddUserModal] = useState(false);
   const toggleAddModal = () => {
@@ -106,7 +109,7 @@ function LeadForm(props){
                 name="password"
                 label="Password"
                 placeholder="Password"
-                type="text"
+                type="password"
                 errorMessage="Enter valid password"
                 validate={{ required: { value: true } }}
               />

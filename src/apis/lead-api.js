@@ -1,8 +1,7 @@
 import * as axiosHelper from "./api_helper";
 export const addNewLead = async(values) => {
 
-  const data = await axiosHelper.post("/leads", {...values});
-  console.log(data);
+  const data = await axiosHelper.post("/leads", { ...values });
   if (data.code === 500){
     throw new Error(data.message);
   }
