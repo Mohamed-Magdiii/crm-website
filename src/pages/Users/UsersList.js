@@ -145,7 +145,7 @@ function UsersList(props) {
     },
   ];
   const [sizePerPage, setSizePerPage] = useState(10);
-  // const [currentPage, setcurrentPagePage] = useState(1);
+  // const [searchInput, setSearchInput] = useState('');
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -153,12 +153,20 @@ function UsersList(props) {
     loadRoles(1, 100);
   }, [sizePerPage, 1, clearingCounter]);
 
-  const loadUsers = (page, limit) => {
+  const loadUsers = (page, limit, searchText) => {
+    if (searchText) {
+      dispatch(fetchUsers({
+        page,
+        limit,
+        searchText,
+      }));
+    } else {
+      dispatch(fetchUsers({
+        page,
+        limit,
+      }));
+    }
     // setcurrentPagePage(page);
-    dispatch(fetchUsers({
-      page,
-      limit,
-    }));
 
   };
   const numPageRows = (numOfRows) => {
@@ -183,7 +191,21 @@ function UsersList(props) {
     }));
 
   };
+  const searchHandel = (event) => {
+    if (event.keyCode === 13) {
+      const searchKey = event.target.value;
+      loadUsers(1, 10, searchKey);
 
+      // const page = 1;
+      // const limit = 3;
+      // console.log(event.target.value);
+      // dispatch(fetchUsers({
+      //   page,
+      //   limit,
+      //   searchText,
+      // }));
+    }
+  };
   useEffect(() => {
     if (deleteClearingCounter > 0 && deleteModal) {
       setDeleteUserModal(false);
@@ -199,8 +221,17 @@ function UsersList(props) {
             <Col className="col-12">
               <Card>
                 <CardHeader className="d-flex justify-content-between  align-items-center">
-                  <CardTitle>Users List ({totalDocs})</CardTitle>
-
+                  <CardTitle>
+                    <div className="search-box me-2 mb-2 d-inline-block">
+                      <div className="position-relative">
+                        <label htmlFor="search-bar-0" className="search-label">
+                          <span id="search-bar-0-label" className="sr-only">Search this table</span>
+                          <input onKeyDown={(e) => searchHandel(e)} id="search-bar-0" type="text" aria-labelledby="search-bar-0-label" className="form-control " placeholder="Search" />
+                        </label>
+                        <i className="bx bx-search-alt search-icon" /></div>
+                    </div>
+                    Users List ({totalDocs})
+                  </CardTitle>
                   <UsersAddModal usersRoles={roles} />
                 </CardHeader>
                 <CardBody>
