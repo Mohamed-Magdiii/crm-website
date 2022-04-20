@@ -30,7 +30,7 @@ function LeadForm(props){
     setAddUserModal(!addModal);
   };
   useEffect(()=>{
-    if (props.successMessage && addModal) {
+    if (props.successMessage  && addModal) {
       setAddUserModal(false);
     }
   }, [props.successMessage]);
