@@ -14,7 +14,7 @@ import TableLoader from "components/Common/TableLoader";
 import ClientForm from "./ClientAdd";
 import { fetchClientsStart } from "store/client/actions";
 import "./ClientList.styles.scss";
-
+import SearchBar from "components/Common/SearchBar";
 function ClientsList(props){
   const columns = [
     {
@@ -129,13 +129,9 @@ function ClientsList(props){
                     <ClientForm/>
                   </div>
               
-                  <div className="position-relative">
-                    <label htmlFor="search-bar-0" className="search-label">
-                      <span id="search-bar-0-label" className="sr-only">Search this table</span>
-                      <input onChange={(e) => handleSearchInput(e)} id="search-bar-0" type="text" aria-labelledby="search-bar-0-label" className="form-control " placeholder="Search" />
-                    </label>
+                  <SearchBar handleSearchInput={handleSearchInput}/>
                 
-                  </div>
+                  
                 </CardHeader>
                 <CardBody>
                   <div className="table-rep-plugin">
