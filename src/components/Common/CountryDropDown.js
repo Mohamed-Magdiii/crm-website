@@ -8,7 +8,6 @@ function CountryDropDown(){
       <FormGroup className="mb-3">
 
         <AvField type="select"
-          classNam="lead-form-select"
           name="country" 
           label="Country" 
           validate={{ required: { value: true } }} 
