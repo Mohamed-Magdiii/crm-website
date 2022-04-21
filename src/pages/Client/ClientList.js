@@ -1,0 +1,207 @@
+import React, { useEffect, useState } from "react";
+import { 
+  useDispatch, connect 
+} from "react-redux";
+import {
+  Row, Col, Card, CardBody, CardTitle, CardHeader 
+} from "reactstrap";
+import {
+  Table, Thead, Tbody, Tr, Th, Td
+} from "react-super-responsive-table";
+import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
+import CustomPagination from "components/Common/CustomPagination";
+import TableLoader from "components/Common/TableLoader";
+import ClientForm from "./ClientAdd";
+import { fetchClientsStart } from "store/client/actions";
+import "./ClientList.styles.scss";
+
+function ClientsList(props){
+  const columns = [
+    {
+      dataField:"checkbox",
+      text:<input type="checkbox"/>
+    },
+    {
+      dataField: "createdAt",
+      text: "Date",
+      formatter: (val) => {return new Date(val.createdAt).toLocaleDateString()}
+    }, 
+    {
+      dataField:"name",
+      text:"Name",
+      formatter: (val) => {return  `${val.firstName} ${val.lastName}` },
+    },
+    {
+      dataField:"category",
+      text:"type"
+    },
+    {
+      dataField: "email",
+      text: "Email",
+    
+    },
+    {
+      dataField: "phone",
+      text: "Phone",
+    
+    },
+    {
+      dataField: "country",
+      text: "country",
+    
+    },
+    
+    {
+      dataField:"agent",
+      text:"Agent",
+      formatter:(val)=>{return val.agent ? val.agent._id : "-" },
+    },
+    {
+      dataField:"source",
+      text:"Source"
+    },
+    {
+      dataField:"stages",
+      text:"KYC",
+      formatter:(val)=>{
+        if (val.stages){
+          const {kycApproved, kycRejected } = val.stages;
+          if (kycApproved){
+            return "Approved";
+          }
+          if (kycRejected){
+            return "Rejected";
+          }
+          else {
+            return "Pending";
+          }
+        }
+       
+        else {
+          return "Pending";
+        }
+      }
+    }
+  ];
+ 
+  const [sizePerPage, setSizePerPage] = useState(10);
+  const [searchInputText, setSearchInputText] = useState("");
+  const handleSearchInput = (e)=>{
+    
+    setSearchInputText(e.target.value);
+    
+  } ;
+  const dispatch = useDispatch();
+   
+  useEffect(()=>{
+    loadClients(1, sizePerPage);
+  
+  }, [sizePerPage, 1, searchInputText]);
+  
+  const loadClients = ( page, limit)=>{
+    if (searchInputText !== ""){
+      
+      dispatch(fetchClientsStart({
+        limit,
+        page,
+        searchText:searchInputText
+      }));
+    }
+    else {
+      dispatch(fetchClientsStart({
+        limit,
+        page
+      })) ;
+    }
+  };
+  
+  return (
+    <React.Fragment>
+      <div className="page-content">
+        <div className="container-fluid">
+          <h2>Clients</h2>
+          <Row>
+            <Col className="col-12">
+              <Card>
+                <CardHeader className="d-flex flex-column gap-3">
+                  <div className="d-flex justify-content-between  align-items-center">
+                    <CardTitle>Clients List ({props.totalDocs})</CardTitle>
+                    <ClientForm/>
+                  </div>
+              
+                  <div className="position-relative">
+                    <label htmlFor="search-bar-0" className="search-label">
+                      <span id="search-bar-0-label" className="sr-only">Search this table</span>
+                      <input onChange={(e) => handleSearchInput(e)} id="search-bar-0" type="text" aria-labelledby="search-bar-0-label" className="form-control " placeholder="Search" />
+                    </label>
+                
+                  </div>
+                </CardHeader>
+                <CardBody>
+                  <div className="table-rep-plugin">
+                    <div
+                      className="table-responsive mb-0"
+                      data-pattern="priority-columns"
+                    >
+                      <Table
+                        id="tech-companies-1"
+                        className="table "
+                      >
+                        <Thead>
+                          <Tr>
+                            {columns.map((column, index) =>
+                              <Th data-priority={index} key={index}>{column.text}</Th>
+                            )}
+                          </Tr>
+                        </Thead>
+                        <Tbody>
+                          {props.loading && <TableLoader colSpan={4} />}
+                          {!props.loading && props.clients.map((row, rowIndex) =>
+                            <Tr key={rowIndex}>
+                              {columns.map((column, index) =>
+                                <Td key={`${rowIndex}-${index}`}>
+                                  { column.dataField === "checkbox" ? <input type="checkbox"/> : ""}
+                                  { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
+                                </Td>
+                              )}
+                            </Tr>
+                          )}
+                        </Tbody>
+                      </Table>
+                      <CustomPagination
+                        {...props}
+                        setSizePerPage={setSizePerPage}
+                        sizePerPage={sizePerPage}
+                        onChange={loadClients}
+                        docs={props.clients}
+                      />
+                    </div>
+                  </div>
+
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+          
+        </div>
+      </div>
+    </React.Fragment>
+  );
+  
+}
+
+const mapStateToProps = (state) => ({
+  loading: state.clientReducer.loading || false,
+  clients: state.clientReducer.clients || [],
+  page: state.clientReducer.page || 1,
+  totalDocs: state.clientReducer.totalDocs || 0,
+  totalPages: state.clientReducer.totalPages || 0,
+  hasNextPage: state.clientReducer.hasNextPage,
+  hasPrevPage: state.clientReducer.hasPrevPage,
+  limit: state.clientReducer.limit,
+  nextPage: state.clientReducer.nextPage,
+  pagingCounter: state.clientReducer.pagingCounter,
+  prevPage: state.clientReducer.prevPage,
+
+});
+export default connect(mapStateToProps, null)(ClientsList);
