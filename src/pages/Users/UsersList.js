@@ -91,14 +91,14 @@ function UsersList() {
       dataField: "roleId.title",
       sort: true,
       formatter: (user) => (
-        <> 
+        <>
           {user.roleId ? (
             <div className="d-flex gap-3">
-              <Label className="me-1" htmlFor={user.id} data-on-label="Active" data-off-label="">{user.roleId.title}</Label>
+              <Label className="me-1" data-on-label="roleId" data-off-label="">{user.roleId.title}</Label>
             </div>
           ) : (
             <div className="d-flex gap-3">
-              <Label className="me-1" htmlFor={user.id} data-on-label="Active" data-off-label=""> </Label>
+              <Label className="me-1" data-on-label="roleId" data-off-label=""> </Label>
             </div>
           )}
         </>
@@ -162,7 +162,7 @@ function UsersList() {
         page,
         limit,
       }));
-    } 
+    }
   };
   const numPageRows = (numOfRows) => {
     setSizePerPage(numOfRows);
@@ -207,19 +207,19 @@ function UsersList() {
               <Card>
                 <CardHeader className="d-flex justify-content-between  align-items-center">
                   <CardTitle>
-                    <div className="search-box me-2 mb-2 d-inline-block">
-                      <div className="position-relative">
-                        <label htmlFor="search-bar-0" className="search-label">
-                          <span id="search-bar-0-label" className="sr-only">Search this table</span>
-                          <input onChange={(e) => setSearchInputValue(e.target.value)} onKeyDown={(e) => searchHandelEnterClik(e)} id="search-bar-0" type="text" aria-labelledby="search-bar-0-label" className="form-control " placeholder="Search" />
-                        </label>
-                        <i onClick={() => loadUsers(1, sizePerPage)} className="bx bx-search-alt search-icon" /></div>
-                    </div>
                     Users List ({totalDocs})
                   </CardTitle>
                   <UsersAddModal usersRoles={roles} />
                 </CardHeader>
                 <CardBody>
+                  <div className="search-box me-2 mb-2 d-inline-block">
+                    <div className="position-relative">
+                      <label htmlFor="search-bar-0" className="search-label">
+                        <span id="search-bar-0-label" className="sr-only">Search this table</span>
+                        <input onChange={(e) => setSearchInputValue(e.target.value)} onKeyDown={(e) => searchHandelEnterClik(e)} id="search-bar-0" type="text" aria-labelledby="search-bar-0-label" className="form-control " placeholder="Search" />
+                      </label>
+                      <i onClick={() => loadUsers(1, sizePerPage)} className="bx bx-search-alt search-icon" /></div>
+                  </div>
                   <div className="table-rep-plugin">
                     <div
                       className="table-responsive mb-0"
@@ -246,7 +246,7 @@ function UsersList() {
                                 </Td>
                               )}
                             </Tr>
-                          )} 
+                          )}
                         </Tbody>
                       </Table>
                       <CustomPagination
@@ -263,7 +263,7 @@ function UsersList() {
                         pagingCounter={pagingCounter}
                         setSizePerPage={numPageRows}
                         onChange={loadUsers}
-                      /> 
+                      />
                     </div>
                   </div>
                 </CardBody>
