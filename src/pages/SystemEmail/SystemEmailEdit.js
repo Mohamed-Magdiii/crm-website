@@ -10,13 +10,13 @@ import {
   AvForm, AvField, AvInput
 } from "availity-reactstrap-validation";
 
-import { editEmailTemplate } from "store/emailTemplate/actions";
+import { editSystemEmail } from "store/systemEmail/actions";
 
-function EmailTemplatesEdit(props){
+function SystemEmailEdit(props){
   const { open, role = {}, onClose } = props;
   const dispatch = useDispatch();
-  const handleEmailTemplateEdit = (values) => {
-    dispatch(editEmailTemplate({
+  const handleSystemEmailEdit = (values) => {
+    dispatch(editSystemEmail({
       id: role._id,
       values
     }));
@@ -26,13 +26,13 @@ function EmailTemplatesEdit(props){
     <React.Fragment >
       <Modal isOpen={open} toggle={onClose} centered={true}>
         <ModalHeader toggle={onClose} tag="h4">
-            Edit Email Template
+            Edit System Email
         </ModalHeader>
         <ModalBody >
           <AvForm
             className='p-4'
             onValidSubmit={(v) => {
-              handleEmailTemplateEdit(v);
+              handleSystemEmailEdit(v);
             }}
           >
             <div className="mb-3">
@@ -78,9 +78,9 @@ function EmailTemplatesEdit(props){
 }
 
 const mapStateToProps = (state) => ({
-  addLoading: state.emailTemplatesReducer.addLoading,
-  editResult: state.emailTemplatesReducer.editResult,
-  editError: state.emailTemplatesReducer.editError
+  addLoading: state.systemEmailsReducer.addLoading,
+  editResult: state.systemEmailsReducer.editResult,
+  editError: state.systemEmailsReducer.editError
 });
 
-export default connect(mapStateToProps, null)(EmailTemplatesEdit);
+export default connect(mapStateToProps, null)(SystemEmailEdit);

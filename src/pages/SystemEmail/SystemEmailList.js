@@ -13,17 +13,17 @@ import {
 } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 
-import { fetchEmailTemplates, deleteEmailTemplate } from "../../store/emailTemplate/actions";
+import { fetchSystemEmails, deleteSystemEmail } from "../../store/systemEmail/actions";
 import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
 import DeleteModal from "components/Common/DeleteModal";
-import EmailTemplatesAdd from "./EmailTemplatesAdd";
-import EmailTemplatesEdit from "./EmailTemplatesEdit";
+import SystemEmailAdd from "./SystemEmailAdd";
+import SystemEmailEdit from "./SystemEmailEdit";
 
-function EmailTemplatesList(props){
+function SystemEmailsList(props){
   const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
-  const [selectedEmailTemplate, setSelectedEmailTemplate] = useState();
+  const [selectedSystemEmail, setSelectedSystemEmail] = useState();
   const columns = [
     {
       dataField: "createdAt",
@@ -55,14 +55,14 @@ function EmailTemplatesList(props){
             <i
               className="mdi mdi-pencil font-size-18"
               id="edittooltip"
-              onClick={() => {setSelectedEmailTemplate(item); setEditModal(true)}}
+              onClick={() => {setSelectedSystemEmail(item); setEditModal(true)}}
             ></i>
           </Link>
           <Link className="text-danger" to="#">
             <i
               className="mdi mdi-delete font-size-18"
               id="deletetooltip"
-              onClick={() => { setSelectedEmailTemplate(item); setDeleteModal(true)}}
+              onClick={() => { setSelectedSystemEmail(item); setDeleteModal(true)}}
             ></i>
           </Link>
         </div>
@@ -72,17 +72,17 @@ function EmailTemplatesList(props){
 
   const [sizePerPage, setSizePerPage] = useState(5);
   const dispatch = useDispatch();
-  const loadEmailTemplatesFunction = (page, limit) => {
-    dispatch(fetchEmailTemplates({
+  const loadSystemEmailsFunction = (page, limit) => {
+    dispatch(fetchSystemEmails({
       page,
       limit,
     }));
   };
   useEffect(()=>{
-    loadEmailTemplatesFunction(1, sizePerPage);
+    loadSystemEmailsFunction(1, sizePerPage);
   }, [sizePerPage, 1]);
-  const deleteEmailTemplateFunction = () => {
-    dispatch(deleteEmailTemplate(selectedEmailTemplate._id));
+  const deleteSystemEmailFunction = () => {
+    dispatch(deleteSystemEmail(selectedSystemEmail._id));
   };
 
   // TODO delete modal needs to be handled here 
@@ -92,13 +92,13 @@ function EmailTemplatesList(props){
     <React.Fragment>
       <div className="page-content">
         <div className="container-fluid">
-          <h2>Email templates</h2>
+          <h2>System Email</h2>
           <Row>
             <Col className="col-12">
               <Card>
                 <CardHeader className="d-flex justify-content-between  align-items-center">
-                  <CardTitle>Email templates list ({props.totalDocs})</CardTitle>
-                  <EmailTemplatesAdd />
+                  <CardTitle>System Emails list ({props.totalDocs})</CardTitle>
+                  <SystemEmailAdd />
                 </CardHeader>
                 <CardBody>
                   <div className="table-rep-plugin">
@@ -134,7 +134,7 @@ function EmailTemplatesList(props){
                         {...props}
                         setSizePerPage={setSizePerPage}
                         sizePerPage={sizePerPage}
-                        onChange={loadEmailTemplatesFunction}
+                        onChange={loadSystemEmailsFunction}
                       />
                     </div>
                   </div>
@@ -142,8 +142,8 @@ function EmailTemplatesList(props){
               </Card>
             </Col>
           </Row>
-          {<EmailTemplatesEdit open={editModal}  role={selectedEmailTemplate} onClose={()=>{setEditModal(false)}} />}
-          {<DeleteModal loading={props.deleteLoading} onDeleteClick={deleteEmailTemplateFunction} show={deleteModal} onCloseClick={()=>{setDeleteModal(false)}} />}
+          {<SystemEmailEdit open={editModal}  role={selectedSystemEmail} onClose={()=>{setEditModal(false)}} />}
+          {<DeleteModal loading={props.deleteLoading} onDeleteClick={deleteSystemEmailFunction} show={deleteModal} onCloseClick={()=>{setDeleteModal(false)}} />}
         </div>
       </div>
     </React.Fragment>
@@ -151,9 +151,9 @@ function EmailTemplatesList(props){
 }
 
 const mapStateToProps = (state) => ({
-  loading: state.emailTemplatesReducer.loading || false,
-  docs: state.emailTemplatesReducer.docs || [],
-  page: state.emailTemplatesReducer.page || 1
+  loading: state.systemEmailsReducer.loading || false,
+  docs: state.systemEmailsReducer.docs || [],
+  page: state.systemEmailsReducer.page || 1
 });
 
-export default connect(mapStateToProps, null)(EmailTemplatesList);
+export default connect(mapStateToProps, null)(SystemEmailsList);

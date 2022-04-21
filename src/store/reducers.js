@@ -24,7 +24,7 @@ import clientReducer from "./client/reducer";
 import leadReducer from "./leads/reducer";
 
 // email tempaltes 
-import emailTemplatesReducer from "./emailTemplate/reducer";
+import systemEmailsReducer from "./systemEmail/reducer";
 import rolesReducer from "./roles/reducer";
 import usersReducer from "./users/reducer";
 
@@ -41,7 +41,7 @@ const rootReducer = combineReducers({
   contacts,
   clientReducer,
   leadReducer,
-  emailTemplatesReducer,
+  systemEmailsReducer,
   rolesReducer,
   usersReducer
 });

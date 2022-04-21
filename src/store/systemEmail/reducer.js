@@ -1,46 +1,46 @@
 import {
-  FETCH_EMAIL_TEMPLATES_REQUESTED,
-  FETCH_EMAIL_TEMPLATES_SUCCESS,
-  FETCH_EMAIL_TEMPLATES_FAIL,
+  FETCH_SYSTEM_EMAILS_REQUESTED,
+  FETCH_SYSTEM_EMAILS_SUCCESS,
+  FETCH_SYSTEM_EMAILS_FAIL,
 
-  ADD_EMAIL_TEMPLATE_REQUESTED,
-  ADD_EMAIL_TEMPLATE_SUCCESS,
-  ADD_EMAIL_TEMPLATE_FAIL,
+  ADD_SYSTEM_EMAIL_REQUESTED,
+  ADD_SYSTEM_EMAIL_SUCCESS,
+  ADD_SYSTEM_EMAIL_FAIL,
 
-  DELETE_EMAIL_TEMPLATE_REQUESTED,
-  DELETE_EMAIL_TEMPLATE_SUCCESS,
-  DELETE_EMAIL_TEMPLATE_FAIL,
+  DELETE_SYSTEM_EMAIL_REQUESTED,
+  DELETE_SYSTEM_EMAIL_SUCCESS,
+  DELETE_SYSTEM_EMAIL_FAIL,
 
-  EDIT_EMAIL_TEMPLATE_REQUESTED,
-  EDIT_EMAIL_TEMPLATE_SUCCESS,
-  EDIT_EMAIL_TEMPLATE_FAIL
+  EDIT_SYSTEM_EMAIL_REQUESTED,
+  EDIT_SYSTEM_EMAIL_SUCCESS,
+  EDIT_SYSTEM_EMAIL_FAIL
 } from "./actionTypes";
 
 const initialState = {
   error: "",
   loading: false,
-  emailTemplates: []
+  systemEmails: []
 };
 
-const emailTemplateReducer = (state = initialState, action) => {
+const systemEmailsReducer = (state = initialState, action) => {
   switch (action.type){
     // FETCH
-    case FETCH_EMAIL_TEMPLATES_REQUESTED:
+    case FETCH_SYSTEM_EMAILS_REQUESTED:
       state = {
         ...state,
         loading: true
       };
       break;
     
-    case FETCH_EMAIL_TEMPLATES_SUCCESS:
+    case FETCH_SYSTEM_EMAILS_SUCCESS:
       state = {
         ...state,
         loading: false,
-        emailTemplates: action.payload.data
+        systemEmails: action.payload.data
       };
       break;
 
-    case FETCH_EMAIL_TEMPLATES_FAIL:
+    case FETCH_SYSTEM_EMAILS_FAIL:
       state = {
         ...state,
         loading: false,
@@ -49,22 +49,22 @@ const emailTemplateReducer = (state = initialState, action) => {
       break;
 
     // ADD
-    case ADD_EMAIL_TEMPLATE_REQUESTED:
+    case ADD_SYSTEM_EMAIL_REQUESTED:
       state = {
         ...state,
         loading: true,
       };
       break;
 
-    case ADD_EMAIL_TEMPLATE_SUCCESS:
+    case ADD_SYSTEM_EMAIL_SUCCESS:
       state = {
         ...state,
         loading: false,
-        newEmailTemplate: action.payload.data
+        newSystemEmail: action.payload.data
       };
       break;
 
-    case ADD_EMAIL_TEMPLATE_FAIL:
+    case ADD_SYSTEM_EMAIL_FAIL:
       state = {
         ...state,
         loading: false,
@@ -73,21 +73,21 @@ const emailTemplateReducer = (state = initialState, action) => {
       break;
 
     // DELETE
-    case DELETE_EMAIL_TEMPLATE_REQUESTED:
+    case DELETE_SYSTEM_EMAIL_REQUESTED:
       state = {
         ...state,
         loading: true
       };
       break;
 
-    case DELETE_EMAIL_TEMPLATE_SUCCESS:
+    case DELETE_SYSTEM_EMAIL_SUCCESS:
       state = {
         ...state,
-        deletedEmailTemplate: action.payload.data
+        deletedSystemEmail: action.payload.data
       };
       break;
 
-    case DELETE_EMAIL_TEMPLATE_FAIL:
+    case DELETE_SYSTEM_EMAIL_FAIL:
       state = {
         ...state,
         error: action.payload.error
@@ -95,22 +95,22 @@ const emailTemplateReducer = (state = initialState, action) => {
       break;
 
     // EDIT
-    case EDIT_EMAIL_TEMPLATE_REQUESTED:
+    case EDIT_SYSTEM_EMAIL_REQUESTED:
       state = {
         ...state,
         loading: true
       };
       break;
 
-    case EDIT_EMAIL_TEMPLATE_SUCCESS:
+    case EDIT_SYSTEM_EMAIL_SUCCESS:
       // TODO right now it's simple as it could be later on this needs to be updated 
       state = {
         ...state,
-        updatedEmailTemplate: action.payload.data
+        updatedSystemEmail: action.payload.data
       };
       break;
       
-    case EDIT_EMAIL_TEMPLATE_FAIL:
+    case EDIT_SYSTEM_EMAIL_FAIL:
       // TODO right now it's simple as it could be later on this needs to be updated 
       state = {
         ...state,
@@ -125,4 +125,4 @@ const emailTemplateReducer = (state = initialState, action) => {
   return state;
 };
 
-export default emailTemplateReducer;
+export default systemEmailsReducer;

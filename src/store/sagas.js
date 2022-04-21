@@ -12,7 +12,7 @@ import invoiceSaga from "./invoices/saga";
 import contactsSaga from "./contacts/saga";
 import rolesSaga from "./roles/saga";
 import usersSaga from "./users/saga";
-import emailTemplateSaga from "./emailTemplate/saga";
+import systemEmailsSaga from "./systemEmail/saga";
 
 export default function* rootSaga() {
   yield all([
@@ -28,6 +28,6 @@ export default function* rootSaga() {
     fork(contactsSaga),
     fork(rolesSaga),
     fork(usersSaga),
-    fork(emailTemplateSaga)
+    fork(systemEmailsSaga)
   ]);
 }

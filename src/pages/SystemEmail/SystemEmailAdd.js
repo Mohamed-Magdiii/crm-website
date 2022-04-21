@@ -6,16 +6,16 @@ import {
 } from "reactstrap";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 
-import {  addEmailTemplate } from "store/emailTemplate/actions";
+import {  addSystemEmail } from "store/systemEmail/actions";
 
-function EmailTemplateAdd(props){
+function SystemEmailAdd(props){
   const [addModal, setAddModal] = useState(false);
   const dispatch = useDispatch();
   const toggleAddModal = () => {
     setAddModal(!addModal);
   };
-  const handleAddEmailTemplate = (values) => {
-    dispatch(addEmailTemplate(values));
+  const handleAddSystemEmail = (values) => {
+    dispatch(addSystemEmail(values));
   };
   
   return (
@@ -23,28 +23,28 @@ function EmailTemplateAdd(props){
       <Link to="#" className="btn btn-light" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> Add New</Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
-            Add New Email Template
+            Add New System Email
         </ModalHeader>
         <ModalBody >
           <AvForm
             className='p-4'
             onValidSubmit={(v) => {
-              handleAddEmailTemplate(v);
+              handleAddSystemEmail(v);
             }}
           >
             <div className="mb-3">
               <AvField
                 name="Content"
-                label="Email template content"
-                placeholder="Email template content"
+                label="System Email content"
+                placeholder="System Email content"
                 type="text"
-                errorMessage="Enter the email template content"
+                errorMessage="Enter the system email content"
                 validate={{ required: { value: true } }}
               />
             </div>
             <div className='text-center pt-3 p-2'>
               <Button disabled={props.addLoading} type="submit" color="primary" className="">
-                Add New Email template
+                Add New System Email
               </Button>
             </div>
           </AvForm>
@@ -54,7 +54,7 @@ function EmailTemplateAdd(props){
           </UncontrolledAlert>}
           {props.addSuccess && <UncontrolledAlert color="success">
             <i className="mdi mdi-check-all me-2"></i>
-            Email template Added successfully !!!
+            System Email Added successfully !!!
           </UncontrolledAlert>}
         </ModalBody>
       </Modal>
@@ -63,10 +63,10 @@ function EmailTemplateAdd(props){
 }
 
 const mapStateToProps = (state) => ({
-  addLoading: state.emailTemplatesReducer.addLoading,
-  addErrorDetails: state.emailTemplatesReducer.addErrorDetails,
-  addSuccess: state.emailTemplatesReducer.addSuccess,
-  addError: state.emailTemplatesReducer.addError
+  addLoading: state.systemEmailsReducer.addLoading,
+  addErrorDetails: state.systemEmailsReducer.addErrorDetails,
+  addSuccess: state.systemEmailsReducer.addSuccess,
+  addError: state.systemEmailsReducer.addError
 });
 
-export default connect(mapStateToProps, null)(EmailTemplateAdd);
+export default connect(mapStateToProps, null)(SystemEmailAdd);
