@@ -45,7 +45,6 @@ function * addUser(params){
   try {
     const data = yield call(usersApi.addUser, params);
     
-    
     const { result } = data;
     yield put(addUserSuccess(result));
     yield delay(2000);
@@ -53,8 +52,8 @@ function * addUser(params){
   }
   catch (error){
     yield put(addUserError(error));
-    // yield delay(2000);
-    // yield put(addRoleClear());
+    yield delay(2000);
+    yield put(addUserClear());
   } 
 
   
@@ -75,8 +74,8 @@ function * editUser(params){
   }
   catch (error){
     yield put(editUserDone({ error: error.message }));
-    // yield delay(2000);
-    // yield put(editRoleClear());
+    yield delay(2000);
+    yield put(editUserClear());
   } 
 
   
