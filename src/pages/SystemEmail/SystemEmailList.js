@@ -92,7 +92,7 @@ function SystemEmailsList(props){
     <React.Fragment>
       <div className="page-content">
         <div className="container-fluid">
-          <h2>System Email</h2>
+          <h2>System Emails</h2>
           <Row>
             <Col className="col-12">
               <Card>
