@@ -11,7 +11,7 @@ import {
   UncontrolledAlert,
 } from "reactstrap";
 import { AvForm, AvField } from "availity-reactstrap-validation";
-import { addUser } from "store/users/actions"; 
+import { addUser } from "store/users/actions";
 
 
 function UsersAddModal(props) {
@@ -93,13 +93,15 @@ function UsersAddModal(props) {
               <label >Role</label>
               <AvField
                 type="select"
-                name="roleId"
+                name="roleId" 
+                errorMessage="please select role"
+                validate={{ required: { value: true } }}
               >
-                <option>select</option> 
+                <option>select</option>
                 {usersRoles?.map((row) => {
                   return (<option key={row._id} value={row._id}>{row.title}</option>);
-                })} 
-              </AvField> 
+                })}
+              </AvField>
             </div>
             <div className='text-center p-5'>
               <Button type="submit" color="primary" className="">
