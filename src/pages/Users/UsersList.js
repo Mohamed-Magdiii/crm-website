@@ -111,8 +111,8 @@ function UsersList() {
       sort: true,
       formatter: (user) => (
         <div className="d-flex gap-3">
-          <Input type="checkbox" id={user.id} switch="none" defaultChecked={user.isActive} onClick={() => { setSelectedUser(user); statusUser(user) }} />
-          <Label className="me-1" htmlFor={user.id} data-on-label="Active" data-off-label=""></Label>
+          <Input type="checkbox" id={user.id} switch="none" checked={user.isActive} onChange={() => { setSelectedUser(user); statusUser(user)}} />
+          <Label className="me-1" htmlFor={user.id} data-on-label="isActive" data-off-label=""></Label>
         </div>
       ),
     },
@@ -143,6 +143,7 @@ function UsersList() {
   ];
   const [sizePerPage, setSizePerPage] = useState(10);
   const [SearchInputValue, setSearchInputValue] = useState("");
+  const [currentPage, setcurrentPagePage] = useState(1);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -151,6 +152,7 @@ function UsersList() {
   }, [sizePerPage, 1, clearingCounter]);
 
   const loadUsers = (page, limit) => {
+    // setcurrentPagePage(page);
     if (SearchInputValue !== "") {
       dispatch(fetchUsers({
         page,
@@ -179,7 +181,9 @@ function UsersList() {
   };
 
   const statusUser = (user) => {
-    const values = { "isActive": !user.isActive };
+    const values = {
+      "isActive": !user.isActive
+    };
     dispatch(editUser({
       id: user._id,
       values
@@ -240,6 +244,7 @@ function UsersList() {
                           {loading && <TableLoader colSpan={6} />}
                           {!loading && docs.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
+                              {/* {console.log(rowIndex)} */}
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`}>
                                   {column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}

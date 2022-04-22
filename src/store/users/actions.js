@@ -14,7 +14,8 @@ import {
   EDIT_USERS_START,
   EDIT_USERS_DONE,
   EDIT_USER_CLEAR,
-
+  EDIT_USERS_ERROR,
+  
   DELETE_USERS_START,
   DELETE_USERS_DONE,
 } from "./actionTypes";
@@ -93,6 +94,12 @@ export const editUser = (params = {})=>{
 export const editUserDone = (data)=>{
   return {
     type:EDIT_USERS_DONE,
+    payload: data
+  };
+};
+export const editUserError = (data)=>{
+  return {
+    type:EDIT_USERS_ERROR,
     payload: data
   };
 };

@@ -6,7 +6,7 @@ import {
   Modal, Button,
   ModalHeader,
   ModalBody,
-  UncontrolledAlert, 
+  UncontrolledAlert,
 } from "reactstrap";
 import {
   AvForm, AvField
@@ -20,17 +20,19 @@ function UsersEditModal(props) {
 
   const dispatch = useDispatch();
   // console.log(usersRoles);
-  const handleEditUser = (e, values) => { 
+  const handleEditUser = (e, values) => {
     dispatch(editUser({
       id: user._id,
       values
     }));
   };
   useEffect(() => {
-    if (props.editClearingCounter > 0 && open) {
-      onClose();
+    if (props.editClearingCounter > 0 && open ) {
+      setTimeout(() => {
+        onClose();
+      }, 1000);
     }
-  }, [props.editClearingCounter]);
+  }, [props.editSuccess]);
 
   return (
     <React.Fragment >
@@ -88,7 +90,7 @@ function UsersEditModal(props) {
                 type="select"
                 name="roleId"
                 value={_id}
-              > 
+              >
                 <option value={_id}>{title}</option>
                 {usersRoles?.map((row) => {
                   // console.log("edit modal"); 
@@ -97,7 +99,7 @@ function UsersEditModal(props) {
                 {/* <option value="hkkhj">select</option>
                 <option>624ec3f8a32d3c13fcedcdb8</option>
                 <option>3</option> */}
-              </AvField> 
+              </AvField>
             </div>
             <div className='text-center p-5'>
               <Button type="submit" color="primary" className="">
@@ -124,6 +126,7 @@ const mapStateToProps = (state) => ({
   addLoading: state.usersReducer.addLoading,
   editResult: state.usersReducer.editResult,
   editError: state.usersReducer.editError,
+  editSuccess: state.usersReducer.editSuccess,
   editClearingCounter: state.usersReducer.editClearingCounter,
 });
 export default connect(mapStateToProps, null)(UsersEditModal);

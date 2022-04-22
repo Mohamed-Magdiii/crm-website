@@ -28,10 +28,12 @@ function UsersAddModal(props) {
 
   useEffect(() => {
     if (props.clearingCounter > 0 && addModal) {
-      setAddUserModal(false);
+      setTimeout(() => {
+        setAddUserModal(false);
+      }, 1000);
     }
-  }, [props.clearingCounter]);
-
+  }, [props.addSuccess]);
+ 
   return (
     <React.Fragment >
       <Link to="#" className="btn btn-light" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> Add New</Link>
@@ -93,7 +95,7 @@ function UsersAddModal(props) {
               <label >Role</label>
               <AvField
                 type="select"
-                name="roleId" 
+                name="roleId"
                 errorMessage="please select role"
                 validate={{ required: { value: true } }}
               >
