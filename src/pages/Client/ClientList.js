@@ -99,7 +99,7 @@ function ClientsList(props){
   }, [sizePerPage, 1, searchInputText]);
   
   const loadClients = ( page, limit)=>{
-    if (searchInputText !== ""){
+    if (searchInputText !== "" && searchInputText.length >= 3){
       
       dispatch(fetchClientsStart({
         limit,
