@@ -11,7 +11,7 @@ import contactsSaga from "./contacts/saga";
 import leadSaga from "./leads/saga";
 import rolesSaga from "./roles/saga";
 import usersSaga from "./users/saga";
-
+import clientSaga from "./client/saga";
 export default function* rootSaga() {
   yield all([
     //public
@@ -26,6 +26,7 @@ export default function* rootSaga() {
     fork(contactsSaga),
     fork(leadSaga),
     fork(rolesSaga),
-    fork(usersSaga)
+    fork(usersSaga),
+    fork(clientSaga)
   ]);
 }
