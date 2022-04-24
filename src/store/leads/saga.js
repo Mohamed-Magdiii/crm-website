@@ -7,10 +7,10 @@ import {
   apiError, addNewLeadSuccess, fetchLeadsSuccess 
 } from "./actions";
 import { ADD_NEW_LEAD, FETCH_LEADS_START } from "./actionsType";
-function * fetchLeads({ payload }){
+function * fetchLeads(params){
   try {
     
-    const data = yield call(fetchLeadsFromAPI, payload);
+    const data = yield call(fetchLeadsFromAPI, params);
     yield put(fetchLeadsSuccess(data));
   } catch (error){
     yield put(apiError("Oppos there is a problem in the server"));

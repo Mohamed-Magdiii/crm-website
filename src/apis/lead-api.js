@@ -1,4 +1,5 @@
 import * as axiosHelper from "./api_helper";
+import qs from "qs";
 export const addNewLead = async(values) => {
 
   const data = await axiosHelper.post("/leads", { ...values });
@@ -8,9 +9,9 @@ export const addNewLead = async(values) => {
   
   return data;
 };
-export const fetchLeadsFromAPI = async ( { sizePerPage, currentPage })=>{
-  
-  const result = await  axiosHelper.get(`/leads?limit=${sizePerPage}&page=${currentPage}`);
+export const fetchLeadsFromAPI = async ( { payload })=>{
+  console.log(payload);
+  const result = await  axiosHelper.get(`/leads?${qs.stringify(payload)}`);
   
   return result;
 };

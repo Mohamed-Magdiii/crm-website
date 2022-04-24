@@ -11,11 +11,11 @@ import {
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
-import { Search } from "react-bootstrap-table2-toolkit";
 import "./LeadList.scss";
 import { fetchLeadsStart } from "../../store/leads/actions";
 import LeadForm from "pages/Leads/LeadAdd";
-
+import SearchBar from "components/Common/SearchBar";
+import { set } from "lodash";
 
 function LeadsList(props){
   const columns = [
@@ -71,23 +71,34 @@ function LeadsList(props){
     
   const {totalDocs} = useSelector(state=>state.leadReducer);
   const [sizePerPage, setSizePerPage] = useState(10);
-
+  const [searchInputText, setSearchInputText] = useState("");
   const dispatch = useDispatch();
   
   
-  const { SearchBar } = Search;
   useEffect(()=>{
     loadLeads(1, sizePerPage);
   
-  }, [sizePerPage, 1]);
+  }, [sizePerPage, 1, searchInputText]);
   
-  const loadLeads = ( currentPage, sizePerPage)=>{
-    dispatch(fetchLeadsStart({
-      sizePerPage,
-      currentPage
-    })) ;
+  const loadLeads = ( page, limit)=>{
+    if (searchInputText !== "" && searchInputText.length >= 3){
+      
+      dispatch(fetchLeadsStart({
+        limit,
+        page,
+        searchText:searchInputText
+      }));
+    }
+    else if (searchInputText === ""){
+      dispatch(fetchLeadsStart({
+        limit,
+        page
+      })) ;
+    }
   };
-  
+  const handleSearchInput = (e)=>{
+    setSearchInputText(e.target.value);
+  };
   return (
     <React.Fragment>
       <div className="page-content"> 
@@ -102,9 +113,9 @@ function LeadsList(props){
                     <CardTitle>Leads List ({totalDocs})</CardTitle>
                     <LeadForm/>
                   </div>
-                  <div className="search-bar"> 
-                    <SearchBar />
-                  </div>  
+                  
+                  <SearchBar handleSearchInput={handleSearchInput} />
+                  
                 </CardHeader>
                 <CardBody>
                   <div className="table-rep-plugin">
