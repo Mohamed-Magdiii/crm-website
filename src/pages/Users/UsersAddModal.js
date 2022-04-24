@@ -11,7 +11,7 @@ import {
   UncontrolledAlert,
 } from "reactstrap";
 import { AvForm, AvField } from "availity-reactstrap-validation";
-import { addUser } from "store/users/actions"; 
+import { addUser } from "store/users/actions";
 
 
 function UsersAddModal(props) {
@@ -28,10 +28,12 @@ function UsersAddModal(props) {
 
   useEffect(() => {
     if (props.clearingCounter > 0 && addModal) {
-      setAddUserModal(false);
+      setTimeout(() => {
+        setAddUserModal(false);
+      }, 1000);
     }
-  }, [props.clearingCounter]);
-
+  }, [props.addSuccess]);
+ 
   return (
     <React.Fragment >
       <Link to="#" className="btn btn-light" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> Add New</Link>
@@ -94,12 +96,14 @@ function UsersAddModal(props) {
               <AvField
                 type="select"
                 name="roleId"
+                errorMessage="please select role"
+                validate={{ required: { value: true } }}
               >
-                <option>select</option> 
+                <option value="">select</option>
                 {usersRoles?.map((row) => {
                   return (<option key={row._id} value={row._id}>{row.title}</option>);
-                })} 
-              </AvField> 
+                })}
+              </AvField>
             </div>
             <div className='text-center p-5'>
               <Button type="submit" color="primary" className="">

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import {
-  useDispatch, connect, useSelector
+  useDispatch, useSelector
 } from "react-redux";
 import { Link } from "react-router-dom";
 
 import {
-  Row, Col, Card, CardBody, CardTitle, CardHeader, Input, Label, Dropdown, DropdownToggle, DropdownItem, DropdownMenu,
+  Row, Col, Card, CardBody, CardTitle, CardHeader, Input, Label
 } from "reactstrap";
 
 import {
@@ -22,12 +22,11 @@ import DeleteModal from "components/Common/DeleteModal";
 import UsersAddModal from "./UsersAddModal";
 import UsersEditModal from "./UsersEditModal";
 
-function UsersList(props) {
+function UsersList() {
 
   const [editModal, setEditUserModal] = useState(false);
   const [deleteModal, setDeleteUserModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState();
-  const [btnprimary1, setBtnprimary1] = useState(false);
 
   const {
     loading,
@@ -45,7 +44,7 @@ function UsersList(props) {
     deleteClearingCounter,
     roles,
     clearingCounter,
-    editClearingCounter,
+    // editClearingCounter,
   } = useSelector((state) => ({
     loading: state.usersReducer.loading || false,
     docs: state.usersReducer.docs || [],
@@ -62,7 +61,7 @@ function UsersList(props) {
     deleteClearingCounter: state.usersReducer.deleteClearingCounter,
     roles: state.usersReducer.rolesData,
     clearingCounter: state.usersReducer.clearingCounter,
-    editClearingCounter: state.usersReducer.editClearingCounter,
+    // editClearingCounter: state.usersReducer.editClearingCounter,
   }));
 
   const columns = [
@@ -93,15 +92,13 @@ function UsersList(props) {
       sort: true,
       formatter: (user) => (
         <>
-          {/* {console.log("ghgfffffffffffffffffffffffffff")}
-          {console.log(user)} */}
           {user.roleId ? (
             <div className="d-flex gap-3">
-              <Label className="me-1" htmlFor={user.id} data-on-label="Active" data-off-label="">{user.roleId.title}</Label>
+              <Label className="me-1" data-on-label="roleId" data-off-label="">{user.roleId.title}</Label>
             </div>
           ) : (
             <div className="d-flex gap-3">
-              <Label className="me-1" htmlFor={user.id} data-on-label="Active" data-off-label=""> </Label>
+              <Label className="me-1" data-on-label="roleId" data-off-label=""> </Label>
             </div>
           )}
         </>
@@ -114,8 +111,8 @@ function UsersList(props) {
       sort: true,
       formatter: (user) => (
         <div className="d-flex gap-3">
-          <Input type="checkbox" id={user.id} switch="none" defaultChecked={user.isActive} onClick={() => { setSelectedUser(user); statusUser(user) }} />
-          <Label className="me-1" htmlFor={user.id} data-on-label="Active" data-off-label=""></Label>
+          <Input type="checkbox" id={user.id} switch="none" checked={user.isActive} onChange={() => { setSelectedUser(user); statusUser(user)}} />
+          <Label className="me-1" htmlFor={user.id} data-on-label="isActive" data-off-label=""></Label>
         </div>
       ),
     },
@@ -145,7 +142,8 @@ function UsersList(props) {
     },
   ];
   const [sizePerPage, setSizePerPage] = useState(10);
-  // const [currentPage, setcurrentPagePage] = useState(1);
+  const [SearchInputValue, setSearchInputValue] = useState("");
+  const [currentPage, setcurrentPagePage] = useState(1);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -155,11 +153,18 @@ function UsersList(props) {
 
   const loadUsers = (page, limit) => {
     // setcurrentPagePage(page);
-    dispatch(fetchUsers({
-      page,
-      limit,
-    }));
-
+    if (SearchInputValue !== "") {
+      dispatch(fetchUsers({
+        page,
+        limit,
+        searchText: SearchInputValue,
+      }));
+    } else {
+      dispatch(fetchUsers({
+        page,
+        limit,
+      }));
+    }
   };
   const numPageRows = (numOfRows) => {
     setSizePerPage(numOfRows);
@@ -176,14 +181,20 @@ function UsersList(props) {
   };
 
   const statusUser = (user) => {
-    const values = { "isActive": !user.isActive };
+    const values = {
+      "isActive": !user.isActive
+    };
     dispatch(editUser({
       id: user._id,
       values
     }));
 
   };
-
+  const searchHandelEnterClik = (event) => {
+    if (event.keyCode === 13) {
+      loadUsers(1, sizePerPage);
+    }
+  };
   useEffect(() => {
     if (deleteClearingCounter > 0 && deleteModal) {
       setDeleteUserModal(false);
@@ -199,11 +210,20 @@ function UsersList(props) {
             <Col className="col-12">
               <Card>
                 <CardHeader className="d-flex justify-content-between  align-items-center">
-                  <CardTitle>Users List ({totalDocs})</CardTitle>
-
+                  <CardTitle>
+                    Users List ({totalDocs})
+                  </CardTitle>
                   <UsersAddModal usersRoles={roles} />
                 </CardHeader>
                 <CardBody>
+                  <div className="search-box me-2 mb-2 d-inline-block">
+                    <div className="position-relative">
+                      <label htmlFor="search-bar-0" className="search-label">
+                        <span id="search-bar-0-label" className="sr-only">Search this table</span>
+                        <input onChange={(e) => setSearchInputValue(e.target.value)} onKeyDown={(e) => searchHandelEnterClik(e)} id="search-bar-0" type="text" aria-labelledby="search-bar-0-label" className="form-control " placeholder="Search" />
+                      </label>
+                      <i onClick={() => loadUsers(1, sizePerPage)} className="bx bx-search-alt search-icon" /></div>
+                  </div>
                   <div className="table-rep-plugin">
                     <div
                       className="table-responsive mb-0"
@@ -224,6 +244,7 @@ function UsersList(props) {
                           {loading && <TableLoader colSpan={6} />}
                           {!loading && docs.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
+                              {/* {console.log(rowIndex)} */}
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`}>
                                   {column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
@@ -231,7 +252,6 @@ function UsersList(props) {
                               )}
                             </Tr>
                           )}
-                          {/* {console.log(docs)} */}
                         </Tbody>
                       </Table>
                       <CustomPagination
@@ -249,19 +269,6 @@ function UsersList(props) {
                         setSizePerPage={numPageRows}
                         onChange={loadUsers}
                       />
-                      {/* <Dropdown
-                        isOpen={btnprimary1}
-                        toggle={() => setBtnprimary1(!btnprimary1)}
-                      >
-                        <DropdownToggle tag="button" className="btn btn-secondary ">
-                          <i className="mdi mdi-chevron-down" />
-                        </DropdownToggle>
-                        <DropdownMenu>
-                          <DropdownItem>10</DropdownItem>
-                          <DropdownItem>20</DropdownItem>
-                          <DropdownItem>30</DropdownItem>
-                        </DropdownMenu>
-                      </Dropdown> */}
                     </div>
                   </div>
                 </CardBody>
