@@ -107,7 +107,7 @@ function ClientsList(props){
         searchText:searchInputText
       }));
     }
-    else {
+    else if (searchInputText === "") {
       dispatch(fetchClientsStart({
         limit,
         page
