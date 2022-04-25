@@ -10,7 +10,7 @@ import {
 } from "reactstrap";
 
 import { Link } from "react-router-dom";
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 
 import { 
@@ -18,33 +18,33 @@ import {
 } from "../../store/client/actions";
 import CountryDropDown from "../../components/Common/CountryDropDown";
 function ClientForm(props){
+
+  const [addModal, setAddUserModal] = useState(false);
+
   const dispatch = useDispatch();
-  
-  const handleAddLead = (event, values)=>{
+
+  const handleAddLead = (event, values) => {
     event.preventDefault();
     dispatch(addNewClient(values));
     setTimeout(()=>{
       dispatch(addNewClientSuccess(""));
       dispatch(apiError(""));
-      
-      
     }, 2000);
   }; 
-  const [addModal, setAddUserModal] = useState(false);
+
   const toggleAddModal = () => {
     setAddUserModal(!addModal);
   };
-  useEffect(()=>{
+
+  useEffect(() => {
     if (props.successMessage  && addModal) {
       setTimeout(()=>{
         setAddUserModal(false);
-        
       }, 2000);
-      
     }
   }, [props.successMessage]);
+
   return (
-      
     <React.Fragment >
       <Link to="#" className="btn btn-light" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> Add New</Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
@@ -58,7 +58,6 @@ function ClientForm(props){
               handleAddLead(e, v);
             }}
           >
-            
             <Row>
               <Col md="6">
                 <div className="mb-3">
@@ -124,7 +123,6 @@ function ClientForm(props){
             <div className="mb-3">
               <CountryDropDown/>
             </div>
-
             <div className='text-center pt-3 p-2'>
               <Button  type="submit" color="primary" className="">
                     Add new Client 
@@ -143,11 +141,9 @@ function ClientForm(props){
       </Modal>
     </React.Fragment>
   );
-
 }
 const mapStateToProps = (state) => ({
   error: state.clientReducer.error,
   successMessage: state.clientReducer.successMessage,
-    
 });
 export default connect(mapStateToProps, null)(ClientForm);
