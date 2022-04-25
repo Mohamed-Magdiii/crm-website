@@ -21,7 +21,7 @@ function * addNewClient({ payload:{ newClient } }){
   try {
     
     const data = yield call(addClient, newClient);
-    const {status } = data;
+    const { status } = data;
     if (status){
       yield put(addNewClientSuccess("Client is added successfully", newClient));
     }
