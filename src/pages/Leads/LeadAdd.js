@@ -11,16 +11,19 @@ import {
 } from "reactstrap";
 
 import { Link } from "react-router-dom";
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { apiError, addNewLeadSuccess } from "store/leads/actions";
-import { addNewLead} from "../../store/leads/actions";
+import { addNewLead } from "../../store/leads/actions";
 import CountryDropDown from "../../components/Common/CountryDropDown";
-function LeadForm(props){
+
+function LeadForm(props) {
+
+  const [addModal, setAddUserModal] = useState(false);
+
   const dispatch = useDispatch();
   
   const handleAddLead = (event, values)=>{
-     
     event.preventDefault();
     dispatch(addNewLead(values));
     setTimeout(()=>{
@@ -28,10 +31,11 @@ function LeadForm(props){
       dispatch(apiError(""));
     }, 2000);
   }; 
-  const [addModal, setAddUserModal] = useState(false);
+
   const toggleAddModal = () => {
     setAddUserModal(!addModal);
   };
+
   useEffect(()=>{
     if (props.successMessage  && addModal) {
       setTimeout(()=>{
@@ -40,10 +44,13 @@ function LeadForm(props){
       
     }
   }, [props.successMessage]);
+
   return (
-      
     <React.Fragment >
-      <Link to="#" className="btn btn-light" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> Add New</Link>
+      <Link to="#" className="btn btn-light" onClick={toggleAddModal}>
+        <i className="bx bx-plus me-1"/> 
+        Add New
+      </Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
           Add New Lead
@@ -120,30 +127,37 @@ function LeadForm(props){
             <div className="mb-3">
               <CountryDropDown/>
             </div>
-
             <div className='text-center pt-3 p-2'>
               <Button  type="submit" color="primary" className="">
                     Add New Lead
               </Button>
             </div>
           </AvForm>
-          {props.error && <UncontrolledAlert color="danger">
-            <i className="mdi mdi-block-helper me-2"></i>
-            {props.error}
-          </UncontrolledAlert>}
-          {props.successMessage && <UncontrolledAlert color="success">
-            <i className="mdi mdi-check-all me-2"></i>
-              Lead Added successfully !!!
-          </UncontrolledAlert>}
+          {
+            props.error && (
+              <UncontrolledAlert color="danger">
+                <i className="mdi mdi-block-helper me-2"/>
+                {props.error}
+              </UncontrolledAlert>
+            )
+          }
+          {
+            props.successMessage && (
+              <UncontrolledAlert color="success">
+                <i className="mdi mdi-check-all me-2"/>
+                  Lead Added successfully !!!
+              </UncontrolledAlert>
+            )
+          }
         </ModalBody>
       </Modal>
     </React.Fragment>
   );
-
 }
+
 const mapStateToProps = (state) => ({
   error: state.leadReducer.error,
   successMessage: state.leadReducer.successMessage,
-    
 });
+
 export default connect(mapStateToProps, null)(LeadForm);
