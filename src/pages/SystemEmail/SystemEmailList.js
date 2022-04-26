@@ -21,19 +21,37 @@ import SystemEmailAdd from "./SystemEmailAdd";
 import SystemEmailEdit from "./SystemEmailEdit";
 
 function SystemEmailsList(props){
-  const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [activeComponent, setActiveComponent] = useState("list component"); // to control which component to render 
   const [selectedSystemEmail, setSelectedSystemEmail] = useState();
+  
+  // a callback function to pass to <SystemEmailAdd /> as a child to change activeComponent
+  // and <SystemEmailEdit /> as a child to change activeComponent as well
+  const switchComponents = () => {
+    activeComponent === "list component" 
+      ? setActiveComponent("edit component")
+      : setActiveComponent("list component");
+  };
+
   const columns = [
     {
       dataField: "createdAt",
       text: "Created Date",
       formatter: (val) => {return new Date(val.createdAt).toDateString()}
+    },
+    {
+      dataField: "title",
+      text: "Title"
+    },
+    {
+      dataField: "actionType",
+      text: "Action type"
     }, 
     {
       dataField:"content",
       text:"Email content"
     },
+    // TODO add a toggle to switch from active to inactive
     {
       dataField: "isActive",
       text: "Status",
@@ -55,7 +73,7 @@ function SystemEmailsList(props){
             <i
               className="mdi mdi-pencil font-size-18"
               id="edittooltip"
-              onClick={() => {setSelectedSystemEmail(item); setEditModal(true)}}
+              onClick={() => {setSelectedSystemEmail(item)}}
             ></i>
           </Link>
           <Link className="text-danger" to="#">
@@ -85,67 +103,68 @@ function SystemEmailsList(props){
     dispatch(deleteSystemEmail(selectedSystemEmail._id));
   };
 
-  // TODO delete modal needs to be handled here 
-  // when to appear to disappear 
-
   return (
     <React.Fragment>
-      <div className="page-content">
-        <div className="container-fluid">
-          <h2>System Emails</h2>
-          <Row>
-            <Col className="col-12">
-              <Card>
-                <CardHeader className="d-flex justify-content-between  align-items-center">
-                  <CardTitle>System Emails list ({props.totalDocs})</CardTitle>
-                  <SystemEmailAdd />
-                </CardHeader>
-                <CardBody>
-                  <div className="table-rep-plugin">
-                    <div
-                      className="table-responsive mb-0"
-                      data-pattern="priority-columns"
-                    >
-                      <Table
-                        id="tech-companies-1"
-                        className="table "
+      {activeComponent === "edit component" && <SystemEmailEdit role={selectedSystemEmail} switchComponents={switchComponents}/>}
+      {activeComponent === "list component" && 
+      <>
+        <div className="page-content">
+          <div className="container-fluid">
+            <h2>System Emails</h2>
+            <Row>
+              <Col className="col-12">
+                <Card>
+                  <CardHeader className="d-flex justify-content-between  align-items-center">
+                    <CardTitle>System Emails list ({props.totalDocs})</CardTitle>
+                    <SystemEmailAdd switchComponents={switchComponents}/>
+                  </CardHeader>
+                  <CardBody>
+                    <div className="table-rep-plugin">
+                      <div
+                        className="table-responsive mb-0"
+                        data-pattern="priority-columns"
                       >
-                        <Thead>
-                          <Tr>
-                            {columns.map((column, index) =>
-                              <Th data-priority={index} key={index}>{column.text}</Th>
-                            )}
-                          </Tr>
-                        </Thead>
-                        <Tbody>
-                          {props.loading && <TableLoader colSpan={4} />}
-                          {!props.loading && props.docs.map((row, rowIndex) =>
-                            <Tr key={rowIndex}>
+                        <Table
+                          id="tech-companies-1"
+                          className="table "
+                        >
+                          <Thead>
+                            <Tr>
                               {columns.map((column, index) =>
-                                <Td key={`${rowIndex}-${index}`}>
-                                  { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
-                                </Td>
+                                <Th data-priority={index} key={index}>{column.text}</Th>
                               )}
                             </Tr>
-                          )}
-                        </Tbody>
-                      </Table>
-                      <CustomPagination
-                        {...props}
-                        setSizePerPage={setSizePerPage}
-                        sizePerPage={sizePerPage}
-                        onChange={loadSystemEmailsFunction}
-                      />
+                          </Thead>
+                          <Tbody>
+                            {props.loading && <TableLoader colSpan={4} />}
+                            {!props.loading && props.docs.map((row, rowIndex) =>
+                              <Tr key={rowIndex}>
+                                {columns.map((column, index) =>
+                                  <Td key={`${rowIndex}-${index}`}>
+                                    { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
+                                  </Td>
+                                )}
+                              </Tr>
+                            )}
+                          </Tbody>
+                        </Table>
+                        <CustomPagination
+                          {...props}
+                          setSizePerPage={setSizePerPage}
+                          sizePerPage={sizePerPage}
+                          onChange={loadSystemEmailsFunction}
+                        />
+                      </div>
                     </div>
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-          {<SystemEmailEdit open={editModal}  role={selectedSystemEmail} onClose={()=>{setEditModal(false)}} />}
-          {<DeleteModal loading={props.deleteLoading} onDeleteClick={deleteSystemEmailFunction} show={deleteModal} onCloseClick={()=>{setDeleteModal(false)}} />}
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+            {<DeleteModal loading={props.deleteLoading} onDeleteClick={deleteSystemEmailFunction} show={deleteModal} onCloseClick={()=>{setDeleteModal(false)}} />}
+          </div>
         </div>
-      </div>
+      </>
+      }
     </React.Fragment>
   );
 }

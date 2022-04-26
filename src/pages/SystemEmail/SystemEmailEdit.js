@@ -1,9 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, connect } from "react-redux";
 import {
-  Modal, Button,
-  ModalHeader,
-  ModalBody,
+  Button,
   UncontrolledAlert,
 } from "reactstrap";
 import {
@@ -13,7 +11,9 @@ import {
 import { editSystemEmail } from "store/systemEmail/actions";
 
 function SystemEmailEdit(props){
-  const { open, role = {}, onClose } = props;
+  // to make sure it won't take a new step unless the form submission was valid
+  const [isEditValid, setIsEditValid] = useState(false);
+  const { role = {} } = props.role;
   const dispatch = useDispatch();
   const handleSystemEmailEdit = (values) => {
     dispatch(editSystemEmail({
@@ -24,28 +24,78 @@ function SystemEmailEdit(props){
 
   return (
     <React.Fragment >
-      <Modal isOpen={open} toggle={onClose} centered={true}>
-        <ModalHeader toggle={onClose} tag="h4">
-            Edit System Email
-        </ModalHeader>
-        <ModalBody >
+      <div className="page-content">
+        <div className="container-fluid">
+          <h2>Edit system email</h2>
           <AvForm
             className='p-4'
             onValidSubmit={(v) => {
               handleSystemEmailEdit(v);
+              // switch isEditValid to true so the system could move on to the next step
+              setIsEditValid(true);
             }}
           >
+            {/* title = props.title */}
             <div className="mb-3">
+              {/* TODO check the placeholder and the value */}
               <AvField
-                name="title"
-                label="Role Title"
-                placeholder="Role Title"
+                name="System email Title"
+                id="System email Title"
+                label="System email Title"
+                placeholder="System email title"
                 type="text"
-                value={role.title}
-                errorMessage="Enter Role Title"
+                value={props.title}
+                errorMessage="System email title is required"
                 validate={{ required: { value: true } }}
               />
             </div>
+
+            {/* action = props.action */}
+            <div className="mb-3">
+              {/* TODO check the placeholder and the value */}
+              <AvField
+                name="action"
+                label="System email action"
+                placeholder="System email action"
+                type="text"
+                value={props.action}
+                errorMessage="System email title is required"
+                validate={{ required: { value: true } }}
+              />
+            </div>
+
+            {/* available language dropdown */}
+            <div className="mb-3">
+              {/* TODO check the default placeholder */}
+              <AvField
+                name="available langauges"
+                label="available languages"
+                placeholder="available languages"
+                type="select"
+                errorMessage="Language is required"
+                validate={{ required: { value: true } }}
+              >
+                {/* TODO these options should be availabe languages returned from the backend */}
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+              </AvField>
+            </div>
+
+            {/* content */}
+            <div className="mb-3">
+              {/* TODO check if this field can be an editor if not it's OK */}
+              <AvField
+                name="content"
+                label="System email content"
+                placeholder="System email content"
+                type="editor"
+                errorMessage="Content is required"
+                validate={{ required: { value: true } }}
+              />
+            </div>
+
             {role.permissions && Object.keys(role.permissions).map((permKey, permInd) =>
               <div className="mb-3" key={permInd}>
                 <h6 className="text-capitalize">{permKey}</h6>
@@ -58,21 +108,21 @@ function SystemEmailEdit(props){
               </div>
             )}
             <div className='text-center pt-3 p-2'>
-              <Button disabled={props.addLoading} type="submit" color="primary" className="">
-                Update New Role
+              <Button disabled={props.addLoading} type="submit" color="primary" onClick={isEditValid && props.switchComponents()}>
+                  Update system email
               </Button>
             </div>
           </AvForm>
-          {props.editError && <UncontrolledAlert color="danger">
-            <i className="mdi mdi-block-helper me-2"></i>
-            {props.editError}
-          </UncontrolledAlert>}
-          {props.editResult && <UncontrolledAlert color="success">
-            <i className="mdi mdi-check-all me-2"></i>
-            Role Updated successfully !!!
-          </UncontrolledAlert>}
-        </ModalBody>
-      </Modal>
+        </div>
+      </div>
+      {props.editError && <UncontrolledAlert color="danger">
+        <i className="mdi mdi-block-helper me-2"></i>
+        {props.editError}
+      </UncontrolledAlert>}
+      {props.editResult && <UncontrolledAlert color="success">
+        <i className="mdi mdi-check-all me-2"></i>
+          System Email Updated successfully !!!
+      </UncontrolledAlert>}
     </React.Fragment>
   );
 }
