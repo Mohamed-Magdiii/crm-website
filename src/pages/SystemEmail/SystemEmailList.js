@@ -49,7 +49,8 @@ function SystemEmailsList(props){
     }, 
     {
       dataField:"content",
-      text:"Email content"
+      text:"Default subject",
+      formatter: (val) => {return val.content["en-gb"] && val.content["en-gb"].subject || " "}
     },
     // TODO add a toggle to switch from active to inactive
     {
@@ -93,15 +94,21 @@ function SystemEmailsList(props){
   const loadSystemEmailsFunction = (page, limit) => {
     dispatch(fetchSystemEmails({
       page,
-      limit,
+      limit
     }));
   };
-  useEffect(()=>{
-    loadSystemEmailsFunction(1, sizePerPage);
-  }, [sizePerPage, 1]);
   const deleteSystemEmailFunction = () => {
     dispatch(deleteSystemEmail(selectedSystemEmail._id));
   };
+  
+  useEffect(()=>{
+    loadSystemEmailsFunction(1, sizePerPage);
+  }, [sizePerPage, 1]);
+  useEffect(() => {
+    if (props.deleteClearingCounter > 0 && deleteModal){
+      setDeleteModal(false);
+    }
+  }, [props.deleteClearingCounter]);
 
   return (
     <React.Fragment>
@@ -172,7 +179,17 @@ function SystemEmailsList(props){
 const mapStateToProps = (state) => ({
   loading: state.systemEmailsReducer.loading || false,
   docs: state.systemEmailsReducer.docs || [],
-  page: state.systemEmailsReducer.page || 1
+  page: state.systemEmailsReducer.page || 1,
+  totalDocs: state.systemEmailsReducer.totalDocs || 0,
+  // totalPages: state.rolesReducer.totalPages || 0,
+  // hasNextPage: state.rolesReducer.hasNextPage,
+  // hasPrevPage: state.rolesReducer.hasPrevPage,
+  limit: state.rolesReducer.limit,
+  // nextPage: state.rolesReducer.nextPage,
+  // pagingCounter: state.rolesReducer.pagingCounter,
+  // prevPage: state.rolesReducer.prevPage,
+  // deleteLoading: state.rolesReducer.deleteLoading,
+  // deleteClearingCounter: state.rolesReducer.deleteClearingCounter
 });
 
 export default connect(mapStateToProps, null)(SystemEmailsList);

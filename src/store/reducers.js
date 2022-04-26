@@ -23,7 +23,7 @@ import contacts from "./contacts/reducer";
 import clientReducer from "./client/reducer";
 import leadReducer from "./leads/reducer";
 
-// email tempaltes 
+// system emails 
 import systemEmailsReducer from "./systemEmail/reducer";
 import rolesReducer from "./roles/reducer";
 import usersReducer from "./users/reducer";
