@@ -52,14 +52,16 @@ function * editSystemEmail(params){
 }
 
 function * deleteSystemEmail(params){
-  try {    
+  try {
     const data = yield call(systemEmailApi.deleteSystemEmail, params);
+    const { result } = data;
     yield put(deleteSystemEmailSuccess({
-      data,
-      id: params.payload
+      result,
+      // params.payload = id of deleted system email
+      id: params.payload 
     }));
   } catch (error){
-    yield put(deleteSystemEmailFail(error));
+    yield put(deleteSystemEmailFail({ error: error.message }));
   }
 }
 

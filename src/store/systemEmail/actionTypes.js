@@ -1,6 +1,7 @@
 // fetch
 // the REQUESTED action type is just a part of a pattern in redux saga 
 // it just means that an action was called but didn't return a value yet
+// just like a promise REQUESTED = pending, SUCCESS = resolved, FAIL = rejected
 export const FETCH_SYSTEM_EMAILS_REQUESTED = "FETCH_SYSTEM_EMAILS_REQUESTED";
 export const FETCH_SYSTEM_EMAILS_SUCCESS = "FETCH_SYSTEM_EMAILS_SUCCESS";
 export const FETCH_SYSTEM_EMAILS_FAIL = "FETCH_SYSTEM_EMAILS_FAIL";

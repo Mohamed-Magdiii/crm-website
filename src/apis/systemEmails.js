@@ -35,6 +35,5 @@ export const deleteSystemEmail = async ({ payload }) => {
   if (data.isError){
     throw new Error(data.message);
   }
-
   return data;
 };

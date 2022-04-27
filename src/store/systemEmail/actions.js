@@ -22,14 +22,12 @@ export const fetchSystemEmails = (params = {}) => {
     payload: params 
   };
 };
-
 export const fetchSystemEmailsSuccess = (data) => {
   return {
     type: FETCH_SYSTEM_EMAILS_SUCCESS,
     payload: data
   };
 };
-
 export const fetchSystemEmailsFail = (error) => {
   return {
     type: FETCH_SYSTEM_EMAILS_FAIL,
@@ -43,14 +41,12 @@ export const addSystemEmail = (params = {}) => {
     payload: params
   };
 };
-
 export const addSystemEmailSuccess = (data) => {
   return {
     type: ADD_SYSTEM_EMAIL_SUCCESS,
     payload: data
   };
 };
-
 export const addSystemEmailFail = (error) => {
   return {
     type: ADD_SYSTEM_EMAIL_FAIL,
@@ -64,14 +60,12 @@ export const deleteSystemEmail = (params = {}) => {
     payload: params
   };
 };
-
 export const deleteSystemEmailSuccess = (data) => {
   return {
     type: DELETE_SYSTEM_EMAIL_SUCCESS,
     payload: data
   };
 };
-
 export const deleteSystemEmailFail = (error) => {
   return {
     type: DELETE_SYSTEM_EMAIL_FAIL,
@@ -85,14 +79,12 @@ export const editSystemEmail = (params = {}) => {
     payload: params
   };
 };
-
 export const editSystemEmailSuccess = (data) => {
   return {
     type: EDIT_SYSTEM_EMAIL_SUCCESS,
     payload: data
   };
 };
-
 export const editSystemEmailFail = (error) => {
   return {
     type: EDIT_SYSTEM_EMAIL_FAIL,

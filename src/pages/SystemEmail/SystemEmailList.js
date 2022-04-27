@@ -33,6 +33,11 @@ function SystemEmailsList(props){
       : setActiveComponent("list component");
   };
 
+  // a function to switch status of a selected system email
+  const switchSelectedSystemEmailStatus = () => {
+    selectedSystemEmail.isActive = !selectedSystemEmail.isActive;
+  };
+
   const columns = [
     {
       dataField: "createdAt",
@@ -52,13 +57,12 @@ function SystemEmailsList(props){
       text:"Default subject",
       formatter: (val) => {return val.content["en-gb"] && val.content["en-gb"].subject || " "}
     },
-    // TODO add a toggle to switch from active to inactive
     {
       dataField: "isActive",
       text: "Status",
       formatter: (item) => (
         <div className="d-flex gap-3">
-          <Input type="checkbox" id={item.id} switch="none" defaultChecked={item.isActive} onClick={() => {}} />
+          <Input type="checkbox" id={item.id} switch="none" defaultChecked={item.isActive} onClick={() => { switchSelectedSystemEmailStatus() }} />
           <Label className="me-1" htmlFor={item.id} data-on-label="Active" data-off-label=""></Label>
         </div>
       ),
@@ -74,21 +78,21 @@ function SystemEmailsList(props){
             <i
               className="mdi mdi-pencil font-size-18"
               id="edittooltip"
-              onClick={() => {setSelectedSystemEmail(item)}}
+              onClick={() => { setSelectedSystemEmail(item); setActiveComponent("edit component") }}
             ></i>
           </Link>
           <Link className="text-danger" to="#">
             <i
               className="mdi mdi-delete font-size-18"
               id="deletetooltip"
-              onClick={() => { setSelectedSystemEmail(item); setDeleteModal(true)}}
+              onClick={() => { setSelectedSystemEmail(item); setDeleteModal(true) }}
             ></i>
           </Link>
         </div>
       ),
     },
   ];
-
+  
   const [sizePerPage, setSizePerPage] = useState(5);
   const dispatch = useDispatch();
   const loadSystemEmailsFunction = (page, limit) => {
@@ -100,7 +104,7 @@ function SystemEmailsList(props){
   const deleteSystemEmailFunction = () => {
     dispatch(deleteSystemEmail(selectedSystemEmail._id));
   };
-  
+
   useEffect(()=>{
     loadSystemEmailsFunction(1, sizePerPage);
   }, [sizePerPage, 1]);
@@ -181,15 +185,17 @@ const mapStateToProps = (state) => ({
   docs: state.systemEmailsReducer.docs || [],
   page: state.systemEmailsReducer.page || 1,
   totalDocs: state.systemEmailsReducer.totalDocs || 0,
-  // totalPages: state.rolesReducer.totalPages || 0,
-  // hasNextPage: state.rolesReducer.hasNextPage,
-  // hasPrevPage: state.rolesReducer.hasPrevPage,
-  limit: state.rolesReducer.limit,
-  // nextPage: state.rolesReducer.nextPage,
-  // pagingCounter: state.rolesReducer.pagingCounter,
-  // prevPage: state.rolesReducer.prevPage,
-  // deleteLoading: state.rolesReducer.deleteLoading,
-  // deleteClearingCounter: state.rolesReducer.deleteClearingCounter
+  totalPages: state.systemEmailsReducer.totalPages || 0,
+  hasNextPage: state.systemEmailsReducer.hasNextPage,
+  hasPrevPage: state.systemEmailsReducer.hasPrevPage,
+  limit: state.systemEmailsReducer.limit,
+  nextPage: state.systemEmailsReducer.nextPage,
+  pagingCounter: state.systemEmailsReducer.pagingCounter,
+  prevPage: state.systemEmailsReducer.prevPage,
+  deleteLoading: state.systemEmailsReducer.deleteLoading,
+  deleteClearingCounter: state.systemEmailsReducer.deleteClearingCounter,
+  clearingCounter: state.systemEmailsReducer.clearingCounter,
+  newDeleteRequest: state.systemEmailsReducer.newDeleteRequest
 });
 
 export default connect(mapStateToProps, null)(SystemEmailsList);
