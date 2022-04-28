@@ -24,6 +24,7 @@ import clientReducer from "./client/reducer";
 import leadReducer from "./leads/reducer";
 import rolesReducer from "./roles/reducer";
 import usersReducer from "./users/reducer";
+import teamsReducer from "./teams/reducer";
 
 const rootReducer = combineReducers({
   // public
@@ -39,7 +40,8 @@ const rootReducer = combineReducers({
   clientReducer,
   leadReducer,
   rolesReducer,
-  usersReducer
+  usersReducer,
+  teamsReducer
 });
 
 export default rootReducer;

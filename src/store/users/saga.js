@@ -10,91 +10,101 @@ import {
   DELETE_USERS_START
 } from "./actionTypes";
 import {
-  fetchUsersSuccess, fetchUsersRolesSuccess, fetchUsersRolesError, fetchUsersError, addUserSuccess, addUserError, addUserClear, editUserDone, editUserError, editUserClear, deleteUserDone
+  fetchUsersSuccess,
+  fetchUsersRolesSuccess,
+  fetchUsersRolesError,
+  fetchUsersError,
+  addUserSuccess,
+  addUserError,
+  addUserClear,
+  editUserDone,
+  editUserError,
+  editUserClear,
+  deleteUserDone
 } from "./actions";
 
 //Include Both Helper File with needed methods
 import * as usersApi from "../../apis/users";
 
 
-function * fetchUsers(params){
- 
+function* fetchUsers(params) {
+
   try {
-    const data = yield call(usersApi.getUsers, params);    
+    const data = yield call(usersApi.getUsers, params);
     yield put(fetchUsersSuccess(data));
   }
-  catch (error){
+  catch (error) {
     yield put(fetchUsersError(error));
-  } 
+  }
 
 }
-function * fetchRoles(params){
- 
+function* fetchRoles(params) {
+
   try {
-    const data = yield call(usersApi.getRoles, params);  
+    const data = yield call(usersApi.getRoles, params);
     // console.log("data");  
     // console.log(data);  
     yield put(fetchUsersRolesSuccess(data));
   }
-  catch (error){
+  catch (error) {
     yield put(fetchUsersRolesError(error));
-  } 
+  }
 
 }
-function * addUser(params){
+function* addUser(params) {
   try {
     const data = yield call(usersApi.addUser, params);
-    
+
     const { result } = data;
     yield put(addUserSuccess(result));
     yield delay(2000);
     yield put(addUserClear());
   }
-  catch (error){
+  catch (error) {
     yield put(addUserError(error));
     yield delay(2000);
     yield put(addUserClear());
-  } 
+  }
 
-  
+
 }
 
-function * editUser(params){
+function* editUser(params) {
   try {
     const data = yield call(usersApi.editUser, params);
-    
-    
+
+
     const { result } = data;
     yield put(editUserDone({
       result,
-      id: params.payload.id  
+      id: params.payload.id
     }));
     yield delay(2000);
     yield put(editUserClear());
   }
-  catch (error){
+  catch (error) {
     yield put(editUserError({ error: error.message }));
     yield delay(2000);
     yield put(editUserClear());
-  } 
+  }
 
-  
+
 }
 
-function * deleteUser(params) {
+function* deleteUser(params) {
   try {
     const data = yield call(usersApi.deleteUser, params);
     const { result } = data;
     yield put(deleteUserDone({
       result,
-      id: params.payload 
+      id: params.payload
     }));
   }
-  catch (error){
+  catch (error) {
     yield put(deleteUserDone({ error: error.message }));
-  } 
+  }
 
-  
+
 }
 
 function* usersSaga() {
