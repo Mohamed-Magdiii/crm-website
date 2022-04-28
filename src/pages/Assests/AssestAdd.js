@@ -22,8 +22,8 @@ function AssestForm(props){
 
   const handleAddLead = (event, values) => {
     event.preventDefault();
-    console.log(values);
     dispatch(addNewSymbol(values));
+    
   }; 
 
   const toggleAddModal = () => {
