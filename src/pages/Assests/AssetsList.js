@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { 
   useDispatch, connect 
 } from "react-redux";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   Row, Col, Card, CardBody, CardTitle, CardHeader 
 } from "reactstrap";
@@ -14,7 +14,10 @@ import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
 import { fetchAssestsStart } from "store/assests/actions";
 import AssestForm from "./AssestAdd";
+import AssestEdit from "./AssestEdit";
 function AssestsList(props){
+  const [selectedSymbol, setSelectedSymbol] = useState();
+  const [editModal, setEditModal] = useState(false);
   const columns = [
     {
       dataField:"checkbox",
@@ -65,13 +68,16 @@ function AssestsList(props){
       isDummyField: true,
       editable: false,
       text: "Action",
-      formatter: () => (
+      formatter: (item) => (
         <div className="d-flex gap-3">
           <Link className="text-success" to="#">
             <i
               className="mdi mdi-pencil font-size-18"
               id="edittooltip"
-            
+              onClick={()=>{
+                setSelectedSymbol(item) ;
+                setEditModal(true);
+              }}
             ></i>
           </Link>
           <Link className="text-danger" to="#">
@@ -135,7 +141,7 @@ function AssestsList(props){
                         </Thead>
                         <Tbody>
                           {props.loading && <TableLoader colSpan={4} />}
-                          {!props.loading && props.assests.map((row, rowIndex) =>
+                          {!props.loading && props.assets.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`}>
@@ -160,7 +166,7 @@ function AssestsList(props){
               </Card>
             </Col>
           </Row>
-          
+          {<AssestEdit open={editModal} symbol={selectedSymbol} onClose={()=>setEditModal(false)}/>}
         </div>
       </div>
     </React.Fragment>
@@ -170,7 +176,7 @@ function AssestsList(props){
 
 const mapStateToProps = (state) => ({
   loading: state.assestReducer.loading || false,
-  assests: state.assestReducer.assests || [],
+  assets: state.assestReducer.assets || [],
   page: state.assestReducer.page || 1,
   totalDocs: state.assestReducer.totalDocs || 0,
   totalPages: state.assestReducer.totalPages || 0,
