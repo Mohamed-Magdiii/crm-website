@@ -4,6 +4,9 @@ import {
   FETCH_ASSESTS_SUCCESS,
   ADD_NEW_SYMBOL,
   ADD_NEW_SYMBOL_SUCCESS,
+  EDIT_SYMBOL_START,
+  EDIT_SYMBOL_DONE,
+  EDIT_SYMBOL_CLEAR,
   API_ERROR
 } from "./actionsType";
 export const fetchAssestsStart = (params)=>{
@@ -26,6 +29,7 @@ export const addNewSymbol = (newSymbol)=>{
 };
 
 export const addNewSymbolSuccess = (message, newSymbol)=>{
+  
   return {
     type:ADD_NEW_SYMBOL_SUCCESS,
     payload:{
@@ -34,9 +38,21 @@ export const addNewSymbolSuccess = (message, newSymbol)=>{
     }
   };
 };
+export const editSymbolStart = (params = {})=>{
+  return {
+    type:EDIT_SYMBOL_START,
+    payload:params
+  };
+};
+export const editSymbolSuccess = (data) =>{
+  return {
+    type:EDIT_SYMBOL_DONE,
+    payload:data
+  };
+};
 export const apiError = (error)=>{
   return {
     type:API_ERROR,
-    payload:error
+    payload:{ error }
   };
 };

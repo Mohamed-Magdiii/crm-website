@@ -15,7 +15,7 @@ export const assestReducer = (state = initalState, action)=>{
       break;
     case "FETCH_ASSESTS_SUCCESS":
       state = {
-        assests: [...action.payload.result.docs],
+        assets: [...action.payload.result.docs],
         totalDocs: action.payload.result.totalDocs,
         hasNextPage: action.payload.result.hasNextPage,
         hasPrevPage: action.payload.result.hasPrevPage,
@@ -35,18 +35,34 @@ export const assestReducer = (state = initalState, action)=>{
       };
       break;
     case "ADD_NEW_SYMBOL_SUCCESS":
+      
       state = {
         ...state,
-        totalDocs:action.payload.newSymbol ? state.totalDocs + 1 : state.totalDocs,
-        successMessage:action.payload.successMessage,
-        assests:action.payload.newSymbol ? [...action.payload.newSymbol, ...state.assets] : [...state.assets]
+        totalDocs:state.totalDocs + 1,
+        successMessage:action.payload.message,
+        assets:[{
+          ...action.payload.newSymbol,
+          createdAt:new Date().toLocaleDateString(),
+          minAmount:{
+            deposit:action.payload.newSymbol.minDepositAmount,
+            withdrawal:action.payload.newSymbol.minDepositAmount
+          },
+          fee:{
+            deposit:action.payload.newSymbol.depositFee,
+            withdrawal:action.payload.newSymbol.withdrawFee
+          }
+        }, ...state.assets]
       };
+      
       break;
     case "API_ERROR":
       state = {
         ...state,
         error:action.payload.error
       };
+      break;
+    default:
+      state = { ...state };
   }
   return state;
 };
