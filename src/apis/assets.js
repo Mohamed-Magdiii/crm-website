@@ -6,8 +6,7 @@ export const getAssests = async ({ payload })=>{
   return assests;
 };
 export const addNewSymbol = async (values)=>{
-  console.log(values);
-  console.log("Inside new symbol");
+  
   const result = await fetch("http://localhost:3001/api/v1/crypto/assets", {
     method:"POST",
     headers:{
@@ -32,5 +31,43 @@ export const addNewSymbol = async (values)=>{
     })
   });
   const data = await result.json();
-  console.log(data);
+  if (data.code === 500){
+    throw new Error("Please Enter Valid data");
+  }
+  return data;
 };
+export const updateSymbol = async ({ payload })=>{
+  
+  const { id, values } = payload;
+  
+  const { name, markup, explorerLink, description} = values;
+  const result = await fetch(`http://localhost:3001/api/v1/crypto/assets/${id}`, {
+    method:"PATCH",
+    headers:{
+      "Content-type" :"application/json"
+    },
+    body: JSON.stringify({
+      name,
+      description,
+      markup,
+      explorerLink,
+      fee: {
+        deposit:values.depositFee,
+        withdrawal:values.withdrawFee
+      },
+      minAmount: {
+        deposit :values.minDepositAmount,
+        withdrawal:values.minWithdrawAmount
+      },
+    
+      
+    })
+  });
+  console.log(result);
+  const data = await result.json();
+  console.log(data);
+  if (data.code === 500){
+    throw new Error("Please Enter Valid data");
+  }
+  return data;
+}; 
