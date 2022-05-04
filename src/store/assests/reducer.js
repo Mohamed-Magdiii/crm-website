@@ -55,6 +55,24 @@ export const assestReducer = (state = initalState, action)=>{
       };
       
       break;
+    case "DELETE_SYMBOL_START":
+      state = {
+        ...state,
+        deleteLoading:true,
+        deleteClearingCounter:0
+      };
+      break;
+    case "DELETE_SYMBOL_DONE":
+      state = {
+        ...state,
+        assets:state.assets.filter(asset=>asset._id != action.payload.id),
+        deleteLoading:false,
+        deleteClearingCounter: 1,
+        deleteResult:action.payload.result,
+        deleteError:action.payload.error,
+        
+      };
+      break;
     case "API_ERROR":
       state = {
         ...state,
