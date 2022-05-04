@@ -47,7 +47,7 @@ const userRoutes = [
     component: RolesList 
   },
   {
-    path:"/assests",
+    path:"/assets",
     component:AssetsList
   },
   {
