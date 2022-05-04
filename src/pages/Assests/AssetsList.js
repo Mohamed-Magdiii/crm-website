@@ -12,12 +12,14 @@ import {
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
-import { fetchAssestsStart } from "store/assests/actions";
+import { fetchAssestsStart, deleteSymbolStart } from "store/assests/actions";
 import AssestForm from "./AssestAdd";
 import AssestEdit from "./AssestEdit";
+import DeleteModal from "components/Common/DeleteModal";
 function AssestsList(props){
   const [selectedSymbol, setSelectedSymbol] = useState();
   const [editModal, setEditModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
   const columns = [
     {
       dataField:"checkbox",
@@ -84,7 +86,10 @@ function AssestsList(props){
             <i
               className="mdi mdi-delete font-size-18"
               id="deletetooltip"
-                
+              onClick={()=>{
+                setSelectedSymbol(item);
+                setDeleteModal(true);
+              }}
             ></i>
           </Link>
         </div>
@@ -106,7 +111,16 @@ function AssestsList(props){
       page
     })) ;
   };
-    
+  const deleteSymbol = ()=>{
+    console.log(selectedSymbol._id);
+    dispatch(deleteSymbolStart(selectedSymbol._id));
+  };
+  useEffect(()=>{
+    console.log(props.deleteLoading);
+    if (props.deleteClearingCounter > 0 && deleteModal) {
+      setDeleteModal(false);
+    }
+  }, [props.deleteClearingCounter]);
   return (
     <React.Fragment>
       <div className="page-content">
@@ -167,6 +181,7 @@ function AssestsList(props){
             </Col>
           </Row>
           {<AssestEdit open={editModal} symbol={selectedSymbol} onClose={()=>setEditModal(false)}/>}
+          {<DeleteModal loading={props.deleteLoading} onDeleteClick = {deleteSymbol} show={deleteModal} symbol={selectedSymbol} onCloseClick={()=>setDeleteModal(false)}/>}
         </div>
       </div>
     </React.Fragment>
@@ -186,6 +201,7 @@ const mapStateToProps = (state) => ({
   nextPage: state.assestReducer.nextPage,
   pagingCounter: state.assestReducer.pagingCounter,
   prevPage: state.assestReducer.prevPage,
-
+  deleteLoading:state.assestReducer.deleteLoading,
+  deleteClearingCounter:state.assestReducer.deleteClearingCounter
 });
 export default connect(mapStateToProps, null)(AssestsList);
