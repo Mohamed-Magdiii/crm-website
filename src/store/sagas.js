@@ -12,7 +12,7 @@ import leadSaga from "./leads/saga";
 import rolesSaga from "./roles/saga";
 import usersSaga from "./users/saga";
 import clientSaga from "./client/saga";
-import assestSaga from "./assests/saga";
+import assetSaga from "./assests/saga";
 export default function* rootSaga() {
   yield all([
     //public
@@ -29,6 +29,6 @@ export default function* rootSaga() {
     fork(rolesSaga),
     fork(usersSaga),
     fork(clientSaga),
-    fork(assestSaga)
+    fork(assetSaga)
   ]);
 }

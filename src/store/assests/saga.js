@@ -1,44 +1,68 @@
 import {
-  call, put, takeEvery 
+  call, put, takeEvery, delay
 } from "redux-saga/effects";
 import { 
-  fetchAssestsSuccess, apiError, addNewSymbolSuccess, deleteSymbolDone
+  fetchAssetsSuccess, 
+  apiError, 
+  addNewSymbolSuccess,
+  deleteSymbolDone,
+  editSymbolSuccess,
+  assetEditModalClear,
+  addAssetModalClear
 } from "./actions";
 import { 
-  getAssests, addNewSymbol, updateSymbol, deleteSymbol
+  getAssets, addNewSymbol, updateSymbol, deleteSymbol
 } from "apis/assets";
 import {
-  FETCH_ASSESTS_START, ADD_NEW_SYMBOL, EDIT_SYMBOL_START, DELETE_SYMBOL_START
+  FETCH_ASSETS_START, ADD_NEW_SYMBOL, EDIT_SYMBOL_START, DELETE_SYMBOL_START
 } from "./actionsType";
-function * fetchAssest(params){
+
+function * fetchAsset(params){
   try {
-    const data = yield call(getAssests, params);
-    yield put(fetchAssestsSuccess(data));
+    const data = yield call(getAssets, params);
+    yield put(fetchAssetsSuccess(data));
   } catch (error){
     yield put(apiError, error);
   }
   
 
 }
-function * addNewAssest({ payload :{ newSymbol } }){
+function * addNewAsset({ payload :{ newSymbol } }){
   try {
 
     const data = yield call(addNewSymbol, newSymbol);
     const { status } = data;
+    const { result:{ _id } } = data;
+    
     if (status){
-      yield put(addNewSymbolSuccess("New symbol is added successfully", newSymbol));
+      yield put(addNewSymbolSuccess({
+        id:_id, 
+        ...newSymbol
+      }));
+      yield delay(2000);
+      yield put(addAssetModalClear());
     }
     
   } catch (error){
     
     yield put(apiError("Please Enter valid data"));
+    yield delay(2000);
+    yield put(apiError(""));
   }
  
 }
 function * editAsset(params){
+  const { payload } = params;
+  const { id, values } = payload;
+  
   try {
-    const data = yield call(updateSymbol, params);
-    console.log(data);
+    yield call(updateSymbol, params);
+    yield put(editSymbolSuccess({
+      id,
+      values
+    }));
+    yield delay(2000);
+    yield put(assetEditModalClear());
   } catch (error){
     yield apiError("Please Enter Valid data");
   }
@@ -54,17 +78,17 @@ function * deleteAsset(params){
       id:params.payload,
       
     }));
-    
+   
   } catch (error){
     yield put(apiError("An error happned during deleting this record"));
   }
   
 
 }
-function * assestSaga(){
-  yield  takeEvery(FETCH_ASSESTS_START, fetchAssest);
-  yield  takeEvery(ADD_NEW_SYMBOL, addNewAssest);
+function * assetSaga(){
+  yield  takeEvery(FETCH_ASSETS_START, fetchAsset);
+  yield  takeEvery(ADD_NEW_SYMBOL, addNewAsset);
   yield  takeEvery(EDIT_SYMBOL_START, editAsset);
   yield takeEvery(DELETE_SYMBOL_START, deleteAsset);
 }
-export default assestSaga;
+export default assetSaga;

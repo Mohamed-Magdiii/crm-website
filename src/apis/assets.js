@@ -1,5 +1,5 @@
 
-export const getAssests = async ({ payload })=>{
+export const getAssets = async ({ payload })=>{
   const { page, limit } = payload;
   const result = await fetch(`http://localhost:3001/api/v1/crypto/assets?limit=${limit}&&page=${page}`);
   const assests = await result.json();
@@ -34,13 +34,14 @@ export const addNewSymbol = async (values)=>{
   if (data.code === 500){
     throw new Error("Please Enter Valid data");
   }
+  
   return data;
 };
 export const updateSymbol = async ({ payload })=>{
   
   const { id, values } = payload;
   
-  const { name, markup, explorerLink, description} = values;
+  const { name, markup, explorerLink, description } = values;
   const result = await fetch(`http://localhost:3001/api/v1/crypto/assets/${id}`, {
     method:"PATCH",
     headers:{
@@ -63,9 +64,8 @@ export const updateSymbol = async ({ payload })=>{
       
     })
   });
-  console.log(result);
+  
   const data = await result.json();
-  console.log(data);
   if (data.code === 500){
     throw new Error("Please Enter Valid data");
   }
@@ -77,7 +77,7 @@ export const deleteSymbol = async ({ payload })=>{
     method:"DELETE"
   });
   const data = await result.json();
-  console.log(data);
+  
   return data;
   
 };

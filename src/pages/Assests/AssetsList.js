@@ -12,9 +12,9 @@ import {
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
-import { fetchAssestsStart, deleteSymbolStart } from "store/assests/actions";
-import AssestForm from "./AssestAdd";
-import AssestEdit from "./AssestEdit";
+import { fetchAssetsStart, deleteSymbolStart } from "store/assests/actions";
+import AssetForm from "./AssetAdd";
+import AssetEdit from "./AssetEdit";
 import DeleteModal from "components/Common/DeleteModal";
 function AssestsList(props){
   const [selectedSymbol, setSelectedSymbol] = useState();
@@ -106,21 +106,21 @@ function AssestsList(props){
   }, [sizePerPage, 1]);
   
   const loadAssests = ( page, limit) => {
-    dispatch(fetchAssestsStart({
+    dispatch(fetchAssetsStart({
       limit,
       page
     })) ;
   };
   const deleteSymbol = ()=>{
-    console.log(selectedSymbol._id);
+  
     dispatch(deleteSymbolStart(selectedSymbol._id));
   };
   useEffect(()=>{
-    console.log(props.deleteLoading);
-    if (props.deleteClearingCounter > 0 && deleteModal) {
+    
+    if (props.deleteModalClear && deleteModal) {
       setDeleteModal(false);
     }
-  }, [props.deleteClearingCounter]);
+  }, [props.deleteModalClear]);
   return (
     <React.Fragment>
       <div className="page-content">
@@ -132,7 +132,7 @@ function AssestsList(props){
                 <CardHeader className="d-flex flex-column gap-3">
                   <div className="d-flex justify-content-between  align-items-center">
                     <CardTitle>Symbols List ({props.totalDocs})</CardTitle>
-                    <AssestForm/>
+                    <AssetForm/>
                   </div>
                   
                 </CardHeader>
@@ -180,7 +180,7 @@ function AssestsList(props){
               </Card>
             </Col>
           </Row>
-          {<AssestEdit open={editModal} symbol={selectedSymbol} onClose={()=>setEditModal(false)}/>}
+          {<AssetEdit open={editModal} symbol={selectedSymbol} onClose={()=>setEditModal(false)}/>}
           {<DeleteModal loading={props.deleteLoading} onDeleteClick = {deleteSymbol} show={deleteModal} symbol={selectedSymbol} onCloseClick={()=>setDeleteModal(false)}/>}
         </div>
       </div>
@@ -190,18 +190,18 @@ function AssestsList(props){
 }
 
 const mapStateToProps = (state) => ({
-  loading: state.assestReducer.loading || false,
-  assets: state.assestReducer.assets || [],
-  page: state.assestReducer.page || 1,
-  totalDocs: state.assestReducer.totalDocs || 0,
-  totalPages: state.assestReducer.totalPages || 0,
-  hasNextPage: state.assestReducer.hasNextPage,
-  hasPrevPage: state.assestReducer.hasPrevPage,
-  limit: state.assestReducer.limit,
-  nextPage: state.assestReducer.nextPage,
-  pagingCounter: state.assestReducer.pagingCounter,
-  prevPage: state.assestReducer.prevPage,
-  deleteLoading:state.assestReducer.deleteLoading,
-  deleteClearingCounter:state.assestReducer.deleteClearingCounter
+  loading: state.assetReducer.loading || false,
+  assets: state.assetReducer.assets || [],
+  page: state.assetReducer.page || 1,
+  totalDocs: state.assetReducer.totalDocs || 0,
+  totalPages: state.assetReducer.totalPages || 0,
+  hasNextPage: state.assetReducer.hasNextPage,
+  hasPrevPage: state.assetReducer.hasPrevPage,
+  limit: state.assetReducer.limit,
+  nextPage: state.assetReducer.nextPage,
+  pagingCounter: state.assetReducer.pagingCounter,
+  prevPage: state.assetReducer.prevPage,
+  deleteLoading:state.assetReducer.deleteLoading,
+  deleteModalClear:state.assetReducer.deleteModalClear
 });
 export default connect(mapStateToProps, null)(AssestsList);

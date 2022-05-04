@@ -16,8 +16,21 @@ import {
 import { editSymbolStart } from "store/assests/actions";
 function AssetEdit (props) {
   const { open, symbol = {}, onClose } = props;
+  let minDepositAmount;
+  let minWithdrawAmount;
+  let depositFee;
+  let withdrawalFee;
+  if (symbol.minAmount){
+    const { minAmount:{ deposit, withdrawal } } = symbol;
+    minDepositAmount = deposit;
+    minWithdrawAmount = withdrawal;
+  }
   
-
+  if (symbol.fee){
+    const { fee:{ deposit, withdrawal } } = symbol;
+    depositFee = deposit;
+    withdrawalFee = withdrawal;
+  }
   const dispatch = useDispatch();
   
   const handleSymbolUpdate = (e, values) => {
@@ -30,10 +43,11 @@ function AssetEdit (props) {
     }));
   };
   useEffect(()=>{
-    if (props.editClearingCounter > 0 && open) {
+    console.log(props.editClear);
+    if (props.editClear) {
       onClose();
     }
-  }, [props.editClearingCounter]);
+  }, [props.editClear]);
 
   return (
     <React.Fragment >
@@ -59,6 +73,7 @@ function AssetEdit (props) {
                     type="text"
                     errorMessage="Enter name of the symbol"
                     value={symbol.name}
+                    validate={{ required:{ value:true } } }
                   />
                 </div>
               </Col>
@@ -71,6 +86,7 @@ function AssetEdit (props) {
                     type="text"
                     errorMessage="Enter symbol"
                     value={symbol.symbol}
+                    validate={{ required:{ value:true } } }
                   />
                 </div>
               </Col> 
@@ -85,6 +101,7 @@ function AssetEdit (props) {
                     type="text"
                     errorMessage="Enter description"
                     value={symbol.description}
+                    validate={{ required:{ value:true } } }
                   />
                 </div>
               </Col>
@@ -97,6 +114,7 @@ function AssetEdit (props) {
                     type="text"
                     errorMessage="Enter valid markup"
                     value={symbol.markup}
+                    validate={{ required:{ value:true } } }
                   />
                 </div>
               </Col>
@@ -110,7 +128,8 @@ function AssetEdit (props) {
                     placeholder="Desposit Fee"
                     type="text"
                     errorMessage="Enter valid deposit fee"
-                    
+                    value={depositFee}
+                    validate={{ required:{ value:true } } }
                   />
                 </div>
               </Col>
@@ -122,7 +141,8 @@ function AssetEdit (props) {
                     placeholder="Withdraw Fee"
                     type="text"
                     errorMessage="Enter valid withdraw fee"
-                    
+                    value={withdrawalFee}
+                    validate={{ required:{ value:true } }}
                   />
                 </div>
               </Col>
@@ -136,7 +156,8 @@ function AssetEdit (props) {
                     placeholder="deposit amount"
                     type="text"
                     errorMessage="Enter valid deposit amount"
-                    value={symbol.minAmount}
+                    value={minDepositAmount}
+                    validate={{ required:{ value:true } }}
                   />
                 </div>
               </Col>
@@ -148,7 +169,8 @@ function AssetEdit (props) {
                     placeholder="withdraw amount"
                     type="text"
                     errorMessage="Enter valid withdraw amount"
-                    
+                    value={minWithdrawAmount}
+                    validate={{ required:{ value:true } }}
                   />
                 </div>
               </Col>
@@ -161,6 +183,7 @@ function AssetEdit (props) {
                 type="text"
                 errorMessage="explorer link"
                 value={symbol.explorerLink}
+                validate={{ required:{ value:true } } }
               />
             </div>
             <div className='text-center pt-3 p-2'>
@@ -169,11 +192,11 @@ function AssetEdit (props) {
               </Button>
             </div>
           </AvForm>
-          {props.editError && <UncontrolledAlert color="danger">
+          {props.error && <UncontrolledAlert color="danger">
             <i className="mdi mdi-block-helper me-2"></i>
-            {props.editError}
+            {props.error}
           </UncontrolledAlert>}
-          {props.editResult && <UncontrolledAlert color="success">
+          {props.editDone && <UncontrolledAlert color="success">
             <i className="mdi mdi-check-all me-2"></i>
             Symbol Updated successfully !!!
           </UncontrolledAlert>}
@@ -185,9 +208,9 @@ function AssetEdit (props) {
 
 
 const mapStateToProps = (state) => ({
-  addLoading: state.rolesReducer.addLoading,
-  editResult: state.rolesReducer.editResult,
-  editError: state.rolesReducer.editError,
-  editClearingCounter: state.rolesReducer.editClearingCounter,  
+  editLoading: state.assetReducer.editLoading,
+  editDone: state.assetReducer.editDone,
+  editClear: state.assetReducer.editClear,  
+  error:state.assetReducer.error
 });
 export default connect(mapStateToProps, null)(AssetEdit);

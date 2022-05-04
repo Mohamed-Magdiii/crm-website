@@ -2,18 +2,18 @@ const initalState = {
   loading:false,
   error:"",
   assets:[],
-  successMessage:""
+  addSymbolsuccessMessage:""
 };
-export const assestReducer = (state = initalState, action)=>{
+export const assetReducer = (state = initalState, action)=>{
   switch (action.type){
-    case "FETCH_ASSESTS_START":
+    case "FETCH_ASSETS_START":
       state = {
         ...state,
         loading:true,
       };
   
       break;
-    case "FETCH_ASSESTS_SUCCESS":
+    case "FETCH_ASSETS_SUCCESS":
       state = {
         assets: [...action.payload.result.docs],
         totalDocs: action.payload.result.totalDocs,
@@ -38,11 +38,14 @@ export const assestReducer = (state = initalState, action)=>{
       
       state = {
         ...state,
+
         totalDocs:state.totalDocs + 1,
-        successMessage:action.payload.message,
         assets:[{
+          
           ...action.payload.newSymbol,
+          _id:action.payload.newSymbol.id,
           createdAt:new Date().toLocaleDateString(),
+          
           minAmount:{
             deposit:action.payload.newSymbol.minDepositAmount,
             withdrawal:action.payload.newSymbol.minDepositAmount
@@ -51,15 +54,72 @@ export const assestReducer = (state = initalState, action)=>{
             deposit:action.payload.newSymbol.depositFee,
             withdrawal:action.payload.newSymbol.withdrawFee
           }
-        }, ...state.assets]
+        }, ...state.assets],
+        addSymbolSuccessMessage:"New symbol is added successfully",
       };
+      break;
+    case "ADD_SYMBOL_CLEAR":
       
+      state = {
+        ...state,
+        addSymbolSuccessMessage:""
+      };
+      break;
+    case "EDIT_SYMBOL_START":
+      state = {
+        ...state,
+        editLoading:true,
+        editClear:false,
+      };
+      break;
+    case "EDIT_SYMBOL_DONE":
+      
+      state = {
+        ...state,
+        assets:state.assets.map(asset=>{
+          // eslint-disable-next-line no-case-declarations
+          const { name, description, markup, explorerLink } = action.payload.values;
+          if (asset._id === action.payload.id){
+            
+            return {
+
+              ...asset,
+              name,
+              description,
+              markup,
+              explorerLink,
+              fee: {
+                deposit:action.payload.values.depositFee,
+                withdrawal:action.payload.values.withdrawFee
+              },
+              minAmount: {
+                deposit :action.payload.values.minDepositAmount,
+                withdrawal:action.payload.values.minWithdrawAmount
+              },
+            };
+           
+          }
+          else {
+            return asset;
+          }
+        }),
+        editLoading:false,
+        editDone:true
+      };
+      break;
+    case "EDIT_SYMBOL_CLEAR":
+      state = {
+        ...state,
+        editDone:false,
+        editClear:true,
+      };
+    
       break;
     case "DELETE_SYMBOL_START":
       state = {
         ...state,
         deleteLoading:true,
-        deleteClearingCounter:0
+        deleteModalClear:false
       };
       break;
     case "DELETE_SYMBOL_DONE":
@@ -67,10 +127,10 @@ export const assestReducer = (state = initalState, action)=>{
         ...state,
         assets:state.assets.filter(asset=>asset._id != action.payload.id),
         deleteLoading:false,
-        deleteClearingCounter: 1,
+        deleteModalClear: true,
         deleteResult:action.payload.result,
         deleteError:action.payload.error,
-        
+        totalDocs:state.totalDocs - 1
       };
       break;
     case "API_ERROR":
@@ -84,4 +144,4 @@ export const assestReducer = (state = initalState, action)=>{
   }
   return state;
 };
-export default assestReducer;
+export default assetReducer;

@@ -1,9 +1,10 @@
 
 import {
-  FETCH_ASSESTS_START,
-  FETCH_ASSESTS_SUCCESS,
+  FETCH_ASSETS_START,
+  FETCH_ASSETS_SUCCESS,
   ADD_NEW_SYMBOL,
   ADD_NEW_SYMBOL_SUCCESS,
+  ADD_SYMBOL_CLEAR,
   EDIT_SYMBOL_START,
   EDIT_SYMBOL_DONE,
   EDIT_SYMBOL_CLEAR,
@@ -11,15 +12,15 @@ import {
   DELETE_SYMBOL_DONE,
   API_ERROR
 } from "./actionsType";
-export const fetchAssestsStart = (params)=>{
+export const fetchAssetsStart = (params)=>{
   return {
-    type:FETCH_ASSESTS_START,
+    type:FETCH_ASSETS_START,
     payload:params
   };
 };
-export const fetchAssestsSuccess = (data)=>{
+export const fetchAssetsSuccess = (data)=>{
   return {
-    type:FETCH_ASSESTS_SUCCESS,
+    type:FETCH_ASSETS_SUCCESS,
     payload:data
   };
 };
@@ -30,12 +31,11 @@ export const addNewSymbol = (newSymbol)=>{
   };
 };
 
-export const addNewSymbolSuccess = (message, newSymbol)=>{
+export const addNewSymbolSuccess = (newSymbol)=>{
   
   return {
     type:ADD_NEW_SYMBOL_SUCCESS,
     payload:{
-      message, 
       newSymbol
     }
   };
@@ -64,6 +64,18 @@ export const deleteSymbolDone = (data)=>{
     payload:data
   };
 };  
+export const assetEditModalClear = (data)=>{
+  return {
+    type:EDIT_SYMBOL_CLEAR,
+    payload:data
+  };
+};
+export const addAssetModalClear = (data)=>{
+  return {
+    type:ADD_SYMBOL_CLEAR,
+    payload:data
+  };
+};
 export const apiError = (error)=>{
   return {
     type:API_ERROR,

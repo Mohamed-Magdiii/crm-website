@@ -31,12 +31,12 @@ function AssestForm(props){
   };
 
   useEffect(() => {
-    if (props.successMessage  && addModal) {
-      setTimeout(()=>{
-        setAddUserModal(false);
-      }, 2000);
+    if (!props.addSymbolSuccessMessage  && addModal) {
+      
+      setAddUserModal(false);
+      
     }
-  }, [props.successMessage]);
+  }, [props.addSymbolSuccessMessage]);
 
   return (
     <React.Fragment >
@@ -177,7 +177,7 @@ function AssestForm(props){
             <i className="mdi mdi-block-helper me-2"></i>
             {props.error}
           </UncontrolledAlert>}
-          {props.successMessage && <UncontrolledAlert color="success">
+          {props.addSymbolSuccessMessage && <UncontrolledAlert color="success">
             <i className="mdi mdi-check-all me-2"></i>
               Symbol Added successfully !!!
           </UncontrolledAlert>}
@@ -187,7 +187,7 @@ function AssestForm(props){
   );
 }
 const mapStateToProps = (state) => ({
-  error: state.assestReducer.error,
-  successMessage: state.assestReducer.successMessage,
+  error: state.assetReducer.error,
+  addSymbolSuccessMessage: state.assetReducer.addSymbolSuccessMessage,
 });
 export default connect(mapStateToProps, null)(AssestForm);
