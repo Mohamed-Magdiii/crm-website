@@ -5,7 +5,7 @@ import {
 import { Link } from "react-router-dom";
 
 import {
-  Row, Col, Card, CardBody, CardTitle, CardHeader, Input, Label
+  Row, Col, Card, CardBody, CardTitle, CardHeader, Label
 } from "reactstrap";
 
 import {
@@ -14,7 +14,7 @@ import {
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 
 import {
-  fetchTeams, deleteTeam, editTeam,
+  fetchTeams, deleteTeam,
 } from "store/teams/actions";
 import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
@@ -161,11 +161,11 @@ function Teams() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    loadTeams(1, sizePerPage);
+    loadTeams(currentPage, sizePerPage);
   }, [sizePerPage, 1, clearingCounter]);
 
   const loadTeams = (page, limit) => {
-    // setcurrentPagePage(page);
+    setcurrentPagePage(page);
     if (SearchInputValue !== "") {
       dispatch(fetchTeams({
         page,

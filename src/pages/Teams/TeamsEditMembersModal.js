@@ -6,23 +6,20 @@ import {
   ModalHeader,
   ModalBody,
   UncontrolledAlert,
-} from "reactstrap";
-import Select from "react-select";
-import { AvForm, AvField } from "availity-reactstrap-validation";
+} from "reactstrap"; 
+import { AvForm } from "availity-reactstrap-validation";
 import { editTeamMembers } from "store/teams/actions";
 import { AsyncPaginate } from "react-select-async-paginate";
 import loadMembersOptions from "./loadMembersOptions";
 
 function TeamsEditMembersModal(props) {
-  const { open, team = {}, members = [], manager = {}, onClose } = props;
+  const { open, team = {}, members = [], onClose } = props;
   // const { _id, title } = team.roleId || ""; 
   const [membersValue, setmembersValue] = useState([]);
 
-  useEffect(() => {
-    console.log("members"); 
+  useEffect(() => { 
     let structureMembers = [];
-    members?.map(member => {
-      console.log(member);
+    members?.map(member => { 
       structureMembers.push({
         value: member._id,
         label: member.firstName
@@ -37,12 +34,12 @@ function TeamsEditMembersModal(props) {
     let reformattedMembersArray = membersValue.map(obj => {
       return obj.value;
     });
-    console.log(reformattedMembersArray);
+    // console.log(reformattedMembersArray);
     // values.managerId = managerValue.value;
     dispatch(
       editTeamMembers({
         id: team._id,
-        values:{members:reformattedMembersArray},
+        values: { members:reformattedMembersArray },
       })
     );
   };

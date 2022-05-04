@@ -5,13 +5,11 @@ import {
   Modal,
   Button,
   ModalHeader,
-  Label,
   ModalBody,
   UncontrolledAlert,
 } from "reactstrap";
 import { AvForm, AvField } from "availity-reactstrap-validation";
-import { addTeam, fetchManagers } from "store/teams/actions";
-import Select, { components } from "react-select";
+import { addTeam } from "store/teams/actions";
 
 import { AsyncPaginate } from "react-select-async-paginate";
 
@@ -23,15 +21,15 @@ function TeamsAddModal(props) {
 
   const dispatch = useDispatch();
   // const { usersRoles } = props;
-  const [SearchInputValue, setSearchInputValue] = useState("hi");
+  // const [SearchInputValue, setSearchInputValue] = useState("hi");
 
   const toggleAddModal = () => {
     setAddTeamModal(!addModal);
   };
   const handleAddTeam = (e, values) => {
     values.managerId = managerValue?.value;
-    console.log(managerValue);
-    console.log(values);
+    // console.log(managerValue);
+    // console.log(values);
     dispatch(addTeam(values));
     setManagerValue(null);
   };
@@ -44,7 +42,7 @@ function TeamsAddModal(props) {
     }
   }, [props.addSuccess]);
 
-  const [selectedGroup, setselectedGroup] = useState(null);
+  // const [selectedGroup, setselectedGroup] = useState(null);
 
   const defaultAdditional = {
     page: 1,

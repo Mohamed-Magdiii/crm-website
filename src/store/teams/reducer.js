@@ -210,7 +210,7 @@ const teamsReducer = (state = initialState, action) => {
       break;
     case EDIT_TEAMS_MEMBERS_DONE:
       // eslint-disable-next-line no-case-declarations
-      const { id, ...payload } = action.payload;
+      // const { id, ...payload } = action.payload;
       state = {
         ...state,
         // docs: state.docs.map(obj => {

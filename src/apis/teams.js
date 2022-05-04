@@ -33,8 +33,6 @@ export const editTeam = async({ payload }) => {
   return data;
 };
 export const editTeamMembers = async({ payload }) => {
-  console.log("payload");
-  console.log(payload);
   const { id, values } = payload;
   const data = await axiosHelper.post(`/teams/${id}/add-member`, values);
   if (data.isError) {

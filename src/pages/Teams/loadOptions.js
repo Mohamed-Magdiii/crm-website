@@ -1,7 +1,6 @@
 import * as teamsApi from "../../apis/teams";
 
-
-const optionsPerPage = 3;
+// const optionsPerPage = 3;
 
 const loadOptions = async (search, page) => {
   //   await sleep(1000);
@@ -54,12 +53,7 @@ const loadOptions = async (search, page) => {
 
     filteredOptions = output; 
   }
-
-  const hasMore = Math.ceil(filteredOptions.length / optionsPerPage) > page;
-  const slicedOptions = filteredOptions.slice(
-    (page - 1) * optionsPerPage,
-    page * optionsPerPage
-  ); 
+ 
   return {
     options: filteredOptions,
     hasMore: data.hasNextPage,

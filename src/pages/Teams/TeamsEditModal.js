@@ -7,7 +7,6 @@ import {
   ModalBody,
   UncontrolledAlert,
 } from "reactstrap";
-import Select from "react-select";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { editTeam } from "store/teams/actions";
 import { AsyncPaginate } from "react-select-async-paginate";
@@ -15,11 +14,9 @@ import loadOptions from "./loadOptions";
 
 function TeamsEditModal(props) {
   const { open, team = {}, manager, onClose } = props;
-  // const { _id, title } = team.roleId || ""; 
   const [managerValue, setManagerValue] = useState(null);
   useEffect(() => {
-    // setTimeout(function() {
-    console.log("hiiiiiiiiiiii");
+    // setTimeout(function() { 
     setManagerValue({
       value: team.managerId?._id,
       label: team.managerId?.firstName,
@@ -27,9 +24,6 @@ function TeamsEditModal(props) {
     // }, 3000);
 
   }, [manager]);
-  // console.log(team.managerId?.firstName);
-  // console.log(team.managerId?._id);
-  console.log(manager);
   const dispatch = useDispatch();
   // console.log(usersRoles);
   const handleEditTeam = (e, values) => { 

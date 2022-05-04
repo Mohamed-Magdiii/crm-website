@@ -94,8 +94,7 @@ function* fetchMembers(params) {
 function* editTeam(params) {
   try {
     const data = yield call(teamsApi.editTeam, params);
-
-    console.log(params.payload);
+ 
     const { result } = data;
     yield put(editTeamDone({
       result,
@@ -113,8 +112,7 @@ function* editTeam(params) {
 
 }
 
-function* editTeamMembers(params) {
-  console.log();
+function* editTeamMembers(params) { 
   try {
     const data = yield call(teamsApi.editTeamMembers, params);
  

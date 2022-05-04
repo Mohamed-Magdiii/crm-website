@@ -147,12 +147,12 @@ function UsersList() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    loadUsers(1, sizePerPage);
+    loadUsers(currentPage, sizePerPage);
     loadRoles(1, 100);
   }, [sizePerPage, 1, clearingCounter]);
 
   const loadUsers = (page, limit) => {
-    // setcurrentPagePage(page);
+    setcurrentPagePage(page);
     if (SearchInputValue !== "") {
       dispatch(fetchUsers({
         page,

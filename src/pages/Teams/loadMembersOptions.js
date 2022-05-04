@@ -1,21 +1,6 @@
 import * as teamsApi from "../../apis/teams";
-
-const options = [];
-for (let i = 0; i < 50; ++i) {
-  options.push({
-    value: i + 1,
-    label: `Option ${i + 1}`,
-  });
-}
-
-// const sleep = (ms) =>
-//   new Promise((resolve) => {
-//     setTimeout(() => {
-//       resolve();
-//     }, ms);
-//   });
-
-const optionsPerPage = 3;
+ 
+// const optionsPerPage = 3;
 
 const loadMembersOptions = async (search, page) => {
 
@@ -69,14 +54,7 @@ const loadMembersOptions = async (search, page) => {
     // filteredOptions = options.filter(({ label }) =>
     //   label.toLowerCase().includes(searchLower)
     // );
-  }
-
-  const hasMore = Math.ceil(filteredOptions.length / optionsPerPage) > page;
-  const slicedOptions = filteredOptions.slice(
-    (page - 1) * optionsPerPage,
-    page * optionsPerPage
-  );
- 
+  } 
   return {
     options: filteredOptions,
     hasMore: data.hasNextPage,
