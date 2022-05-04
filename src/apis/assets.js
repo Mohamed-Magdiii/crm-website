@@ -71,3 +71,13 @@ export const updateSymbol = async ({ payload })=>{
   }
   return data;
 }; 
+export const deleteSymbol = async ({ payload })=>{
+ 
+  const result = await fetch(`http://localhost:3001/api/v1/crypto/assets/${payload}`, {
+    method:"DELETE"
+  });
+  const data = await result.json();
+  console.log(data);
+  return data;
+  
+};
