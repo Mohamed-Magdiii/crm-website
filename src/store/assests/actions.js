@@ -7,6 +7,8 @@ import {
   EDIT_SYMBOL_START,
   EDIT_SYMBOL_DONE,
   EDIT_SYMBOL_CLEAR,
+  DELETE_SYMBOL_START,
+  DELETE_SYMBOL_DONE,
   API_ERROR
 } from "./actionsType";
 export const fetchAssestsStart = (params)=>{
@@ -50,6 +52,18 @@ export const editSymbolSuccess = (data) =>{
     payload:data
   };
 };
+export const deleteSymbolStart = (params)=>{
+  return {
+    type:DELETE_SYMBOL_START,
+    payload:params
+  };
+};
+export const deleteSymbolDone = (data)=>{
+  return {
+    type:DELETE_SYMBOL_DONE,
+    payload:data
+  };
+};  
 export const apiError = (error)=>{
   return {
     type:API_ERROR,
