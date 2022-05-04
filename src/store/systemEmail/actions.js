@@ -6,6 +6,7 @@ import {
   ADD_SYSTEM_EMAIL_REQUESTED,
   ADD_SYSTEM_EMAIL_SUCCESS,
   ADD_SYSTEM_EMAIL_FAIL,
+  ADD_SYSTEM_EMAIL_CLEAR,
 
   DELETE_SYSTEM_EMAIL_REQUESTED,
   DELETE_SYSTEM_EMAIL_SUCCESS,
@@ -36,6 +37,7 @@ export const fetchSystemEmailsFail = (error) => {
 };
 
 export const addSystemEmail = (params = {}) => {
+  console.log("params from actions.js", params);
   return {
     type: ADD_SYSTEM_EMAIL_REQUESTED,
     payload: params
@@ -51,6 +53,12 @@ export const addSystemEmailFail = (error) => {
   return {
     type: ADD_SYSTEM_EMAIL_FAIL,
     payload: { error }
+  };
+};
+export const addSystemEmailClear = (data) => {
+  return {
+    type:ADD_SYSTEM_EMAIL_CLEAR,
+    payload: data
   };
 };
 

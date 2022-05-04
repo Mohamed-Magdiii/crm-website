@@ -6,6 +6,7 @@ import {
   ADD_SYSTEM_EMAIL_REQUESTED,
   ADD_SYSTEM_EMAIL_SUCCESS,
   ADD_SYSTEM_EMAIL_FAIL,
+  ADD_SYSTEM_EMAIL_CLEAR,
 
   DELETE_SYSTEM_EMAIL_REQUESTED,
   DELETE_SYSTEM_EMAIL_SUCCESS,
@@ -59,23 +60,41 @@ const systemEmailsReducer = (state = initialState, action) => {
 
     // ADD
     case ADD_SYSTEM_EMAIL_REQUESTED:
+      console.log("from reducer.js requested");
       state = {
         ...state,
-        loading: true,
+        addLoading: true
       };
       break;
     case ADD_SYSTEM_EMAIL_SUCCESS:
+      // it's not getting to this function for some reason !
+      console.log("from reducer system email add success");
       state = {
         ...state,
-        loading: false,
-        newSystemEmail: action.payload.data
+        addResult: action.payload,
+        docs: [ action.payload, ...state.docs ],
+        addSuccess: true,
+        addError: false,
+        addLoading: false
       };
       break;
     case ADD_SYSTEM_EMAIL_FAIL:
       state = {
         ...state,
-        loading: false,
-        error: action.payload.error
+        addErrorDetails: action.payload,
+        addLoading: false,
+        addSuccess: false,
+        addError: true
+      };
+      break;
+    case ADD_SYSTEM_EMAIL_CLEAR:
+      state = {
+        ...state,
+        addErrorDetails: "",
+        addSuccess: false,
+        addError: false,
+        addResult: null,
+        clearingCounter: state.clearingCounter + 1
       };
       break;
 

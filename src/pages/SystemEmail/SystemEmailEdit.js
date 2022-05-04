@@ -35,7 +35,7 @@ function SystemEmailEdit(props){
               setIsEditValid(true);
             }}
           >
-            {/* title = props.title */}
+            {/* TODO check the logic so it loads the correct title and action */}
             <div className="mb-3">
               {/* TODO check the placeholder and the value */}
               <AvField
@@ -44,13 +44,14 @@ function SystemEmailEdit(props){
                 label="System email Title"
                 placeholder="System email title"
                 type="text"
+                // TODO the value should be something like result.
                 value={props.title}
                 errorMessage="System email title is required"
                 validate={{ required: { value: true } }}
               />
             </div>
 
-            {/* action = props.action */}
+            {/* TODO check the logic so it loads the correct title and action */}
             <div className="mb-3">
               {/* TODO check the placeholder and the value */}
               <AvField
@@ -108,7 +109,7 @@ function SystemEmailEdit(props){
               </div>
             )}
             <div className='text-center pt-3 p-2'>
-              <Button disabled={props.addLoading} type="submit" color="primary" onClick={isEditValid && props.switchComponents()}>
+              <Button disabled={props.addLoading} type="submit" color="primary" onClick={() => {isEditValid && props.switchActiveComponent()}}>
                   Update system email
               </Button>
             </div>

@@ -1,5 +1,5 @@
 import {
-  call, put, takeEvery
+  call, delay, put, takeEvery
 } from "redux-saga/effects";
 // import login redux states (started or requested)
 import {
@@ -14,6 +14,7 @@ import {
   fetchSystemEmailsFail,
   addSystemEmailSuccess,
   addSystemEmailFail,
+  addSystemEmailClear,
   deleteSystemEmailSuccess,
   deleteSystemEmailFail,
   editSystemEmailSuccess,
@@ -30,11 +31,19 @@ function * fetchSystemEmails(params){
   }
 }
 
+// this issue is a 100% right here data is not defined
+// the calling isn't returning any data
+// in the addSystemEmail function let's see what we can do 
+// addSystemEmail function in the API file in doesn't return data for some reason 
 function * addSystemEmail(params){
   try {
     const data = yield call(systemEmailApi.addSystemEmail, params);
-    yield put(addSystemEmailSuccess(data));
+    const { result } = data;
+    yield put(addSystemEmailSuccess(result));
+    yield delay(2000);
+    yield put(addSystemEmailClear());
   } catch (error){
+    console.log("error from saga file", error);
     yield put(addSystemEmailFail(error));
   }
 }
@@ -57,7 +66,6 @@ function * deleteSystemEmail(params){
     const { result } = data;
     yield put(deleteSystemEmailSuccess({
       result,
-      // params.payload = id of deleted system email
       id: params.payload 
     }));
   } catch (error){

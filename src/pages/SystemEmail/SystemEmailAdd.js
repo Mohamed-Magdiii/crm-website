@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Link
 } from "react-router-dom";
@@ -21,6 +21,11 @@ function SystemEmailAdd(props){
   const toggleAddModal = () => {
     setAddModal(!addModal);
   };
+  useEffect(()=>{
+    if (props.clearingCounter > 0 && addModal) {
+      setAddModal(false);
+    }
+  }, [props.clearingCounter]);
 
   return (
     <React.Fragment >
@@ -36,6 +41,7 @@ function SystemEmailAdd(props){
               handleAddSystemEmail(v);
               // switch isAdditionValid to true so the system could move on to the next step
               setIsAdditionValid(true);
+              // TODO figure out how to store or pass that new ID 
             }}
           >
             <div className="mb-3">
@@ -59,7 +65,10 @@ function SystemEmailAdd(props){
               />
             </div>
             <div className='text-center pt-3 p-2'>
-              <Button disabled={props.addLoading} type="submit" color="primary" className="" onClick={isAdditionValid && props.switchComponents()}>
+              {/* on clicking this button it switches from the list component to the edit component if 
+                  submission is valid but it adds the new system email to the db onValidSubmit above
+                  finally it checks if the addition is valid then it closes the add modal so it won't cause any errors*/}
+              <Button disabled={props.addLoading} type="submit" color="primary" onClick={() => {isAdditionValid && props.switchActiveComponent()}}>
                   Next
               </Button>
             </div>
@@ -83,7 +92,8 @@ const mapStateToProps = (state) => ({
   addLoading: state.systemEmailsReducer.addLoading,
   addErrorDetails: state.systemEmailsReducer.addErrorDetails,
   addSuccess: state.systemEmailsReducer.addSuccess,
-  addError: state.systemEmailsReducer.addError
+  addError: state.systemEmailsReducer.addError,  
+  clearingCounter: state.systemEmailsReducer.clearingCounter
 });
 
 export default connect(mapStateToProps, null)(SystemEmailAdd);

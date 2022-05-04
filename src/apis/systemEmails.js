@@ -10,11 +10,11 @@ export const getSystemEmails = async ({ payload }) => {
   return data.result;
 };
 
-export const addSystemEmail = async ({ payload }) => {
+export const addSystemEmail = async({ payload }) => {
   const data = await axiosHelper.post("/system-emails", payload);
-  if (data.isError){
+  if (data.isError) {
     throw new Error(data.message);
-  }
+  } 
 
   return data;
 };
