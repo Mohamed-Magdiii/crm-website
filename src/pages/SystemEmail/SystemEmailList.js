@@ -33,17 +33,9 @@ function SystemEmailsList(props){
       : setActiveComponent("list component");
   };
 
-  // to handle the async useState update
-  useEffect(() => {
-    // this should be the function that 
-  }, [selectedSystemEmail]);
-  const setSelectedSystemEmailFunction = (selectedItem) => {
-    setSelectedSystemEmail(selectedItem);
-  };
-
   // a function to switch status of a selected system email
-  const switchSelectedSystemEmailStatus = () => {
-    selectedSystemEmail.isActive = !selectedSystemEmail.isActive;
+  const switchSelectedSystemEmailStatusHandler = (selectedItem) => {
+    selectedItem.isActive = !selectedItem.isActive;
   };
 
   const columns = [
@@ -59,6 +51,11 @@ function SystemEmailsList(props){
     {
       dataField: "action",
       text: "Action type"
+    },
+    {
+      dataField: "createdBy",
+      text: "Created By",
+      formatter: (val) => {return (val.createdBy && val.createdBy.firstName) ? `${val.createdBy.firstName} ${val.createdBy.lastName}` : ""},
     }, 
     {
       dataField:"content",
@@ -75,9 +72,7 @@ function SystemEmailsList(props){
             id={item.id} 
             switch="none" 
             defaultChecked={item.isActive} 
-            // TODO find a better solution for the useState begin async 
-            // instead of using setTimeout()
-            onClick={() => { setTimeout(() => {setSelectedSystemEmail(item)}, 2000); switchSelectedSystemEmailStatus() }} />
+            onClick={() => { switchSelectedSystemEmailStatusHandler(item) }} />
           <Label className="me-1" htmlFor={item.id} data-on-label="Active" data-off-label=""></Label>
         </div>
       ),

@@ -106,12 +106,7 @@ const SidebarContent = (props) => {
                 <span>{props.t("Dashboard")}</span>
               </Link>
             </li>
-            <li>
-              <Link to="/leads" className="">
-                <FeatherIcon icon="monitor" />
-                <span>{props.t("Leads")}</span>
-              </Link>
-            </li>
+          
 
             <li>
               <Link to='/clients' className="">
@@ -121,9 +116,15 @@ const SidebarContent = (props) => {
             </li>
             <li>
               <Link to='/leads' className="">
-                <FeatherIcon icon="user"/>
+                <FeatherIcon icon="monitor"/>
                 <span>{props.t("Leads")}</span> 
               </Link> 
+            </li>
+            <li>
+              <Link to="/assets" className="">
+                <FeatherIcon icon="dollar-sign"/>
+                <span>{props.t("Assets")}</span>
+              </Link>
             </li>
             <li>
               <Link to="/transactions" className="has-arrow">

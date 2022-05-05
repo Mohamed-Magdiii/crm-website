@@ -14,7 +14,8 @@ import {
   EDIT_USERS_DONE,
   EDIT_USER_CLEAR,
   DELETE_USERS_START,
-  DELETE_USERS_DONE
+  DELETE_USERS_DONE,
+  EDIT_USERS_ERROR
 } from "./actionTypes";
 
 const initialState = {
@@ -63,7 +64,7 @@ const usersReducer = (state = initialState, action) => {
     case FETCH_USERS_ROLES_START:
       state = {
         ...state,
-        rolesloading: true, 
+        rolesloading: true,
       };
       break;
     case FETCH_USERS_ROLES_SUCCESS:
@@ -128,23 +129,22 @@ const usersReducer = (state = initialState, action) => {
       break;
     case EDIT_USERS_DONE:
       // eslint-disable-next-line no-case-declarations
-      const { id, ...payload } = action.payload;
+      // const { id, ...payload } = action.payload;
+      // console.log(action);
       state = {
         ...state,
-        docs: state.docs.map(obj => {
-          if (obj._id === id) {
-            return {
-              ...obj,
-              title: payload.result.title,
-              permissions: payload.result.permissions,
-            };
-          } else {
-            return obj;
-          }
-        }),
         editLoading: false,
         editResult: action.payload.result,
+        editSuccess: true,
+        clearingCounter: state.clearingCounter + 1
+      };
+      break;
+    case EDIT_USERS_ERROR:
+      state = {
+        ...state,
+        editLoading: false,
         editError: action.payload.error,
+        editSuccess: false,
       };
       break;
     case EDIT_USER_CLEAR:
@@ -152,6 +152,7 @@ const usersReducer = (state = initialState, action) => {
         ...state,
         editResult: null,
         editError: null,
+        editSuccess: false,
         editClearingCounter: state.editClearingCounter + 1
       };
       break;

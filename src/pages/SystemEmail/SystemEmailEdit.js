@@ -35,37 +35,33 @@ function SystemEmailEdit(props){
               setIsEditValid(true);
             }}
           >
-            {/* TODO check the logic so it loads the correct title and action */}
             <div className="mb-3">
-              {/* TODO check the placeholder and the value */}
               <AvField
                 name="System email Title"
                 id="System email Title"
                 label="System email Title"
                 placeholder="System email title"
                 type="text"
-                // TODO the value should be something like result.
                 value={role.title}
                 errorMessage="System email title is required"
                 validate={{ required: { value: true } }}
               />
             </div>
 
-            {/* TODO check the logic so it loads the correct title and action */}
             <div className="mb-3">
-              {/* TODO check the placeholder and the value */}
               <AvField
                 name="action"
                 label="System email action"
                 placeholder="System email action"
                 type="text"
-                value={role.key}
+                value={role.title}
                 errorMessage="System email title is required"
                 validate={{ required: { value: true } }}
               />
             </div>
 
             {/* available language dropdown */}
+            {/* TODO ask for an API to call to get available languages in the system */}
             <div className="mb-3">
               {/* TODO check the default placeholder */}
               <AvField

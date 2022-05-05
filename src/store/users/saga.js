@@ -10,7 +10,7 @@ import {
   DELETE_USERS_START
 } from "./actionTypes";
 import {
-  fetchUsersSuccess, fetchUsersRolesSuccess, fetchUsersRolesError, fetchUsersError, addUserSuccess, addUserError, addUserClear, editUserDone, editUserClear, deleteUserDone
+  fetchUsersSuccess, fetchUsersRolesSuccess, fetchUsersRolesError, fetchUsersError, addUserSuccess, addUserError, addUserClear, editUserDone, editUserError, editUserClear, deleteUserDone
 } from "./actions";
 
 //Include Both Helper File with needed methods
@@ -45,7 +45,6 @@ function * addUser(params){
   try {
     const data = yield call(usersApi.addUser, params);
     
-    
     const { result } = data;
     yield put(addUserSuccess(result));
     yield delay(2000);
@@ -53,8 +52,8 @@ function * addUser(params){
   }
   catch (error){
     yield put(addUserError(error));
-    // yield delay(2000);
-    // yield put(addRoleClear());
+    yield delay(2000);
+    yield put(addUserClear());
   } 
 
   
@@ -74,9 +73,9 @@ function * editUser(params){
     yield put(editUserClear());
   }
   catch (error){
-    yield put(editUserDone({ error: error.message }));
-    // yield delay(2000);
-    // yield put(editRoleClear());
+    yield put(editUserError({ error: error.message }));
+    yield delay(2000);
+    yield put(editUserClear());
   } 
 
   

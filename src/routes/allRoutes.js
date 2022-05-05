@@ -10,13 +10,14 @@ import Login from "../pages/Authentication/Login";
 import Logout from "../pages/Authentication/Logout";
 import Register from "../pages/Authentication/Register";
 import ForgetPwd from "../pages/Authentication/ForgetPassword";
-import ClientList from "../components/Client/client.record.list.component";
+import ClientList from "../pages/Client/ClientList";
 import UsersList from "../pages/Users/UsersList";
+// import LeadsList from "../pages/Leads/LeadList";
 import RolesList from "../pages/Roles/RolesList";
 import SystemEmailsList from "../pages/SystemEmail/SystemEmailList";
 import LeadsList from "../components/Leads/lead.record.list.component";
 import Page404 from "../pages/Authentication/Page404";
-
+import AssetsList from "../pages/Assests/AssetsList";
 const userRoutes = [
 
   //dashboard
@@ -36,7 +37,7 @@ const userRoutes = [
   },
   {
     path:"/leads",
-    component:LeadsList 
+    component: LeadsList 
   },
   //users
   {
@@ -51,6 +52,10 @@ const userRoutes = [
   {
     path: "/system-emails",
     component: SystemEmailsList
+  },
+  {
+    path:"/assets",
+    component:AssetsList
   },
   {
     path: "/",

@@ -79,6 +79,7 @@ const systemEmailsReducer = (state = initialState, action) => {
       };
       break;
     case ADD_SYSTEM_EMAIL_FAIL:
+      console.log("from reducer system email add failure", action.payload);
       state = {
         ...state,
         addErrorDetails: action.payload,
@@ -88,6 +89,7 @@ const systemEmailsReducer = (state = initialState, action) => {
       };
       break;
     case ADD_SYSTEM_EMAIL_CLEAR:
+      console.log("from reducer add system email clear");
       state = {
         ...state,
         addErrorDetails: "",
@@ -130,15 +132,16 @@ const systemEmailsReducer = (state = initialState, action) => {
         loading: true
       };
       break;
-    case EDIT_SYSTEM_EMAIL_SUCCESS:
-      // TODO right now it's simple as it could be later on this needs to be updated 
+    case EDIT_SYSTEM_EMAIL_SUCCESS: 
+      // TODO create a new endpoint to edit the content this is just used to update 
+      // title and action and that's it 
       state = {
         ...state,
         updatedSystemEmail: action.payload.data
       };
       break;
     case EDIT_SYSTEM_EMAIL_FAIL:
-      // TODO right now it's simple as it could be later on this needs to be updated 
+      console.log("from reducer edit fail function");
       state = {
         ...state,
         error: action.payload.error

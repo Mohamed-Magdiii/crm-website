@@ -1,35 +1,41 @@
 import {
-  FETCH_LEADS,
+  FETCH_LEADS_START,
   FETCH_LEADS_SUCCESS,
-  API_ERROR
+  API_ERROR,
+  ADD_NEW_LEAD,
+  ADD_NEW_LEAD_SUCCESS
 } from "./actionsType";
-export const fetchLeads = (leads)=>{
+export const fetchLeadsStart = (params = {})=>{
   return {
-    type:FETCH_LEADS,
-    payload:{ leads }
+    type:FETCH_LEADS_START,
+    payload: params 
   };
 };
-export const fetchLeadsSuccess = (loading)=>{
+export const fetchLeadsSuccess = (data)=>{
   return {
     type:FETCH_LEADS_SUCCESS,
-    payload:{ loading }
+    payload:data 
   };
 };
+
 export const apiError = (error)=>{
   return {
     type:API_ERROR,
     payload:{ error }
   };
 };
-export const fetchLeadsFromAPI = (dispatch, setTotalDocs, sizePerPage, currentPage)=>{
-    
-  fetch(`http://localhost:3001/api/v1/crm/leads?limit=${sizePerPage}&page=${currentPage}`)
-    .then(result=>result.json())
-    .then(data=>{
-      dispatch(fetchLeads(data.result.docs));
-      setTotalDocs(data.result.totalDocs);
-      dispatch(fetchLeadsSuccess(false));
-    }).catch(error=>{
-      dispatch(error);
-    });
+export const addNewLead = (newLead)=>{
+  return {
+    type: ADD_NEW_LEAD,
+    payload:{ newLead }
+  }; 
+};
+export const addNewLeadSuccess = (message, newLead)=>{
+  return {
+    type:ADD_NEW_LEAD_SUCCESS,
+    payload:{ 
+      message, 
+      newLead 
+    }
+  };
 };
