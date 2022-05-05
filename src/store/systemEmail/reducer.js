@@ -23,7 +23,8 @@ const initialState = {
   loading: false,
   systemEmails: [],
   clearingCounter: 0,
-  deleteClearingCounter: 0
+  deleteClearingCounter: 0,
+  editClearingCounter: 0
 };
 
 const systemEmailsReducer = (state = initialState, action) => {
@@ -158,7 +159,8 @@ const systemEmailsReducer = (state = initialState, action) => {
       state = {
         ...state,
         editResult: null,
-        editError: null
+        editError: null,
+        editClearingCounter: state.editClearingCounter + 1
       };
       break;
     

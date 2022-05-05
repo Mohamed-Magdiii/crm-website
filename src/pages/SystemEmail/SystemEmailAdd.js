@@ -38,7 +38,7 @@ function SystemEmailAdd(props){
           <AvForm
             className='p-4' 
             onValidSubmit={(e, v) => {
-              handleAddSystemEmail(v);
+              handleAddSystemEmail(e, v);
               // switch isAdditionValid to true so the system could move on to the next step
               setIsAdditionValid(true);
               // TODO figure out how to store or pass that new ID 

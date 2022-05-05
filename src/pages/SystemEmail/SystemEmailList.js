@@ -19,9 +19,11 @@ import TableLoader from "components/Common/TableLoader";
 import DeleteModal from "components/Common/DeleteModal";
 import SystemEmailAdd from "./SystemEmailAdd";
 import SystemEmailEdit from "./SystemEmailEdit";
+import SystemEmailEditModal from "./SystemEmailEditModal";
 
 function SystemEmailsList(props){
   const [deleteModal, setDeleteModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
   const [activeComponent, setActiveComponent] = useState("list component"); // to control which component to render 
   const [selectedSystemEmail, setSelectedSystemEmail] = useState();
   
@@ -37,7 +39,7 @@ function SystemEmailsList(props){
   const switchSelectedSystemEmailStatusHandler = (selectedItem) => {
     selectedItem.isActive = !selectedItem.isActive;
   };
-
+  
   const columns = [
     {
       dataField: "createdAt",
@@ -88,14 +90,14 @@ function SystemEmailsList(props){
             <i
               className="mdi mdi-pencil font-size-18"
               id="edittooltip"
-              onClick={() => { setSelectedSystemEmail(item); setActiveComponent("edit component") }}
+              onClick={() => {setSelectedSystemEmail(item); setEditModal(true)}}
             ></i>
           </Link>
           <Link className="text-danger" to="#">
             <i
               className="mdi mdi-delete font-size-18"
               id="deletetooltip"
-              onClick={() => { setSelectedSystemEmail(item); setDeleteModal(true) }}
+              onClick={() => { setSelectedSystemEmail(item); setDeleteModal(true)}}
             ></i>
           </Link>
         </div>
@@ -125,7 +127,8 @@ function SystemEmailsList(props){
 
   return (
     <React.Fragment>
-      {activeComponent === "edit component" && <SystemEmailEdit role={selectedSystemEmail}  switchComponents={switchComponents} />}
+      {console.log("active component", activeComponent)}
+      {activeComponent === "edit component" && <SystemEmailEdit role={selectedSystemEmail} switchComponents={switchComponents} />}
       {activeComponent === "list component" && 
       <>
         <div className="page-content">
@@ -180,6 +183,7 @@ function SystemEmailsList(props){
                 </Card>
               </Col>
             </Row>
+            {<SystemEmailEditModal open={editModal}  role={selectedSystemEmail} onClose={()=>{setEditModal(false)}}  switchComponents={() => {switchComponents()}} />}
             {<DeleteModal loading={props.deleteLoading} onDeleteClick={deleteSystemEmailFunction} show={deleteModal} onCloseClick={()=>{setDeleteModal(false)}} />}
           </div>
         </div>

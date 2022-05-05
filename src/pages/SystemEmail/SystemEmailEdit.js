@@ -29,7 +29,7 @@ function SystemEmailEdit(props){
           <AvForm
             className='p-4'
             onValidSubmit={(e, v) => {
-              handleSystemEmailEdit(v);
+              handleSystemEmailEdit(e, v);
               props.switchComponents();
             }}
           >
