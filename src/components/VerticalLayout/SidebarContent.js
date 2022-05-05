@@ -121,6 +121,12 @@ const SidebarContent = (props) => {
               </Link> 
             </li>
             <li>
+              <Link to="/assets" className="">
+                <FeatherIcon icon="dollar-sign"/>
+                <span>{props.t("Assets")}</span>
+              </Link>
+            </li>
+            <li>
               <Link to="/transactions" className="has-arrow">
                 <FeatherIcon icon="trending-up" />
                 <span>{props.t("Transactions")}</span>
