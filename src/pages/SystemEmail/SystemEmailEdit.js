@@ -13,7 +13,7 @@ import { editSystemEmail } from "store/systemEmail/actions";
 function SystemEmailEdit(props){
   // to make sure it won't take a new step unless the form submission was valid
   const [isEditValid, setIsEditValid] = useState(false);
-  const { role = {} } = props.role;
+  const role = props.role;
   const dispatch = useDispatch();
   const handleSystemEmailEdit = (values) => {
     dispatch(editSystemEmail({
@@ -45,7 +45,7 @@ function SystemEmailEdit(props){
                 placeholder="System email title"
                 type="text"
                 // TODO the value should be something like result.
-                value={props.title}
+                value={role.title}
                 errorMessage="System email title is required"
                 validate={{ required: { value: true } }}
               />
@@ -59,7 +59,7 @@ function SystemEmailEdit(props){
                 label="System email action"
                 placeholder="System email action"
                 type="text"
-                value={props.action}
+                value={role.key}
                 errorMessage="System email title is required"
                 validate={{ required: { value: true } }}
               />
@@ -109,7 +109,7 @@ function SystemEmailEdit(props){
               </div>
             )}
             <div className='text-center pt-3 p-2'>
-              <Button disabled={props.addLoading} type="submit" color="primary" onClick={() => {isEditValid && props.switchActiveComponent()}}>
+              <Button disabled={props.addLoading} type="submit" color="primary" onClick={() => {isEditValid && props.switchComponents()}}>
                   Update system email
               </Button>
             </div>

@@ -48,14 +48,18 @@ function * addSystemEmail(params){
   }
 }
 
+// the same issue with the axiosHnadler not returning any data 
+// so any function following it will never work 
 function * editSystemEmail(params){
   try {
     const data = yield call(systemEmailApi.editSystemEmail, params);
+    console.log("returned data from saga file", data);
     yield put(editSystemEmailSuccess({
       data,
       id: data.params.id
     }));
   } catch (error){
+    console.log("error from saga file", error);
     yield put(editSystemEmailFail(error));
   }
 }
@@ -63,6 +67,7 @@ function * editSystemEmail(params){
 function * deleteSystemEmail(params){
   try {
     const data = yield call(systemEmailApi.deleteSystemEmail, params);
+    console.log("data from saga file", data);
     const { result } = data;
     yield put(deleteSystemEmailSuccess({
       result,

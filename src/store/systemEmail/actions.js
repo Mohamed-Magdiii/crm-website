@@ -82,6 +82,7 @@ export const deleteSystemEmailFail = (error) => {
 };
 
 export const editSystemEmail = (params = {}) => {
+  console.log("params from action", params);
   return {
     type: EDIT_SYSTEM_EMAIL_REQUESTED,
     payload: params

@@ -11,6 +11,8 @@ import SystemEmailEdit from "./SystemEmailEdit";
 
 function SystemEmails(){
   const [activeComponent, setActiveComponent] = useState("list component");
+  const [selectedSystemEmailId, setSelectedSystemEmailId] = useState();
+
   // a callback function to pass to <SystemEmailAdd /> as a child to change activeComponent
   // and <SystemEmailEdit /> as a child to change activeComponent as well
   const switchActiveComponent = () => {
@@ -19,10 +21,15 @@ function SystemEmails(){
       : setActiveComponent("list component");
   };
 
+  // a function to set selected item to edit
+  const setSelectedSystemEmailIdFunction = (selectedSystemEmailId) => {
+    setSelectedSystemEmailId(selectedSystemEmailId);
+  };
+
   return (
     <React.Fragment>
-      {activeComponent === "list component" && <SystemEmailList />}
-      {activeComponent === "edit component" && <SystemEmailEdit switchComponents={switchActiveComponent}/>}
+      {activeComponent === "list component" && <SystemEmailList switchActiveComponent={switchActiveComponent} setSelectedSystemEmailIdFunction={setSelectedSystemEmailIdFunction} />}
+      {activeComponent === "edit component" && <SystemEmailEdit switchActiveComponent={switchActiveComponent} setSelectedSystemEmailIdFunction={selectedSystemEmailId} />}
     </React.Fragment>
   );
 }

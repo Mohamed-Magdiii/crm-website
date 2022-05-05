@@ -13,7 +13,7 @@ import ForgetPwd from "../pages/Authentication/ForgetPassword";
 import ClientList from "../components/Client/client.record.list.component";
 import UsersList from "../pages/Users/UsersList";
 import RolesList from "../pages/Roles/RolesList";
-import SystemEmails from "../pages/SystemEmail/SystemEmails";
+import SystemEmailsList from "../pages/SystemEmail/SystemEmailList";
 import LeadsList from "../components/Leads/lead.record.list.component";
 import Page404 from "../pages/Authentication/Page404";
 
@@ -50,7 +50,7 @@ const userRoutes = [
   // system emails
   {
     path: "/system-emails",
-    component: SystemEmails
+    component: SystemEmailsList
   },
   {
     path: "/",

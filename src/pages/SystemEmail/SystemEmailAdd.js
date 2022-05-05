@@ -68,7 +68,7 @@ function SystemEmailAdd(props){
               {/* on clicking this button it switches from the list component to the edit component if 
                   submission is valid but it adds the new system email to the db onValidSubmit above
                   finally it checks if the addition is valid then it closes the add modal so it won't cause any errors*/}
-              <Button disabled={props.addLoading} type="submit" color="primary" onClick={() => {isAdditionValid && props.switchActiveComponent()}}>
+              <Button disabled={props.addLoading} type="submit" color="primary" onClick={() => {isAdditionValid && props.switchComponent()}}>
                   Next
               </Button>
             </div>
