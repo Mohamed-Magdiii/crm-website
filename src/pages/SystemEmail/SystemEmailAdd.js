@@ -11,7 +11,7 @@ import { AvForm, AvField } from "availity-reactstrap-validation";
 import {  addSystemEmail } from "store/systemEmail/actions";
 
 function SystemEmailAdd(props){
-  // to make sure it won't take a new step unless the from submission was valid
+  // to make sure it won't take a new step unless the from submission is valid
   const [isAdditionValid, setIsAdditionValid] = useState(false);
   const [addModal, setAddModal] = useState(false);
   const dispatch = useDispatch();
@@ -37,7 +37,7 @@ function SystemEmailAdd(props){
         <ModalBody >
           <AvForm
             className='p-4' 
-            onValidSubmit={(v) => {
+            onValidSubmit={(e, v) => {
               handleAddSystemEmail(v);
               // switch isAdditionValid to true so the system could move on to the next step
               setIsAdditionValid(true);
@@ -46,7 +46,7 @@ function SystemEmailAdd(props){
           >
             <div className="mb-3">
               <AvField
-                name="Title"
+                name="title"
                 label="System email title"
                 placeholder="System email title"
                 type="text"
@@ -56,7 +56,7 @@ function SystemEmailAdd(props){
             </div>
             <div className="mb-3">
               <AvField
-                name="Action"
+                name="action"
                 label="System email action"
                 placeholder="System email action"
                 type="text"

@@ -18,7 +18,8 @@ import {
   deleteSystemEmailSuccess,
   deleteSystemEmailFail,
   editSystemEmailSuccess,
-  editSystemEmailFail
+  editSystemEmailFail,
+  editSystemEmailClear
 } from "./actions";
 import * as systemEmailApi from "../../apis/systemEmails";
 
@@ -31,10 +32,6 @@ function * fetchSystemEmails(params){
   }
 }
 
-// this issue is a 100% right here data is not defined
-// the calling isn't returning any data
-// in the addSystemEmail function let's see what we can do 
-// addSystemEmail function in the API file in doesn't return data for some reason 
 function * addSystemEmail(params){
   try {
     const data = yield call(systemEmailApi.addSystemEmail, params);
@@ -43,23 +40,20 @@ function * addSystemEmail(params){
     yield delay(2000);
     yield put(addSystemEmailClear());
   } catch (error){
-    console.log("error from saga file", error);
     yield put(addSystemEmailFail(error));
   }
 }
 
-// the same issue with the axiosHnadler not returning any data 
-// so any function following it will never work 
 function * editSystemEmail(params){
   try {
     const data = yield call(systemEmailApi.editSystemEmail, params);
-    console.log("returned data from saga file", data);
     yield put(editSystemEmailSuccess({
       data,
       id: data.params.id
     }));
+    yield delay(2000);
+    yield put(editSystemEmailClear());
   } catch (error){
-    console.log("error from saga file", error);
     yield put(editSystemEmailFail(error));
   }
 }
@@ -67,7 +61,6 @@ function * editSystemEmail(params){
 function * deleteSystemEmail(params){
   try {
     const data = yield call(systemEmailApi.deleteSystemEmail, params);
-    console.log("data from saga file", data);
     const { result } = data;
     yield put(deleteSystemEmailSuccess({
       result,

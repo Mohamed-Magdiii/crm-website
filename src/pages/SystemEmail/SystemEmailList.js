@@ -45,17 +45,17 @@ function SystemEmailsList(props){
       formatter: (val) => {return new Date(val.createdAt).toDateString()}
     },
     {
+      dataField: "createdBy",
+      text: "Created By",
+      formatter: (val) => {return (val.createdBy && val.createdBy.firstName) ? `${val.createdBy.firstName} ${val.createdBy.lastName}` : ""},
+    },
+    {
       dataField: "title",
       text: "Title"
     },
     {
       dataField: "action",
       text: "Action type"
-    },
-    {
-      dataField: "createdBy",
-      text: "Created By",
-      formatter: (val) => {return (val.createdBy && val.createdBy.firstName) ? `${val.createdBy.firstName} ${val.createdBy.lastName}` : ""},
     }, 
     {
       dataField:"content",

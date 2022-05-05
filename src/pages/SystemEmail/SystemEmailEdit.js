@@ -11,7 +11,6 @@ import {
 import { editSystemEmail } from "store/systemEmail/actions";
 
 function SystemEmailEdit(props){
-  // to make sure it won't take a new step unless the form submission was valid
   const [isEditValid, setIsEditValid] = useState(false);
   const role = props.role;
   const dispatch = useDispatch();
@@ -29,15 +28,14 @@ function SystemEmailEdit(props){
           <h2>Edit system email</h2>
           <AvForm
             className='p-4'
-            onValidSubmit={(v) => {
+            onValidSubmit={(e, v) => {
               handleSystemEmailEdit(v);
-              // switch isEditValid to true so the system could move on to the next step
-              setIsEditValid(true);
+              props.switchComponents();
             }}
           >
             <div className="mb-3">
               <AvField
-                name="System email Title"
+                name="title"
                 id="System email Title"
                 label="System email Title"
                 placeholder="System email title"
@@ -60,39 +58,6 @@ function SystemEmailEdit(props){
               />
             </div>
 
-            {/* available language dropdown */}
-            {/* TODO ask for an API to call to get available languages in the system */}
-            <div className="mb-3">
-              {/* TODO check the default placeholder */}
-              <AvField
-                name="available langauges"
-                label="available languages"
-                placeholder="available languages"
-                type="select"
-                errorMessage="Language is required"
-                validate={{ required: { value: true } }}
-              >
-                {/* TODO these options should be availabe languages returned from the backend */}
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-              </AvField>
-            </div>
-
-            {/* content */}
-            <div className="mb-3">
-              {/* TODO check if this field can be an editor if not it's OK */}
-              <AvField
-                name="content"
-                label="System email content"
-                placeholder="System email content"
-                type="editor"
-                errorMessage="Content is required"
-                validate={{ required: { value: true } }}
-              />
-            </div>
-
             {role.permissions && Object.keys(role.permissions).map((permKey, permInd) =>
               <div className="mb-3" key={permInd}>
                 <h6 className="text-capitalize">{permKey}</h6>
@@ -105,7 +70,7 @@ function SystemEmailEdit(props){
               </div>
             )}
             <div className='text-center pt-3 p-2'>
-              <Button disabled={props.addLoading} type="submit" color="primary" onClick={() => {isEditValid && props.switchComponents()}}>
+              <Button disabled={props.addLoading} type="submit" color="primary">
                   Update system email
               </Button>
             </div>

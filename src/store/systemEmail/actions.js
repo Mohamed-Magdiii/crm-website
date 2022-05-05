@@ -14,7 +14,8 @@ import {
 
   EDIT_SYSTEM_EMAIL_REQUESTED,
   EDIT_SYSTEM_EMAIL_SUCCESS,
-  EDIT_SYSTEM_EMAIL_FAIL
+  EDIT_SYSTEM_EMAIL_FAIL,
+  EDIT_SYSTEM_EMAIL_CLEAR
 } from "./actionTypes";
 
 export const fetchSystemEmails = (params = {}) => {
@@ -37,7 +38,6 @@ export const fetchSystemEmailsFail = (error) => {
 };
 
 export const addSystemEmail = (params = {}) => {
-  console.log("params from actions.js", params);
   return {
     type: ADD_SYSTEM_EMAIL_REQUESTED,
     payload: params
@@ -82,7 +82,6 @@ export const deleteSystemEmailFail = (error) => {
 };
 
 export const editSystemEmail = (params = {}) => {
-  console.log("params from action", params);
   return {
     type: EDIT_SYSTEM_EMAIL_REQUESTED,
     payload: params
@@ -98,5 +97,11 @@ export const editSystemEmailFail = (error) => {
   return {
     type: EDIT_SYSTEM_EMAIL_FAIL,
     payload: { error }
+  };
+};
+export const editSystemEmailClear = (data) => {
+  return {
+    type: EDIT_SYSTEM_EMAIL_CLEAR,
+    payload: data
   };
 };

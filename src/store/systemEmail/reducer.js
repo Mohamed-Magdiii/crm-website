@@ -14,7 +14,8 @@ import {
 
   EDIT_SYSTEM_EMAIL_REQUESTED,
   EDIT_SYSTEM_EMAIL_SUCCESS,
-  EDIT_SYSTEM_EMAIL_FAIL
+  EDIT_SYSTEM_EMAIL_FAIL,
+  EDIT_SYSTEM_EMAIL_CLEAR
 } from "./actionTypes";
 
 const initialState = {
@@ -60,15 +61,12 @@ const systemEmailsReducer = (state = initialState, action) => {
 
     // ADD
     case ADD_SYSTEM_EMAIL_REQUESTED:
-      console.log("from reducer.js requested");
       state = {
         ...state,
         addLoading: true
       };
       break;
     case ADD_SYSTEM_EMAIL_SUCCESS:
-      // it's not getting to this function for some reason !
-      console.log("from reducer system email add success");
       state = {
         ...state,
         addResult: action.payload,
@@ -79,7 +77,6 @@ const systemEmailsReducer = (state = initialState, action) => {
       };
       break;
     case ADD_SYSTEM_EMAIL_FAIL:
-      console.log("from reducer system email add failure", action.payload);
       state = {
         ...state,
         addErrorDetails: action.payload,
@@ -89,7 +86,6 @@ const systemEmailsReducer = (state = initialState, action) => {
       };
       break;
     case ADD_SYSTEM_EMAIL_CLEAR:
-      console.log("from reducer add system email clear");
       state = {
         ...state,
         addErrorDetails: "",
@@ -108,7 +104,6 @@ const systemEmailsReducer = (state = initialState, action) => {
       };
       break;
     case DELETE_SYSTEM_EMAIL_SUCCESS:
-      // it won't get to this function for some reason I still have no idea why
       state = {
         ...state,
         docs: state.docs.filter(obj => obj._id !== action.payload.id),
@@ -129,22 +124,41 @@ const systemEmailsReducer = (state = initialState, action) => {
     case EDIT_SYSTEM_EMAIL_REQUESTED:
       state = {
         ...state,
-        loading: true
+        editLoading: true
       };
       break;
-    case EDIT_SYSTEM_EMAIL_SUCCESS: 
-      // TODO create a new endpoint to edit the content this is just used to update 
-      // title and action and that's it 
+    case EDIT_SYSTEM_EMAIL_SUCCESS:
+      // eslint-disable-next-line no-case-declarations
+      const { id, ...payload } = action.payload; 
       state = {
         ...state,
-        updatedSystemEmail: action.payload.data
+        docs: state.docs.map(obj => {
+          if (obj.id === id){
+            return {
+              ...obj,
+              title: payload.result.title,
+              action: payload.result.action
+            }; 
+          } else {
+            return obj;
+          }
+        }),
+        editLoading: false,
+        editResult: action.payload.result,
+        editError: action.payload.error
       };
       break;
     case EDIT_SYSTEM_EMAIL_FAIL:
-      console.log("from reducer edit fail function");
       state = {
         ...state,
-        error: action.payload.error
+        editError: action.payload.error
+      };
+      break;
+    case EDIT_SYSTEM_EMAIL_CLEAR:
+      state = {
+        ...state,
+        editResult: null,
+        editError: null
       };
       break;
     
