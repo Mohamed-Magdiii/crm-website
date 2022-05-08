@@ -20,7 +20,7 @@ import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
 import DeleteModal from "components/Common/DeleteModal";
 import TeamsAddModal from "./TeamsAddModal";
-import TeamsEditModal from "./TeamsEditModal"; 
+import TeamsEditModal from "./TeamsEditModal";
 import TeamsEditMembersModal from "./TeamsEditMembersModal";
 
 function Teams() {
@@ -32,6 +32,7 @@ function Teams() {
   const [selectedTeam, setSelectedTeam] = useState();
   const [selectedManager, setSelectedManager] = useState({});
   const [selectedMembers, setselectedMembers] = useState([]);
+  const [editLoad, setEditLoad] = useState(0);
 
   const {
     loading,
@@ -73,7 +74,7 @@ function Teams() {
     {
       text: "Title",
       dataField: "title",
-      sort: true, 
+      sort: true,
     },
     {
       text: "Manager",
@@ -83,7 +84,7 @@ function Teams() {
         <>
           {team.managerId ? (
             <div className="d-flex gap-3">
-              <Label className="me-1" data-on-label="roleId" data-off-label="">{team.managerId.firstName}</Label>
+              <Label className="me-1" data-on-label="roleId" data-off-label="">{team.managerId.firstName + " " + team.managerId.lastName}</Label>
             </div>
           ) : (
             <div className="d-flex gap-3">
@@ -135,7 +136,7 @@ function Teams() {
           <Link className="text-success" to="#">
             <i
               className="mdi mdi-plus-box font-size-18"
-              id="deletetooltip"
+              id="deletetoo"
               onClick={() => {
                 // console.log(team);
                 setSelectedTeam(team);
@@ -162,7 +163,7 @@ function Teams() {
 
   useEffect(() => {
     loadTeams(currentPage, sizePerPage);
-  }, [sizePerPage, 1, clearingCounter]);
+  }, [sizePerPage, 1, clearingCounter, editLoad]);
 
   const loadTeams = (page, limit) => {
     setcurrentPagePage(page);
@@ -181,7 +182,7 @@ function Teams() {
   };
   const numPageRows = (numOfRows) => {
     setSizePerPage(numOfRows);
-  }; 
+  };
   const deleteTeamHandel = () => {
     dispatch(deleteTeam(selectedTeam._id));
   };
@@ -239,7 +240,7 @@ function Teams() {
                         <Tbody>
                           {loading && <TableLoader colSpan={6} />}
                           {!loading && docs.map((row, rowIndex) =>
-                            <Tr key={rowIndex}> 
+                            <Tr key={rowIndex}>
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`}>
                                   {column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
@@ -271,7 +272,7 @@ function Teams() {
             </Col>
           </Row>
           {<TeamsEditModal open={editModal} manager={selectedManager} team={selectedTeam} onClose={() => { setEditTeamModal(false) }} />}
-          {<TeamsEditMembersModal open={editMembersModal} members={selectedMembers} team={selectedTeam} onClose={() => { setEditMembersModal(false) }} />}
+          {<TeamsEditMembersModal open={editMembersModal} members={selectedMembers} team={selectedTeam} onClose={() => { setEditMembersModal(false); setEditLoad(editLoad + 1) }} />}
           {<DeleteModal loading={deleteLoading} onDeleteClick={deleteTeamHandel} show={deleteModal} onCloseClick={() => { setDeleteTeamModal(false) }} />}
         </div>
       </div>

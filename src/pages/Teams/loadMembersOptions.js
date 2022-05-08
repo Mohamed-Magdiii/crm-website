@@ -24,7 +24,7 @@ const loadMembersOptions = async (search, page) => {
       // output[item] = obj[item]['value']
       output.push({
         value: item._id,
-        label: item.firstName,
+        label: item.firstName + " " + item.lastName,
       });
     });
     filteredOptions = output;
@@ -46,10 +46,10 @@ const loadMembersOptions = async (search, page) => {
     data.docs?.map(function (item) { 
       output.push({
         value: item._id,
-        label: item.firstName,
+        label: item.firstName + " " + item.lastName,
       });
     });
-
+    // member.firstName + " " + member.lastName
     filteredOptions = output;
     // filteredOptions = options.filter(({ label }) =>
     //   label.toLowerCase().includes(searchLower)

@@ -1,48 +1,105 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, connect } from "react-redux";
+import { connect } from "react-redux";
 import {
   Modal,
   Button,
   ModalHeader,
   ModalBody,
   UncontrolledAlert,
-} from "reactstrap"; 
+  Card,
+  CardBody,
+  Col,
+} from "reactstrap";
+import { Link } from "react-router-dom";
+
 import { AvForm } from "availity-reactstrap-validation";
-import { editTeamMembers } from "store/teams/actions";
 import { AsyncPaginate } from "react-select-async-paginate";
 import loadMembersOptions from "./loadMembersOptions";
+
+import { addTeamMembers, deleteTeamMembers } from "../../apis/teams";
 
 function TeamsEditMembersModal(props) {
   const { open, team = {}, members = [], onClose } = props;
   // const { _id, title } = team.roleId || ""; 
   const [membersValue, setmembersValue] = useState([]);
+  const [selectedMember, setSelectedMember] = useState([]);
+  const [errorMassage, seterrorMassage] = useState("");
+  const [errorAlert, setErrorAlertMassage] = useState(false);
+  const [alertShow, setAlertShow] = useState(false);
 
-  useEffect(() => { 
+  useEffect(() => {
     let structureMembers = [];
-    members?.map(member => { 
+    members?.map(member => {
       structureMembers.push({
-        value: member._id,
-        label: member.firstName
+        id: member._id,
+        name: member.firstName + " " + member.lastName
       });
     }
     );
     setmembersValue(structureMembers);
   }, [members]);
+  const handleAddMembersTeam = () => {
+    if (selectedMember.value) { 
+      const memb = {
+        "members": [
+          selectedMember.value
+        ]
+      };
 
-  const dispatch = useDispatch();
-  const handleEditMembersTeam = () => {
-    let reformattedMembersArray = membersValue.map(obj => {
-      return obj.value;
-    });
-    // console.log(reformattedMembersArray);
-    // values.managerId = managerValue.value;
-    dispatch(
-      editTeamMembers({
-        id: team._id,
-        values: { members:reformattedMembersArray },
-      })
-    );
+      addTeamMembers(team._id, memb)
+        .then(response => { 
+          if (response.status) {
+            setmembersValue([{
+              id: selectedMember.value,
+              name: selectedMember.label
+            }, ...membersValue]);
+            showAlert(false, true);
+          } 
+        }
+        )
+        .catch(() => {
+          seterrorMassage("connection error");
+          showAlert(true, false);
+        });
+      setSelectedMember([]);
+    }
   };
+  const showAlert = (danger, succ) => {
+    if (succ) {
+      setAlertShow(true);
+      setTimeout(() => {
+        setAlertShow(false);
+      }, 2000);
+    } else if (danger) {
+      setErrorAlertMassage(true);
+      setTimeout(() => {
+        setErrorAlertMassage(false);
+      }, 2000);
+
+    }
+  };
+
+  const handleDeleteMembersTeam = (id, index) => { 
+    setAlertShow(true);
+    const memb = {
+      "members": [
+        id
+      ]
+    };
+    deleteTeamMembers(team._id, memb)
+      .then(response => { 
+        if (response.status) {
+          setmembersValue(membersValue.filter((item, i) => i !== index));
+          showAlert(false, true);
+        } 
+      }
+      )
+      .catch(() => {
+        seterrorMassage("connection error");
+        showAlert(true, false);
+      });
+  };
+
   useEffect(() => {
     if (props.editClearingCounter > 0 && open) {
       setTimeout(() => {
@@ -54,14 +111,12 @@ function TeamsEditMembersModal(props) {
   const defaultAdditional = {
     page: 1,
   };
-
-  const loadPageOptions = async (q, prevOptions, { page }) => {
+  const loadPageOptions = async (q, perPage, { page }) => {
     const { options, hasMore } = await loadMembersOptions(q, page);
 
     return {
       options,
       hasMore,
-
       additional: {
         page: page + 1,
       },
@@ -84,7 +139,7 @@ function TeamsEditMembersModal(props) {
           <AvForm
             className="p-4"
             onValidSubmit={(e, v) => {
-              handleEditMembersTeam(e, v);
+              handleAddMembersTeam(e, v);
             }}
           >
             <div className="mb-3">
@@ -92,33 +147,84 @@ function TeamsEditMembersModal(props) {
 
               <AsyncPaginate
                 additional={defaultAdditional}
-                default={members}
-                value={membersValue}
+                value={selectedMember}
                 loadOptions={loadPageOptions}
-                onChange={setmembersValue}
-                isMulti
-                errorMessage="please select Team Manager"
+                onChange={setSelectedMember}
+                errorMessage="please select Team Member"
                 validate={{ required: { value: true } }}
               />
             </div>
             <div className="text-center p-5">
               <Button type="submit" color="primary" className="">
-                Update Team
+                Add To Team
               </Button>
+
             </div>
+            {alertShow && (
+              <UncontrolledAlert color="success">
+                <i className="mdi mdi-check-all me-2"></i>
+                Team Updated successfully !!!
+              </UncontrolledAlert>
+            )}
+            {errorAlert && (
+              <UncontrolledAlert color="danger">
+                <i className="mdi mdi-block-helper me-2"></i>
+                {errorMassage}
+              </UncontrolledAlert>
+            )}
+            <Col xl={12}>
+              <Card>
+                <CardBody>
+                  <div className="table-responsive-md">
+                    <table className="MuiTable-root table table-hover text-nowrap mb-0">
+                      <thead>
+                        <tr>
+                          <th className="bg-white text-center">Team Members</th>
+                          <th className="bg-white text-center">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {membersValue.map((memberVal, i) => {
+                          return (
+                            <tr key={i}>
+                              <td className="text-center">
+                                <div>{memberVal.name}</div>
+                              </td>
+                              <td className="text-center">
+                                <Link className="text-danger" to="#">
+                                  <i
+                                    className="mdi mdi-delete font-size-18"
+                                    id="deletetooltip"
+                                    onClick={() => { handleDeleteMembersTeam(memberVal.id, i) }}>
+                                  </i>
+                                </Link>
+                              </td>
+                            </tr>
+                          );
+                        }
+                        )
+                        }
+                      </tbody>
+                    </table>
+                  </div>
+
+                </CardBody>
+              </Card>
+            </Col>
+
           </AvForm>
-          {props.editError && (
+          {/* {alertShow && (
             <UncontrolledAlert color="danger">
               <i className="mdi mdi-block-helper me-2"></i>
-              {props.editError}
+              {alertMassage}
             </UncontrolledAlert>
-          )}
-          {props.editResult && (
+          )} */}
+          {/* {alertShow && (
             <UncontrolledAlert color="success">
               <i className="mdi mdi-check-all me-2"></i>
               Team Updated successfully !!!
             </UncontrolledAlert>
-          )}
+          )} */}
         </ModalBody>
       </Modal>
     </React.Fragment>

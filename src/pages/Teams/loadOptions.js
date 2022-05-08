@@ -21,14 +21,14 @@ const loadOptions = async (search, page) => {
         //do any results transformations
         return results;
       });
-    data.docs?.map(function (item) { 
+    data.docs?.map(function (item) {
       output.push({
         value: item._id,
-        label: item.firstName,
+        label: item.firstName + " " + item.lastName,
       });
     });
     filteredOptions = output;
-  } else { 
+  } else {
     output = [];
     data = {};
     data = await teamsApi
@@ -47,13 +47,13 @@ const loadOptions = async (search, page) => {
       // output[item] = obj[item]['value']
       output.push({
         value: item._id,
-        label: item.firstName,
+        label: item.firstName + " " + item.lastName,
       });
     });
 
-    filteredOptions = output; 
+    filteredOptions = output;
   }
- 
+
   return {
     options: filteredOptions,
     hasMore: data.hasNextPage,
