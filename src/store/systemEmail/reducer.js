@@ -15,7 +15,12 @@ import {
   EDIT_SYSTEM_EMAIL_REQUESTED,
   EDIT_SYSTEM_EMAIL_SUCCESS,
   EDIT_SYSTEM_EMAIL_FAIL,
-  EDIT_SYSTEM_EMAIL_CLEAR
+  EDIT_SYSTEM_EMAIL_CLEAR,
+
+  EDIT_SYSTEM_EMAIL_CONTENT_REQUESTED,
+  EDIT_SYSTEM_EMAIL_CONTENT_SUCCESS,
+  EDIT_SYSTEM_EMAIL_CONTENT_FAIL,
+  EDIT_SYSTEM_EMAIL_CONTENT_CLEAR
 } from "./actionTypes";
 
 const initialState = {
@@ -24,7 +29,8 @@ const initialState = {
   systemEmails: [],
   clearingCounter: 0,
   deleteClearingCounter: 0,
-  editClearingCounter: 0
+  editClearingCounter: 0,
+  editContentClearingCounter: 0
 };
 
 const systemEmailsReducer = (state = initialState, action) => {
@@ -129,7 +135,7 @@ const systemEmailsReducer = (state = initialState, action) => {
       };
       break;
     case EDIT_SYSTEM_EMAIL_SUCCESS:
-      // eslint-disable-next-line no-case-declarations
+      // eslint-disable-next-line
       const { id, ...payload } = action.payload; 
       state = {
         ...state,
@@ -152,6 +158,7 @@ const systemEmailsReducer = (state = initialState, action) => {
     case EDIT_SYSTEM_EMAIL_FAIL:
       state = {
         ...state,
+        editLoading: false,
         editError: action.payload.error
       };
       break;
@@ -161,6 +168,53 @@ const systemEmailsReducer = (state = initialState, action) => {
         editResult: null,
         editError: null,
         editClearingCounter: state.editClearingCounter + 1
+      };
+      break;
+
+    // edit content
+    case EDIT_SYSTEM_EMAIL_CONTENT_REQUESTED:
+      state = {
+        ...state,
+        editLoading: true
+      };
+      break;
+    case EDIT_SYSTEM_EMAIL_CONTENT_SUCCESS:
+      {
+        // eslint-disable-next-line
+        const { id, ...payload } = action.payload;
+        state = {
+          ...state,
+          docs: state.docs.map(obj => {
+            if (obj.id === id){
+              return {
+                ...obj,
+                language: action.payload.language,
+                subject: action.payload.subject,
+                body: action.payload.body
+              };
+            } else {
+              return obj;
+            }
+          }),
+          editLoading: false,
+          editResult: action.payload.result,
+          editError: action.payload.error
+        };
+      }
+      break;
+    case EDIT_SYSTEM_EMAIL_CONTENT_FAIL:
+      state = {
+        ...state,
+        editLoading: false,
+        editError: action.payload.error
+      };
+      break;
+    case EDIT_SYSTEM_EMAIL_CONTENT_CLEAR:
+      state = {
+        ...state,
+        editResult: null,
+        editError: null,
+        editContentClearingCounter: state.editContentClearingCounter + 1
       };
       break;
     

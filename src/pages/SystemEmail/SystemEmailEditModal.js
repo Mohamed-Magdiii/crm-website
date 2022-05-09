@@ -41,6 +41,7 @@ function SystemEmailEditModal(props){
             className='p-4'
             onValidSubmit={(e, v) => {
               handleEditSystemEmail(e, v);
+              props.systemEmailUpdatedHandler();
             }}
           >
             <div className="mb-3">
@@ -79,13 +80,13 @@ function SystemEmailEditModal(props){
             )}
             {/* submit button */}
             <div className='text-center pt-3 p-2'>
-              <Button disabled={props.addLoading} type="submit" color="primary" className="">
-                Update New Role
+              <Button disabled={props.addLoading} type="submit" color="primary">
+                Update system email
               </Button>
             </div>
             {/* more details button leads to the edit page */}
             <div className='text-center pt-3 p-2'>
-              <Button disabled={props.addLoading} type="button" color="primary" onClick={() => {props.switchComponents()}}>
+              <Button disabled={props.addLoading} type="button" color="primary" onClick={() => {props.switchComponents(); onClose()}}>
                 More details
               </Button>
             </div>
@@ -96,6 +97,7 @@ function SystemEmailEditModal(props){
           </UncontrolledAlert>}
           {props.editResult && <UncontrolledAlert color="success">
             <i className="mdi mdi-check-all me-2"></i>
+            {/* TODO check the error and success messages not showing */}
             System Email Updated successfully !!!
           </UncontrolledAlert>}
         </ModalBody>

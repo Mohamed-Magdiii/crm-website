@@ -15,9 +15,15 @@ import {
   EDIT_SYSTEM_EMAIL_REQUESTED,
   EDIT_SYSTEM_EMAIL_SUCCESS,
   EDIT_SYSTEM_EMAIL_FAIL,
-  EDIT_SYSTEM_EMAIL_CLEAR
+  EDIT_SYSTEM_EMAIL_CLEAR,
+
+  EDIT_SYSTEM_EMAIL_CONTENT_REQUESTED,
+  EDIT_SYSTEM_EMAIL_CONTENT_SUCCESS,
+  EDIT_SYSTEM_EMAIL_CONTENT_FAIL,
+  EDIT_SYSTEM_EMAIL_CONTENT_CLEAR
 } from "./actionTypes";
 
+// fetch
 export const fetchSystemEmails = (params = {}) => {
   return {
     type: FETCH_SYSTEM_EMAILS_REQUESTED,
@@ -37,6 +43,7 @@ export const fetchSystemEmailsFail = (error) => {
   };
 };
 
+// add
 export const addSystemEmail = (params = {}) => {
   return {
     type: ADD_SYSTEM_EMAIL_REQUESTED,
@@ -62,6 +69,7 @@ export const addSystemEmailClear = (data) => {
   };
 };
 
+// delete
 export const deleteSystemEmail = (params = {}) => {
   return {
     type: DELETE_SYSTEM_EMAIL_REQUESTED,
@@ -81,6 +89,7 @@ export const deleteSystemEmailFail = (error) => {
   };
 };
 
+// edit
 export const editSystemEmail = (params = {}) => {
   return {
     type: EDIT_SYSTEM_EMAIL_REQUESTED,
@@ -102,6 +111,32 @@ export const editSystemEmailFail = (error) => {
 export const editSystemEmailClear = (data) => {
   return {
     type: EDIT_SYSTEM_EMAIL_CLEAR,
+    payload: data
+  };
+};
+
+// edit content
+export const editSystemEmailContent = (params = {}) => {
+  return {
+    type: EDIT_SYSTEM_EMAIL_CONTENT_REQUESTED,
+    payload: params
+  };
+};
+export const editSystemEmailContentSuccess = (data) => {
+  return {
+    type: EDIT_SYSTEM_EMAIL_CONTENT_SUCCESS,
+    payload: data
+  };
+};
+export const editSystemEmailContentFail = (error) => {
+  return {
+    type: EDIT_SYSTEM_EMAIL_CONTENT_FAIL,
+    payload: { error }
+  };
+};
+export const editSystemEmailContentClear = (data) => {
+  return {
+    type: EDIT_SYSTEM_EMAIL_CONTENT_CLEAR,
     payload: data
   };
 };

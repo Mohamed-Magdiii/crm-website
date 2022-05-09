@@ -11,11 +11,9 @@ import { AvForm, AvField } from "availity-reactstrap-validation";
 import {  addSystemEmail } from "store/systemEmail/actions";
 
 function SystemEmailAdd(props){
-  // to make sure it won't take a new step unless the from submission is valid
-  const [isAdditionValid, setIsAdditionValid] = useState(false);
   const [addModal, setAddModal] = useState(false);
   const dispatch = useDispatch();
-  const handleAddSystemEmail = (values) => {
+  const handleAddSystemEmail = (e, values) => {
     dispatch(addSystemEmail(values));
   };
   const toggleAddModal = () => {
@@ -29,7 +27,7 @@ function SystemEmailAdd(props){
 
   return (
     <React.Fragment >
-      <Link to="#" className="btn btn-light" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> Add New</Link>
+      <Link to="#" className="btn btn-light" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> Add New </Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
             Add New System Email 
@@ -39,9 +37,10 @@ function SystemEmailAdd(props){
             className='p-4' 
             onValidSubmit={(e, v) => {
               handleAddSystemEmail(e, v);
-              // switch isAdditionValid to true so the system could move on to the next step
-              setIsAdditionValid(true);
-              // TODO figure out how to store or pass that new ID 
+              // TODO figure out how to store or pass that new ID
+              // figure out how to save that newly added system email the role to send to 
+              // the edit component 
+              // props.switchComponents();
             }}
           >
             <div className="mb-3">
@@ -66,10 +65,9 @@ function SystemEmailAdd(props){
             </div>
             <div className='text-center pt-3 p-2'>
               {/* on clicking this button it switches from the list component to the edit component if 
-                  submission is valid but it adds the new system email to the db onValidSubmit above
-                  finally it checks if the addition is valid then it closes the add modal so it won't cause any errors*/}
-              <Button disabled={props.addLoading} type="submit" color="primary" onClick={() => {isAdditionValid && props.switchComponent()}}>
-                  Next
+                  submission is valid but it adds the new system email to the db onValidSubmit above */}
+              <Button disabled={props.addLoading} type="submit" color="primary">
+                  Add content to this system email
               </Button>
             </div>
           </AvForm>
