@@ -1,7 +1,7 @@
 import qs from "qs";
-import * as axiosHelper from "./api_helper_crypto";
+import * as axiosHelper from "./api_helper";
 export const getAssets = async ({ payload })=>{
-  const data = await axiosHelper.get(`/assets/${qs.stringify(payload)}`);
+  const data = await axiosHelper.get(`/assets/?${qs.stringify(payload)}`, { crypto: true });
   console.log(data);
   return data;
 };
