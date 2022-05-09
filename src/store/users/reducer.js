@@ -25,6 +25,7 @@ const initialState = {
   clearingCounter: 0,
   editClearingCounter: 0,
   deleteClearingCounter: 0,
+  addSuccess:false,
   // totalDocs: 0,
   // docs: [],
   // page: 1
@@ -67,9 +68,7 @@ const usersReducer = (state = initialState, action) => {
         rolesloading: true,
       };
       break;
-    case FETCH_USERS_ROLES_SUCCESS:
-      // console.log("hi from redu");
-      // console.log(action.payload);
+    case FETCH_USERS_ROLES_SUCCESS: 
       state = {
         ...state,
         rolesloading: false,
@@ -127,10 +126,7 @@ const usersReducer = (state = initialState, action) => {
         editLoading: true,
       };
       break;
-    case EDIT_USERS_DONE:
-      // eslint-disable-next-line no-case-declarations
-      // const { id, ...payload } = action.payload;
-      // console.log(action);
+    case EDIT_USERS_DONE: 
       state = {
         ...state,
         editLoading: false,

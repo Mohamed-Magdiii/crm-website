@@ -5,7 +5,7 @@ import {
 import { Link } from "react-router-dom";
 
 import {
-  Row, Col, Card, CardBody, CardTitle, CardHeader, Input, Label
+  Row, Col, Card, CardBody, CardTitle, CardHeader, Label
 } from "reactstrap";
 
 import {
@@ -14,19 +14,25 @@ import {
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 
 import {
-  fetchUsers, deleteUsers, fetchUsersRoles, editUser,
-} from "store/users/actions";
+  fetchTeams, deleteTeam,
+} from "store/teams/actions";
 import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
 import DeleteModal from "components/Common/DeleteModal";
-import UsersAddModal from "./UsersAddModal";
-import UsersEditModal from "./UsersEditModal";
+import TeamsAddModal from "./TeamsAddModal";
+import TeamsEditModal from "./TeamsEditModal";
+import TeamsEditMembersModal from "./TeamsEditMembersModal";
 
-function UsersList() {
+function Teams() {
 
-  const [editModal, setEditUserModal] = useState(false);
-  const [deleteModal, setDeleteUserModal] = useState(false);
-  const [selectedUser, setSelectedUser] = useState();
+  const [editModal, setEditTeamModal] = useState(false);
+  const [editMembersModal, setEditMembersModal] = useState(false);
+
+  const [deleteModal, setDeleteTeamModal] = useState(false);
+  const [selectedTeam, setSelectedTeam] = useState();
+  const [selectedManager, setSelectedManager] = useState({});
+  const [selectedMembers, setselectedMembers] = useState([]);
+  const [editLoad, setEditLoad] = useState(0);
 
   const {
     loading,
@@ -42,59 +48,43 @@ function UsersList() {
     prevPage,
     deleteLoading,
     deleteClearingCounter,
-    roles,
+    // roles,
     clearingCounter,
     // editClearingCounter,
   } = useSelector((state) => ({
-    loading: state.usersReducer.loading || false,
-    docs: state.usersReducer.docs || [],
-    page: state.usersReducer.page || 1,
-    totalDocs: state.usersReducer.totalDocs || 0,
-    totalPages: state.usersReducer.totalPages || 0,
-    hasNextPage: state.usersReducer.hasNextPage,
-    hasPrevPage: state.usersReducer.hasPrevPage,
-    limit: state.usersReducer.limit,
-    nextPage: state.usersReducer.nextPage,
-    pagingCounter: state.usersReducer.pagingCounter,
-    prevPage: state.usersReducer.prevPage,
-    deleteLoading: state.usersReducer.deleteLoading,
-    deleteClearingCounter: state.usersReducer.deleteClearingCounter,
-    roles: state.usersReducer.rolesData,
-    clearingCounter: state.usersReducer.clearingCounter,
-    // editClearingCounter: state.usersReducer.editClearingCounter,
+    loading: state.teamsReducer.loading || false,
+    docs: state.teamsReducer.docs || [],
+    page: state.teamsReducer.page || 1,
+    totalDocs: state.teamsReducer.totalDocs || 0,
+    totalPages: state.teamsReducer.totalPages || 0,
+    hasNextPage: state.teamsReducer.hasNextPage,
+    hasPrevPage: state.teamsReducer.hasPrevPage,
+    limit: state.teamsReducer.limit,
+    nextPage: state.teamsReducer.nextPage,
+    pagingCounter: state.teamsReducer.pagingCounter,
+    prevPage: state.teamsReducer.prevPage,
+    deleteLoading: state.teamsReducer.deleteLoading,
+    deleteClearingCounter: state.teamsReducer.deleteClearingCounter,
+    // roles: state.teamsReducer.rolesData,
+    clearingCounter: state.teamsReducer.clearingCounter,
+    // editClearingCounter: state.teamsReducer.editClearingCounter,
   }));
 
   const columns = [
     {
-      text: "createdAt",
-      dataField: "createdAt",
-      sort: true,
-      formatter: (user) => { return new Date(user.createdAt).toDateString() },
-    },
-    {
-      text: "First Name",
-      dataField: "firstName",
+      text: "Title",
+      dataField: "title",
       sort: true,
     },
     {
-      text: "Last Name",
-      dataField: "lastName",
+      text: "Manager",
+      dataField: "managerId",
       sort: true,
-    },
-    {
-      dataField: "email",
-      text: "Email",
-      sort: true,
-    },
-    {
-      text: "RoleId",
-      dataField: "roleId.title",
-      sort: true,
-      formatter: (user) => (
+      formatter: (team) => (
         <>
-          {user.roleId ? (
+          {team.managerId ? (
             <div className="d-flex gap-3">
-              <Label className="me-1" data-on-label="roleId" data-off-label="">{user.roleId.title}</Label>
+              <Label className="me-1" data-on-label="roleId" data-off-label="">{team.managerId.firstName + " " + team.managerId.lastName}</Label>
             </div>
           ) : (
             <div className="d-flex gap-3">
@@ -102,18 +92,24 @@ function UsersList() {
             </div>
           )}
         </>
-
       ),
     },
     {
-      dataField: "isActive",
-      text: "status",
+      text: "Members",
+      dataField: "members",
       sort: true,
-      formatter: (user) => (
-        <div className="d-flex gap-3">
-          <Input type="checkbox" id={user.id} switch="none" checked={user.isActive} onChange={() => { setSelectedUser(user); statusUser(user)}} />
-          <Label className="me-1" htmlFor={user.id} data-on-label="isActive" data-off-label=""></Label>
-        </div>
+      formatter: (team) => (
+        <>
+          {team.members ? (
+            <div className="d-flex gap-3">
+              <Label className="me-1" data-on-label="roleId" data-off-label="">{team.members.length}</Label>
+            </div>
+          ) : (
+            <div className="d-flex gap-3">
+              <Label className="me-1" data-on-label="roleId" data-off-label=""> </Label>
+            </div>
+          )}
+        </>
       ),
     },
     {
@@ -121,21 +117,40 @@ function UsersList() {
       isDummyField: true,
       editable: false,
       text: "Action",
-      formatter: (user) => (
+      formatter: (team) => (
         <div className="d-flex gap-3">
           <Link className="text-success" to="#">
             <i
               className="mdi mdi-pencil font-size-18"
               id="edittooltip"
-              onClick={() => { setSelectedUser(user); setEditUserModal(true) }}
+              onClick={() => {
+                setSelectedTeam(team);
+                setEditTeamModal(true);
+                setSelectedManager({
+                  value: team.managerId?._id,
+                  label: team.managerId?.firstName,
+                });
+              }}
+            ></i>
+          </Link>
+          <Link className="text-success" to="#">
+            <i
+              className="mdi mdi-plus-box font-size-18"
+              id="deletetoo"
+              onClick={() => {
+                // console.log(team);
+                setSelectedTeam(team);
+                setEditMembersModal(true);
+                setselectedMembers(team.members);
+              }
+              }
             ></i>
           </Link>
           <Link className="text-danger" to="#">
             <i
               className="mdi mdi-delete font-size-18"
               id="deletetooltip"
-              onClick={() => { setSelectedUser(user); setDeleteUserModal(true) }}
-            ></i>
+              onClick={() => { setSelectedTeam(team); setDeleteTeamModal(true) }}            ></i>
           </Link>
         </div>
       ),
@@ -147,20 +162,19 @@ function UsersList() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    loadUsers(currentPage, sizePerPage);
-    loadRoles(1, 100);
-  }, [sizePerPage, 1, clearingCounter]);
+    loadTeams(currentPage, sizePerPage);
+  }, [sizePerPage, 1, clearingCounter, editLoad]);
 
-  const loadUsers = (page, limit) => {
+  const loadTeams = (page, limit) => {
     setcurrentPagePage(page);
     if (SearchInputValue !== "") {
-      dispatch(fetchUsers({
+      dispatch(fetchTeams({
         page,
         limit,
         searchText: SearchInputValue,
       }));
     } else {
-      dispatch(fetchUsers({
+      dispatch(fetchTeams({
         page,
         limit,
       }));
@@ -169,35 +183,18 @@ function UsersList() {
   const numPageRows = (numOfRows) => {
     setSizePerPage(numOfRows);
   };
-  const loadRoles = (page, limit) => {
-    dispatch(fetchUsersRoles({
-      page,
-      limit,
-    }));
-
-  };
-  const deleteUser = () => {
-    dispatch(deleteUsers(selectedUser._id));
+  const deleteTeamHandel = () => {
+    dispatch(deleteTeam(selectedTeam._id));
   };
 
-  const statusUser = (user) => {
-    const values = {
-      "isActive": !user.isActive
-    };
-    dispatch(editUser({
-      id: user._id,
-      values
-    }));
-
-  };
   const searchHandelEnterClik = (event) => {
     if (event.keyCode === 13) {
-      loadUsers(1, sizePerPage);
+      loadTeams(1, sizePerPage);
     }
   };
   useEffect(() => {
     if (deleteClearingCounter > 0 && deleteModal) {
-      setDeleteUserModal(false);
+      setDeleteTeamModal(false);
     }
   }, [deleteClearingCounter]);
 
@@ -205,15 +202,15 @@ function UsersList() {
     <React.Fragment>
       <div className="page-content">
         <div className="container-fluid">
-          <h2>Users</h2>
+          <h2>Teams</h2>
           <Row>
             <Col className="col-12">
               <Card>
                 <CardHeader className="d-flex justify-content-between  align-items-center">
                   <CardTitle>
-                    Users List ({totalDocs})
+                    Teams List ({totalDocs})
                   </CardTitle>
-                  <UsersAddModal usersRoles={roles} />
+                  <TeamsAddModal />
                 </CardHeader>
                 <CardBody>
                   <div className="search-box me-2 mb-2 d-inline-block">
@@ -222,7 +219,7 @@ function UsersList() {
                         <span id="search-bar-0-label" className="sr-only">Search this table</span>
                         <input onChange={(e) => setSearchInputValue(e.target.value)} onKeyDown={(e) => searchHandelEnterClik(e)} id="search-bar-0" type="text" aria-labelledby="search-bar-0-label" className="form-control " placeholder="Search" />
                       </label>
-                      <i onClick={() => loadUsers(1, sizePerPage)} className="bx bx-search-alt search-icon" /></div>
+                      <i onClick={() => loadTeams(1, sizePerPage)} className="bx bx-search-alt search-icon" /></div>
                   </div>
                   <div className="table-rep-plugin">
                     <div
@@ -244,7 +241,6 @@ function UsersList() {
                           {loading && <TableLoader colSpan={6} />}
                           {!loading && docs.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
-                              {/* {console.log(rowIndex)} */}
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`}>
                                   {column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
@@ -267,7 +263,7 @@ function UsersList() {
                         limit={limit}
                         pagingCounter={pagingCounter}
                         setSizePerPage={numPageRows}
-                        onChange={loadUsers}
+                        onChange={loadTeams}
                       />
                     </div>
                   </div>
@@ -275,11 +271,12 @@ function UsersList() {
               </Card>
             </Col>
           </Row>
-          {<UsersEditModal open={editModal} user={selectedUser} usersRoles={roles} onClose={() => { setEditUserModal(false) }} />}
-          {<DeleteModal loading={deleteLoading} onDeleteClick={deleteUser} show={deleteModal} onCloseClick={() => { setDeleteUserModal(false) }} />}
+          {<TeamsEditModal open={editModal} manager={selectedManager} team={selectedTeam} onClose={() => { setEditTeamModal(false) }} />}
+          {<TeamsEditMembersModal open={editMembersModal} members={selectedMembers} team={selectedTeam} onClose={() => { setEditMembersModal(false); setEditLoad(editLoad + 1) }} />}
+          {<DeleteModal loading={deleteLoading} onDeleteClick={deleteTeamHandel} show={deleteModal} onCloseClick={() => { setDeleteTeamModal(false) }} />}
         </div>
       </div>
     </React.Fragment>
   );
 }
-export default UsersList;
+export default Teams;
