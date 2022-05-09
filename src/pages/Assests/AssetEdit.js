@@ -43,7 +43,7 @@ function AssetEdit (props) {
     }));
   };
   useEffect(()=>{
-    console.log(props.editClear);
+    
     if (props.editClear) {
       onClose();
     }
