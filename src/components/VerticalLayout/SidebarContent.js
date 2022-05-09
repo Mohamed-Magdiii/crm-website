@@ -120,12 +120,12 @@ const SidebarContent = (props) => {
                 <span>{props.t("Leads")}</span> 
               </Link> 
             </li>
-            <li>
+            {/* <li>
               <Link to="/assets" className="">
                 <FeatherIcon icon="dollar-sign"/>
                 <span>{props.t("Assets")}</span>
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link to="/transactions" className="has-arrow">
                 <FeatherIcon icon="trending-up" />
@@ -206,7 +206,7 @@ const SidebarContent = (props) => {
                   <Link to="/banners">{props.t("Banners")}</Link>
                 </li>   
                 <li>
-                  <Link to="/symbols">{props.t("Symbols")}</Link>
+                  <Link to="/assets">{props.t("Symbols")}</Link>
                 </li>
                 <li>
                   <Link to="/currency-pairs">{props.t("Currency Pairs")}</Link>
