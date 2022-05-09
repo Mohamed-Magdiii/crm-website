@@ -26,7 +26,7 @@ export const redirectToLogin = function () {
 };
 
 //apply base url for axios
-const API_URL = `${process.env.REACT_APP_API_CRM_DOMAIN}/api/v1/crm/`;
+const API_URL = `${process.env.REACT_APP_API_CRM_DOMAIN}/api/v1/crypto/`;
 
 const axiosApi = axios.create({
   baseURL: API_URL, 

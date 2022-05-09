@@ -1,9 +1,9 @@
-
+import qs from "qs";
+import * as axiosHelper from "./api_helper_crypto";
 export const getAssets = async ({ payload })=>{
-  const { page, limit } = payload;
-  const result = await fetch(`http://localhost:3001/api/v1/crypto/assets?limit=${limit}&&page=${page}`);
-  const assests = await result.json();
-  return assests;
+  const data = await axiosHelper.get(`/assets/${qs.stringify(payload)}`);
+  console.log(data);
+  return data;
 };
 export const addNewSymbol = async (values)=>{
   
