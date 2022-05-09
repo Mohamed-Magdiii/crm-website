@@ -13,6 +13,7 @@ import rolesSaga from "./roles/saga";
 import usersSaga from "./users/saga";
 import clientSaga from "./client/saga";
 import teamsSaga from "./teams/saga";
+import assetSaga from "./assests/saga";
 export default function* rootSaga() {
   yield all([
     //public
@@ -29,6 +30,7 @@ export default function* rootSaga() {
     fork(rolesSaga),
     fork(usersSaga),
     fork(clientSaga),
-    fork(teamsSaga)
+    fork(teamsSaga),
+    fork(assetSaga),
   ]);
 }

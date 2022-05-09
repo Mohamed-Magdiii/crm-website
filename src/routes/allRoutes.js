@@ -16,7 +16,7 @@ import LeadsList from "../pages/Leads/LeadList";
 import Teams from "../pages/Teams/Teams"; 
 import RolesList from "../pages/Roles/RolesList";
 import Page404 from "../pages/Authentication/Page404";
-
+import AssetsList from "../pages/Assests/AssetsList";
 const userRoutes = [
 
   //dashboard
@@ -52,7 +52,10 @@ const userRoutes = [
     path: "/roles",
     component: RolesList 
   },
-
+  {
+    path:"/assets",
+    component:AssetsList
+  },
   {
     path: "/",
     exact: true,

@@ -49,7 +49,10 @@ export async function post(url, data, config = {}) {
     .then(response => {
       return response.data;
     }).catch((err) => {
-      return err.response.data;
+      if (err.response && err.response.data) {
+        return err.response.data;
+      }
+      return err;
     });
 }
 
@@ -59,7 +62,10 @@ export async function patch(url, data, config = {}) {
     .then(response => {
       return response.data;
     }).catch((err) => {
-      return err.response.data;
+      if (err.response && err.response.data) {
+        return err.response.data;
+      }
+      return err;
     });
 }
 
