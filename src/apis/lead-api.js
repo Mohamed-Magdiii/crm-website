@@ -10,7 +10,7 @@ export const addNewLead = async(values) => {
   return data;
 };
 export const fetchLeadsFromAPI = async ( { payload })=>{
-  console.log(payload);
+  // console.log(payload);
   const result = await  axiosHelper.get(`/leads?${qs.stringify(payload)}`);
   
   return result;
