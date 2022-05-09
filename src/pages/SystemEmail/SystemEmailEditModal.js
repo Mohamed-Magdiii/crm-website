@@ -93,7 +93,7 @@ function SystemEmailEditModal(props){
           </AvForm>
           {props.editError && <UncontrolledAlert color="danger">
             <i className="mdi mdi-block-helper me-2"></i>
-            {props.editError}
+            {JSON.stringify(props.editError)}
           </UncontrolledAlert>}
           {props.editResult && <UncontrolledAlert color="success">
             <i className="mdi mdi-check-all me-2"></i>
