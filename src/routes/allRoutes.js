@@ -17,6 +17,7 @@ import Teams from "../pages/Teams/Teams";
 import RolesList from "../pages/Roles/RolesList";
 import Page404 from "../pages/Authentication/Page404";
 import AssetsList from "../pages/Assests/AssetsList";
+import Reminder from "../pages/Reminder/Reminder";
 const userRoutes = [
 
   //dashboard
@@ -47,6 +48,11 @@ const userRoutes = [
   {
     path: "/teams",
     component: Teams 
+  },
+  //calender
+  {
+    path: "/calendar/reminders",
+    component: Reminder 
   },
   {
     path: "/roles",
