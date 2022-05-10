@@ -21,10 +21,11 @@ function SystemEmailAdd(props){
   };
   useEffect(()=>{
     if (props.clearingCounter > 0 && addModal) {
+      props.switchComponents();
       setAddModal(false);
     }
   }, [props.clearingCounter]);
-
+  
   return (
     <React.Fragment >
       <Link to="#" className="btn btn-light" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> Add New </Link>
@@ -37,10 +38,6 @@ function SystemEmailAdd(props){
             className='p-4' 
             onValidSubmit={(e, v) => {
               handleAddSystemEmail(e, v);
-              // TODO figure out how to store or pass that new ID
-              // figure out how to save that newly added system email the role to send to 
-              // the edit component 
-              // props.switchComponents();
             }}
           >
             <div className="mb-3">
@@ -71,10 +68,9 @@ function SystemEmailAdd(props){
               </Button>
             </div>
           </AvForm>
-
           {props.addError && <UncontrolledAlert color="danger">
             <i className="mdi mdi-block-helper me-2"></i>
-            {props.addErrorDetails}
+            {JSON.stringify(props.addErrorDetails)}
           </UncontrolledAlert>}
           {props.addSuccess && <UncontrolledAlert color="success">
             <i className="mdi mdi-check-all me-2"></i>
@@ -91,7 +87,9 @@ const mapStateToProps = (state) => ({
   addErrorDetails: state.systemEmailsReducer.addErrorDetails,
   addSuccess: state.systemEmailsReducer.addSuccess,
   addError: state.systemEmailsReducer.addError,  
-  clearingCounter: state.systemEmailsReducer.clearingCounter
+  clearingCounter: state.systemEmailsReducer.clearingCounter,
+  newSystemEmail: state.systemEmailsReducer.newSystemEmail,
+  activeComponentProp: state.systemEmailsReducer.activeComponentProp
 });
 
 export default connect(mapStateToProps, null)(SystemEmailAdd);

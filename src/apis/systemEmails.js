@@ -10,6 +10,17 @@ export const getSystemEmails = async ({ payload }) => {
   return data.result;
 };
 
+// export const getSystemEmailById = async ({ payload }) => {
+//   const { id } = payload;
+//   console.log("payload from API file", payload);
+//   const data = await axiosHelper.get(`/system-emails/${id}`);
+//   if (data.isError){
+//     throw new Error(data.message);
+//   }
+
+//   return data.result;
+// };
+
 export const addSystemEmail = async({ payload }) => {
   const data = await axiosHelper.post("/system-emails", payload);
   if (data.isError) {

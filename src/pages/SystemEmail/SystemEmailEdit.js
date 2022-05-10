@@ -18,6 +18,7 @@ function SystemEmailEdit(props){
     "en-gb": "English"
   };
   const role = props.role;
+  
   const availableLanguages = Object.keys(role.content);
   const [selectedLanguage, setSelectedLanguage] = useState("en-gb");
   const changeLanguageHandler = (e) => {
@@ -31,6 +32,13 @@ function SystemEmailEdit(props){
     }));
   };
 
+  // an effect to switch components from list to edit only if the data was submitted successfully
+  // useEffect(() => {
+  //   props.switchComponents();
+  // }, [props.editContentClearingCounter]);
+  // console.log(props.editContentClearingCounter);
+  // console.log(props.editContentResult);
+
   return (
     <React.Fragment >
       <div className="page-content">
@@ -40,9 +48,12 @@ function SystemEmailEdit(props){
             className='p-4'
             onValidSubmit={(e, v) => {
               handleSystemEmailEdit(e, v);
+              // TODO this method of switching components makes it impossible to 
+              // show success or error messages as in switches components from edit to 
+              // listing almost immediately so this needs to be handled again 
               // switch components from edit to list
-              props.switchComponents();
               props.systemEmailUpdatedHandler();
+              props.switchComponents();
             }}
           >
             <div className="mb-3">
@@ -71,9 +82,9 @@ function SystemEmailEdit(props){
 
             {/* encapsulated in another form tag to make title and action read only
                 they won't be sent with the API like the rest of the fields */}
-            <AvForm>
-              {/* disabled title read only not gonna send title */}
-              <div className="mb-3">
+            {/* <AvForm> */}
+            {/* disabled title read only not gonna send title */}
+            {/* <div className="mb-3">
                 <AvField
                   name="title"
                   label="System email title"
@@ -84,10 +95,10 @@ function SystemEmailEdit(props){
                   errorMessage="System email subject is required"
                   validate={{ required: { value: true } }}
                 />
-              </div>
+              </div> */}
 
-              {/* disabled action read only not gonna send action */}
-              <div className="mb-3">
+            {/* disabled action read only not gonna send action */}
+            {/* <div className="mb-3">
                 <AvField
                   name="action"
                   label="System email action"
@@ -98,8 +109,8 @@ function SystemEmailEdit(props){
                   errorMessage="System email subject is required"
                   validate={{ required: { value: true } }}
                 />
-              </div>
-            </AvForm>
+              </div> */}
+            {/* </AvForm> */}
 
             <div className="mb-3">
               <AvField
@@ -137,37 +148,42 @@ function SystemEmailEdit(props){
             )}
             {/* submit button */}
             <div className='text-center pt-3 p-2'>
-              <Button disabled={props.addLoading} type="submit" color="primary">
+              <Button disabled={props.editLoading} type="submit" color="primary">
                   Update system email
               </Button>
             </div>
 
             {/* back button */}
             <div className='text-center pt-3 p-2'>
-              <Button disabled={props.addLoading} type="button" color="primary" onClick={() => {props.switchComponents()}}>
+              <Button disabled={props.editLoading} 
+                type="button" 
+                color="primary" 
+                onClick={() => {props.switchComponents()}}
+              >
                   Back
               </Button>
             </div>
+            {props.editContentError && <UncontrolledAlert color="danger">
+              <i className="mdi mdi-block-helper me-2"></i>
+              {props.editContentError}
+            </UncontrolledAlert>}
+            {props.editContentResult && <UncontrolledAlert color="success">
+              <i className="mdi mdi-check-all me-2"></i>
+                  System email updated successfully !!!
+            </UncontrolledAlert>}
           </AvForm>
         </div>
       </div>
-      {props.editContentError && <UncontrolledAlert color="danger">
-        <i className="mdi mdi-block-helper me-2"></i>
-        {props.editContentError}
-      </UncontrolledAlert>}
-      {props.editContentResult && <UncontrolledAlert color="success">
-        <i className="mdi mdi-check-all me-2"></i>
-        {/* {console.log("edit content result", props.editContentResult)} */}
-          System Email Updated successfully !!!
-      </UncontrolledAlert>}
     </React.Fragment>
   );
 }
 
 const mapStateToProps = (state) => ({
-  addLoading: state.systemEmailsReducer.addLoading,
+  editLoading: state.systemEmailsReducer.editLoading,
   editContentResult: state.systemEmailsReducer.editContentResult,
-  editContentError: state.systemEmailsReducer.editContentError
+  editContentError: state.systemEmailsReducer.editContentError,
+  editContentClearingCounter: state.systemEmailsReducer.editContentClearingCounter,
+  activeComponentProp: state.systemEmailsReducer.activeComponentProp
 });
 
 export default connect(mapStateToProps, null)(SystemEmailEdit);

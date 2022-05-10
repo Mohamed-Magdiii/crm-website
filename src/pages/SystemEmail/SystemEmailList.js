@@ -24,16 +24,29 @@ import SystemEmailEditModal from "./SystemEmailEditModal";
 function SystemEmailsList(props){
   const [deleteModal, setDeleteModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
-  // a state to change when updating a system email to force a reload to show new updates
+  // a state to change when updating a system email to force a reload to show new updates automatically
   const [isSystemEmailUpdated, setIsSystemEmailUpdated] = useState(false);
-  const [activeComponent, setActiveComponent] = useState("list component"); // to control which component to render 
+  // to control which component to render 
+  const [activeComponent, setActiveComponent] = useState("list component");
   const [selectedSystemEmail, setSelectedSystemEmail] = useState();
   
   // a callback function to pass to <SystemEmailAdd /> as a child to change activeComponent
-  // and <SystemEmailEdit /> as a child to change activeComponent as well
+  // and <SystemEmailEdit />, <SystemEmailEditModal /> and <SystemEmailAdd />
+  // as a child to change activeComponent as well
   const switchComponents = () => {
-    activeComponent === "list component" 
-      ? setActiveComponent("edit component") 
+    // console.log(props.activeComponentProp);
+    // props.activeComponentProp === "list component" 
+    //   ? props = {
+    //     ...props, 
+    //     activeComponentProp: "edit component" 
+    //   }
+    //   : props = {
+    //     ...props, 
+    //     activeComponentProp: "list component"
+    //   };
+    // console.log(props.activeComponentProp);
+    activeComponent === "list component"
+      ? setActiveComponent("edit component")
       : setActiveComponent("list component");
   };
 
@@ -112,7 +125,6 @@ function SystemEmailsList(props){
       ),
     },
   ];
-  
   const [sizePerPage, setSizePerPage] = useState(5);
   const dispatch = useDispatch();
   const loadSystemEmailsFunction = (page, limit) => {
@@ -126,9 +138,9 @@ function SystemEmailsList(props){
   };
   useEffect(()=>{
     loadSystemEmailsFunction(1, sizePerPage);
-    // emailUpdated is a state that's only used so when an email is updated <SystemEmailList /> 
-    // would reload showing any new updates 
-  }, [sizePerPage, 1, isSystemEmailUpdated]);
+    // isSystemEmailUpdated is a state that's only used so to reload <SystemEmailList /> 
+    // when a system email is updated showing any new updates 
+  }, [sizePerPage, 1, isSystemEmailUpdated, props.totalDocs]);
   useEffect(() => {
     if (props.deleteClearingCounter > 0 && deleteModal){
       setDeleteModal(false);
@@ -137,8 +149,8 @@ function SystemEmailsList(props){
 
   return (
     <React.Fragment>
-      {activeComponent === "edit component" && <SystemEmailEdit role={selectedSystemEmail} switchComponents={switchComponents} systemEmailUpdatedHandler={systemEmailUpdatedHandler} />}
-      {activeComponent === "list component" && 
+      {props.activeComponentProp === "list component" && activeComponent === "edit component" && <SystemEmailEdit role={selectedSystemEmail || props.newSystemEmail} switchComponents={switchComponents} systemEmailUpdatedHandler={systemEmailUpdatedHandler} />}
+      {props.activeComponentProp === "list component" && activeComponent === "list component" && 
       <>
         <div className="page-content">
           <div className="container-fluid">
@@ -192,7 +204,13 @@ function SystemEmailsList(props){
                 </Card>
               </Col>
             </Row>
-            {<SystemEmailEditModal open={editModal}  role={selectedSystemEmail} onClose={()=>{setEditModal(false)}} switchComponents={switchComponents} systemEmailUpdatedHandler={systemEmailUpdatedHandler} />}
+            {<SystemEmailEditModal 
+              open={editModal}  
+              role={selectedSystemEmail} 
+              onClose={()=>{setEditModal(false)}} 
+              switchComponents={switchComponents} 
+              systemEmailUpdatedHandler={systemEmailUpdatedHandler} 
+            />}
             {<DeleteModal loading={props.deleteLoading} onDeleteClick={deleteSystemEmailFunction} show={deleteModal} onCloseClick={()=>{setDeleteModal(false)}} />}
           </div>
         </div>
@@ -216,7 +234,9 @@ const mapStateToProps = (state) => ({
   prevPage: state.systemEmailsReducer.prevPage,
   deleteLoading: state.systemEmailsReducer.deleteLoading,
   deleteClearingCounter: state.systemEmailsReducer.deleteClearingCounter,
-  clearingCounter: state.systemEmailsReducer.clearingCounter
+  clearingCounter: state.systemEmailsReducer.clearingCounter,
+  activeComponentProp: state.systemEmailsReducer.activeComponentProp,
+  newSystemEmail: state.systemEmailsReducer.newSystemEmail
 });
 
 export default connect(mapStateToProps, null)(SystemEmailsList);

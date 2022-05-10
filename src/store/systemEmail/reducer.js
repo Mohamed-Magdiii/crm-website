@@ -30,7 +30,8 @@ const initialState = {
   clearingCounter: 0,
   deleteClearingCounter: 0,
   editClearingCounter: 0,
-  editContentClearingCounter: 0
+  editContentClearingCounter: 0,
+  activeComponentProp: "list component"
 };
 
 const systemEmailsReducer = (state = initialState, action) => {
@@ -80,13 +81,14 @@ const systemEmailsReducer = (state = initialState, action) => {
         docs: [ action.payload, ...state.docs ],
         addSuccess: true,
         addError: false,
-        addLoading: false
+        addLoading: false,
+        newSystemEmail: action.payload
       };
       break;
     case ADD_SYSTEM_EMAIL_FAIL:
       state = {
         ...state,
-        addErrorDetails: action.payload,
+        addErrorDetails: action.payload.error.message,
         addLoading: false,
         addSuccess: false,
         addError: true
@@ -99,7 +101,8 @@ const systemEmailsReducer = (state = initialState, action) => {
         addSuccess: false,
         addError: false,
         addResult: null,
-        clearingCounter: state.clearingCounter + 1
+        clearingCounter: state.clearingCounter + 1,
+        activeComponent: "edit component"
       };
       break;
 
@@ -123,7 +126,7 @@ const systemEmailsReducer = (state = initialState, action) => {
     case DELETE_SYSTEM_EMAIL_FAIL:
       state = {
         ...state,
-        deleteError: action.payload.error
+        deleteError: action.payload.error.message
       };
       break;
 
@@ -151,15 +154,14 @@ const systemEmailsReducer = (state = initialState, action) => {
           }
         }),
         editLoading: false,
-        editResult: action.payload.result,
-        editError: action.payload.error
+        editResult: action.payload.data.message
       };
       break;
     case EDIT_SYSTEM_EMAIL_FAIL:
       state = {
         ...state,
         editLoading: false,
-        editError: action.payload.error
+        editError: action.payload.error.message
       };
       break;
     case EDIT_SYSTEM_EMAIL_CLEAR:
@@ -190,15 +192,15 @@ const systemEmailsReducer = (state = initialState, action) => {
                 ...obj,
                 language: action.payload.language,
                 subject: action.payload.subject,
-                body: action.payload.body
+                body: action.payload.body,
+                permissions: payload.result.permissions
               };
             } else {
               return obj;
             }
           }),
           editLoading: false,
-          editResult: action.payload.result,
-          editError: action.payload.error
+          editContentResult: action.payload.data.message
         };
       }
       break;
@@ -206,15 +208,16 @@ const systemEmailsReducer = (state = initialState, action) => {
       state = {
         ...state,
         editLoading: false,
-        editError: action.payload.error
+        editContentError: action.payload.error.message
       };
       break;
     case EDIT_SYSTEM_EMAIL_CONTENT_CLEAR:
       state = {
         ...state,
-        editResult: null,
-        editError: null,
-        editContentClearingCounter: state.editContentClearingCounter + 1
+        editContentResult: null,
+        editContentError: null,
+        editContentClearingCounter: state.editContentClearingCounter + 1,
+        activeComponentProp: "list component"
       };
       break;
     

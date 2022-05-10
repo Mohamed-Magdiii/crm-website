@@ -57,7 +57,7 @@ function * editSystemEmail(params){
     const data = yield call(systemEmailApi.editSystemEmail, params);
     yield put(editSystemEmailSuccess({
       data,
-      id: data.params.id
+      id: params.id
     }));
     yield delay(2000);
     yield put(editSystemEmailClear());
@@ -71,7 +71,7 @@ function * editSystemEmailContent(params){
     const data = yield call(systemEmailApi.editSystemEmailContent, params);
     yield put(editSystemEmailContentSuccess({
       data,
-      id: data.params.id
+      id: params.id
     }));
     yield delay(2000);
     yield put(editSystemEmailContentClear());

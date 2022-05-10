@@ -20,7 +20,7 @@ function SystemEmailEditModal(props){
   const dispatch = useDispatch();
   const handleEditSystemEmail = (e, values) => {
     dispatch(editSystemEmail({
-      id: role._id,
+      id: role.id,
       values
     }));
   };
@@ -86,19 +86,23 @@ function SystemEmailEditModal(props){
             </div>
             {/* more details button leads to the edit page */}
             <div className='text-center pt-3 p-2'>
-              <Button disabled={props.addLoading} type="button" color="primary" onClick={() => {props.switchComponents(); onClose()}}>
+              <Button 
+                disabled={props.addLoading} 
+                type="button" 
+                color="primary" 
+                onClick={() => {props.switchComponents(); onClose()}}
+              >
                 More details
               </Button>
             </div>
           </AvForm>
           {props.editError && <UncontrolledAlert color="danger">
             <i className="mdi mdi-block-helper me-2"></i>
-            {props.editError}
+            {JSON.stringify(props.editError)}
           </UncontrolledAlert>}
           {props.editResult && <UncontrolledAlert color="success">
             <i className="mdi mdi-check-all me-2"></i>
-            {/* TODO check the error and success messages not showing */}
-            System Email Updated successfully !!!
+            First step completed successfully !!!
           </UncontrolledAlert>}
         </ModalBody>
       </Modal>
@@ -111,7 +115,7 @@ const mapStateToProps = (state) => ({
   addLoading: state.systemEmailsReducer.addLoading,
   editResult: state.systemEmailsReducer.editResult,
   editError: state.systemEmailsReducer.editError,
-  editClearingCounter: state.systemEmailsReducer.editClearingCounter  
+  editClearingCounter: state.systemEmailsReducer.editClearingCounter
 });
 
 export default connect(mapStateToProps, null)(SystemEmailEditModal);
