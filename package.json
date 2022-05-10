@@ -69,6 +69,7 @@
     "react-router-dom": "^5.2.1",
     "react-scripts": "^4.0.3",
     "react-select": "^4.3.1",
+    "react-select-async-paginate": "^0.6.1",
     "react-slick": "^0.28.1",
     "react-sparklines": "^1.7.0",
     "react-super-responsive-table": "^5.2.0",

@@ -22,7 +22,7 @@ function * fetchAsset(params){
     const data = yield call(getAssets, params);
     yield put(fetchAssetsSuccess(data));
   } catch (error){
-    yield put(apiError, error);
+    yield put(apiError(error));
   }
   
 
@@ -64,7 +64,7 @@ function * editAsset(params){
     yield delay(2000);
     yield put(assetEditModalClear());
   } catch (error){
-    yield apiError("Please Enter Valid data");
+    yield put(apiError("Please Enter Valid data"));
   }
   
 }

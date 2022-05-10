@@ -13,6 +13,7 @@ import rolesSaga from "./roles/saga";
 import usersSaga from "./users/saga";
 import systemEmailsSaga from "./systemEmail/saga";
 import clientSaga from "./client/saga";
+import teamsSaga from "./teams/saga";
 import assetSaga from "./assests/saga";
 
 export default function* rootSaga() {
@@ -32,6 +33,7 @@ export default function* rootSaga() {
     fork(usersSaga),
     fork(systemEmailsSaga),
     fork(clientSaga),
-    fork(assetSaga)
+    fork(teamsSaga),
+    fork(assetSaga),
   ]);
 }

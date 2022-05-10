@@ -12,7 +12,8 @@ import Register from "../pages/Authentication/Register";
 import ForgetPwd from "../pages/Authentication/ForgetPassword";
 import ClientList from "../pages/Client/ClientList";
 import UsersList from "../pages/Users/UsersList";
-import LeadsList from "../pages/Leads/LeadList";
+import LeadsList from "../pages/Leads/LeadList"; 
+import Teams from "../pages/Teams/Teams"; 
 import RolesList from "../pages/Roles/RolesList";
 import SystemEmailsList from "../pages/SystemEmail/SystemEmailList";
 // import LeadsList from "../components/Leads/lead.record.list.component";
@@ -43,6 +44,11 @@ const userRoutes = [
   {
     path: "/users",
     component: UsersList 
+  },
+  //teams
+  {
+    path: "/teams",
+    component: Teams 
   },
   {
     path: "/roles",

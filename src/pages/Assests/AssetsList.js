@@ -172,7 +172,7 @@ function AssestsList(props){
                         setSizePerPage={setSizePerPage}
                         sizePerPage={sizePerPage}
                         onChange={loadAssests}
-                        docs={props.assests}
+                        docs={props.assets}
                       />
                     </div>
                   </div>

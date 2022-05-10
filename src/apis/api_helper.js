@@ -26,7 +26,7 @@ export const redirectToLogin = function () {
 };
 
 //apply base url for axios
-const API_URL = "http://localhost:3001/api/v1/crm/";
+const API_URL = `${process.env.REACT_APP_API_CRM_DOMAIN}/api/v1/`;
 
 const axiosApi = axios.create({
   baseURL: API_URL,
@@ -40,12 +40,14 @@ axiosApi.defaults.headers.common["Authorization"] = token;
 // );
 
 export async function get(url, config = {}) {
-  return await axiosApi.get(url, { ...config }).then(response => response.data);
+  const path = config.crypto ? `/crypto${url}` : `/crm${url}`;
+  return await axiosApi.get(path, { ...config }).then(response => response.data);
 }
 
 export async function post(url, data, config = {}) {
+  const path = config.crypto ? `/crypto${url}` : `/crm${url}`;
   return axiosApi
-    .post(url, { ...data }, { ...config })
+    .post(path, { ...data }, { ...config })
     .then(response => {
       return response.data;
     }).catch((err) => {
@@ -57,8 +59,9 @@ export async function post(url, data, config = {}) {
 }
 
 export async function patch(url, data, config = {}) {
+  const path = config.crypto ? `/crypto${url}` : `/crm${url}`;
   return axiosApi
-    .patch(url, { ...data }, { ...config })
+    .patch(path, { ...data }, { ...config })
     .then(response => {
       return response.data;
     }).catch((err) => {
@@ -70,13 +73,15 @@ export async function patch(url, data, config = {}) {
 }
 
 export async function put(url, data, config = {}) {
+  const path = config.crypto ? `/crypto${url}` : `/crm${url}`;
   return axiosApi
-    .put(url, { ...data }, { ...config })
+    .put(path, { ...data }, { ...config })
     .then(response => response.data);
 }
 
 export async function del(url, config = {}) {
+  const path = config.crypto ? `/crypto${url}` : `/crm${url}`;
   return await axiosApi
-    .delete(url, { ...config })
+    .delete(path, { ...config })
     .then(response => response.data);
 }
