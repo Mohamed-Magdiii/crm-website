@@ -1,21 +1,11 @@
 
 
-import { API_BASE } from "./url_helper";
+import * as axiosHelper from "./api_helper";
 
 export const loginUser = async(values) => {
-  const result = await fetch(`${API_BASE}/auth/login`, {
-    method:"POST",
-    mode:"cors",
-       
-    headers:{  
-      "Content-Type":"application/json",
-      "Accept":"application/json"
-    },
-    body:JSON.stringify({
-      email:values.email,
-      password:values.password 
-    })
-  });
-  const data = await result.json();
+  const data = await axiosHelper.post("/auth/login", values);
+  if (data.isError) {
+    return data;
+  } 
   return data;
 };

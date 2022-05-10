@@ -68,7 +68,7 @@ const Login = props => {
                         <AvField
                           name="email"
                           label="Email"
-                          value="admin@themesbrand.com"
+                          value=""
                           className="form-control"
                           placeholder="Enter email"
                           type="email"
@@ -86,7 +86,7 @@ const Login = props => {
                         <div className="mb-3">
                           <AvField
                             name="password"
-                            value="123456"
+                            value=""
                             type="password"
                             className="form-control"
                             required
