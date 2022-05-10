@@ -15,6 +15,8 @@ import {
   Row,
 } from "reactstrap";
 import { AvField, AvForm } from "availity-reactstrap-validation";
+import { AsyncPaginate } from "react-select-async-paginate";
+import loadClientsOptions from "./loadClientsOptions";
 
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -58,7 +60,7 @@ const Reminder = (props) => {
 
   useEffect(() => {
     dispatch(onGetCategories());
-    dispatch(onGetEvents()); 
+    dispatch(onGetEvents());
   }, [dispatch]);
 
   /**
@@ -216,6 +218,25 @@ const Reminder = (props) => {
     dispatch(onAddNewEvent(modifiedData));
   };
 
+
+  const [managerValue, setManagerValue] = useState(null);
+
+  const defaultAdditional = {
+    page: 1,
+  };
+
+  const loadPageOptions = async (q, prevOptions, { page }) => {
+    const { options, hasMore } = await loadClientsOptions(q, page);
+
+    return {
+      options,
+      hasMore,
+
+      additional: {
+        page: page + 1,
+      },
+    };
+  };
   return (
     <React.Fragment>
       <DeleteModal
@@ -232,7 +253,7 @@ const Reminder = (props) => {
           <Breadcrumbs title="Minia" breadcrumbItem="Reminders" />
           <Row>
             <Col xs={12}>
-              <Row>  
+              <Row>
                 <Col xl={12} lg={8}>
                   <Card>
                     <CardBody>
@@ -301,6 +322,19 @@ const Reminder = (props) => {
                           <option value="bg-dark">Dark</option>
                           <option value="bg-warning">Warning</option>
                         </AvField>
+                      </Col>
+                      
+                      <Col className="col-12 mb-3">
+                        <label>Select Client</label>
+
+                        <AsyncPaginate
+                          additional={defaultAdditional}
+                          value={managerValue}
+                          loadOptions={loadPageOptions}
+                          onChange={setManagerValue}
+                          errorMessage="please select Team Manager"
+                          validate={{ required: { value: true } }}
+                        />
                       </Col>
                     </Row>
                     <Row>
@@ -374,6 +408,18 @@ const Reminder = (props) => {
                           <option value="bg-dark">Dark</option>
                           <option value="bg-warning">Warning</option>
                         </AvField>
+                      </Col>
+                      <Col className="col-12 mb-3">
+                        <label>Team Manager</label>
+
+                        <AsyncPaginate
+                          additional={defaultAdditional}
+                          value={managerValue}
+                          loadOptions={loadPageOptions}
+                          onChange={setManagerValue}
+                          errorMessage="please select Team Manager"
+                          validate={{ required: { value: true } }}
+                        />
                       </Col>
                     </Row>
                     <Row>
