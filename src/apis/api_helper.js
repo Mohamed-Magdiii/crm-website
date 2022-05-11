@@ -1,25 +1,16 @@
+/* eslint-disable no-debugger */
 import axios from "axios";
 import * as url from "./url_helper";
 
-const authUser = JSON.parse(localStorage.getItem("authUser"));
-
-let token;
-
-if (authUser) {
+const getToken = () => {
   try {
-    token = authUser.token;
-  }
-  catch (err) {
-  }
-}
-
-export const loginCheck = function () {
-  if (authUser) {
-    return true;
-  } else {
-    return false;
+    const authUser = JSON.parse(localStorage.getItem("authUser"));
+    return authUser.token;
+  } catch (error) {
+    return "";
   }
 };
+
 export const redirectToLogin = function () {
   return window.location.replace(url.LOGIN);
 
@@ -32,16 +23,27 @@ const axiosApi = axios.create({
   baseURL: API_URL,
 });
 
-axiosApi.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+axiosApi.defaults.headers.common["Authorization"] = `Bearer ${getToken()}`;
 
 // axiosApi.interceptors.response.use(
 //   response => response,
 //   error => Promise.reject(error)
 // );
 
+const apiErrorHandler = (errObj) => {
+  if (errObj.response && errObj.response.data) {
+    if (errObj.response.data.code === 401) {
+      localStorage.removeItem("authUser");
+      redirectToLogin();
+    }
+    return errObj.response.data;
+  }
+  return errObj;
+};
+
 export async function get(url, config = {}) {
   const path = config.crypto ? `/crypto${url}` : `/crm${url}`;
-  return await axiosApi.get(path, { ...config }).then(response => response.data);
+  return await axiosApi.get(path, { ...config }).then(response => response.data).catch(err => apiErrorHandler(err));
 }
 
 export async function post(url, data, config = {}) {
@@ -50,12 +52,7 @@ export async function post(url, data, config = {}) {
     .post(path, { ...data }, { ...config })
     .then(response => {
       return response.data;
-    }).catch((err) => {
-      if (err.response && err.response.data) {
-        return err.response.data;
-      }
-      return err;
-    });
+    }).catch(err => apiErrorHandler(err));
 }
 
 export async function patch(url, data, config = {}) {
@@ -64,24 +61,27 @@ export async function patch(url, data, config = {}) {
     .patch(path, { ...data }, { ...config })
     .then(response => {
       return response.data;
-    }).catch((err) => {
-      if (err.response && err.response.data) {
-        return err.response.data;
-      }
-      return err;
-    });
+    }).catch(err => apiErrorHandler(err));
 }
 
 export async function put(url, data, config = {}) {
   const path = config.crypto ? `/crypto${url}` : `/crm${url}`;
   return axiosApi
     .put(path, { ...data }, { ...config })
-    .then(response => response.data);
+    .then(response => response.data).catch(err => apiErrorHandler(err));
 }
 
 export async function del(url, config = {}) {
   const path = config.crypto ? `/crypto${url}` : `/crm${url}`;
   return await axiosApi
     .delete(path, { ...config })
-    .then(response => response.data);
+    .then(response => response.data).catch(err => apiErrorHandler(err));
+}
+
+export async function loginApi(url, data, config = {}) {
+  const res = await post(url, data, config);
+  if (res && res.result && res.result.token) {
+    axiosApi.defaults.headers.common["Authorization"] = `Bearer ${res.result.token}`;
+  }
+  return res;
 }
