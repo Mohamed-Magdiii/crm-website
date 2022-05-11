@@ -34,17 +34,6 @@ function SystemEmailsList(props){
   // and <SystemEmailEdit />, <SystemEmailEditModal /> and <SystemEmailAdd />
   // as a child to change activeComponent as well
   const switchComponents = () => {
-    // console.log(props.activeComponentProp);
-    // props.activeComponentProp === "list component" 
-    //   ? props = {
-    //     ...props, 
-    //     activeComponentProp: "edit component" 
-    //   }
-    //   : props = {
-    //     ...props, 
-    //     activeComponentProp: "list component"
-    //   };
-    // console.log(props.activeComponentProp);
     activeComponent === "list component"
       ? setActiveComponent("edit component")
       : setActiveComponent("list component");
@@ -74,7 +63,16 @@ function SystemEmailsList(props){
     },
     {
       dataField: "title",
-      text: "Title"
+      text: "Title",
+      formatter: (item) => (
+        <div className="d-flex gap-3">
+          <Link to="#">
+            <i
+              onClick={() => {setSelectedSystemEmail(item); switchComponents()}}
+            >{item.title}</i>
+          </Link>
+        </div>
+      )
     },
     {
       dataField: "action",
@@ -122,9 +120,10 @@ function SystemEmailsList(props){
             ></i>
           </Link>
         </div>
-      ),
+      )
     },
   ];
+
   const [sizePerPage, setSizePerPage] = useState(5);
   const dispatch = useDispatch();
   const loadSystemEmailsFunction = (page, limit) => {
@@ -140,7 +139,10 @@ function SystemEmailsList(props){
     loadSystemEmailsFunction(1, sizePerPage);
     // isSystemEmailUpdated is a state that's only used so to reload <SystemEmailList /> 
     // when a system email is updated showing any new updates 
-  }, [sizePerPage, 1, isSystemEmailUpdated, props.totalDocs]);
+    // the same logic applies for props.deleteClearingCounter
+    // when a system email is deleted the page reloads pushing all system emails forward 
+    // one step
+  }, [sizePerPage, 1, isSystemEmailUpdated, props.deleteClearingCounter]);
   useEffect(() => {
     if (props.deleteClearingCounter > 0 && deleteModal){
       setDeleteModal(false);
@@ -149,7 +151,7 @@ function SystemEmailsList(props){
 
   return (
     <React.Fragment>
-      {props.activeComponentProp === "list component" && activeComponent === "edit component" && <SystemEmailEdit role={selectedSystemEmail || props.newSystemEmail} switchComponents={switchComponents} systemEmailUpdatedHandler={systemEmailUpdatedHandler} />}
+      {props.activeComponentProp === "list component" && activeComponent === "edit component" && <SystemEmailEdit role={selectedSystemEmail || props.systemEmail} switchComponents={switchComponents} systemEmailUpdatedHandler={systemEmailUpdatedHandler} />}
       {props.activeComponentProp === "list component" && activeComponent === "list component" && 
       <>
         <div className="page-content">
@@ -208,7 +210,6 @@ function SystemEmailsList(props){
               open={editModal}  
               role={selectedSystemEmail} 
               onClose={()=>{setEditModal(false)}} 
-              switchComponents={switchComponents} 
               systemEmailUpdatedHandler={systemEmailUpdatedHandler} 
             />}
             {<DeleteModal loading={props.deleteLoading} onDeleteClick={deleteSystemEmailFunction} show={deleteModal} onCloseClick={()=>{setDeleteModal(false)}} />}
@@ -236,7 +237,7 @@ const mapStateToProps = (state) => ({
   deleteClearingCounter: state.systemEmailsReducer.deleteClearingCounter,
   clearingCounter: state.systemEmailsReducer.clearingCounter,
   activeComponentProp: state.systemEmailsReducer.activeComponentProp,
-  newSystemEmail: state.systemEmailsReducer.newSystemEmail
+  systemEmail: state.systemEmailsReducer.systemEmail
 });
 
 export default connect(mapStateToProps, null)(SystemEmailsList);

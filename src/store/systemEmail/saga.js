@@ -4,6 +4,7 @@ import {
 // import login redux states (started or requested)
 import {
   FETCH_SYSTEM_EMAILS_REQUESTED,
+  FETCH_SYSTEM_EMAIL_BY_ID_REQUESTED,
   ADD_SYSTEM_EMAIL_REQUESTED,
   DELETE_SYSTEM_EMAIL_REQUESTED,
   EDIT_SYSTEM_EMAIL_REQUESTED,
@@ -13,6 +14,10 @@ import {
 import {
   fetchSystemEmailsSuccess,
   fetchSystemEmailsFail,
+
+  fetchSystemEmailByIdSuccess,
+  fetchSystemEmailByIdFail,
+  fetchSystemEmailByIdClear,
 
   addSystemEmailSuccess,
   addSystemEmailFail,
@@ -37,6 +42,21 @@ function * fetchSystemEmails(params){
     yield put(fetchSystemEmailsSuccess(data));
   } catch (error){
     yield put(fetchSystemEmailsFail(error));
+  }
+}
+
+function * fetchSystemEmailById(params){
+  try {
+    const data = yield call(systemEmailApi.getSystemEmailById, params);
+    const { result } = data;
+    yield put(fetchSystemEmailByIdSuccess({
+      result,
+      id: params.payload
+    }));
+    yield delay(2000);
+    yield put(fetchSystemEmailByIdClear());
+  } catch (error){
+    yield put(fetchSystemEmailByIdFail({ error: error.message }));
   }
 }
 
@@ -95,6 +115,7 @@ function * deleteSystemEmail(params){
 
 function * authSaga(){
   yield takeEvery(FETCH_SYSTEM_EMAILS_REQUESTED, fetchSystemEmails);
+  yield takeEvery(FETCH_SYSTEM_EMAIL_BY_ID_REQUESTED, fetchSystemEmailById);
   yield takeEvery(ADD_SYSTEM_EMAIL_REQUESTED, addSystemEmail);
   yield takeEvery(EDIT_SYSTEM_EMAIL_REQUESTED, editSystemEmail);
   yield takeEvery(EDIT_SYSTEM_EMAIL_CONTENT_REQUESTED, editSystemEmailContent);

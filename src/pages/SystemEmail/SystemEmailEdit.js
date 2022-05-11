@@ -9,7 +9,7 @@ import {
   AvForm, AvField, AvInput
 } from "availity-reactstrap-validation";
 
-import { editSystemEmailContent } from "store/systemEmail/actions";
+import { editSystemEmailContent, fetchSystemEmailById } from "store/systemEmail/actions";
 
 function SystemEmailEdit(props){
   // TODO check if it's OK to do this step manual with a dic if not figure it out
@@ -17,7 +17,7 @@ function SystemEmailEdit(props){
     "ar-ae": "Arabic",
     "en-gb": "English"
   };
-  const role = props.role;
+  let role = props.systemEmail || props.role;
   
   const availableLanguages = Object.keys(role.content);
   const [selectedLanguage, setSelectedLanguage] = useState("en-gb");
@@ -32,13 +32,11 @@ function SystemEmailEdit(props){
     }));
   };
 
-  // an effect to switch components from list to edit only if the data was submitted successfully
-  // useEffect(() => {
-  //   props.switchComponents();
-  // }, [props.editContentClearingCounter]);
-  // console.log(props.editContentClearingCounter);
-  // console.log(props.editContentResult);
-
+  // fetch system email by id handler
+  const handleSystemEmailFetchById = (e, systemEmailId) => {
+    dispatch(fetchSystemEmailById(systemEmailId));
+  };
+  
   return (
     <React.Fragment >
       <div className="page-content">
@@ -48,15 +46,12 @@ function SystemEmailEdit(props){
             className='p-4'
             onValidSubmit={(e, v) => {
               handleSystemEmailEdit(e, v);
-              // TODO this method of switching components makes it impossible to 
-              // show success or error messages as in switches components from edit to 
-              // listing almost immediately so this needs to be handled again 
-              // switch components from edit to list
-              props.systemEmailUpdatedHandler();
-              props.switchComponents();
+              // with every update it fetches the updated values of the system email 
+              // to keep fields up to date with database
+              handleSystemEmailFetchById(e, role._id);
             }}
           >
-            <div className="mb-3">
+            <div className="col-sm-8">
               <AvField
                 name="language"
                 id="Available languages"
@@ -80,58 +75,26 @@ function SystemEmailEdit(props){
               </AvField>
             </div>
 
-            {/* encapsulated in another form tag to make title and action read only
-                they won't be sent with the API like the rest of the fields */}
-            {/* <AvForm> */}
-            {/* disabled title read only not gonna send title */}
-            {/* <div className="mb-3">
-                <AvField
-                  name="title"
-                  label="System email title"
-                  placeholder="system email title"
-                  type="text"
-                  disabled
-                  value={role.title}
-                  errorMessage="System email subject is required"
-                  validate={{ required: { value: true } }}
-                />
-              </div> */}
-
-            {/* disabled action read only not gonna send action */}
-            {/* <div className="mb-3">
-                <AvField
-                  name="action"
-                  label="System email action"
-                  placeholder="system email action"
-                  type="text"
-                  disabled
-                  value={role.action}
-                  errorMessage="System email subject is required"
-                  validate={{ required: { value: true } }}
-                />
-              </div> */}
-            {/* </AvForm> */}
-
-            <div className="mb-3">
+            <div className="col-sm-8">
               <AvField
                 name="subject"
-                label="System email subject"
-                placeholder="system email subject"
+                label="Subject"
+                placeholder="Subject"
                 type="text"
                 value={role.content[selectedLanguage].subject}
-                errorMessage="System email subject is required"
+                errorMessage="Enter system email subject"
                 validate={{ required: { value: true } }}
               />
             </div>
 
-            <div className="mb-3">
+            <div className="col-sm-8">
               <AvField
                 name="body"
-                label="System email content"
-                placeholder="system email content"
+                label="Content"
+                placeholder="Content"
                 type="textarea"
                 value={role.content[selectedLanguage].body}
-                errorMessage="System email content is required"
+                errorMessage="Enter system email content"
                 validate={{ required: { value: true } }}
               />
             </div>
@@ -146,22 +109,29 @@ function SystemEmailEdit(props){
                 )}                     
               </div>
             )}
-            {/* submit button */}
-            <div className='text-center pt-3 p-2'>
-              <Button disabled={props.editLoading} type="submit" color="primary">
-                  Update system email
-              </Button>
-            </div>
 
-            {/* back button */}
-            <div className='text-center pt-3 p-2'>
-              <Button disabled={props.editLoading} 
-                type="button" 
-                color="primary" 
-                onClick={() => {props.switchComponents()}}
-              >
-                  Back
-              </Button>
+            <div className='d-flex justify-content-end col-sm-8 mt-3'>
+              {/* submit button */}
+              <div className="p-2">
+                <Button 
+                  disabled={props.editLoading} 
+                  type="submit" 
+                  color="primary"
+                >
+                    Update
+                </Button>
+              </div>
+              
+              {/* back button */}
+              <div className="p-2">
+                <Button disabled={props.editLoading || !props.isBackButtonActive} 
+                  type="button" 
+                  color="primary" 
+                  onClick={() => {props.switchComponents(); props.systemEmailUpdatedHandler()}}
+                >
+                    Back
+                </Button>
+              </div>
             </div>
             {props.editContentError && <UncontrolledAlert color="danger">
               <i className="mdi mdi-block-helper me-2"></i>
@@ -183,7 +153,9 @@ const mapStateToProps = (state) => ({
   editContentResult: state.systemEmailsReducer.editContentResult,
   editContentError: state.systemEmailsReducer.editContentError,
   editContentClearingCounter: state.systemEmailsReducer.editContentClearingCounter,
-  activeComponentProp: state.systemEmailsReducer.activeComponentProp
+  activeComponentProp: state.systemEmailsReducer.activeComponentProp,
+  systemEmail: state.systemEmailsReducer.systemEmail,
+  isBackButtonActive: state.systemEmailsReducer.isBackButtonActive
 });
 
 export default connect(mapStateToProps, null)(SystemEmailEdit);

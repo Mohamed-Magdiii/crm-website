@@ -47,8 +47,8 @@ function SystemEmailEditModal(props){
             <div className="mb-3">
               <AvField
                 name="title"
-                label="System Email Title"
-                placeholder="System Email Title"
+                label="Title"
+                placeholder="Title"
                 type="text"
                 value={role.title}
                 errorMessage="Enter System Email Title"
@@ -59,8 +59,8 @@ function SystemEmailEditModal(props){
             <div className="mb-3">
               <AvField
                 name="action"
-                label="System Email action"
-                placeholder="System Email action"
+                label="Action"
+                placeholder="Action"
                 type="text"
                 value={role.action}
                 errorMessage="Enter System Email action"
@@ -81,18 +81,7 @@ function SystemEmailEditModal(props){
             {/* submit button */}
             <div className='text-center pt-3 p-2'>
               <Button disabled={props.addLoading} type="submit" color="primary">
-                Update system email
-              </Button>
-            </div>
-            {/* more details button leads to the edit page */}
-            <div className='text-center pt-3 p-2'>
-              <Button 
-                disabled={props.addLoading} 
-                type="button" 
-                color="primary" 
-                onClick={() => {props.switchComponents(); onClose()}}
-              >
-                More details
+                Update
               </Button>
             </div>
           </AvForm>

@@ -3,6 +3,11 @@ import {
   FETCH_SYSTEM_EMAILS_SUCCESS,
   FETCH_SYSTEM_EMAILS_FAIL,
 
+  FETCH_SYSTEM_EMAIL_BY_ID_REQUESTED,
+  FETCH_SYSTEM_EMAIL_BY_ID_SUCCESS,
+  FETCH_SYSTEM_EMAIL_BY_ID_FAIL,
+  FETCH_SYSTEM_EMAIL_BY_ID_CLEAR,
+
   ADD_SYSTEM_EMAIL_REQUESTED,
   ADD_SYSTEM_EMAIL_SUCCESS,
   ADD_SYSTEM_EMAIL_FAIL,
@@ -31,7 +36,8 @@ const initialState = {
   deleteClearingCounter: 0,
   editClearingCounter: 0,
   editContentClearingCounter: 0,
-  activeComponentProp: "list component"
+  activeComponentProp: "list component",
+  isBackButtonActive: true
 };
 
 const systemEmailsReducer = (state = initialState, action) => {
@@ -56,14 +62,43 @@ const systemEmailsReducer = (state = initialState, action) => {
         page: action.payload.page,
         pagingCounter: action.payload.pagingCounter,
         prevPage: action.payload.prevPage,
-        totalPages: action.payload.totalPages
+        totalPages: action.payload.totalPages,
+        systemEmail: null
       };
       break;
     case FETCH_SYSTEM_EMAILS_FAIL:
       state = {
         ...state,
         loading: false,
-        error: action.payload.error
+        error: action.payload.error.message
+      };
+      break;
+
+    // FETCH BY ID
+    case FETCH_SYSTEM_EMAIL_BY_ID_REQUESTED:
+      state = {
+        ...state,
+        loading: true
+      };
+      break;
+    case FETCH_SYSTEM_EMAIL_BY_ID_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        systemEmail: action.payload.result
+      };
+      break;
+    case FETCH_SYSTEM_EMAIL_BY_ID_FAIL:
+      state = {
+        ...state,
+        loading: false,
+        fetchByIdError: action.payload.error
+      };
+      break;
+    case FETCH_SYSTEM_EMAIL_BY_ID_CLEAR:
+      state = {
+        ...state,
+        // systemEmail: null
       };
       break;
 
@@ -71,7 +106,8 @@ const systemEmailsReducer = (state = initialState, action) => {
     case ADD_SYSTEM_EMAIL_REQUESTED:
       state = {
         ...state,
-        addLoading: true
+        addLoading: true,
+        systemEmail: null
       };
       break;
     case ADD_SYSTEM_EMAIL_SUCCESS:
@@ -82,7 +118,7 @@ const systemEmailsReducer = (state = initialState, action) => {
         addSuccess: true,
         addError: false,
         addLoading: false,
-        newSystemEmail: action.payload
+        systemEmail: action.payload
       };
       break;
     case ADD_SYSTEM_EMAIL_FAIL:
@@ -102,7 +138,8 @@ const systemEmailsReducer = (state = initialState, action) => {
         addError: false,
         addResult: null,
         clearingCounter: state.clearingCounter + 1,
-        activeComponent: "edit component"
+        activeComponent: "edit component",
+        isBackButtonActive: false
       };
       break;
 
@@ -192,8 +229,7 @@ const systemEmailsReducer = (state = initialState, action) => {
                 ...obj,
                 language: action.payload.language,
                 subject: action.payload.subject,
-                body: action.payload.body,
-                permissions: payload.result.permissions
+                body: action.payload.body
               };
             } else {
               return obj;
@@ -217,7 +253,8 @@ const systemEmailsReducer = (state = initialState, action) => {
         editContentResult: null,
         editContentError: null,
         editContentClearingCounter: state.editContentClearingCounter + 1,
-        activeComponentProp: "list component"
+        activeComponentProp: "list component",
+        isBackButtonActive: true
       };
       break;
     

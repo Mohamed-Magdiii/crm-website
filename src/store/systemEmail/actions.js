@@ -3,6 +3,11 @@ import {
   FETCH_SYSTEM_EMAILS_SUCCESS,
   FETCH_SYSTEM_EMAILS_FAIL,
 
+  FETCH_SYSTEM_EMAIL_BY_ID_REQUESTED,
+  FETCH_SYSTEM_EMAIL_BY_ID_SUCCESS,
+  FETCH_SYSTEM_EMAIL_BY_ID_FAIL,
+  FETCH_SYSTEM_EMAIL_BY_ID_CLEAR,
+
   ADD_SYSTEM_EMAIL_REQUESTED,
   ADD_SYSTEM_EMAIL_SUCCESS,
   ADD_SYSTEM_EMAIL_FAIL,
@@ -40,6 +45,32 @@ export const fetchSystemEmailsFail = (error) => {
   return {
     type: FETCH_SYSTEM_EMAILS_FAIL,
     payload: { error }
+  };
+};
+
+// fetch by id
+export const fetchSystemEmailById = (params = {}) => {
+  return {
+    type: FETCH_SYSTEM_EMAIL_BY_ID_REQUESTED,
+    payload: params
+  };
+};
+export const fetchSystemEmailByIdSuccess = (data) => {
+  return {
+    type: FETCH_SYSTEM_EMAIL_BY_ID_SUCCESS,
+    payload: data
+  };
+};
+export const fetchSystemEmailByIdFail = (error) => {
+  return {
+    type: FETCH_SYSTEM_EMAIL_BY_ID_FAIL,
+    payload: { error }
+  };
+};
+export const fetchSystemEmailByIdClear = (data) => {
+  return {
+    type: FETCH_SYSTEM_EMAIL_BY_ID_CLEAR,
+    payload: data
   };
 };
 

@@ -43,20 +43,20 @@ function SystemEmailAdd(props){
             <div className="mb-3">
               <AvField
                 name="title"
-                label="System email title"
-                placeholder="System email title"
+                label="Title"
+                placeholder="Title"
                 type="text"
-                errorMessage="System email title is required"
+                errorMessage="Title is required"
                 validate={{ required: { value: true } }}
               />
             </div>
             <div className="mb-3">
               <AvField
                 name="action"
-                label="System email action"
-                placeholder="System email action"
+                label="Action"
+                placeholder="Action"
                 type="text"
-                errorMessage="System email action is required"
+                errorMessage="Action is required"
                 validate={{ required: { value: true } }}
               />
             </div>
@@ -64,7 +64,7 @@ function SystemEmailAdd(props){
               {/* on clicking this button it switches from the list component to the edit component if 
                   submission is valid but it adds the new system email to the db onValidSubmit above */}
               <Button disabled={props.addLoading} type="submit" color="primary">
-                  Add content to this system email
+                  Next
               </Button>
             </div>
           </AvForm>
@@ -88,7 +88,6 @@ const mapStateToProps = (state) => ({
   addSuccess: state.systemEmailsReducer.addSuccess,
   addError: state.systemEmailsReducer.addError,  
   clearingCounter: state.systemEmailsReducer.clearingCounter,
-  newSystemEmail: state.systemEmailsReducer.newSystemEmail,
   activeComponentProp: state.systemEmailsReducer.activeComponentProp
 });
 
