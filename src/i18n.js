@@ -7,6 +7,7 @@ import translationIT from "./locales/it/translation.json";
 import translationRS from "./locales/rs/translation.json";
 import translationSP from "./locales/sp/translation.json";
 import translationENG from "./locales/eng/translation.json";
+import translationAR from "./locales/ar/translation.json";
 
 // the translations
 const resources = {
@@ -25,6 +26,9 @@ const resources = {
   eng: {
     translation: translationENG,
   },
+  ar: {
+    translation: translationAR,
+  }
 };
 
 const language = localStorage.getItem("I18N_LANGUAGE");
