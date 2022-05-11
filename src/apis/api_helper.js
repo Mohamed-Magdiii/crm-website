@@ -32,7 +32,7 @@ const axiosApi = axios.create({
   baseURL: API_URL,
 });
 
-axiosApi.defaults.headers.common["Authorization"] = token;
+axiosApi.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
 // axiosApi.interceptors.response.use(
 //   response => response,
