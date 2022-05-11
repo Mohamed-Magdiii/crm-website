@@ -30,6 +30,7 @@ import dribbble from "../../assets/images/brands/dribbble.png";
 import dropbox from "../../assets/images/brands/dropbox.png";
 import mail_chimp from "../../assets/images/brands/mail_chimp.png";
 import slack from "../../assets/images/brands/slack.png";
+import * as content from "content";
 
 //i18n
 import { withTranslation } from "react-i18next";
@@ -86,7 +87,7 @@ const Header = props => {
                   <img src={logoSvg} alt="" height="24" />
                 </span>
                 <span className="logo-lg">
-                  <img src={logoSvg} alt="" height="24" /> <span className="logo-txt">Minia</span>
+                  <img src={logoSvg} alt="" height="24" /> <span className="logo-txt">{content.clientName}</span>
                 </span>
               </Link>
 
@@ -95,7 +96,7 @@ const Header = props => {
                   <img src={logoSvg} alt="" height="24" />
                 </span>
                 <span className="logo-lg">
-                  <img src={logoSvg} alt="" height="24" /> <span className="logo-txt">Minia</span>
+                  <img src={logoSvg} alt="" height="24" /> <span className="logo-txt">{content.clientName}</span>
                 </span>
               </Link>
             </div>

@@ -18,6 +18,7 @@ import { AvForm, AvField } from "availity-reactstrap-validation";
 import { useSelector, useDispatch } from "react-redux";
 
 import { withRouter } from "react-router-dom";
+import * as content from "content";
 
 //Import Breadcrumb
 import Breadcrumb from "../../components/Common/Breadcrumb";
@@ -83,11 +84,11 @@ const UserProfile = () => {
     <React.Fragment>
       <div className="page-content">
         <MetaTags>
-          <title>Profile | Minia - React Admin & Dashboard Template</title>
+          <title>Profile | CRM Crypto - {content.clientName}</title>
         </MetaTags>
         <Container fluid>
           {/* Render Breadcrumb */}
-          <Breadcrumb title="Minia" breadcrumbItem="Profile" />
+          <Breadcrumb title={content.clientName} breadcrumbItem="Profile" />
 
           <Row>
             <Col lg="12">

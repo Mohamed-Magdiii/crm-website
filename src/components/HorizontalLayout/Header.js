@@ -15,6 +15,7 @@ import { showRightSidebarAction, toggleLeftmenu } from "../../store/actions";
 import {
   Row, Col, Dropdown, DropdownToggle, DropdownMenu 
 } from "reactstrap";
+import * as content from "content";
 
 // Import menuDropdown
 import LanguageDropdown from "../CommonForBoth/TopbarDropdown/LanguageDropdown";
@@ -62,7 +63,7 @@ const Header = props => {
                 </span>
                 <span className="logo-lg">
                   <img src={logo} alt="" height="24" />
-                  <span className="logo-txt">Minia</span>
+                  <span className="logo-txt">{content.clientName}</span>
                 </span>
               </Link>
 
@@ -72,7 +73,7 @@ const Header = props => {
                 </span>
                 <span className="logo-lg">
                   <img src={logo} alt="" height="24" />
-                  <span className="logo-txt">Minia</span>
+                  <span className="logo-txt">{content.clientName}</span>
                 </span>
               </Link>
             </div>

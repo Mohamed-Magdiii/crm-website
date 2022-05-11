@@ -3,6 +3,7 @@ import MetaTags from "react-meta-tags";
 
 //import Breadcrumbs
 import Breadcrumbs from "../../components/Common/Breadcrumb";
+import * as content from "content";
 
 import {
   Container,
@@ -13,7 +14,7 @@ const Dashboard = () => {
     <React.Fragment>
       <div className="page-content">
         <MetaTags>
-          <title>Dashboard | Minia - React Admin & Dashboard Template</title>
+          <title>Dashboard | CRM Crypto - {content.clientName}</title>
         </MetaTags>
         <Container fluid>
           {/* Render Breadcrumbs */}
