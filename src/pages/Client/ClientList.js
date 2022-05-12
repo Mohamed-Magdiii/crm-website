@@ -98,7 +98,7 @@ function ClientsList(props) {
             <i
               className="mdi mdi-calendar-text font-size-20"
               id="edittooltip"
-              onClick={() => { console.log(user); setSelectedClient(user); setAddReminderToClientModal(true) }}
+              onClick={() => { setSelectedClient(user); setAddReminderToClientModal(true) }}
             ></i>
           </Link>
         </div>

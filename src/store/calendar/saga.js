@@ -27,20 +27,13 @@ import {
   updateEvent,
   deleteEvent,
   getCategories,
-} from "../../apis/reminder";
-
+} from "../../apis/reminder"; 
 function* fetchEvents() {
   try {
-    const response = yield call(getEvents);
-    console.log("fetchEvents");
-    console.log(response);
-
-
-    const reFormat = [];
+    const response = yield call(getEvents);  
     let output = [];
 
     response.result?.docs?.map(function (item) {
-      console.log(item);
       let classNam = "";
       if (item?.status == "open") {
         classNam = "bg-info text-white";

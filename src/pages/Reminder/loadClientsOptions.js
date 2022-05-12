@@ -19,8 +19,7 @@ const loadClientsOptions = async (search, page) => {
       .then((results) => {
         //do any results transformations
         return results;
-      });
-    console.log(data);
+      }); 
     data.result?.docs?.map(function (item) {
       // output[item] = obj[item]['value']
       output.push({

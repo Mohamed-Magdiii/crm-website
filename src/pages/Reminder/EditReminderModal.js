@@ -1,36 +1,21 @@
 import React, { useEffect, useState } from "react";
-import {
-  useDispatch, connect
-} from "react-redux";
 
 import {
-  Button,
-  Card,
   UncontrolledAlert,
   Col,
-  Container,
   Modal,
   ModalBody,
   ModalHeader,
   Row,
 } from "reactstrap";
 import { AvField, AvForm } from "availity-reactstrap-validation";
-import { AsyncPaginate } from "react-select-async-paginate";
-import loadClientsOptions from "./loadClientsOptions";
-import {
-  addNewEvent as onAddNewEvent,
-  deleteEvent as onDeleteEvent,
-  getCategories as onGetCategories,
-  getEvents as onGetEvents,
-  updateEvent as onUpdateEvent,
-} from "../../store/actions";
+
 import { Link } from "react-router-dom";
 
 import { getClientById } from "../../apis/client";
 import { deleteEvent, updateEvent } from "../../apis/reminder";
 
 function EditReminderModal(props) {
-  const dispatch = useDispatch();
   const [errorMassage, seterrorMassage] = useState("");
   const [errorAlert, setErrorAlertMassage] = useState(false);
   const [alertShow, setAlertShow] = useState(false);
@@ -40,7 +25,6 @@ function EditReminderModal(props) {
   const { openEdit, eventReminder = {}, onClose } = props;
   const [clientName, setclientName] = useState("");
   const { id, title, createdBy, client, status, timeStart, timeEnd, differentStartReminderAndNow, differentEndReminderAndNow } = eventReminder;
-  console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5");
   let ReminderStart = "";
   let ReminderEnd = "";
 
@@ -58,9 +42,7 @@ function EditReminderModal(props) {
   useEffect(() => {
     getClientById(client)
       .then(response => {
-        console.log("response");
         setclientName(response.result?.firstName + " " + response.result?.lastName);
-        console.log(response.result?.firstName + " " + response.result?.lastName);
       }
       )
       .catch(() => {
@@ -69,26 +51,23 @@ function EditReminderModal(props) {
       });
 
   }, [client]);
- 
- 
+
+
   const handleValidUpdateSubmit = (e, values) => {
-    console.log("submit");
-    console.log(values);
+
     updateEvent(id, values)
-      .then(response => {
+      .then(() => {
         showAlert(false, true);
-        console.log(response); 
       }
       )
       .catch((e) => {
-        // console.log(e.toString());
         seterrorMassage(e.toString());
         showAlert(true, false);
       });
 
   };
 
- 
+
   const showAlert = (danger, succ, msg) => {
     if (succ) {
       setAlertMsg(msg || "Reminder Updated successfully !!!");
@@ -108,9 +87,8 @@ function EditReminderModal(props) {
   };
   const handleDeleteReminder = (ID) => {
     deleteEvent(ID)
-      .then(response => {
+      .then(() => {
         showAlert(false, true, "Reminder Deleted successfully !!!");
-        console.log(response);
       }
       )
       .catch((e) => {
@@ -192,7 +170,7 @@ function EditReminderModal(props) {
                   <AvField
                     type="datetime-local"
                     name="time"
-                    label="Reminder start" 
+                    label="Reminder start"
                     value={timeStart}
                     errorMessage="Invalid Reminder "
                     validate={{
@@ -233,7 +211,7 @@ function EditReminderModal(props) {
               </Row>
               <Row>
                 <Col>
-                  <div className="text-end"> 
+                  <div className="text-end">
                     <button
                       type="submit"
                       className="btn btn-success save-event"
@@ -266,12 +244,4 @@ function EditReminderModal(props) {
   );
 }
 
-
-const mapStateToProps = (state) => ({
-  addLoading: state.usersReducer.addLoading,
-  editResult: state.usersReducer.editResult,
-  editError: state.usersReducer.editError,
-  editSuccess: state.usersReducer.editSuccess,
-  editClearingCounter: state.usersReducer.editClearingCounter,
-});
-export default connect(mapStateToProps, null)(EditReminderModal);
+export default EditReminderModal;

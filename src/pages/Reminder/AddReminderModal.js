@@ -1,14 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react"; 
 import {
-  useDispatch, connect
-} from "react-redux";
-
-import {
-  Button,
-  Card,
   UncontrolledAlert,
   Col,
-  Container,
   Modal,
   ModalBody,
   ModalHeader,
@@ -17,17 +10,10 @@ import {
 import { AvField, AvForm } from "availity-reactstrap-validation";
 import { AsyncPaginate } from "react-select-async-paginate";
 import loadClientsOptions from "./loadClientsOptions";
-import {
-  addNewEvent as onAddNewEvent,
-  deleteEvent as onDeleteEvent,
-  getCategories as onGetCategories,
-  getEvents as onGetEvents,
-  updateEvent as onUpdateEvent,
-} from "../../store/actions";
+
 import { addNewEvent } from "../../apis/reminder";
 
 function AddReminderModal(props) {
-  const dispatch = useDispatch();
   const { openAdd, selectedDate = {}, onClose } = props;
   const [clientValue, setclientValue] = useState(null);
 
@@ -35,9 +21,7 @@ function AddReminderModal(props) {
   const [errorAlert, setErrorAlertMassage] = useState(false);
   const [alertShow, setAlertShow] = useState(false);
   const [alertmsg, setAlertMsg] = useState("");
-  // #########################
-  console.log("#########################");
-  console.log(selectedDate);
+
   const handleValidEventSubmit = (e, values) => {
     const newEvent = {
       customerId: clientValue?.value,
@@ -48,21 +32,14 @@ function AddReminderModal(props) {
     };
 
     addNewEvent(newEvent)
-      .then(response => {
-        showAlert(false, true);
-        console.log(response);
+      .then(() => {
+        showAlert(false, true); 
       }
       )
       .catch((e) => {
-        // console.log(e.toString());
         seterrorMassage(e.toString());
         showAlert(true, false);
       });
-    // save new event
-    // dispatch(onAddNewEvent(newEvent));
-
-    // setSelectedDay(null);
-    // toggle();
   };
   const showAlert = (danger, succ, msg) => {
     if (succ) {
@@ -96,7 +73,6 @@ function AddReminderModal(props) {
       },
     };
   };
-  // #########################
   return (
     <React.Fragment >
       {/* <Link to="#" className="btn btn-light" onClick={onClose}><i className="bx bx-plus me-1"></i> Add New</Link> */}
@@ -138,9 +114,6 @@ function AddReminderModal(props) {
                   type="datetime-local"
                   name="time"
                   label="Reminder start"
-                  // default={selectedDate}
-                  // value={selectedDate.toString()}
-                  // value="2022-05-11T09:49:33"
                   value={selectedDate}
                   errorMessage="Invalid Reminder "
                   validate={{
@@ -154,20 +127,8 @@ function AddReminderModal(props) {
                   type="datetime-local"
                   name="timeEnd"
                   label="Reminder"
-                  // default={selectedDate}
-                  // value={selectedDate.toString()}
-                  // value="2022-05-11T09:49:33"
                   value={selectedDate}
                   errorMessage="Invalid Reminder Note"
-                // validate={{
-                //   required: { value: true },
-                // }}
-                // validate={{
-                //   dateRange: {
-                //     start: { selectedDate },
-                //     end: { value: "2027-05-11T09:49:33" }
-                //   }
-                // }}
                 >
                 </AvField>
               </Col>
@@ -175,7 +136,7 @@ function AddReminderModal(props) {
             </Row>
             <Row>
               <Col>
-                <div className="text-end"> 
+                <div className="text-end">
                   <button
                     type="submit"
                     className="btn btn-success save-event"
@@ -202,14 +163,6 @@ function AddReminderModal(props) {
       </Modal>
     </React.Fragment>
   );
-}
-
-
-const mapStateToProps = (state) => ({
-  addLoading: state.usersReducer.addLoading,
-  editResult: state.usersReducer.editResult,
-  editError: state.usersReducer.editError,
-  editSuccess: state.usersReducer.editSuccess,
-  editClearingCounter: state.usersReducer.editClearingCounter,
-});
-export default connect(mapStateToProps, null)(AddReminderModal);
+} 
+ 
+export default AddReminderModal;

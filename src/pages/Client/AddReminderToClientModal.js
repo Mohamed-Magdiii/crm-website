@@ -1,14 +1,8 @@
-import React, { useEffect, useState } from "react";
-import {
-  useDispatch, connect
-} from "react-redux";
+import React, { useState } from "react";
 
 import {
-  Button,
-  Card,
   UncontrolledAlert,
   Col,
-  Container,
   Modal,
   ModalBody,
   ModalHeader,
@@ -18,37 +12,19 @@ import { AvField, AvForm } from "availity-reactstrap-validation";
 import { addNewEvent } from "../../apis/reminder";
 
 function AddReminderToClientModal(props) {
-  const dispatch = useDispatch();
   const { selectedClient, onClose, openAdd } = props;
-  console.log("selectedClient");
-  console.log(selectedClient);
-  const [clientValue, setclientValue] = useState(null);
-
   const [errorMassage, seterrorMassage] = useState("");
   const [errorAlert, setErrorAlertMassage] = useState(false);
   const [alertShow, setAlertShow] = useState(false);
   const [alertmsg, setAlertMsg] = useState("");
-  // #########################
-  console.log("#########################");
-  // console.log(selectedDate);
-  const handleValidEventSubmit = (e, values) => {
-    console.log(values);
-    // const newEvent = {
-    //   customerId: clientValue?.value,
-    //   note: values.note,
-    //   time: values.time,
-    //   // time: selectedDate,
-    //   timeEnd: values.timeEnd,
-    // };
 
+  const handleValidEventSubmit = (e, values) => {
     addNewEvent(values)
-      .then(response => {
-        showAlert(false, true);
-        console.log(response);
+      .then(() => {
+        showAlert(false, true); 
       }
       )
       .catch((e) => {
-        // console.log(e.toString());
         seterrorMassage(e.toString());
         showAlert(true, false);
       });
@@ -70,7 +46,7 @@ function AddReminderToClientModal(props) {
 
     }
   };
- 
+
   return (
     <React.Fragment >
       <Modal isOpen={openAdd} toggle={onClose} centered={true}>
@@ -159,12 +135,4 @@ function AddReminderToClientModal(props) {
   );
 }
 
-
-const mapStateToProps = (state) => ({
-  addLoading: state.usersReducer.addLoading,
-  editResult: state.usersReducer.editResult,
-  editError: state.usersReducer.editError,
-  editSuccess: state.usersReducer.editSuccess,
-  editClearingCounter: state.usersReducer.editClearingCounter,
-});
-export default connect(mapStateToProps, null)(AddReminderToClientModal);
+export default AddReminderToClientModal;
