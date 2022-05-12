@@ -14,3 +14,12 @@ export const addClient = async (values )=>{
   }
   return data;
 };
+
+export const getClientById = async (id) => {
+  // const { id, values } = payload;
+  const data = await axiosHelper.get(`/clients/${id}`);
+  if (data.isError) {
+    throw new Error(data.message);
+  }
+  return data;
+};

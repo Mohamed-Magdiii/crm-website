@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { 
-  useDispatch, connect 
+import {
+  useDispatch, connect
 } from "react-redux";
 import {
-  Row, Col, Card, CardBody, CardTitle, CardHeader 
+  Row, Col, Card, CardBody, CardTitle, CardHeader
 } from "reactstrap";
 import {
   Table, Thead, Tbody, Tr, Th, Td
@@ -12,49 +12,55 @@ import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
 import ClientForm from "./ClientAdd";
+import AddReminderToClientModal from "./AddReminderToClientModal";
 import { fetchClientsStart } from "store/client/actions";
 import "./ClientList.styles.scss";
 import SearchBar from "components/Common/SearchBar";
-function ClientsList(props){
+import { Link } from "react-router-dom";
+
+function ClientsList(props) {
+  const [addModal, setAddReminderToClientModal] = useState(false);
+  const [selectedClient, setSelectedClient] = useState({});
+
   const columns = [
     {
-      dataField:"checkbox",
-      text: <input type="checkbox"/>
+      dataField: "checkbox",
+      text: <input type="checkbox" />
     },
     {
       dataField: "createdAt",
       text: "Date",
       formatter: (val) => (new Date(val.createdAt).toLocaleDateString())
-    }, 
+    },
     {
-      dataField:"name",
-      text:"Name",
+      dataField: "name",
+      text: "Name",
       formatter: (val) => (`${val.firstName} ${val.lastName}`),
     },
     {
-      dataField:"category",
-      text:"type"
+      dataField: "category",
+      text: "type"
     },
     {
       dataField: "email",
       text: "Email",
-    
+
     },
     {
       dataField: "phone",
       text: "Phone",
-    
+
     },
     {
       dataField: "country",
       text: "country",
-    
+
     },
-    
+
     {
       dataField: "agent",
       text: "Agent",
-      formatter:(val) => (val.agent ? val.agent._id : "-"),
+      formatter: (val) => (val.agent ? val.agent._id : "-"),
     },
     {
       dataField: "source",
@@ -63,7 +69,7 @@ function ClientsList(props){
     {
       dataField: "stages",
       text: "KYC",
-      formatter:(val) => {
+      formatter: (val) => {
         if (val.stages) {
           const { kycApproved, kycRejected } = val.stages;
           if (kycApproved) {
@@ -80,48 +86,67 @@ function ClientsList(props){
           return "Pending";
         }
       }
-    }
+    },
+    {
+      dataField: "",
+      isDummyField: true,
+      editable: false,
+      text: "Action",
+      formatter: (user) => (
+        <div className="d-flex gap-3">
+          <Link className="text-success" to="#">
+            <i
+              className="mdi mdi-calendar-text font-size-20"
+              id="edittooltip"
+              onClick={() => { console.log(user); setSelectedClient(user); setAddReminderToClientModal(true) }}
+            ></i>
+          </Link>
+        </div>
+      ),
+    },
   ];
- 
+
   const [sizePerPage, setSizePerPage] = useState(10);
   const [searchInputText, setSearchInputText] = useState("");
   const handleSearchInput = (e) => (setSearchInputText(e.target.value));
   const dispatch = useDispatch();
-   
-  useEffect(()=>{
+
+  useEffect(() => {
     loadClients(1, sizePerPage);
   }, [sizePerPage, 1, searchInputText]);
-  
-  const loadClients = ( page, limit) => {
+
+  const loadClients = (page, limit) => {
     if (searchInputText !== "" && searchInputText.length >= 3) {
       dispatch(fetchClientsStart({
         limit,
         page,
-        searchText:searchInputText
+        searchText: searchInputText
       }));
     }
     else if (searchInputText === "") {
       dispatch(fetchClientsStart({
         limit,
         page
-      })) ;
+      }));
     }
   };
-  
+
   return (
     <React.Fragment>
       <div className="page-content">
         <div className="container-fluid">
           <h2>Clients</h2>
+          {<AddReminderToClientModal openAdd={addModal} selectedClient={selectedClient} onClose={() => { setAddReminderToClientModal(false) }} />}
+
           <Row>
             <Col className="col-12">
               <Card>
                 <CardHeader className="d-flex flex-column gap-3">
                   <div className="d-flex justify-content-between  align-items-center">
                     <CardTitle>Clients List ({props.totalDocs})</CardTitle>
-                    <ClientForm/>
+                    <ClientForm />
                   </div>
-                  <SearchBar handleSearchInput={handleSearchInput}/>
+                  <SearchBar handleSearchInput={handleSearchInput} />
                 </CardHeader>
                 <CardBody>
                   <div className="table-rep-plugin">
@@ -146,8 +171,8 @@ function ClientsList(props){
                             <Tr key={rowIndex}>
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`}>
-                                  { column.dataField === "checkbox" ? <input type="checkbox"/> : ""}
-                                  { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
+                                  {column.dataField === "checkbox" ? <input type="checkbox" /> : ""}
+                                  {column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
                                 </Td>
                               )}
                             </Tr>
@@ -167,12 +192,12 @@ function ClientsList(props){
               </Card>
             </Col>
           </Row>
-          
+
         </div>
       </div>
     </React.Fragment>
   );
-  
+
 }
 
 const mapStateToProps = (state) => ({
