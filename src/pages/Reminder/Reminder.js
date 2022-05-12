@@ -43,7 +43,8 @@ import "@fullcalendar/bootstrap/main.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
- 
+import EditReminderModal from "./EditReminderModal";
+
 const Reminder = (props) => {
   const dispatch = useDispatch();
 
@@ -57,7 +58,12 @@ const Reminder = (props) => {
   const [event, setEvent] = useState({});
   const [selectedDay, setSelectedDay] = useState(0);
   const [isEdit, setIsEdit] = useState(false);
- 
+
+  // ################################
+  const [addModal, setAddReminderModal] = useState(false);
+
+  // ################################
+
   useEffect(() => {
     dispatch(onGetEvents());
   }, [dispatch, editLoad]);
@@ -284,7 +290,12 @@ const Reminder = (props) => {
         onDeleteClick={handleDeleteEvent}
         onCloseClick={() => setDeleteModal(false)}
       />
-     
+      {/* ########################### */}
+
+      {<AddReminderModal openAdd={addModal} selectedDate={selectedDay} onClose={() => { setAddReminderModal(false); setEditLoad(editLoad + 1) }} />}
+
+      {/* ########################### */}
+
       <div className="page-content">
         <MetaTags>
           <title>Reminders</title>
