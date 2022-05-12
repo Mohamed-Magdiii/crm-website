@@ -42,7 +42,8 @@ function AssetEdit (props) {
       values
     }));
   };
-  useEffect(()=>{ 
+  useEffect(()=>{
+    
     if (props.editClear) {
       onClose();
     }
