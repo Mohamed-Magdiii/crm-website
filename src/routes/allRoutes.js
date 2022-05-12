@@ -17,6 +17,8 @@ import Teams from "../pages/Teams/Teams";
 import RolesList from "../pages/Roles/RolesList";
 import Page404 from "../pages/Authentication/Page404";
 import AssetsList from "../pages/Assests/AssetsList";
+import Deposit from "pages/Transactions/Deposit";
+import Withdrawal from "pages/Transactions/Withdrawal";
 const userRoutes = [
 
   //dashboard
@@ -55,6 +57,14 @@ const userRoutes = [
   {
     path:"/assets",
     component:AssetsList
+  },
+  {
+    path:"/transactions/deposit",
+    component:Deposit
+  },
+  {
+    path:"/transactions/withdrawals",
+    component:Withdrawal
   },
   {
     path: "/",

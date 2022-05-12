@@ -14,6 +14,8 @@ import usersSaga from "./users/saga";
 import clientSaga from "./client/saga";
 import teamsSaga from "./teams/saga";
 import assetSaga from "./assests/saga";
+import walletSaga from "./wallet/saga";
+import gatewaySaga from "./gateway/saga";
 export default function* rootSaga() {
   yield all([
     //public
@@ -32,5 +34,7 @@ export default function* rootSaga() {
     fork(clientSaga),
     fork(teamsSaga),
     fork(assetSaga),
+    fork(walletSaga),
+    fork(gatewaySaga)
   ]);
 }

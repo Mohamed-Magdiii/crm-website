@@ -26,6 +26,8 @@ import rolesReducer from "./roles/reducer";
 import usersReducer from "./users/reducer";
 import teamsReducer from "./teams/reducer";
 import assetReducer from "./assests/reducer";
+import walletReducer from "./wallet/reducer";
+import gatewayReducer from "./gateway/reducer";
 const rootReducer = combineReducers({
   // public
   Layout,
@@ -43,6 +45,8 @@ const rootReducer = combineReducers({
   usersReducer,
   teamsReducer,
   assetReducer,
+  walletReducer,
+  gatewayReducer
 });
 
 export default rootReducer;
