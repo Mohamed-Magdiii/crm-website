@@ -1,5 +1,5 @@
 import {
-  takeEvery, put, call, all, fork 
+  takeEvery, put, call, all, fork
 } from "redux-saga/effects";
 
 // Calender Redux States
@@ -32,7 +32,42 @@ import {
 function* fetchEvents() {
   try {
     const response = yield call(getEvents);
-    yield put(apiSuccess(GET_EVENTS, response));
+    console.log("fetchEvents");
+    console.log(response);
+
+
+    const reFormat = [];
+    let output = [];
+
+    response.result?.docs?.map(function (item) {
+      console.log(item);
+      let classNam = "";
+      if (item?.status == "open") {
+        classNam = "bg-info text-white";
+
+      } else if (item?.status == "completed") {
+        classNam = "bg-success text-white";
+
+      } else if (item?.status == "ongoing") {
+        classNam = "bg-primary text-white";
+
+      }
+      output.push({
+        id: item._id,
+        title: item.note,
+        start: item.time,
+        end: item.timeEnd,
+        timeStart: item.time,
+        timeEnd: item.timeEnd,
+        className: classNam,
+        customerId: item.customerId,
+        createdBy: item.createdBy,
+        status: item.status,
+        type: item.type,
+      });
+
+    });
+    yield put(apiSuccess(GET_EVENTS, output));
   } catch (error) {
     yield put(apiFail(GET_EVENTS, error));
   }

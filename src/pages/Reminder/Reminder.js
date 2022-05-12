@@ -43,7 +43,7 @@ import "@fullcalendar/bootstrap/main.css";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
-
+ 
 const Reminder = (props) => {
   const dispatch = useDispatch();
 
@@ -57,11 +57,10 @@ const Reminder = (props) => {
   const [event, setEvent] = useState({});
   const [selectedDay, setSelectedDay] = useState(0);
   const [isEdit, setIsEdit] = useState(false);
-
+ 
   useEffect(() => {
-    dispatch(onGetCategories());
     dispatch(onGetEvents());
-  }, [dispatch]);
+  }, [dispatch, editLoad]);
 
   /**
    * Handling the modal state
@@ -85,47 +84,88 @@ const Reminder = (props) => {
    */
   const handleDateClick = (arg) => {
     const date = arg["date"];
-    const day = date.getDate();
-    const month = date.getMonth();
-    const year = date.getFullYear();
+    // const day = date.getDate();
+    // const month = date.getMonth();
+    // const year = date.getFullYear();
+    // console.log(day);
+    // console.log(month);
+    // console.log(year);
+    // console.log(date);
+    // const currectDate = new Date();
+    // const currentHour = currectDate.getHours();
+    // const currentMin = currectDate.getMinutes();
+    // const currentSec = currectDate.getSeconds();
+    // const modifiedDate = new Date(
+    //   year,
+    //   month,
+    //   day,
+    //   currentHour,
+    //   currentMin,
+    //   currentSec
+    // );
+    // const modifiedData = {
+    //   ...arg,
+    //   date: modifiedDate,
+    // };
+    var tomorrow = new Date(date);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    console.log("*********************");
+    console.log(tomorrow.toISOString().replace(/.000Z/, ""));
 
-    const currectDate = new Date();
-    const currentHour = currectDate.getHours();
-    const currentMin = currectDate.getMinutes();
-    const currentSec = currectDate.getSeconds();
-    const modifiedDate = new Date(
-      year,
-      month,
-      day,
-      currentHour,
-      currentMin,
-      currentSec
-    );
-    const modifiedData = {
-      ...arg,
-      date: modifiedDate,
-    };
+    let modifiedData = new Date(date);
+    // modifiedData.setMinutes(date.getMinutes());
 
-    setSelectedDay(modifiedData);
-    toggle();
+    console.log("from add Click");
+    // console.log(currectDate);
+    console.log(modifiedData.toJSON());
+    // setSelectedDay(new Date(date).toISOString().replace(/.000Z/, ""));
+    setSelectedDay(tomorrow.toISOString().replace(/.000Z/, ""));
+    setAddReminderModal(true);
+    // toggle();
   };
 
   /**
    * Handling click on event on calendar
    */
+  const dateDifference = (date2, date1) => {
+    const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+    const utc1 = Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate());
+    const utc2 = Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate());
+    return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+  };
   const handleEventClick = (arg) => {
-    const event = arg.event;
+
+    const eventData = arg.event;
     setEvent({
-      id: event.id,
-      title: event.title,
-      title_category: event.title_category,
-      start: event.start,
-      className: event.classNames,
-      category: event.classNames[0],
-      event_category: event.classNames[0],
+      id: eventData.id,
+      title: eventData.title,
+      createdBy: eventData.extendedProps?.createdBy,
+      client: eventData.extendedProps?.customerId,
+      status: eventData.extendedProps?.status,
+      timeStart: eventData.extendedProps?.timeStart.replace(/.000Z/, ""),
+      timeEnd: eventData.extendedProps?.timeEnd.replace(/.000Z/, ""),
+      differentStartReminderAndNow: dateDifference(new Date(eventData.extendedProps?.timeStart), new Date()),
+      differentEndReminderAndNow: dateDifference(new Date(eventData.extendedProps?.timeEnd), new Date()),
     });
-    setIsEdit(true);
-    toggle();
+    // console.log("yes i'm");
+    // console.log("yes i'm");
+    // let differentEndReminderAndNow = dateDifference(new Date(eventData.extendedProps?.timeEnd), new Date());
+    // // Example
+    // if (differentEndReminderAndNow < 0) {
+    //   differentEndReminderAndNow = differentEndReminderAndNow * -1;
+    //   console.log(differentEndReminderAndNow + " ago");
+
+    // } else {
+    //   console.log(differentEndReminderAndNow + " days");
+
+    // }
+    // console.log(differentEndReminderAndNow);
+    // console.log(dateDifference(new Date(eventData.extendedProps?.timeEnd), new Date(eventData.extendedProps?.timeStart)));
+
+    console.log("handleEventClick");
+    console.log(event);
+    setEditReminderModal(true);
+    // toggle();
   };
 
   /**
@@ -244,6 +284,7 @@ const Reminder = (props) => {
         onDeleteClick={handleDeleteEvent}
         onCloseClick={() => setDeleteModal(false)}
       />
+     
       <div className="page-content">
         <MetaTags>
           <title>Reminders</title>
@@ -323,7 +364,7 @@ const Reminder = (props) => {
                           <option value="bg-warning">Warning</option>
                         </AvField>
                       </Col>
-                      
+
                       <Col className="col-12 mb-3">
                         <label>Select Client</label>
 

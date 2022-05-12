@@ -1,21 +1,34 @@
-import axios from "axios";
-import {
-  del, get, post, put 
-} from "./api_helper";
+import * as axiosHelper from "./api_helper";
 import * as url from "../helpers/url_helper";
-
 // get Events
-export const getEvents = () => get(url.GET_EVENTS);
+export const getEvents = () => axiosHelper.get("/todos");
 
-// add Events
-export const addNewEvent = event => post(url.ADD_NEW_EVENT, event);
-
+// add Events 
+export const addNewEvent = async (event) => {
+  // const { id, values } = payload;
+  const data = await axiosHelper.post("/todos", event);
+  if (data.isError) {
+    throw new Error(data.message);
+  }
+  return data;
+};
 // update Event
-export const updateEvent = event => put(url.UPDATE_EVENT, event);
-
+export const updateEvent = async (id, values) => {
+  // const { id, values } = payload;
+  const data = await axiosHelper.patch(`/todos/${id}`, values);
+  if (data.isError) {
+    throw new Error(data.message);
+  }
+  return data;
+};
 // delete Event
-export const deleteEvent = event =>
-  del(url.DELETE_EVENT, { headers: { event } });
-
+export const deleteEvent = async (id) => {
+  // const { id, values } = payload;
+  const data = await axiosHelper.del(`/todos/${id}`);
+  if (data.isError) {
+    throw new Error(data.message);
+  }
+  return data;
+};
 // get Categories
-export const getCategories = () => get(url.GET_CATEGORIES);
+export const getCategories = () => axiosHelper.get(url.GET_CATEGORIES);
