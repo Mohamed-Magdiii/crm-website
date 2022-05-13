@@ -3,11 +3,11 @@ import MetaTags from "react-meta-tags";
 import PropTypes from "prop-types";
 import { isEmpty } from "lodash";
 
-import { 
+import {
   Card,
   CardBody,
   Col,
-  Container, 
+  Container,
   Row,
 } from "reactstrap";
 
@@ -15,13 +15,13 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import BootstrapTheme from "@fullcalendar/bootstrap";
- 
+
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 import {
   deleteEvent as onDeleteEvent,
-  getEvents as onGetEvents, 
+  getEvents as onGetEvents,
 } from "../../store/actions";
 
 import DeleteModal from "components/Common/DeleteModal";
@@ -37,7 +37,7 @@ const Reminder = () => {
   const dispatch = useDispatch();
 
   const { events } = useSelector((state) => ({
-    events: state.calendar.events, 
+    events: state.calendar.events,
   }));
   const [modal, setModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
@@ -67,18 +67,18 @@ const Reminder = () => {
         setIsEdit(false);
       }, 500);
     }
-  }; 
+  };
 
   /**
    * Handling date click on calendar
    */
   const handleDateClick = (arg) => {
-    const date = arg["date"]; 
+    const date = arg["date"];
     var tomorrow = new Date(date);
-    tomorrow.setDate(tomorrow.getDate() + 1);  
+    tomorrow.setDate(tomorrow.getDate() + 1);
     setSelectedDay(tomorrow.toISOString().replace(/.000Z/, ""));
     setAddReminderModal(true);
-    
+
   };
 
   /**
@@ -103,11 +103,11 @@ const Reminder = () => {
       timeEnd: eventData.extendedProps?.timeEnd.replace(/.000Z/, ""),
       differentStartReminderAndNow: dateDifference(new Date(eventData.extendedProps?.timeStart), new Date()),
       differentEndReminderAndNow: dateDifference(new Date(eventData.extendedProps?.timeEnd), new Date()),
-    });  
+    });
     setEditReminderModal(true);
-     
+
   };
- 
+
 
   /**
    * On delete event
@@ -116,12 +116,12 @@ const Reminder = () => {
     dispatch(onDeleteEvent(event));
     setDeleteModal(false);
     toggle();
-  }; 
+  };
   /**
    * On calendar drop event
    */
   const onDrop = (event) => {
-    
+
     // const date = event["date"];
     // const day = date.getDate();
     // const month = date.getMonth();
@@ -150,60 +150,51 @@ const Reminder = () => {
     // dispatch(onAddNewEvent(modifiedData));
   };
 
- 
+
   return (
     <React.Fragment>
       <DeleteModal
         show={deleteModal}
         onDeleteClick={handleDeleteEvent}
         onCloseClick={() => setDeleteModal(false)}
-      /> 
+      />
       {<EditReminderModal openEdit={editModal} eventReminder={event} onClose={() => { setEditReminderModal(false); setEditLoad(editLoad + 1) }} />}
       {<AddReminderModal openAdd={addModal} selectedDate={selectedDay} onClose={() => { setAddReminderModal(false); setEditLoad(editLoad + 1) }} />}
- 
+
       <div className="page-content">
         <MetaTags>
           <title>Reminders</title>
         </MetaTags>
         <Container fluid={true}>
           {/* Render Breadcrumb */}
-          <Breadcrumbs title="Minia" breadcrumbItem="Reminders" />
-          <Row>
-            <Col xs={12}>
-              <Row>
-                <Col xl={12} lg={8}>
-                  <Card>
-                    <CardBody>
-                      {/* fullcalendar control */}
-                      <FullCalendar
-                        plugins={[
-                          BootstrapTheme,
-                          dayGridPlugin,
-                          interactionPlugin,
-                        ]}
-                        slotDuration={"00:15:00"}
-                        handleWindowResize={true}
-                        themeSystem="bootstrap"
-                        headerToolbar={{
-                          left: "prev,next today",
-                          center: "title",
-                          right: "dayGridMonth,dayGridWeek,dayGridDay",
-                        }}
-                        events={events}
-                        editable={true}
-                        droppable={true}
-                        selectable={true}
-                        dateClick={handleDateClick}
-                        eventClick={handleEventClick}
-                        drop={onDrop}
-                      />
-                    </CardBody>
-                  </Card>
-                </Col>
-              </Row>               
- 
-            </Col>
-          </Row>
+          <Breadcrumbs title="Minia" breadcrumbItem="Reminders" /> 
+          <Card>
+            <CardBody>
+              {/* fullcalendar control */}
+              <FullCalendar
+                plugins={[
+                  BootstrapTheme,
+                  dayGridPlugin,
+                  interactionPlugin,
+                ]}
+                slotDuration={"00:15:00"}
+                handleWindowResize={true}
+                themeSystem="bootstrap"
+                headerToolbar={{
+                  left: "prev,next today",
+                  center: "title",
+                  right: "dayGridMonth,dayGridWeek,dayGridDay",
+                }}
+                events={events}
+                editable={true}
+                droppable={true}
+                selectable={true}
+                dateClick={handleDateClick}
+                eventClick={handleEventClick}
+                drop={onDrop}
+              />
+            </CardBody>
+          </Card> 
         </Container>
       </div>
     </React.Fragment>
