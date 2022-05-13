@@ -99,9 +99,9 @@ const Reminder = () => {
       createdBy: eventData.extendedProps?.createdBy,
       client: eventData.extendedProps?.customerId,
       status: eventData.extendedProps?.status,
-      timeStart: eventData.extendedProps?.timeStart.replace(/.000Z/, ""),
+      // timeStart: eventData.extendedProps?.timeStart.replace(/.000Z/, ""),
       timeEnd: eventData.extendedProps?.timeEnd.replace(/.000Z/, ""),
-      differentStartReminderAndNow: dateDifference(new Date(eventData.extendedProps?.timeStart), new Date()),
+      // differentStartReminderAndNow: dateDifference(new Date(eventData.extendedProps?.timeStart), new Date()),
       differentEndReminderAndNow: dateDifference(new Date(eventData.extendedProps?.timeEnd), new Date()),
     });
     setEditReminderModal(true);

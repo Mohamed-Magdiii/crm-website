@@ -24,15 +24,9 @@ function EditReminderModal(props) {
 
   const { openEdit, eventReminder = {}, onClose } = props;
   const [clientName, setclientName] = useState("");
-  const { id, title, createdBy, client, status, timeStart, timeEnd, differentStartReminderAndNow, differentEndReminderAndNow } = eventReminder;
-  let ReminderStart = "";
+  const { id, title, createdBy, client, status, timeEnd, differentEndReminderAndNow } = eventReminder;
   let ReminderEnd = "";
 
-  if (differentStartReminderAndNow < 0) {
-    ReminderStart = differentStartReminderAndNow * -1 + " days ago";
-  } else {
-    ReminderStart = "After " + differentStartReminderAndNow + " days";
-  }
   if (differentEndReminderAndNow < 0) {
     ReminderEnd = differentEndReminderAndNow * -1 + " days ago";
   } else {
@@ -133,10 +127,7 @@ function EditReminderModal(props) {
                   </Col>
                 </Row>
                 <div className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-3">
-                  <h5>Reminder Start: {ReminderStart}</h5>
-                </div>
-                <div className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-3">
-                  <h5>Reminder End: {ReminderEnd}</h5>
+                  <h5>Reminder At: {ReminderEnd}</h5>
                 </div>
                 <div className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-3">
                   <h5>Created By: {createdBy?.firstName + " " + createdBy?.lastName}</h5>
@@ -169,19 +160,6 @@ function EditReminderModal(props) {
                 <Col className="col-12 mb-3">
                   <AvField
                     type="datetime-local"
-                    name="time"
-                    label="Reminder start"
-                    value={timeStart}
-                    errorMessage="Invalid Reminder "
-                    validate={{
-                      required: { value: true },
-                    }}
-                  >
-                  </AvField>
-                </Col>
-                <Col className="col-12 mb-3">
-                  <AvField
-                    type="datetime-local"
                     name="timeEnd"
                     label="Reminder"
                     value={timeEnd}
@@ -194,6 +172,7 @@ function EditReminderModal(props) {
                 </Col>
                 <Col className="col-12 mb-3">
                   <AvField
+                    label="status"
                     type="select"
                     name="status"
                     value={status}

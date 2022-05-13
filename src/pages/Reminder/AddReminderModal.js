@@ -26,7 +26,7 @@ function AddReminderModal(props) {
     const newEvent = {
       customerId: clientValue?.value,
       note: values.note,
-      time: values.time,
+      // time: values.time,
       // time: selectedDate,
       timeEnd: values.timeEnd,
     };
@@ -108,20 +108,7 @@ function AddReminderModal(props) {
                     required: { value: true },
                   }}
                 />
-              </Col>
-              <Col className="col-12 mb-3">
-                <AvField
-                  type="datetime-local"
-                  name="time"
-                  label="Reminder start"
-                  value={selectedDate}
-                  errorMessage="Invalid Reminder "
-                  validate={{
-                    required: { value: true },
-                  }}
-                >
-                </AvField>
-              </Col>
+              </Col> 
               <Col className="col-12 mb-3">
                 <AvField
                   type="datetime-local"

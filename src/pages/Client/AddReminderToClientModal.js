@@ -78,20 +78,7 @@ function AddReminderToClientModal(props) {
                   type="hidden"
                   value={selectedClient?._id}
                 />
-              </Col>
-              <Col className="col-12 mb-3">
-                <AvField
-                  type="datetime-local"
-                  name="time"
-                  label="Reminder start"
-                  value={new Date().toISOString().slice(0, -5)}
-                  errorMessage="Invalid Reminder "
-                  validate={{
-                    required: { value: true },
-                  }}
-                >
-                </AvField>
-              </Col>
+              </Col> 
               <Col className="col-12 mb-3">
                 <AvField
                   type="datetime-local"

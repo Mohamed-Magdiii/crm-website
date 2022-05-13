@@ -48,9 +48,7 @@ function* fetchEvents() {
       output.push({
         id: item._id,
         title: item.note,
-        start: item.time,
-        end: item.timeEnd,
-        timeStart: item.time,
+        start: item.timeEnd, 
         timeEnd: item.timeEnd,
         className: classNam,
         customerId: item.customerId,
@@ -60,6 +58,7 @@ function* fetchEvents() {
       });
 
     });
+    console.log(output);
     yield put(apiSuccess(GET_EVENTS, output));
   } catch (error) {
     yield put(apiFail(GET_EVENTS, error));
