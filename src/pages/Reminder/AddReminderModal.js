@@ -1,4 +1,4 @@
-import React, { useState } from "react"; 
+import React, { useState } from "react";
 import {
   UncontrolledAlert,
   Col,
@@ -7,7 +7,12 @@ import {
   ModalHeader,
   Row,
 } from "reactstrap";
-import { AvField, AvForm } from "availity-reactstrap-validation";
+import {
+  AvField,
+  AvForm,
+  AvRadioGroup,
+  AvRadio,
+} from "availity-reactstrap-validation";
 import { AsyncPaginate } from "react-select-async-paginate";
 import loadClientsOptions from "./loadClientsOptions";
 
@@ -27,13 +32,13 @@ function AddReminderModal(props) {
       customerId: clientValue?.value,
       note: values.note,
       // time: values.time,
-      // time: selectedDate,
+      type: values.type,
       timeEnd: values.timeEnd,
     };
 
     addNewEvent(newEvent)
       .then(() => {
-        showAlert(false, true); 
+        showAlert(false, true);
       }
       )
       .catch((e) => {
@@ -62,6 +67,7 @@ function AddReminderModal(props) {
   };
 
   const loadPageOptions = async (q, prevOptions, { page }) => {
+    
     const { options, hasMore } = await loadClientsOptions(q, page);
 
     return {
@@ -108,7 +114,7 @@ function AddReminderModal(props) {
                     required: { value: true },
                   }}
                 />
-              </Col> 
+              </Col>
               <Col className="col-12 mb-3">
                 <AvField
                   type="datetime-local"
@@ -119,7 +125,18 @@ function AddReminderModal(props) {
                 >
                 </AvField>
               </Col>
-
+              <Col className="col-12 mb-3">
+                <AvRadioGroup
+                  inline
+                  name="type"
+                  label="Type"
+                  required
+                  errorMessage="Invalid Reminder type"
+                >
+                  <AvRadio  label="Reminder" value="1" />
+                  <AvRadio  label="Todo" value="0" />
+                </AvRadioGroup>
+              </Col>
             </Row>
             <Row>
               <Col>
@@ -150,6 +167,6 @@ function AddReminderModal(props) {
       </Modal>
     </React.Fragment>
   );
-} 
- 
+}
+
 export default AddReminderModal;

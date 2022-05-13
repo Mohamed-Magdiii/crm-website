@@ -1,15 +1,15 @@
 import * as axiosHelper from "./api_helper";
 import qs from "qs";
-export const  getClients = async ({ payload })=>{
+export const getClients = async ({ payload }) => {
 
   const data = await axiosHelper.get(`/clients?${qs.stringify(payload)}`);
   return data;
 
 };
-export const addClient = async (values )=>{
-  
+export const addClient = async (values) => {
+
   const data = await axiosHelper.post("/clients", { ...values });
-  if (data.code === 500){
+  if (data.code === 500) {
     throw new Error("");
   }
   return data;
@@ -17,9 +17,12 @@ export const addClient = async (values )=>{
 
 export const getClientById = async (id) => {
   // const { id, values } = payload;
-  const data = await axiosHelper.get(`/clients/${id}`);
-  if (data.isError) {
-    throw new Error(data.message);
+  if (id) {
+    const data = await axiosHelper.get(`/clients/${id}`);
+
+    if (data.isError) {
+      throw new Error(data.message);
+    }
+    return data;
   }
-  return data;
 };

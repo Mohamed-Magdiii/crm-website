@@ -8,7 +8,12 @@ import {
   ModalHeader,
   Row,
 } from "reactstrap";
-import { AvField, AvForm } from "availity-reactstrap-validation";
+import {
+  AvField,
+  AvForm,
+  AvRadioGroup,
+  AvRadio,
+} from "availity-reactstrap-validation";
 import { addNewEvent } from "../../apis/reminder";
 
 function AddReminderToClientModal(props) {
@@ -21,7 +26,7 @@ function AddReminderToClientModal(props) {
   const handleValidEventSubmit = (e, values) => {
     addNewEvent(values)
       .then(() => {
-        showAlert(false, true); 
+        showAlert(false, true);
       }
       )
       .catch((e) => {
@@ -78,7 +83,7 @@ function AddReminderToClientModal(props) {
                   type="hidden"
                   value={selectedClient?._id}
                 />
-              </Col> 
+              </Col>
               <Col className="col-12 mb-3">
                 <AvField
                   type="datetime-local"
@@ -88,6 +93,18 @@ function AddReminderToClientModal(props) {
                   errorMessage="Invalid Reminder Note"
                 >
                 </AvField>
+              </Col>
+              <Col className="col-12 mb-3">
+                <AvRadioGroup
+                  inline
+                  name="type"
+                  label="Type"
+                  required
+                  errorMessage="Invalid Reminder type"
+                >
+                  <AvRadio label="Reminder" value="1" />
+                  <AvRadio label="Todo" value="0" />
+                </AvRadioGroup>
               </Col>
 
             </Row>

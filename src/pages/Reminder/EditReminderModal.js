@@ -8,7 +8,12 @@ import {
   ModalHeader,
   Row,
 } from "reactstrap";
-import { AvField, AvForm } from "availity-reactstrap-validation";
+import {
+  AvField,
+  AvForm,
+  AvRadioGroup,
+  AvRadio,
+} from "availity-reactstrap-validation";
 
 import { Link } from "react-router-dom";
 
@@ -24,9 +29,8 @@ function EditReminderModal(props) {
 
   const { openEdit, eventReminder = {}, onClose } = props;
   const [clientName, setclientName] = useState("");
-  const { id, title, createdBy, client, status, timeEnd, differentEndReminderAndNow } = eventReminder;
+  const { id, title, createdBy, client, status, timeEnd, differentEndReminderAndNow, type } = eventReminder;
   let ReminderEnd = "";
-
   if (differentEndReminderAndNow < 0) {
     ReminderEnd = differentEndReminderAndNow * -1 + " days ago";
   } else {
@@ -127,15 +131,29 @@ function EditReminderModal(props) {
                   </Col>
                 </Row>
                 <div className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-3">
-                  <h5>Reminder At: {ReminderEnd}</h5>
+                  <h5>Reminder At : {ReminderEnd}</h5>
                 </div>
                 <div className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-3">
-                  <h5>Created By: {createdBy?.firstName + " " + createdBy?.lastName}</h5>
+                  <h5>Created By : {createdBy?.firstName + " " + createdBy?.lastName}</h5>
                 </div>
                 <div className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12">
-                  <h5>Reminder Note:  {title}</h5>
-                  <br />
+                  <h5>Reminder Note :  {title}</h5>
+                  {/* <br /> */}
                 </div>
+                <div className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-3">
+                  {type == "0" &&
+                    <h5>
+                      Type : Todo
+                    </h5>
+                  }
+                  {type == "1" &&
+                    <h5>
+                      Type : Reminder
+                    </h5>
+                  }
+                  {/* <h5>Created By: {createdBy?.firstName + " " + createdBy?.lastName}</h5> */}
+                </div>
+
               </div>
             </div>
 
@@ -186,6 +204,19 @@ function EditReminderModal(props) {
                     <option>completed</option>
 
                   </AvField>
+                </Col>
+                <Col className="col-12 mb-3">
+                  <AvRadioGroup
+                    inline
+                    name="type"
+                    label="Type"
+                    value={type.toString()}
+                    required
+                    errorMessage="Invalid Reminder type"
+                  >
+                    <AvRadio label="Reminder" value="1" />
+                    <AvRadio label="Todo" value="0" />
+                  </AvRadioGroup>
                 </Col>
               </Row>
               <Row>

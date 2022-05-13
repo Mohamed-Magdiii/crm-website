@@ -6,9 +6,7 @@ import { isEmpty } from "lodash";
 import {
   Card,
   CardBody,
-  Col,
   Container,
-  Row,
 } from "reactstrap";
 
 import FullCalendar from "@fullcalendar/react";
@@ -99,7 +97,7 @@ const Reminder = () => {
       createdBy: eventData.extendedProps?.createdBy,
       client: eventData.extendedProps?.customerId,
       status: eventData.extendedProps?.status,
-      // timeStart: eventData.extendedProps?.timeStart.replace(/.000Z/, ""),
+      type: eventData.extendedProps?.type,
       timeEnd: eventData.extendedProps?.timeEnd.replace(/.000Z/, ""),
       // differentStartReminderAndNow: dateDifference(new Date(eventData.extendedProps?.timeStart), new Date()),
       differentEndReminderAndNow: dateDifference(new Date(eventData.extendedProps?.timeEnd), new Date()),
@@ -120,35 +118,35 @@ const Reminder = () => {
   /**
    * On calendar drop event
    */
-  const onDrop = (event) => {
+  // const onDrop = (event) => {
 
-    // const date = event["date"];
-    // const day = date.getDate();
-    // const month = date.getMonth();
-    // const year = date.getFullYear();
+  // const date = event["date"];
+  // const day = date.getDate();
+  // const month = date.getMonth();
+  // const year = date.getFullYear();
 
-    // const currectDate = new Date();
-    // const currentHour = currectDate.getHours();
-    // const currentMin = currectDate.getMinutes();
-    // const currentSec = currectDate.getSeconds();
-    // const modifiedDate = new Date(
-    //   year,
-    //   month,
-    //   day,
-    //   currentHour,
-    //   currentMin,
-    //   currentSec
-    // );
+  // const currectDate = new Date();
+  // const currentHour = currectDate.getHours();
+  // const currentMin = currectDate.getMinutes();
+  // const currentSec = currectDate.getSeconds();
+  // const modifiedDate = new Date(
+  //   year,
+  //   month,
+  //   day,
+  //   currentHour,
+  //   currentMin,
+  //   currentSec
+  // );
 
-    // const draggedEl = event.draggedEl;
-    // const modifiedData = {
-    //   id: Math.floor(Math.random() * 100),
-    //   title: draggedEl.innerText,
-    //   start: modifiedDate,
-    //   className: draggedEl.className,
-    // };
-    // dispatch(onAddNewEvent(modifiedData));
-  };
+  // const draggedEl = event.draggedEl;
+  // const modifiedData = {
+  //   id: Math.floor(Math.random() * 100),
+  //   title: draggedEl.innerText,
+  //   start: modifiedDate,
+  //   className: draggedEl.className,
+  // };
+  // dispatch(onAddNewEvent(modifiedData));
+  // };
 
 
   return (
@@ -167,7 +165,7 @@ const Reminder = () => {
         </MetaTags>
         <Container fluid={true}>
           {/* Render Breadcrumb */}
-          <Breadcrumbs title="Minia" breadcrumbItem="Reminders" /> 
+          <Breadcrumbs title="Minia" breadcrumbItem="Reminders" />
           <Card>
             <CardBody>
               {/* fullcalendar control */}
@@ -191,10 +189,10 @@ const Reminder = () => {
                 selectable={true}
                 dateClick={handleDateClick}
                 eventClick={handleEventClick}
-                drop={onDrop}
+              // drop={onDrop}
               />
             </CardBody>
-          </Card> 
+          </Card>
         </Container>
       </div>
     </React.Fragment>
