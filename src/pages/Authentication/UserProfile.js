@@ -18,23 +18,18 @@ import { AvForm, AvField } from "availity-reactstrap-validation";
 import { useSelector, useDispatch } from "react-redux";
 
 import { withRouter } from "react-router-dom";
-import * as content from "content";
 
 //Import Breadcrumb
 import Breadcrumb from "../../components/Common/Breadcrumb";
 
-import avatar from "../../assets/images/users/avatar-1.jpg";
+// import avatar from "../../assets/images/users/avatar-1.jpg";
 // actions
 // import { editProfile, resetProfileFlag } from "../../store/actions";
 
-import {
-  // del, 
-  get, 
-  // post, 
-  // put, 
-  redirectToLogin 
-} from "../../apis/api_helper";
-import * as url from "../../apis/url_helper";
+import { 
+  redirectToLogin
+} from "../../apis/api_helper"; 
+import { getProfileData } from "../../apis/auth";
 
 const UserProfile = () => {
   const dispatch = useDispatch();
@@ -52,22 +47,21 @@ const UserProfile = () => {
   const [modal, setModal] = useState(false);
 
   useEffect(() => {
-    const getProfileData = get(url.PROFILE);
-    
-    getProfileData.then((userData) => {
-      if (userData.status) {
-        if (userData.result != null) {
-          setfristName(userData.result.firstName);
-          setlastName(userData.result.lastName);
-          setemail(userData.result.email);
-          setroleId(userData.result.roleId.title);
-          setidx(userData.result._id);
+    getProfileData()
+      .then((userData) => {
+        if (userData.status) {
+          if (userData.result != null) {
+            setfristName(userData.result?.firstName);
+            setlastName(userData.result?.lastName);
+            setemail(userData.result?.email);
+            setroleId(userData.result?.roleId?.title);
+            setidx(userData.result?._id);
+          }
         }
-
-      }
-    }).catch(() => { redirectToLogin() });
-
-
+      })
+      .catch(() => {
+        redirectToLogin();
+      });
   }, [dispatch, success]);
 
 
@@ -84,12 +78,11 @@ const UserProfile = () => {
     <React.Fragment>
       <div className="page-content">
         <MetaTags>
-          <title>Profile | CRM Crypto - {content.clientName}</title>
+          <title>Profile | Minia - React Admin & Dashboard Template</title>
         </MetaTags>
         <Container fluid>
           {/* Render Breadcrumb */}
-          <Breadcrumb title={content.clientName} breadcrumbItem="Profile" />
-
+          <Breadcrumb title="Profile" breadcrumbItem="Profile" /> 
           <Row>
             <Col lg="12">
               {error && error ? <Alert color="danger">{error}</Alert> : null}
@@ -100,11 +93,6 @@ const UserProfile = () => {
                   <div className="  flex-column">
                     <div className="d-flex justify-content-between">
                       <div className="ms-3 ">
-                        <img
-                          src={avatar}
-                          alt=""
-                          className="img-thumbnail rounded-circle img-thumbnail"
-                        />
                       </div>
                       <svg
                         onClick={toggle}

@@ -1,5 +1,5 @@
 
-
+ 
 import * as axiosHelper from "./api_helper";
 
 export const loginUser = async(values) => {
@@ -7,5 +7,12 @@ export const loginUser = async(values) => {
   if (data.isError) {
     return data;
   } 
+  return data;
+};
+export const getProfileData = async () => { 
+  const data = await axiosHelper.get("/auth/profile");
+  if (data.isError) {
+    throw new Error(data.message);
+  }
   return data;
 };
