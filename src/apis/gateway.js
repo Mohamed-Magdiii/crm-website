@@ -4,7 +4,7 @@ export const getGatewayOfDeposit = async ()=>{
   console.log(gateways);
   return gateways;
 };
-export const getGetWaysOfWithdraw = async ()=>{
+export const getGatewaysOfWithdraw = async ()=>{
   const gateways = await axiosHelper.get("/transactions/withdraw/gateways");
   return gateways;
 };
