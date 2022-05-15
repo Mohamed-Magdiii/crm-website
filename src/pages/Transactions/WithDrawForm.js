@@ -10,40 +10,49 @@ import {
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
+import { makeWithdrawalStart } from "store/transactions/withdrawal/action";
+import { fetchGatewaysOfWithdrawalsStart } from "store/gateway/action";
+function WithdrawForm(props){
 
-
-function DepositForm(props){
-
-  const [addModal, setDepositModal] = useState(false);
-
+  const [open, setWithdrawalModal] = useState(false);
+  const { selectedClient, selectedWallet  } = props;
   const dispatch = useDispatch();
-
-  const handleAddDeposit = (event, values) => {
+  
+  const handleWithdraw = (event, values) => {
     event.preventDefault();
-    
+    dispatch(makeWithdrawalStart({
+      customerId:selectedClient,
+      walletId:selectedWallet,
+      ...values
+    }));
     
   }; 
 
   const toggleAddModal = () => {
-    setDepositModal(!addModal);
+    setWithdrawalModal(!open);
   };
-
+  useEffect(()=>{
+    dispatch(fetchGatewaysOfWithdrawalsStart());
+  }, []);
   useEffect(() => {
-    
-  }, [props.addSymbolSuccessMessage]);
-
+    if (props.modalClear && open){
+      setWithdrawalModal(false);
+    }
+  }, [props.modalClear]);
+  console.log(props.gateways);
   return (
     <React.Fragment >
-      <Link to="#" className="btn btn-light" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> Withdraw</Link>
-      <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
+      {selectedWallet.length > 0 && <Link to="#" className="btn btn-light" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> Withdraw</Link>}
+      <Modal isOpen={open} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
           Withdraw
         </ModalHeader>
         <ModalBody >
+
           <AvForm
             className='p-4'
             onValidSubmit={(e, v) => {
-              handleAddDeposit(e, v);
+              handleWithdraw(e, v);
             }}
           >
             
@@ -53,10 +62,14 @@ function DepositForm(props){
                 name="gateway"
                 label="Gateway"
                 placeholder="gateway"
-                type="text"
+                type="select"
                 errorMessage="Enter valid gateway"
                 validate={{ required: { value: true } }}
-              />
+              >
+                {Object.keys(props.gateways).map((key)=>{
+                  return <option key={key}>{props.gateways[key]}</option>;
+                })}
+              </AvField>
             </div>
               
                
@@ -83,7 +96,7 @@ function DepositForm(props){
     
             <div className='text-center pt-3 p-2'>
               <Button  type="submit" color="primary" className="">
-                    Add Deposit
+                    Make Withdraw
               </Button>
             </div>
           </AvForm>
@@ -91,9 +104,9 @@ function DepositForm(props){
             <i className="mdi mdi-block-helper me-2"></i>
             {props.error}
           </UncontrolledAlert>}
-          {props.addSymbolSuccessMessage && <UncontrolledAlert color="success">
+          {props.withdrawResponseMessage && <UncontrolledAlert color="success">
             <i className="mdi mdi-check-all me-2"></i>
-              Withdraw is done successfully !!!
+            {`Withdraw has been ${props.withdrawResponseMessage} `}
           </UncontrolledAlert>}
         </ModalBody>
       </Modal>
@@ -101,7 +114,9 @@ function DepositForm(props){
   );
 }
 const mapStateToProps = (state) => ({
-  error: state.assetReducer.error,
-  addSymbolSuccessMessage: state.assetReducer.addSymbolSuccessMessage,
+  gateways:state.gatewayReducer.gateways || [],
+  error: state.withdrawalReducer.error,
+  withdrawResponseMessage:state.withdrawalReducer.withdrawResponseMessage,
+  modalClear:state.withdrawalReducer.modalClear
 });
-export default connect(mapStateToProps, null)(DepositForm);
+export default connect(mapStateToProps, null)(WithdrawForm);
