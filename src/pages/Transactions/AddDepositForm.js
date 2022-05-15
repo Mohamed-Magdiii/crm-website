@@ -11,16 +11,21 @@ import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { fetchGatewaysStart } from "store/gateway/action";
-
+import { addDepositStart } from "store/transactions/deposit/action";
 function DepositForm(props){
 
   const [addModal, setDepositModal] = useState(false);
 
   const dispatch = useDispatch();
-
+  const { selectedClient, selectedWallet } = props;
+  
   const handleAddDeposit = (event, values) => {
     event.preventDefault();
-    
+    dispatch(addDepositStart({
+      customerId:selectedClient,
+      walletId:selectedWallet,
+      ...values
+    }));
     
   }; 
 
@@ -31,12 +36,14 @@ function DepositForm(props){
     dispatch(fetchGatewaysStart());
   }, []);
   useEffect(() => {
-    
-  }, [props.addSymbolSuccessMessage]);
+    if (props.modalClear && open ){
+      setDepositModal(false);
+    }
+  }, [props.modalClear]);
   
   return (
     <React.Fragment >
-      <Link to="#" className="btn btn-light" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> Add Deposit</Link>
+      {selectedWallet.length > 0 && <Link to="#" className="btn btn-light" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> Add Deposit</Link>}
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
           Add Deposit
@@ -97,9 +104,9 @@ function DepositForm(props){
             <i className="mdi mdi-block-helper me-2"></i>
             {props.error}
           </UncontrolledAlert>}
-          {props.addSymbolSuccessMessage && <UncontrolledAlert color="success">
+          {props.depositResponseMessage && <UncontrolledAlert color="success">
             <i className="mdi mdi-check-all me-2"></i>
-              Deposit Added successfully !!!
+            {`Deposit has been ${props.depositResponseMessage}`}
           </UncontrolledAlert>}
         </ModalBody>
       </Modal>
@@ -108,6 +115,7 @@ function DepositForm(props){
 }
 const mapStateToProps = (state) => ({
   gateways:state.gatewayReducer.gateways || [],
-
+  modalClear:state.depositReducer.modalClear,
+  depositResponseMessage:state.depositReducer.depositResponseMessage
 });
 export default connect(mapStateToProps, null)(DepositForm);
