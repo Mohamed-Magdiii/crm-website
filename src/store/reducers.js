@@ -28,6 +28,8 @@ import teamsReducer from "./teams/reducer";
 import assetReducer from "./assests/reducer";
 import walletReducer from "./wallet/reducer";
 import gatewayReducer from "./gateway/reducer";
+import depositReducer from "./transactions/deposit/reducer";
+import withdrawalReducer from "./transactions/withdrawal/reducer";
 const rootReducer = combineReducers({
   // public
   Layout,
@@ -46,7 +48,9 @@ const rootReducer = combineReducers({
   teamsReducer,
   assetReducer,
   walletReducer,
-  gatewayReducer
+  gatewayReducer,
+  depositReducer,
+  withdrawalReducer
 });
 
 export default rootReducer;
