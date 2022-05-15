@@ -1,43 +1,51 @@
 import React, {
-  useState, useEffect, useCallback
+  useState, useEffect
 } from "react";
 import { useDispatch, connect } from "react-redux";
 import { fetchClientsStart } from "store/client/actions";
 import { fetchWalletStart } from "store/wallet/action";
 import {
-  Row, Col, Card, CardBody, CardHeader, Dropdown, DropdownMenu, DropdownToggle, DropdownItem
+  Row, Col, Card, CardBody, CardHeader
 } from "reactstrap";
+import { AvForm, AvField } from "availity-reactstrap-validation";
 import AddDepositForm from "./AddDepositForm";
-import { debounce } from "lodash";
+import { fetchDepositsStart } from "store/transactions/deposit/action";
+import SearchBar from "components/Common/SearchBar";
 function Deposit(props){
   const dispatch = useDispatch();
   const [searchInput, setSearchInput] = useState("");
-  const [menu, setMenu] = useState(false);
-  const [searchDropDown, setSearchDropDown] = useState(false);
-  const toggleSearchDropDown = ()=>setSearchDropDown(preValue=>!preValue);
-  const toggle = ()=>setMenu(preValue=>!preValue);
+  const [selectedClientId, setSelectedClientId] = useState("");
+  const [selectedWalletId, setSelectedWalletId] = useState("");
+  
+  function selectWallet(id){
+    setSelectedWalletId(id);
+  }
   useEffect(()=>{
-    if (searchInput !== ""){
+    if (searchInput.length >= 3){
       dispatch(fetchClientsStart({
         searchText:searchInput
       }));
     }
-   
+
   }, [searchInput]);
+  useEffect(()=>{
+    dispatch(fetchDepositsStart());
+  }, []);
+  
   const handleSearchInput = (e)=>{
   
     setSearchInput(e.target.value);
     
   };
-  const debouncedChangeHandler = useCallback(
-    debounce(handleSearchInput, 1000), []
-  );
+  
   
   const selectClient = (id)=>{
-    
+    setSelectedClientId(id);
+    setSelectedWalletId("");
     dispatch(fetchWalletStart({
       belongsTo:id
     }));
+     
   };
   
   return (
@@ -48,54 +56,54 @@ function Deposit(props){
           <Row>
             <Col className="col-12">
               <Card>
-                <CardHeader className="d-flex flex-column gap-3">
-                  <div>  
-                    
-                    
-                    <Dropdown isOpen={searchDropDown} toggle={toggleSearchDropDown} className="d-inline-block">
-                      <DropdownToggle>
-                        <input className="form-control"
-                          autoComplete="off"
-                          onChange={debouncedChangeHandler}    
-                        /> 
-                      </DropdownToggle>
-                      <DropdownMenu className="language-switch dropdown-menu-end">
-                        {props.clients.map(client=> (
-                          <DropdownItem
-                            key={client._id}
-                            onClick={()=>selectClient(client._id)}
-                            
-                          >
-            
-                            <span className="align-middle">
-                              {`${client.firstName} ${client.lastName}`}
-                            </span>
-                          </DropdownItem>
-                        ))}
-                      </DropdownMenu>
-                    </Dropdown>
-                    <Dropdown isOpen={menu} toggle={toggle} className="d-inline-block">
-                      <DropdownToggle className="btn header-item " tag="button">
-                        <h2>Wallets</h2>
-                      </DropdownToggle>
-                      <DropdownMenu className="language-switch dropdown-menu-end">
-                        {props.wallets.map(wallet=> (
-                          <DropdownItem
-                            key={wallet._id}
-                            
-                          >
-                            <span className="align-middle">
-                              {wallet.recordId}
-                            </span>
-                          </DropdownItem>
-                        ))}
-                      </DropdownMenu>
-                    </Dropdown>
-                    <AddDepositForm/>
+                <CardHeader className="d-flex flex-column gap-3 ">
+                  <div className="d-flex justify-content-between align-items-center">
+                    <h1>Deposit Page</h1>
+                    <AddDepositForm selectedWallet={selectedWalletId} selectedClient={selectedClientId}/>
                   </div>
+                  
+                  <SearchBar handleSearchInput={handleSearchInput} placeholder="Search for the client"/>
+                      
                 </CardHeader>
+                  
+                
                 <CardBody>
-              
+                  <AvForm>
+                    <Row >
+                      <Col md="6">
+                        
+                        <AvField name="clients_list" 
+                          type="select"
+                          label="Select a client" 
+                          onChange={(e)=>selectClient(e.target.value)}>
+                          <option hidden>Select a client</option>
+                          {props.clients.map(client=> (
+                            <option key={client._id} value={client._id}>
+                              {`${client.firstName} ${client.lastName}`}
+                            </option>
+                          ))}
+                        </AvField>
+                      </Col>
+                      <Col md="6">
+                        <AvField name="wallet" 
+                          type="select" 
+                          label="Select a wallet"
+                          id="walletList"
+                          onChange={(e)=>selectWallet(e.target.value)}>
+                          <option hidden>Select a wallet</option>
+                          {props.wallets.map(wallet=> (
+                            <option key={wallet._id} value={wallet._id} >
+                              {wallet.recordId}
+                            </option>
+                          ))}
+                     
+                        </AvField>
+                        
+                      </Col>
+                    </Row>
+                  </AvForm>
+            
+           
                 </CardBody>
               </Card>
             </Col>
@@ -109,7 +117,8 @@ function Deposit(props){
 }
 const mapStateToProps = (state)=>({
   clients:state.clientReducer.clients || [],
-  wallets:state.walletReducer.wallets || []
+  wallets:state.walletReducer.wallets || [],
+  deposits:state.depositReducer.deposits || []
 }
 );
 export default connect(mapStateToProps, null)(Deposit);
