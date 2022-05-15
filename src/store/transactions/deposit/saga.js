@@ -4,7 +4,7 @@ import {
   takeEvery,
   delay
 } from "redux-saga/effects";
-import {ADD_DEPOSIT_START, FETCH_DEPOSITS_START } from "./actionTypes";
+import { ADD_DEPOSIT_START, FETCH_DEPOSITS_START } from "./actionTypes";
 import {
   addDepositSuccess, depositError, fetchDepositsSuccess, modalClear
 } from "./action";

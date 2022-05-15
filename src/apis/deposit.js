@@ -6,7 +6,7 @@ export const getDeposits = async ({ payload })=>{
 };
 export const makeDeposit = async (values)=>{
   const result = await axiosHelper.post("/transactions/deposit", values);
-  console.log(result);
+  
   if (result.code === 422){
     throw new Error("Deposit has failed");
   }

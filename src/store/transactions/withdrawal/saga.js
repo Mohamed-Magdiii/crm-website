@@ -4,7 +4,7 @@ import {
   takeEvery,
   delay
 } from "redux-saga/effects";
-import { addWithdrawal, getWithdrawals} from "apis/withdrawal";
+import { addWithdrawal, getWithdrawals } from "apis/withdrawal";
 import { MAKE_WITHDRAWAL_START, FETCH_WITHDRAWALS_START } from "./actionTypes";
 import { 
   makeWithdrawalSuccess, fetchWithdrawalsSuccess, withdrawalError, modalClear

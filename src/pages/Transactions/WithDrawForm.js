@@ -39,7 +39,7 @@ function WithdrawForm(props){
       setWithdrawalModal(false);
     }
   }, [props.modalClear]);
-  console.log(props.gateways);
+  
   return (
     <React.Fragment >
       {selectedWallet.length > 0 && <Link to="#" className="btn btn-light" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> Withdraw</Link>}

@@ -1,5 +1,5 @@
 import {
-  call, put, delay, takeEvery
+  call, put, takeEvery
 } from "redux-saga/effects";
 import { FETCH_WALLET_START } from "./actionTypes";
 import { fetchWalletSuccess } from "./action";
