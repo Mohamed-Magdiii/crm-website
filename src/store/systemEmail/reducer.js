@@ -244,7 +244,7 @@ const systemEmailsReducer = (state = initialState, action) => {
       state = {
         ...state,
         editLoading: false,
-        editContentError: action.payload.error.message
+        editContentError: action.payload.error.error
       };
       break;
     case EDIT_SYSTEM_EMAIL_CONTENT_CLEAR:

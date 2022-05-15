@@ -1,5 +1,5 @@
 // a page to edit system email content (language + subject + body)
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, connect } from "react-redux";
 import {
   Button,
@@ -8,19 +8,26 @@ import {
 import {
   AvForm, AvField, AvInput
 } from "availity-reactstrap-validation";
+import { Editor } from "react-draft-wysiwyg";
+import {
+  EditorState, convertToRaw, ContentState
+} from "draft-js";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import draftToHtml from "draftjs-to-html";
+import htmlToDraft from "html-to-draftjs";
 
 import { editSystemEmailContent, fetchSystemEmailById } from "store/systemEmail/actions";
 
 function SystemEmailEdit(props){
-  // TODO check if it's OK to do this step manual with a dic if not figure it out
   const readableLanguages = {
-    "ar-ae": "Arabic",
-    "en-gb": "English"
+    "en-gb": "English",
+    "ar-ae": "Arabic"
   };
   let role = props.systemEmail || props.role;
   
   const availableLanguages = Object.keys(role.content);
   const [selectedLanguage, setSelectedLanguage] = useState("en-gb");
+  
   const changeLanguageHandler = (e) => {
     setSelectedLanguage(e.target.value);
   };
@@ -32,10 +39,22 @@ function SystemEmailEdit(props){
     }));
   };
 
-  // fetch system email by id handler
+  // fetch system email by id handler to show new updates with every new successful update call 
   const handleSystemEmailFetchById = (e, systemEmailId) => {
     dispatch(fetchSystemEmailById(systemEmailId));
   };
+
+  // rich editor handler 
+  const blocksFromHTML = htmlToDraft(role.content[selectedLanguage].body);
+  const { contentBlocks, entityMap } = blocksFromHTML;
+  const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+  const [editorState, setEditorState] = useState(EditorState.createWithContent(contentState)); 
+  
+  // an effect to change the value of content with every new update or after changing language
+  useEffect (() => {
+    setEditorState(EditorState.createWithContent(contentState));
+    
+  }, [role, selectedLanguage]);
   
   return (
     <React.Fragment >
@@ -43,8 +62,8 @@ function SystemEmailEdit(props){
         <div className="container-fluid">
           <h2>Advanced system email edit</h2>
           <AvForm
-            className='p-4'
             onValidSubmit={(e, v) => {
+              v.body = draftToHtml(convertToRaw(editorState.getCurrentContent()));
               handleSystemEmailEdit(e, v);
               // with every update it fetches the updated values of the system email 
               // to keep fields up to date with database
@@ -63,10 +82,6 @@ function SystemEmailEdit(props){
                 onChange={changeLanguageHandler}
                 value={selectedLanguage}
               >
-                {/* TODO the key is done the value prop in option should be 
-                    the ar-ae or en-bg and so on but what is shown to the admin should 
-                    be the full language name like english or arabic and the value is the one
-                    to be sent to the API */}
                 {availableLanguages.map(availableLanguage => (
                   <option key={availableLanguages.indexOf(availableLanguage)} value={availableLanguage}>
                     {readableLanguages[availableLanguage]}
@@ -88,14 +103,16 @@ function SystemEmailEdit(props){
             </div>
 
             <div className="col-sm-8">
-              <AvField
-                name="body"
-                label="Content"
+              <label>Content</label>
+              {/* draft.js editor component */}  
+              <Editor
+                toolbarClassName="toolbarClassName"
+                wrapperClassName="wrapperClassName"
+                editorClassName="editorClassName"
+                editorState={editorState}
+                onEditorStateChange={setEditorState}
                 placeholder="Content"
-                type="textarea"
-                value={role.content[selectedLanguage].body}
-                errorMessage="Enter system email content"
-                validate={{ required: { value: true } }}
+                required
               />
             </div>
             {role.permissions && Object.keys(role.permissions).map((permKey, permInd) =>
@@ -114,14 +131,15 @@ function SystemEmailEdit(props){
               {/* submit button */}
               <div className="p-2">
                 <Button 
-                  disabled={props.editLoading} 
+                  // the editorState check is added to make sure that the user has entered a content
+                  disabled={props.editLoading || !editorState.getCurrentContent().getPlainText()} 
                   type="submit" 
                   color="primary"
                 >
                     Update
                 </Button>
               </div>
-              
+
               {/* back button */}
               <div className="p-2">
                 <Button disabled={props.editLoading || !props.isBackButtonActive} 
@@ -133,11 +151,11 @@ function SystemEmailEdit(props){
                 </Button>
               </div>
             </div>
-            {props.editContentError && <UncontrolledAlert color="danger">
+            {props.editContentError && <UncontrolledAlert color="danger" className="col-sm-8">
               <i className="mdi mdi-block-helper me-2"></i>
               {props.editContentError}
             </UncontrolledAlert>}
-            {props.editContentResult && <UncontrolledAlert color="success">
+            {props.editContentResult && <UncontrolledAlert color="success" className="col-sm-8">
               <i className="mdi mdi-check-all me-2"></i>
                   System email updated successfully !!!
             </UncontrolledAlert>}
