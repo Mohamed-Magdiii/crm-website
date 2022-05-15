@@ -21,6 +21,21 @@ const gatewayReducer = (state = initState, action)=>{
       };
       
       break;
+    case "FETCH_WITHDRAWALS_GATEWAYS_START":
+      state = {
+        ...state,
+        loading:true
+      };
+      break;
+    case "FETCH_WITHDRAWALS_GATEWAYS_SUCCESS":
+      
+      state = {
+        ...state,
+        loading:false,
+        gateways:{ ...action.payload.result }
+      };
+      
+      break;
     default:
       state = { ...state };
   }
