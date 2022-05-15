@@ -16,6 +16,8 @@ import teamsSaga from "./teams/saga";
 import assetSaga from "./assests/saga";
 import walletSaga from "./wallet/saga";
 import gatewaySaga from "./gateway/saga";
+import depositSaga from "./transactions/deposit/saga";
+import withdrawalSaga from "./transactions/withdrawal/saga";
 export default function* rootSaga() {
   yield all([
     //public
@@ -35,6 +37,8 @@ export default function* rootSaga() {
     fork(teamsSaga),
     fork(assetSaga),
     fork(walletSaga),
-    fork(gatewaySaga)
+    fork(gatewaySaga),
+    fork(depositSaga),
+    fork(withdrawalSaga)
   ]);
 }
