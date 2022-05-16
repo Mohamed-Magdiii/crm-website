@@ -51,6 +51,7 @@ function SystemEmailEdit(props){
   const [editorState, setEditorState] = useState(EditorState.createWithContent(contentState)); 
   
   // an effect to change the value of content with every new update or after changing language
+  // to avoid late updates
   useEffect (() => {
     setEditorState(EditorState.createWithContent(contentState));
     
@@ -112,7 +113,6 @@ function SystemEmailEdit(props){
                 editorState={editorState}
                 onEditorStateChange={setEditorState}
                 placeholder="Content"
-                required
               />
             </div>
             {role.permissions && Object.keys(role.permissions).map((permKey, permInd) =>
@@ -132,7 +132,8 @@ function SystemEmailEdit(props){
               <div className="p-2">
                 <Button 
                   // the editorState check is added to make sure that the user has entered a content
-                  disabled={props.editLoading || !editorState.getCurrentContent().getPlainText()} 
+                  // disabled={props.editLoading || !editorState.getCurrentContent().getPlainText()} 
+                  disabled={props.editLoading} 
                   type="submit" 
                   color="primary"
                 >
