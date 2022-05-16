@@ -48,7 +48,7 @@ function AddReminderModal(props) {
   };
   const showAlert = (danger, succ, msg) => {
     if (succ) {
-      setAlertMsg(msg || "Reminder Updated successfully !!!");
+      setAlertMsg(msg || "Reminder Added successfully !!!");
       setAlertShow(true);
       setTimeout(() => {
         setAlertShow(false);

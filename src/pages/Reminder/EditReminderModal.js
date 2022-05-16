@@ -36,7 +36,10 @@ function EditReminderModal(props) {
   } else {
     ReminderEnd = "After " + differentEndReminderAndNow + " days";
   }
+  useEffect(() => {
+    setEditFlag(false);
 
+  }, [openEdit]);
   useEffect(() => {
     getClientById(client)
       .then(response => {
