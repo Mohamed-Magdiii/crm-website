@@ -13,6 +13,7 @@ import {
 } from "reactstrap";
 // availity-reactstrap-validation
 import { AvForm, AvField } from "availity-reactstrap-validation";
+import { Link } from "react-router-dom";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
@@ -26,9 +27,9 @@ import Breadcrumb from "../../components/Common/Breadcrumb";
 // actions
 // import { editProfile, resetProfileFlag } from "../../store/actions";
 
-import { 
+import {
   redirectToLogin
-} from "../../apis/api_helper"; 
+} from "../../apis/api_helper";
 import { getProfileData } from "../../apis/auth";
 
 const UserProfile = () => {
@@ -45,6 +46,7 @@ const UserProfile = () => {
   const [roleId, setroleId] = useState("");
   const [idx, setidx] = useState(0);
   const [modal, setModal] = useState(false);
+  const [modalPass, setModalPass] = useState(false);
 
   useEffect(() => {
     getProfileData()
@@ -73,6 +75,9 @@ const UserProfile = () => {
   const toggle = () => {
     setModal(!modal);
   };
+  const togglePass = () => {
+    setModalPass(!modalPass);
+  };
 
   return (
     <React.Fragment>
@@ -82,7 +87,7 @@ const UserProfile = () => {
         </MetaTags>
         <Container fluid>
           {/* Render Breadcrumb */}
-          <Breadcrumb title="Profile" breadcrumbItem="Profile" /> 
+          <Breadcrumb title="Profile" breadcrumbItem="Profile" />
           <Row>
             <Col lg="12">
               {error && error ? <Alert color="danger">{error}</Alert> : null}
@@ -91,22 +96,28 @@ const UserProfile = () => {
               <Card>
                 <CardBody>
                   <div className="  flex-column">
-                    <div className="d-flex justify-content-between">
-                      <div className="ms-3 ">
-                      </div>
-                      <svg
-                        onClick={toggle}
+                    <div className="d-flex pull-right">
+                      <Link className="text-success"
+                        to="#"
                         style={{
-                          width: "25px",
-                          marginTop: "25px",
-                          height: "25px",
+                          marginRight: "25px",
                         }}
-                        focusable="false"
-                        viewBox="0 0 24 24"
-                        aria-hidden="true"
                       >
-                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path>
-                      </svg>
+                        <i
+                          className="mdi mdi-key-variant font-size-18"
+                          id="edittooltip"
+                          onClick={togglePass}
+                        >
+                        </i>
+                      </Link>
+                      <Link className="text-success" to="#">
+                        <i
+                          className="mdi mdi-pencil font-size-18"
+                          id="editt"
+                          onClick={toggle}
+                        >
+                        </i>
+                      </Link>
                     </div>
 
                     <div className="d-flex justify-content-around">
@@ -167,6 +178,7 @@ const UserProfile = () => {
                             value={fristName || ""}
                           />
                         </div>
+
                         <div className="mb-3">
                           <AvField
                             name="lastname"
@@ -191,7 +203,37 @@ const UserProfile = () => {
                             value={roleId || ""}
                           />
                         </div>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col>
+                        <div className="text-end">
+                          <button
+                            type="submit"
+                            className="btn btn-success save-user"
+                          >
+                            Save
+                          </button>
+                        </div>
+                      </Col>
+                    </Row>
+                  </AvForm>
+                </ModalBody>
+              </Modal>
 
+              {/* ************ modal Edit User pass*************** */}
+
+              <Modal isOpen={modalPass} toggle={togglePass}>
+                <ModalHeader toggle={togglePass} tag="h4">
+                  Change Password
+                  {/* {!!isEdit ? "Edit User" : "Add User"} */}
+                </ModalHeader>
+                <ModalBody>
+                  <AvForm
+                  // onValidSubmit={handleValidUserSubmit}
+                  >
+                    <Row form>
+                      <Col xs={12}> 
                         <div className="mb-3">
                           <AvField
                             name="currentPassword"
@@ -217,6 +259,19 @@ const UserProfile = () => {
                             value={""}
                           />
                         </div>
+                        <div className="mb-3">
+                          <AvField
+                            name="confirmPassword"
+                            label="confirm password"
+                            type="password"
+                            idx={idx}
+                            errorMessage="Invalid"
+                            validate={{
+                              required: { value: true },
+                            }}
+                            value={""}
+                          />
+                        </div>
                       </Col>
                     </Row>
                     <Row>
@@ -226,14 +281,15 @@ const UserProfile = () => {
                             type="submit"
                             className="btn btn-success save-user"
                           >
-                            Save
+                            Change
                           </button>
                         </div>
                       </Col>
                     </Row>
                   </AvForm>
                 </ModalBody>
-              </Modal>
+              </Modal> 
+
             </Col>
           </Row>
         </Container>
