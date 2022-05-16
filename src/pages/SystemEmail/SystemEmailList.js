@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import {
   useDispatch, connect
 } from "react-redux";
 import { Link } from "react-router-dom";
-
 import {
   Row, Col, Card, CardBody, CardTitle, CardHeader, Input, Label
 } from "reactstrap";
-
 import {
   Table, Thead, Tbody, Tr, Th, Td
 } from "react-super-responsive-table";
@@ -20,13 +19,15 @@ import DeleteModal from "components/Common/DeleteModal";
 import SystemEmailAdd from "./SystemEmailAdd";
 import SystemEmailEdit from "./SystemEmailEdit";
 import SystemEmailEditModal from "./SystemEmailEditModal";
+// i18n
+import { withTranslation } from "react-i18next";
 
 function SystemEmailsList(props){
   const [deleteModal, setDeleteModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   // a state to change when updating a system email to force a reload to show new updates automatically
   const [isSystemEmailUpdated, setIsSystemEmailUpdated] = useState(false);
-  // to control which component to render 
+  // a state to control which component to render 
   const [activeComponent, setActiveComponent] = useState("list component");
   const [selectedSystemEmail, setSelectedSystemEmail] = useState();
   
@@ -53,17 +54,17 @@ function SystemEmailsList(props){
   const columns = [
     {
       dataField: "createdAt",
-      text: "Created Date",
+      text: props.t("Created date"),
       formatter: (val) => {return new Date(val.createdAt).toDateString()}
     },
     {
       dataField: "createdBy",
-      text: "Created By",
+      text: props.t("Created by"),
       formatter: (val) => {return (val.createdBy && val.createdBy.firstName) ? `${val.createdBy.firstName} ${val.createdBy.lastName}` : ""},
     },
     {
       dataField: "title",
-      text: "Title",
+      text: props.t("Title"),
       formatter: (item) => (
         <div className="d-flex gap-3">
           <Link to="#">
@@ -76,16 +77,16 @@ function SystemEmailsList(props){
     },
     {
       dataField: "action",
-      text: "Action type"
+      text: props.t("Action type")
     }, 
     {
-      dataField:"content",
-      text:"Default subject",
+      dataField: "content",
+      text: props.t("Default subject"),
       formatter: (val) => {return val.content["en-gb"] && val.content["en-gb"].subject || " "}
     },
     {
       dataField: "isActive",
-      text: "Status",
+      text: props.t("Status"),
       formatter: (item) => (
         <div className="d-flex gap-3">
           <Input 
@@ -102,7 +103,7 @@ function SystemEmailsList(props){
       dataField: "",
       isDummyField: true,
       editable: false,
-      text: "Actions", 
+      text: props.t("Actions"), 
       formatter: (item) => (
         <div className="d-flex gap-3">
           <Link className="text-success" to="#">
@@ -148,7 +149,7 @@ function SystemEmailsList(props){
       setDeleteModal(false);
     }
   }, [props.deleteClearingCounter]);
-
+  
   return (
     <React.Fragment>
       {props.activeComponentProp === "list component" && activeComponent === "edit component" && <SystemEmailEdit role={selectedSystemEmail || props.systemEmail} switchComponents={switchComponents} systemEmailUpdatedHandler={systemEmailUpdatedHandler} />}
@@ -156,12 +157,12 @@ function SystemEmailsList(props){
       <>
         <div className="page-content">
           <div className="container-fluid">
-            <h2>System Emails</h2>
+            <h2>{props.t("System emails")}</h2>
             <Row>
               <Col className="col-12">
                 <Card>
                   <CardHeader className="d-flex justify-content-between  align-items-center">
-                    <CardTitle>System Emails list ({props.totalDocs})</CardTitle>
+                    <CardTitle>{props.t("System emails list")} ({props.totalDocs})</CardTitle>
                     <SystemEmailAdd switchComponents={switchComponents}/>
                   </CardHeader>
                   <CardBody>
@@ -240,4 +241,8 @@ const mapStateToProps = (state) => ({
   systemEmail: state.systemEmailsReducer.systemEmail
 });
 
-export default connect(mapStateToProps, null)(SystemEmailsList);
+SystemEmailsList.propTypes = {
+  t: PropTypes.any
+};
+
+export default connect(mapStateToProps, null)(withTranslation()(SystemEmailsList));

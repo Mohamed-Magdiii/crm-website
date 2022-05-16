@@ -253,7 +253,6 @@ const systemEmailsReducer = (state = initialState, action) => {
         editContentResult: null,
         editContentError: null,
         editContentClearingCounter: state.editContentClearingCounter + 1,
-        activeComponentProp: "list component",
         isBackButtonActive: true
       };
       break;

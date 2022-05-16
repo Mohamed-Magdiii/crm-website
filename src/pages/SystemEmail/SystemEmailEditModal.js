@@ -14,6 +14,8 @@ import {
 } from "availity-reactstrap-validation";
 
 import { editSystemEmail } from "store/systemEmail/actions";
+// i18n
+import { withTranslation } from "react-i18next";
 
 function SystemEmailEditModal(props){
   const { open, role = {}, onClose } = props;
@@ -34,7 +36,7 @@ function SystemEmailEditModal(props){
     <React.Fragment >
       <Modal isOpen={open} toggle={onClose} centered={true}>
         <ModalHeader toggle={onClose} tag="h4">
-            Edit System Email
+          {props.t("Edit system email")}
         </ModalHeader>
         <ModalBody >
           <AvForm
@@ -47,11 +49,11 @@ function SystemEmailEditModal(props){
             <div className="mb-3">
               <AvField
                 name="title"
-                label="Title"
-                placeholder="Title"
+                label={props.t("Title")}
+                placeholder={props.t("Title")}
                 type="text"
                 value={role.title}
-                errorMessage="Enter System Email Title"
+                errorMessage={props.t("Title is required")}
                 validate={{ required: { value: true } }}
               />
             </div>
@@ -59,11 +61,11 @@ function SystemEmailEditModal(props){
             <div className="mb-3">
               <AvField
                 name="action"
-                label="Action"
-                placeholder="Action"
+                label={props.t("Action")}
+                placeholder={props.t("Action")}
                 type="text"
                 value={role.action}
-                errorMessage="Enter System Email action"
+                errorMessage={props.t("Action is required")}
                 validate={{ required: { value: true } }}
               />
             </div>
@@ -81,17 +83,18 @@ function SystemEmailEditModal(props){
             {/* submit button */}
             <div className='text-center pt-3 p-2'>
               <Button disabled={props.addLoading} type="submit" color="primary">
-                Update
+                {props.t("Update")}
               </Button>
             </div>
           </AvForm>
           {props.editError && <UncontrolledAlert color="danger">
             <i className="mdi mdi-block-helper me-2"></i>
-            {JSON.stringify(props.editError)}
+            {/* TODO this needs to be handled in translation */}
+            {props.t(JSON.stringify(props.editError))}
           </UncontrolledAlert>}
           {props.editResult && <UncontrolledAlert color="success">
             <i className="mdi mdi-check-all me-2"></i>
-            First step completed successfully !!!
+            {props.t("System email updated successfully")} !!!
           </UncontrolledAlert>}
         </ModalBody>
       </Modal>
@@ -107,4 +110,4 @@ const mapStateToProps = (state) => ({
   editClearingCounter: state.systemEmailsReducer.editClearingCounter
 });
 
-export default connect(mapStateToProps, null)(SystemEmailEditModal);
+export default connect(mapStateToProps, null)(withTranslation()(SystemEmailEditModal));
