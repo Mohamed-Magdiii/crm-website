@@ -11,3 +11,11 @@ export const addWithdrawal = async (values)=>{
   }
   return result;
 };
+export const approveWithdrawal = async (id)=>{
+  const result = await axiosHelper.patch(`/transactions/withdraw/${id}/approve`);
+  return result;
+};
+export const rejectWithdrawal = async (id)=>{
+  const result = await axiosHelper.patch(`/transactions/withdraw/${id}/reject`);
+  return result;
+};
