@@ -27,7 +27,14 @@ export const editUser = async ({ payload }) => {
   }
   return data;
 };
-
+export const editUserPass = async ({ payload }) => {
+  const { id, values } = payload;
+  const data = await axiosHelper.patch(`/users/${id}/password`, values);
+  if (data.isError) {
+    throw new Error(data.message);
+  }
+  return data;
+};
 export const deleteUser = async ({ payload }) => {
   const data = await axiosHelper.del(`/users/${payload}`);
   if (data.isError) {

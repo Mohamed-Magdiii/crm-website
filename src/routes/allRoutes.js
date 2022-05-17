@@ -5,7 +5,7 @@ import { Redirect } from "react-router-dom";
 import Dashboard from "../pages/Dashboard/index";
 
 // Authentication related pages
-import userProfile from "../pages/Authentication/user-profile";
+import UserProfile from "../pages/Authentication/Profile/UserProfile";
 import Login from "../pages/Authentication/Login";
 import Logout from "../pages/Authentication/Logout";
 import Register from "../pages/Authentication/Register";
@@ -31,7 +31,7 @@ const userRoutes = [
   //profile
   {
     path: "/profile",
-    component: userProfile 
+    component: UserProfile 
   },
   {
     path:"/clients",
