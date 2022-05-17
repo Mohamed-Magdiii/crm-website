@@ -95,7 +95,7 @@ function SystemEmailsList(props){
             switch="none" 
             defaultChecked={item.isActive} 
             onClick={() => { switchSelectedSystemEmailStatusHandler(item) }} />
-          <Label className="me-1" htmlFor={item.id} data-on-label="Active" data-off-label=""></Label>
+          <Label className="me-1" htmlFor={item.id} data-on-label={props.t("Active")} data-off-label=""></Label>
         </div>
       ),
     },
@@ -213,7 +213,12 @@ function SystemEmailsList(props){
               onClose={()=>{setEditModal(false)}} 
               systemEmailUpdatedHandler={systemEmailUpdatedHandler} 
             />}
-            {<DeleteModal loading={props.deleteLoading} onDeleteClick={deleteSystemEmailFunction} show={deleteModal} onCloseClick={()=>{setDeleteModal(false)}} />}
+            {<DeleteModal 
+              loading={props.deleteLoading} 
+              onDeleteClick={deleteSystemEmailFunction} 
+              show={deleteModal} 
+              onCloseClick={()=>{setDeleteModal(false)}} 
+            />}
           </div>
         </div>
       </>
