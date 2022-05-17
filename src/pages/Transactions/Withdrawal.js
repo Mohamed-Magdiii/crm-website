@@ -18,6 +18,7 @@ import SearchBar from "components/Common/SearchBar";
 import CustomDropdown from "components/Common/CustomDropDown";
 import Notification from "components/Common/Notification";
 import logo from "../../assets/images/logo-sm.svg";
+import { withTranslation } from "react-i18next";
 function Withdrawal(props){
   const dispatch = useDispatch();
   const [searchInput, setSearchInput] = useState("");
@@ -40,38 +41,38 @@ function Withdrawal(props){
     },
     {
       dataField: "createdAt",
-      text: "Date",
+      text: props.t("Date"),
       formatter: (val) => (new Date(val.createdAt).toLocaleDateString())
     }, 
     {
       dataField:"customerId",
-      text:"Client",
+      text:props.t("Client"),
       formatter:(val)=>(val.customerId ? `${val.customerId.firstName} ${val.customerId.lastName}` : "")
     },
     {
       dataField:"gateway",
-      text:"Gateway"
+      text:props.t("Gateway")
     },
     {
       dataField: "currency",
-      text: "Currency",
+      text: props.t("Currency"),
     
     },
     {
       dataField: "status",
-      text: " Status",
+      text: props.t("Status"),
       
     },
     {
       dataField:"amount",
-      text:"Amount",
+      text:props.t("Amount"),
       
     },
     
     
     {
       dataField: "dropdown",
-      text:"Action"
+      text:props.t("Action")
   
     },
   ];
@@ -98,21 +99,21 @@ function Withdrawal(props){
       <div className="page-content">
         <div className="container-fluid">
           <Notification onClose={closeNotifaction}
-            body={"The update of the withdraw has been made successfully"}
+            body={props.t("The update of the withdraw has been made successfully")}
             show={showNotication}
-            header={"Success"}
-            time={"Now"}
+            header={props.t("Withdraw update")}
+            time={props.t("Now")}
             logo={logo}/>
           <Row>
             <Col className="col-12">
               <Card>
                 <CardHeader className="d-flex flex-column gap-3 ">
                   <div className="d-flex justify-content-between align-items-center">
-                    <CardTitle>Withdrawals({props.totalDocs})</CardTitle>
+                    <CardTitle>{props.t(`Withdrawals(${props.totalDocs})`)}</CardTitle>
                     <WithDrawForm />
                   </div>
                   
-                  <SearchBar handleSearchInput={handleSearchInput} placeholder="Search for withdrawals"/>
+                  <SearchBar handleSearchInput={handleSearchInput} placeholder={props.t("Search for withdrawals")}/>
                       
                 </CardHeader>
           
@@ -183,4 +184,4 @@ const mapStateToProps = (state)=>({
  
 }
 );
-export default connect(mapStateToProps, null)(Withdrawal);
+export default connect(mapStateToProps, null)(withTranslation()(Withdrawal));

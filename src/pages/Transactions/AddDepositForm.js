@@ -23,7 +23,7 @@ import { addDepositStart } from "store/transactions/deposit/action";
 import { fetchWalletStart, clearWallets } from "store/wallet/action";
 import { fetchClientsStart } from "store/client/actions";
 import "./SearchableInputStyles.scss";
-
+import { withTranslation } from "react-i18next";
 function DepositForm(props){
   
   const [addModal, setDepositModal] = useState(false);
@@ -76,10 +76,10 @@ function DepositForm(props){
   
   return (
     <React.Fragment >
-      <Link to="#" className="btn btn-light" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> Add Deposit</Link>
+      <Link to="#" className="btn btn-light" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> {props.t("Add Deposit")}</Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
-          Add Deposit
+          {props.t("Add Deposit")}
         </ModalHeader>
         <ModalBody >
     
@@ -91,16 +91,16 @@ function DepositForm(props){
           >
             <Row>
               <Col md="6">
-                <Label>Client</Label>
+                <Label>{props.t("Client")}</Label>
             
                 <Dropdown  className= "transparentbar" toggle={() => setIsOpen(!isOpen)} isOpen={isOpen}>
                   <DropdownToggle className="transparentbar"  >
-                    <Input  onChange={(e) => setSearchInput(e.target.value) } value={searchInput} placeholder="search client" />
+                    <Input  onChange={(e) => setSearchInput(e.target.value) } value={searchInput} placeholder={props.t("search client")} />
                   </DropdownToggle>
                   <DropdownMenu  >
                     {props.clients.map((item) => (
                       <div key={item._id} onClick={(e)=>setSearchInput(e.target.textContent)}>
-                        <DropdownItem onClick={(e)=>selectClient(e.target.value)} value={item._id}>{`${item.firstName} ${item.lastName}`}</DropdownItem>
+                        <DropdownItem onClick={(e)=>selectClient(e.target.value)} value={item._id}>{props.t(`${item.firstName} ${item.lastName}`)}</DropdownItem>
                       </div>
                     ))}
                   </DropdownMenu>
@@ -109,14 +109,14 @@ function DepositForm(props){
               <Col md="6">
                 <AvField name="walletId" 
                   type="select" 
-                  label="Select a wallet"
+                  label={props.t("Select a wallet")}
                   id="walletList"
                   validate = {{ required:{ value:true } }}
                 >
                   <option hidden></option>
                   {props.wallets.map(wallet=> (
                     <option key={wallet._id} value={wallet._id} >
-                      {`${wallet.asset}-(Balance ${wallet.amount} ${wallet.asset})`}
+                      {props.t(`${wallet.asset}-(Balance ${wallet.amount} ${wallet.asset})`)}
                     </option>
                   ))}
      
@@ -129,15 +129,15 @@ function DepositForm(props){
             <div className="mb-3">
               <AvField
                 name="gateway"
-                label="Gateway"
-                placeholder="gateway"
+                label={props.t("Gateway")}
+                placeholder={props.t("gateway")}
                 type="select"
-                errorMessage="Enter valid gateway"
+                errorMessage={props.t("Enter valid gateway")}
                 validate={{ required: { value: true } }}
               >
                 <option hidden></option>
                 {Object.keys(props.gateways).map((key)=>{
-                  return <option key={key}>{props.gateways[key]}</option>;
+                  return <option key={key}>{props.t(props.gateways[key])}</option>;
                 })}
 
               </AvField>
@@ -147,37 +147,37 @@ function DepositForm(props){
             <div className="mb-3">
               <AvField
                 name="amount"
-                label="Amount"
-                placeholder="Amount"
+                label={props.t("Amount")}
+                placeholder={props.t("Amount")}
                 type="text"
-                errorMessage="Enter Valid Amount"
+                errorMessage={props.t("Enter Valid Amount")}
                 validate={{ required: { value: true } }}
               />
             </div>
             <div className="mb-3">
               <AvField
                 name="note"
-                label="Note"
-                placeholder="Note"
+                label={props.t("Note")}
+                placeholder={props.t("Note")}
                 type="text"
-                errorMessage="Enter Valid Note"
+                errorMessage={props.t("Enter Valid Note")}
                 validate={{ required: { value: true } }}
               />
             </div>
     
             <div className='text-center pt-3 p-2'>
               <Button  type="submit" color="primary" className="">
-                    Add Deposit
+                {props.t("Add Deposit")}
               </Button>
             </div>
           </AvForm>
           {props.error && <UncontrolledAlert color="danger">
             <i className="mdi mdi-block-helper me-2"></i>
-            {props.error}
+            {props.t(props.error)}
           </UncontrolledAlert>}
           {props.depositResponseMessage && <UncontrolledAlert color="success">
             <i className="mdi mdi-check-all me-2"></i>
-            {`Deposit has been ${props.depositResponseMessage}`}
+            {props.t(`Deposit has been ${props.depositResponseMessage}`)}
           </UncontrolledAlert>}
         </ModalBody> 
       </Modal>
@@ -191,4 +191,4 @@ const mapStateToProps = (state) => ({
   clients:state.clientReducer.clients || [],
   wallets:state.walletReducer.wallets || [],
 });
-export default connect(mapStateToProps, null)(DepositForm);
+export default connect(mapStateToProps, null)(withTranslation()(DepositForm));

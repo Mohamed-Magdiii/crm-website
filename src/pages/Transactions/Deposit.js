@@ -19,6 +19,7 @@ import CustomDropdown from "components/Common/CustomDropDown";
 import TableLoader from "components/Common/TableLoader";
 import Notification from "components/Common/Notification";
 import logo from "../../assets/images/logo-sm.svg";
+import { withTranslation } from "react-i18next";
 function Deposit(props){
   const dispatch = useDispatch();
   const [searchInput, setSearchInput] = useState("");
@@ -32,37 +33,37 @@ function Deposit(props){
     },
     {
       dataField: "createdAt",
-      text: "Date",
+      text: props.t("Date"),
       formatter: (val) => (new Date(val.createdAt).toLocaleDateString())
     }, 
     {
       dataField:"customerId",
-      text:"Client",
+      text:props.t("Client"),
       formatter:(val)=>(val.customerId ? `${val.customerId.firstName} ${val.customerId.lastName}` : "")
     },
     {
       dataField:"gateway",
-      text:"Gateway"
+      text:props.t("Gateway")
     },
     {
       dataField: "currency",
-      text: "Currency",
+      text: props.t("Currency"),
     
     },
     {
       dataField: "status",
-      text: " Status",
+      text: props.t("Status"),
       
     },
     {
       dataField:"amount",
-      text:"Amount",
+      text:props.t("Amount"),
       
     },
     
     {
       dataField:"dropdown", 
-      text:"Action"
+      text:props.t("Action")
     },
   ];
   
@@ -105,9 +106,9 @@ function Deposit(props){
         <div className="container-fluid">
           <Notification
             onClose={closeNotifaction}
-            body={"The deposit has been updated successfully"}
+            body={props.t("The deposit has been updated successfully")}
             show={showNotication}
-            header={"Deposit Update"}
+            header={props.t("Deposit Update")}
             logo={logo}/>
           <Row>
             <Col className="col-12">
@@ -115,11 +116,11 @@ function Deposit(props){
                 <CardHeader className="d-flex flex-column gap-3 ">
                   <div className="d-flex justify-content-between align-items-center">
                     
-                    <CardTitle>Deposits({props.totalDocs})</CardTitle>
+                    <CardTitle>{props.t(`Deposits(${props.totalDocs})`)}</CardTitle>
                     <AddDepositForm />
                   </div>
                   
-                  <SearchBar handleSearchInput={handleSearchInput} placeholder="Search for deposits"/>
+                  <SearchBar handleSearchInput={handleSearchInput} placeholder={props.t("Search for deposits")}/>
                  
                 </CardHeader>
                 
@@ -193,4 +194,4 @@ const mapStateToProps = (state) => ({
   prevPage: state.depositReducer.prevPage,
  
 });
-export default connect(mapStateToProps, null)(Deposit);
+export default connect(mapStateToProps, null)(withTranslation()(Deposit));
