@@ -63,7 +63,8 @@ const systemEmailsReducer = (state = initialState, action) => {
         pagingCounter: action.payload.pagingCounter,
         prevPage: action.payload.prevPage,
         totalPages: action.payload.totalPages,
-        systemEmail: null
+        systemEmail: null,
+        addError: false
       };
       break;
     case FETCH_SYSTEM_EMAILS_FAIL:
@@ -97,8 +98,7 @@ const systemEmailsReducer = (state = initialState, action) => {
       break;
     case FETCH_SYSTEM_EMAIL_BY_ID_CLEAR:
       state = {
-        ...state,
-        // systemEmail: null
+        ...state
       };
       break;
 
@@ -253,7 +253,6 @@ const systemEmailsReducer = (state = initialState, action) => {
         editContentResult: null,
         editContentError: null,
         editContentClearingCounter: state.editContentClearingCounter + 1,
-        activeComponentProp: "list component",
         isBackButtonActive: true
       };
       break;

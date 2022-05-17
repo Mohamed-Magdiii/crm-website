@@ -17,12 +17,16 @@ import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
 
 import { editSystemEmailContent, fetchSystemEmailById } from "store/systemEmail/actions";
+// i18n
+import { withTranslation } from "react-i18next"; 
 
 function SystemEmailEdit(props){
   const readableLanguages = {
     "en-gb": "English",
     "ar-ae": "Arabic"
   };
+  // props.systemEmail if it's coming from add modal (systemEmail = new system email)
+  // props.role if it's coming from an edit call (pre existing system email)
   let role = props.systemEmail || props.role;
   
   const availableLanguages = Object.keys(role.content);
@@ -51,6 +55,7 @@ function SystemEmailEdit(props){
   const [editorState, setEditorState] = useState(EditorState.createWithContent(contentState)); 
   
   // an effect to change the value of content with every new update or after changing language
+  // to avoid late updates
   useEffect (() => {
     setEditorState(EditorState.createWithContent(contentState));
     
@@ -60,9 +65,10 @@ function SystemEmailEdit(props){
     <React.Fragment >
       <div className="page-content">
         <div className="container-fluid">
-          <h2>Advanced system email edit</h2>
+          <h2>{props.t("Advanced edit")}</h2>
           <AvForm
             onValidSubmit={(e, v) => {
+              // storing rich text editor content as HTML to it could be sent as an email
               v.body = draftToHtml(convertToRaw(editorState.getCurrentContent()));
               handleSystemEmailEdit(e, v);
               // with every update it fetches the updated values of the system email 
@@ -74,17 +80,17 @@ function SystemEmailEdit(props){
               <AvField
                 name="language"
                 id="Available languages"
-                label="Available languages"
-                placeholder="Available languages"
+                label={props.t("Available languages")}
+                placeholder={props.t("Available languages")}
                 type="select"
-                errorMessage="System email langauge is required"
+                errorMessage={props.t("Language is required")}
                 validate={{ required: { value: true } }}
                 onChange={changeLanguageHandler}
-                value={selectedLanguage}
+                value={props.t(selectedLanguage)}
               >
                 {availableLanguages.map(availableLanguage => (
                   <option key={availableLanguages.indexOf(availableLanguage)} value={availableLanguage}>
-                    {readableLanguages[availableLanguage]}
+                    {props.t(readableLanguages[availableLanguage])}
                   </option>
                 ))}
               </AvField>
@@ -93,17 +99,17 @@ function SystemEmailEdit(props){
             <div className="col-sm-8">
               <AvField
                 name="subject"
-                label="Subject"
-                placeholder="Subject"
+                label={props.t("Subject")}
+                placeholder={props.t("Subject")}
                 type="text"
                 value={role.content[selectedLanguage].subject}
-                errorMessage="Enter system email subject"
+                errorMessage="Subject is required"
                 validate={{ required: { value: true } }}
               />
             </div>
 
             <div className="col-sm-8">
-              <label>Content</label>
+              <label>{props.t("Content")}</label>
               {/* draft.js editor component */}  
               <Editor
                 toolbarClassName="toolbarClassName"
@@ -111,8 +117,7 @@ function SystemEmailEdit(props){
                 editorClassName="editorClassName"
                 editorState={editorState}
                 onEditorStateChange={setEditorState}
-                placeholder="Content"
-                required
+                placeholder={props.t("Content")}
               />
             </div>
             {role.permissions && Object.keys(role.permissions).map((permKey, permInd) =>
@@ -132,11 +137,11 @@ function SystemEmailEdit(props){
               <div className="p-2">
                 <Button 
                   // the editorState check is added to make sure that the user has entered a content
-                  disabled={props.editLoading || !editorState.getCurrentContent().getPlainText()} 
+                  disabled={props.editLoading || !editorState.getCurrentContent().getPlainText()}  
                   type="submit" 
                   color="primary"
                 >
-                    Update
+                  {props.t("Update")}
                 </Button>
               </div>
 
@@ -147,17 +152,18 @@ function SystemEmailEdit(props){
                   color="primary" 
                   onClick={() => {props.switchComponents(); props.systemEmailUpdatedHandler()}}
                 >
-                    Back
+                  {props.t("Back")}
                 </Button>
               </div>
             </div>
             {props.editContentError && <UncontrolledAlert color="danger" className="col-sm-8">
               <i className="mdi mdi-block-helper me-2"></i>
-              {props.editContentError}
+              {/* TODO this need to be handled in translation */}
+              {props.t("props.editContentError")}
             </UncontrolledAlert>}
             {props.editContentResult && <UncontrolledAlert color="success" className="col-sm-8">
               <i className="mdi mdi-check-all me-2"></i>
-                  System email updated successfully !!!
+              {props.t("System email updated successfully")} !!!
             </UncontrolledAlert>}
           </AvForm>
         </div>
@@ -171,9 +177,8 @@ const mapStateToProps = (state) => ({
   editContentResult: state.systemEmailsReducer.editContentResult,
   editContentError: state.systemEmailsReducer.editContentError,
   editContentClearingCounter: state.systemEmailsReducer.editContentClearingCounter,
-  activeComponentProp: state.systemEmailsReducer.activeComponentProp,
   systemEmail: state.systemEmailsReducer.systemEmail,
   isBackButtonActive: state.systemEmailsReducer.isBackButtonActive
 });
 
-export default connect(mapStateToProps, null)(SystemEmailEdit);
+export default connect(mapStateToProps, null)(withTranslation()(SystemEmailEdit));

@@ -9,6 +9,8 @@ import {
 import { AvForm, AvField } from "availity-reactstrap-validation";
 
 import {  addSystemEmail } from "store/systemEmail/actions";
+// i18n
+import { withTranslation } from "react-i18next";
 
 function SystemEmailAdd(props){
   const [addModal, setAddModal] = useState(false);
@@ -28,10 +30,12 @@ function SystemEmailAdd(props){
   
   return (
     <React.Fragment >
-      <Link to="#" className="btn btn-light" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> Add New </Link>
+      <Link to="#" className="btn btn-light" onClick={toggleAddModal}>
+        <i className="bx bx-plus me-1"></i> {props.t("Add new")} 
+      </Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
-            Add New System Email 
+          {props.t("Add new system email")} 
         </ModalHeader>
         <ModalBody >
           <AvForm
@@ -43,20 +47,20 @@ function SystemEmailAdd(props){
             <div className="mb-3">
               <AvField
                 name="title"
-                label="Title"
-                placeholder="Title"
+                label={props.t("Title")}
+                placeholder={props.t("Title")}
                 type="text"
-                errorMessage="Title is required"
+                errorMessage={props.t("Title is required")}
                 validate={{ required: { value: true } }}
               />
             </div>
             <div className="mb-3">
               <AvField
                 name="action"
-                label="Action"
-                placeholder="Action"
+                label={props.t("Action")}
+                placeholder={props.t("Action")}
                 type="text"
-                errorMessage="Action is required"
+                errorMessage={props.t("Action is required")}
                 validate={{ required: { value: true } }}
               />
             </div>
@@ -64,17 +68,18 @@ function SystemEmailAdd(props){
               {/* on clicking this button it switches from the list component to the edit component if 
                   submission is valid but it adds the new system email to the db onValidSubmit above */}
               <Button disabled={props.addLoading} type="submit" color="primary">
-                  Next
+                {props.t("Next")}
               </Button>
             </div>
           </AvForm>
           {props.addError && <UncontrolledAlert color="danger">
             <i className="mdi mdi-block-helper me-2"></i>
-            {JSON.stringify(props.addErrorDetails)}
+            {/* TODO this needs to be handled in translation */}
+            {props.t(JSON.stringify(props.addErrorDetails))}
           </UncontrolledAlert>}
           {props.addSuccess && <UncontrolledAlert color="success">
             <i className="mdi mdi-check-all me-2"></i>
-            First step completed successfully !!!
+            {props.t("First step completed successfully")} !!!
           </UncontrolledAlert>}
         </ModalBody>
       </Modal>
@@ -91,4 +96,4 @@ const mapStateToProps = (state) => ({
   activeComponentProp: state.systemEmailsReducer.activeComponentProp
 });
 
-export default connect(mapStateToProps, null)(SystemEmailAdd);
+export default connect(mapStateToProps, null)(withTranslation()(SystemEmailAdd));
