@@ -105,10 +105,9 @@ function Deposit(props){
         <div className="container-fluid">
           <Notification
             onClose={closeNotifaction}
-            body={"The update of the deposit has been made successfully"}
+            body={"The deposit has been updated successfully"}
             show={showNotication}
-            header={"Success"}
-            time={"Now"}
+            header={"Deposit Update"}
             logo={logo}/>
           <Row>
             <Col className="col-12">
