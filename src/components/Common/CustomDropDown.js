@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { 
   Dropdown, DropdownToggle, DropdownItem, DropdownMenu
 } from "reactstrap";
-
-function CustomDropdown({ id, status, approve, reject }){
+import { withTranslation } from "react-i18next";
+function CustomDropdown({ id, status, approve, reject, ...props }){
   const [isOpen, setIsOpen] = useState(false);
 
   const isDisabled = ()=>{
@@ -26,11 +26,11 @@ function CustomDropdown({ id, status, approve, reject }){
           className="chat-noti-dropdown"
         >
           <DropdownToggle tag="i" className="text-muted">
-            <i className="mdi mdi-dots-horizontal font-size-18"></i>
+            <i className="mdi mdi-dots-horizontal font-size-18" style={{ color: isDisabled() ? "lightgray" : "rgb(66, 65, 65)" }}></i>
           </DropdownToggle>
           <DropdownMenu className="dropdown-menu-end">
-            <DropdownItem onClick={()=>approve(id)}href="#">Approve</DropdownItem>
-            <DropdownItem onClick={()=>reject(id)} href="#">Reject</DropdownItem>
+            <DropdownItem onClick={()=>approve(id)}href="#">{props.t("Approve")}</DropdownItem>
+            <DropdownItem onClick={()=>reject(id)} href="#">{props.t("Reject")}</DropdownItem>
                 
           </DropdownMenu>
         </Dropdown>
@@ -39,4 +39,4 @@ function CustomDropdown({ id, status, approve, reject }){
     </div>
   );
 }
-export default CustomDropdown;
+export default withTranslation()(CustomDropdown);
