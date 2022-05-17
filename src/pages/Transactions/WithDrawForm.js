@@ -5,6 +5,14 @@ import {
   ModalHeader,
   ModalBody,
   UncontrolledAlert,
+  Col,
+  Row,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Label,
+  Input
 } from "reactstrap";
 
 import { Link } from "react-router-dom";
@@ -12,37 +20,58 @@ import React, { useState, useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { makeWithdrawalStart } from "store/transactions/withdrawal/action";
 import { fetchGatewaysOfWithdrawalsStart } from "store/gateway/action";
+import { fetchWalletStart, clearWallets } from "store/wallet/action";
+import { fetchClientsStart } from "store/client/actions";
+
 function WithdrawForm(props){
 
   const [open, setWithdrawalModal] = useState(false);
-  const { selectedClient, selectedWallet  } = props;
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
+  const [selectedClient, setSelectedClient] = useState("");
   const dispatch = useDispatch();
+  
   
   const handleWithdraw = (event, values) => {
     event.preventDefault();
     dispatch(makeWithdrawalStart({
       customerId:selectedClient,
-      walletId:selectedWallet,
       ...values
     }));
+    setSearchInput("");
+    dispatch(clearWallets());
     
   }; 
-
+  const selectClient = (id)=>{
+    setSelectedClient(id);
+    dispatch(fetchWalletStart({
+      belongsTo:id
+    }));
+     
+  };
   const toggleAddModal = () => {
     setWithdrawalModal(!open);
   };
   useEffect(()=>{
+    
     dispatch(fetchGatewaysOfWithdrawalsStart());
-  }, []);
+    if (searchInput.length >= 3){
+      dispatch(fetchClientsStart({
+        searchText:searchInput
+      }));
+    }
+  
+  }, [searchInput]);
   useEffect(() => {
     if (props.modalClear && open){
       setWithdrawalModal(false);
     }
   }, [props.modalClear]);
   
+  
   return (
     <React.Fragment >
-      {selectedWallet.length > 0 && <Link to="#" className="btn btn-light" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> Withdraw</Link>}
+      <Link to="#" className="btn btn-light" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> Withdraw</Link>
       <Modal isOpen={open} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
           Withdraw
@@ -56,7 +85,41 @@ function WithdrawForm(props){
             }}
           >
             
-              
+            <Row>
+              <Col md="6">
+                <Label>Client</Label>
+        
+                <Dropdown   toggle={() => setIsOpen(!isOpen)} isOpen={isOpen}>
+                  <DropdownToggle className="transparentbar"  >
+                    <Input  onChange={(e) => setSearchInput(e.target.value) } value={searchInput} placeholder="search for client" />
+                  </DropdownToggle>
+                  <DropdownMenu  >
+                    {props.clients.map((item) => (
+                      <div key={item._id} onClick={(e)=>setSearchInput(e.target.textContent)}>
+                        <DropdownItem onClick={(e)=>selectClient(e.target.value)} value={item._id}>{`${item.firstName} ${item.lastName}`}</DropdownItem>
+                      </div>
+                    ))}
+                  </DropdownMenu>
+                </Dropdown>
+              </Col>
+              <Col md="6">
+                <AvField name="walletId" 
+                  type="select" 
+                  label="Select a wallet"
+                  id="walletList"
+                  validate = {{ required:{ value:true } }}
+                >
+          
+                  {props.wallets.map(wallet=> (
+                    <option key={wallet._id} value={wallet._id} >
+                      {`${wallet.asset}-(Balance ${wallet.amount} ${wallet.asset})`}
+                    </option>
+                  ))}
+ 
+                </AvField>
+              </Col>
+      
+            </Row>  
             <div className="mb-3">
               <AvField
                 name="gateway"
@@ -81,6 +144,8 @@ function WithdrawForm(props){
                 type="text"
                 errorMessage="Enter Valid Amount"
                 validate={{ required: { value: true } }}
+                
+
               />
             </div>
             <div className="mb-3">
@@ -117,6 +182,9 @@ const mapStateToProps = (state) => ({
   gateways:state.gatewayReducer.gateways || [],
   error: state.withdrawalReducer.error,
   withdrawResponseMessage:state.withdrawalReducer.withdrawResponseMessage,
-  modalClear:state.withdrawalReducer.modalClear
+  modalClear:state.withdrawalReducer.modalClear,
+  clients:state.clientReducer.clients || [],
+  wallets:state.walletReducer.wallets || []
+
 });
 export default connect(mapStateToProps, null)(WithdrawForm);

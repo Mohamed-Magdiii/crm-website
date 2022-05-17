@@ -2,52 +2,88 @@ import React, {
   useState, useEffect
 } from "react";
 import { useDispatch, connect } from "react-redux";
-import { fetchClientsStart } from "store/client/actions";
-import { fetchWalletStart } from "store/wallet/action";
 import {
-  Row, Col, Card, CardBody, CardHeader
+  Row, Col, Card, CardBody, CardHeader, CardTitle
 } from "reactstrap";
-import { AvForm, AvField } from "availity-reactstrap-validation";
+import TableLoader from "components/Common/Loader";
+import CustomPagination from "components/Common/CustomPagination";
+import {
+  Table, Thead, Tbody, Tr, Th, Td
+} from "react-super-responsive-table";
 import WithDrawForm from "./WithDrawForm";
-import { fetchWithdrawalsStart } from "store/transactions/withdrawal/action";
+import { 
+  fetchWithdrawalsStart, withdrawApproveStart, withdrawRejectStart
+} from "store/transactions/withdrawal/action";
 import SearchBar from "components/Common/SearchBar";
+import CustomDropdown from "components/Common/CustomDropDown";
 function Withdrawal(props){
   const dispatch = useDispatch();
   const [searchInput, setSearchInput] = useState("");
-  const [selectedClientId, setSelectedClientId] = useState("");
-  const [selectedWalletId, setSelectedWalletId] = useState("");
+  const [sizePerPage, setSizePerPage] = useState(10);
   
-  function selectWallet(id){
-    setSelectedWalletId(id);
-  }
+  
   useEffect(()=>{
-    if (searchInput.length >= 3){
-      dispatch(fetchClientsStart({
-        searchText:searchInput
-      }));
-    }
-
-  }, [searchInput]);
-  useEffect(()=>{
-    dispatch(fetchWithdrawalsStart());
-  }, []);
+    loadWithdrawals(1, sizePerPage);
+  }, [sizePerPage, 1]);
   
   const handleSearchInput = (e)=>{
   
     setSearchInput(e.target.value);
     
   };
+  const columns = [
+    {
+      dataField:"checkbox",
+      text: <input type="checkbox"/>
+    },
+    {
+      dataField: "createdAt",
+      text: "Date",
+      formatter: (val) => (new Date(val.createdAt).toLocaleDateString())
+    }, 
+    {
+      dataField:"customerId",
+      text:"Client",
+      formatter:(val)=>(`${val.customerId.firstName} ${val.customerId.lastName}`)
+    },
+    {
+      dataField:"gateway",
+      text:"Gateway"
+    },
+    {
+      dataField: "currency",
+      text: "Currency",
+    
+    },
+    {
+      dataField: "status",
+      text: " Status",
+      
+    },
+    {
+      dataField:"amount",
+      text:"Amount",
+      
+    },
+    
+    
+    {
+      dataField: "dropdown",
   
-  
-  const selectClient = (id)=>{
-    setSelectedClientId(id);
-    setSelectedWalletId("");
-    dispatch(fetchWalletStart({
-      belongsTo:id
+    },
+  ];
+  const loadWithdrawals = (page, limit)=>{
+    dispatch(fetchWithdrawalsStart({
+      page,
+      limit
     }));
-     
   };
-  
+  const withdrawApprove = (id)=>{
+    dispatch(withdrawApproveStart(id));
+  };
+  const withdrawReject = (id)=>{
+    dispatch(withdrawRejectStart(id));
+  };
   return (
 
     <React.Fragment>
@@ -58,52 +94,56 @@ function Withdrawal(props){
               <Card>
                 <CardHeader className="d-flex flex-column gap-3 ">
                   <div className="d-flex justify-content-between align-items-center">
-                    <h1>Withdrawal Page</h1>
-                    <WithDrawForm selectedWallet={selectedWalletId} selectedClient={selectedClientId}/>
+                    <CardTitle>Withdrawals({props.totalDocs})</CardTitle>
+                    <WithDrawForm />
                   </div>
                   
-                  <SearchBar handleSearchInput={handleSearchInput} placeholder="Search for the client"/>
+                  <SearchBar handleSearchInput={handleSearchInput} placeholder="Search for withdrawals"/>
                       
                 </CardHeader>
                   
                 
                 <CardBody>
-                  <AvForm>
-                    <Row className="col-12">
-                      <Col md="6">
-                        
-                        <AvField name="clients_list" 
-                          type="select" 
-                          label="Select a client "
-                          onChange={(e)=>selectClient(e.target.value)}>
-                          <option hidden>Select a client</option>
-                          {props.clients.map(client=> (
-                            <option key={client._id} value={client._id} >
-                              {`${client.firstName} ${client.lastName}`}
-                            </option>
-                          ))}
-                        </AvField>
-                      </Col>
-                      <Col md="6">
-                        <AvField name="wallet" 
-                          type="select" 
-                          label="Select a wallet"
-                          id="walletList"
-                          onChange={(e)=>selectWallet(e.target.value)}>
-                          <option hidden>Select a wallet</option>
-                          {props.wallets.map(wallet=> (
-                            <option key={wallet._id} value={wallet._id} >
-                              {wallet.recordId}
-                            </option>
-                          ))}
-                     
-                        </AvField>
-                      </Col> 
-                      
-                    </Row>
-                  </AvForm>
-            
-           
+                  <div className="table-rep-plugin">
+                    <div
+                      className="table-responsive mb-0"
+                      data-pattern="priority-columns"
+                    >
+                      <Table
+                        id="tech-companies-1"
+                        className="table "
+                      >
+                        <Thead>
+                          <Tr>
+                            {columns.map((column, index) =>
+                              <Th data-priority={index} key={index}>{column.text}</Th>
+                            )}
+                          </Tr>
+                        </Thead>
+                        <Tbody>
+                          {props.loading && <TableLoader colSpan={4} />}
+                          {!props.loading && props.withdrawals.map((row, rowIndex) =>
+                            <Tr key={rowIndex}>
+                              {columns.map((column, index) =>
+                                <Td key={`${rowIndex}-${index}`}>
+                                  { column.dataField === "checkbox" ? <input type="checkbox"/> : ""}
+                                  { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
+                                  {column.dataField === "dropdown" ? <CustomDropdown  id={row._id} status={row.status} approve={withdrawApprove} reject={withdrawReject}/> : ""}
+                                </Td>
+                              )}
+                            </Tr>
+                          )}
+                        </Tbody>
+                      </Table>
+                      <CustomPagination
+                        {...props}
+                        setSizePerPage={setSizePerPage}
+                        sizePerPage={sizePerPage}
+                        onChange={loadWithdrawals}
+                        docs={props.withdrawals}
+                      />
+                    </div>
+                  </div>
                 </CardBody>
               </Card>
             </Col>
@@ -116,9 +156,18 @@ function Withdrawal(props){
   );
 }
 const mapStateToProps = (state)=>({
-  clients:state.clientReducer.clients || [],
-  wallets:state.walletReducer.wallets || [],
-  withdrawals:state.withdrawalReducer.withdrawals || []
+  loading:state.withdrawalReducer.loading || false,
+  withdrawals:state.withdrawalReducer.withdrawals || [],
+  page: state.withdrawalReducer.page || 1,
+  totalDocs: state.withdrawalReducer.totalDocs || 0,
+  totalPages: state.withdrawalReducer.totalPages || 0,
+  hasNextPage: state.withdrawalReducer.hasNextPage,
+  hasPrevPage: state.withdrawalReducer.hasPrevPage,
+  limit: state.withdrawalReducer.limit,
+  nextPage: state.withdrawalReducer.nextPage,
+  pagingCounter: state.withdrawalReducer.pagingCounter,
+  prevPage: state.withdrawalReducer.prevPage,
+ 
 }
 );
 export default connect(mapStateToProps, null)(Withdrawal);
