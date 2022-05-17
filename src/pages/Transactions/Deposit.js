@@ -18,7 +18,7 @@ import {
 import CustomDropdown from "components/Common/CustomDropDown";
 import TableLoader from "components/Common/TableLoader";
 import Notification from "components/Common/Notification";
-
+import logo from "../../assets/images/logo-sm.svg";
 function Deposit(props){
   const dispatch = useDispatch();
   const [searchInput, setSearchInput] = useState("");
@@ -94,12 +94,22 @@ function Deposit(props){
     dispatch(depositRejectStart(id));
     setShowNotifaction(true);
   };
+  const closeNotifaction = () => {
+    setShowNotifaction(false);
+  };
   return (
 
     <React.Fragment>
      
       <div className="page-content">
         <div className="container-fluid">
+          <Notification
+            onClose={closeNotifaction}
+            body={"The update of the deposit has been made successfully"}
+            show={showNotication}
+            header={"Success"}
+            time={"Now"}
+            logo={logo}/>
           <Row>
             <Col className="col-12">
               <Card>
@@ -113,7 +123,7 @@ function Deposit(props){
                   <SearchBar handleSearchInput={handleSearchInput} placeholder="Search for deposits"/>
                  
                 </CardHeader>
-                <Notification type={"deposit"} show={showNotication}/>
+                
                 
                 <CardBody>
                   

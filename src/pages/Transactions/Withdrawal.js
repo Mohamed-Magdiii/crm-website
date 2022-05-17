@@ -17,6 +17,7 @@ import {
 import SearchBar from "components/Common/SearchBar";
 import CustomDropdown from "components/Common/CustomDropDown";
 import Notification from "components/Common/Notification";
+import logo from "../../assets/images/logo-sm.svg";
 function Withdrawal(props){
   const dispatch = useDispatch();
   const [searchInput, setSearchInput] = useState("");
@@ -88,11 +89,20 @@ function Withdrawal(props){
     dispatch(withdrawRejectStart(id));
     setShowNotifaction(true);
   };
+  const closeNotifaction = () => {
+    setShowNotifaction(false);
+  };
   return (
 
     <React.Fragment>
       <div className="page-content">
         <div className="container-fluid">
+          <Notification onClose={closeNotifaction}
+            body={"The update of the withdraw has been made successfully"}
+            show={showNotication}
+            header={"Success"}
+            time={"Now"}
+            logo={logo}/>
           <Row>
             <Col className="col-12">
               <Card>
@@ -105,8 +115,7 @@ function Withdrawal(props){
                   <SearchBar handleSearchInput={handleSearchInput} placeholder="Search for withdrawals"/>
                       
                 </CardHeader>
-                  
-                <Notification show={showNotication} type= {"withdraw"}/>
+          
                 <CardBody>
                   <div className="table-rep-plugin">
                     <div
