@@ -37,7 +37,7 @@ function Deposit(props){
     {
       dataField:"customerId",
       text:"Client",
-      formatter:(val)=>(`${val.customerId.firstName} ${val.customerId.lastName}`)
+      formatter:(val)=>(val.customerId ? `${val.customerId.firstName} ${val.customerId.lastName}` : "")
     },
     {
       dataField:"gateway",
@@ -61,6 +61,7 @@ function Deposit(props){
     
     {
       dataField:"dropdown", 
+      text:"Action"
     },
   ];
   

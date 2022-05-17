@@ -110,7 +110,7 @@ function DepositForm(props){
                   id="walletList"
                   validate = {{ required:{ value:true } }}
                 >
-              
+                  <option hidden></option>
                   {props.wallets.map(wallet=> (
                     <option key={wallet._id} value={wallet._id} >
                       {`${wallet.asset}-(Balance ${wallet.amount} ${wallet.asset})`}
@@ -132,9 +132,11 @@ function DepositForm(props){
                 errorMessage="Enter valid gateway"
                 validate={{ required: { value: true } }}
               >
+                <option hidden></option>
                 {Object.keys(props.gateways).map((key)=>{
                   return <option key={key}>{props.gateways[key]}</option>;
                 })}
+
               </AvField>
             </div>
               
