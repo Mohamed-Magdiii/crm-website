@@ -1,4 +1,6 @@
-import { FETCH_WALLET_START, FETCH_WALLET_SUCCESS } from "./actionTypes";
+import { 
+  FETCH_WALLET_START, FETCH_WALLET_SUCCESS, CLEAR_WALLETS
+} from "./actionTypes";
 
 export const fetchWalletStart = (params)=>{
   return {
@@ -10,5 +12,10 @@ export const fetchWalletSuccess = (data)=>{
   return {
     type:FETCH_WALLET_SUCCESS,
     payload:data
+  };
+};
+export const clearWallets = ()=>{
+  return {
+    type:CLEAR_WALLETS
   };
 };

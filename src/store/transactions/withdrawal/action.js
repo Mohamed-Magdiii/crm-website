@@ -4,7 +4,10 @@ import {
   MAKE_WITHDRAWAL_START,
   MAKE_WITHDRAWAL_SUCCESS,
   WITHDRAWAL_ERROR,
-  MODAL_CLEAR
+  MODAL_CLEAR,
+  WITHDRAW_APPROVE,
+  WITHDRAW_REJECT,
+  WITHDRAW_STATUS_CHANGE_SUCCESS
 } from "./actionTypes";
 export const fetchWithdrawalsStart = (params)=>{
   return {
@@ -40,6 +43,24 @@ export const withdrawalError = (error)=>{
 export const modalClear = (data)=>{
   return {
     type:MODAL_CLEAR,
+    payload:data
+  };
+};
+export const withdrawApproveStart = (id)=>{
+  return {
+    type:WITHDRAW_APPROVE,
+    payload:{ id }
+  };
+};
+export const withdrawRejectStart = (id)=>{
+  return {
+    type:WITHDRAW_REJECT,
+    payload:{ id }
+  };
+};
+export const withdrawStatusChangeSuccess = (data)=>{
+  return {
+    type:WITHDRAW_STATUS_CHANGE_SUCCESS,
     payload:data
   };
 };

@@ -17,7 +17,15 @@ const walletReducer = (state = initState, action)=>{
         wallets:[...action.payload.result.docs],
         loading:false
       };
+      break;
+    case "CLEAR_WALLETS":
+      state = {
+        wallets:[],
+        loading:false
+      };
   }
+    
+
   return state;
 };
 export default walletReducer;

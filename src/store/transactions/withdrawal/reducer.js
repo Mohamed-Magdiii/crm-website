@@ -23,15 +23,16 @@ const withdrawalReducer = (state = { initalState }, action)=>{
         limit: action.payload.result.limit,
         nextPage: action.payload.result.nextPage,
         page: action.payload.result.page,
+        pagingCounter: action.payload.result.pagingCounter,
         prevPage: action.payload.result.prevPage,
         totalPages: action.payload.result.totalPages,
-        loading: false
+        loading: false,   
       };
       break;
     case "MAKE_WITHDRAWAL_START":
       state = {
         ...state,
-        withdrawalSuccess:false
+        modalClear:false
       };
       break;
     case "MAKE_WITHDRWAL_SUCCESS":
@@ -42,6 +43,27 @@ const withdrawalReducer = (state = { initalState }, action)=>{
         withdrawResponseMessage:action.payload.withdrawal.status
       };
       break;
+    case "WITHDRAW_STATUS_CHANGE_SUCCESS":
+      // eslint-disable-next-line no-case-declarations
+      const { _id } = action.payload;
+      
+      state  = {
+        ...state,
+        withdrawals:state.withdrawals.map(withdraw=>{
+          if (withdraw._id === _id){
+            return {
+
+              ...withdraw,
+              status:action.payload.status 
+            };
+          }
+          else {
+            return withdraw;
+          }
+        })
+      };
+      break;
+
     case "MODAL_CLEAR":
       state = {
         ...state,
