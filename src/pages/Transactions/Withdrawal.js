@@ -44,7 +44,7 @@ function Withdrawal(props){
     {
       dataField:"customerId",
       text:"Client",
-      formatter:(val)=>(`${val.customerId.firstName} ${val.customerId.lastName}`)
+      formatter:(val)=>(val.customerId ? `${val.customerId.firstName} ${val.customerId.lastName}` : "")
     },
     {
       dataField:"gateway",
@@ -69,6 +69,7 @@ function Withdrawal(props){
     
     {
       dataField: "dropdown",
+      text:"Action"
   
     },
   ];
