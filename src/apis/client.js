@@ -1,7 +1,6 @@
 import * as axiosHelper from "./api_helper";
 import qs from "qs";
 export const  getClients = async ({ payload })=>{
-
   const data = await axiosHelper.get(`/clients?${qs.stringify(payload)}`);
   return data;
 
