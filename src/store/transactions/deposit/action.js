@@ -4,7 +4,10 @@ import {
   DEPOSIT_ERROR,
   ADD_DEPOSIT_START,
   ADD_DEPOSIT_SUCCESS,
-  MODAL_CLEAR
+  MODAL_CLEAR,
+  DEPOSIT_APPROVE,
+  DEPOSIT_REJECT,
+  DEPOSIT_STATUS_CHANGE_SUCCESS
 } from "./actionTypes";
 export const fetchDepositsStart = (params = {})=>{
   return {
@@ -41,5 +44,23 @@ export const modalClear = (data)=>{
   return {
     type:MODAL_CLEAR,
     payload:data
+  };
+};
+export const depositApproveStart = (id)=>{
+  return {
+    type:DEPOSIT_APPROVE,
+    payload:{ id }
+  };
+};
+export const depositRejectStart = (id)=>{
+  return {
+    type:DEPOSIT_REJECT,
+    payload: { id }
+  };
+};
+export const transactionStateChange = (data)=>{
+  return {
+    type:DEPOSIT_STATUS_CHANGE_SUCCESS,
+    payload: data
   };
 };
