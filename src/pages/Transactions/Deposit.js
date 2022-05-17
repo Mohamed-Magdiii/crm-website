@@ -17,11 +17,12 @@ import {
 } from "react-super-responsive-table";
 import CustomDropdown from "components/Common/CustomDropDown";
 import TableLoader from "components/Common/TableLoader";
+import Notification from "components/Common/Notification";
 
 function Deposit(props){
   const dispatch = useDispatch();
   const [searchInput, setSearchInput] = useState("");
-  
+  const [showNotication, setShowNotifaction] = useState(false);
   
   const [sizePerPage, setSizePerPage] = useState(10);
   const columns = [
@@ -87,13 +88,16 @@ function Deposit(props){
   };
   const depositApprove = (id)=>{
     dispatch(depositApproveStart(id));
+    setShowNotifaction(true);
   };
   const depositReject = (id)=>{
     dispatch(depositRejectStart(id));
+    setShowNotifaction(true);
   };
   return (
 
     <React.Fragment>
+     
       <div className="page-content">
         <div className="container-fluid">
           <Row>
@@ -107,9 +111,9 @@ function Deposit(props){
                   </div>
                   
                   <SearchBar handleSearchInput={handleSearchInput} placeholder="Search for deposits"/>
-                      
+                 
                 </CardHeader>
-                  
+                <Notification type={"deposit"} show={showNotication}/>
                 
                 <CardBody>
                   
@@ -129,6 +133,7 @@ function Deposit(props){
                             )}
                           </Tr>
                         </Thead>
+                        
                         <Tbody>
                           {props.loading && <TableLoader colSpan={4} />}
                           {!props.loading && props.deposits.map((row, rowIndex) =>

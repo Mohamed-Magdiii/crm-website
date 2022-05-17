@@ -16,11 +16,12 @@ import {
 } from "store/transactions/withdrawal/action";
 import SearchBar from "components/Common/SearchBar";
 import CustomDropdown from "components/Common/CustomDropDown";
+import Notification from "components/Common/Notification";
 function Withdrawal(props){
   const dispatch = useDispatch();
   const [searchInput, setSearchInput] = useState("");
   const [sizePerPage, setSizePerPage] = useState(10);
-  
+  const [showNotication, setShowNotifaction] = useState(false);
   
   useEffect(()=>{
     loadWithdrawals(1, sizePerPage);
@@ -81,9 +82,11 @@ function Withdrawal(props){
   };
   const withdrawApprove = (id)=>{
     dispatch(withdrawApproveStart(id));
+    setShowNotifaction(true);
   };
   const withdrawReject = (id)=>{
     dispatch(withdrawRejectStart(id));
+    setShowNotifaction(true);
   };
   return (
 
@@ -103,7 +106,7 @@ function Withdrawal(props){
                       
                 </CardHeader>
                   
-                
+                <Notification show={showNotication} type= {"withdraw"}/>
                 <CardBody>
                   <div className="table-rep-plugin">
                     <div
