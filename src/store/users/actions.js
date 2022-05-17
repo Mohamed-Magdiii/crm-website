@@ -11,6 +11,7 @@ import {
   FETCH_USERS_ROLES_SUCCESS,
   FETCH_USERS_ROLES_ERROR,
   
+  EDIT_USERS_PASS_START,
   EDIT_USERS_START,
   EDIT_USERS_DONE,
   EDIT_USER_CLEAR,
@@ -88,6 +89,12 @@ export const addUserClear = (data)=>{
 export const editUser = (params = {})=>{
   return {
     type:EDIT_USERS_START,
+    payload: params
+  };
+};
+export const editUserPass = (params = {})=>{
+  return {
+    type:EDIT_USERS_PASS_START,
     payload: params
   };
 };

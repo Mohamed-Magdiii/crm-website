@@ -5,7 +5,7 @@ import { Redirect } from "react-router-dom";
 import Dashboard from "../pages/Dashboard/index";
 
 // Authentication related pages
-import UserProfile from "../pages/Authentication/UserProfile";
+import UserProfile from "../pages/Authentication/Profile/UserProfile";
 import Login from "../pages/Authentication/Login";
 import Logout from "../pages/Authentication/Logout";
 import Register from "../pages/Authentication/Register";
