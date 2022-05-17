@@ -19,6 +19,7 @@ import SystemEmailsList from "../pages/SystemEmail/SystemEmailList";
 // import LeadsList from "../components/Leads/lead.record.list.component";
 import Page404 from "../pages/Authentication/Page404";
 import AssetsList from "../pages/Assests/AssetsList";
+import Reminder from "../pages/Reminder/Reminder";
 const userRoutes = [
 
   //dashboard
@@ -49,6 +50,11 @@ const userRoutes = [
   {
     path: "/teams",
     component: Teams 
+  },
+  //calender
+  {
+    path: "/calendar/reminders",
+    component: Reminder 
   },
   {
     path: "/roles",
