@@ -22,6 +22,9 @@ import invoices from "./invoices/reducer";
 import contacts from "./contacts/reducer";
 import clientReducer from "./client/reducer";
 import leadReducer from "./leads/reducer";
+
+// system emails 
+import systemEmailsReducer from "./systemEmail/reducer";
 import rolesReducer from "./roles/reducer";
 import usersReducer from "./users/reducer";
 import teamsReducer from "./teams/reducer";
@@ -39,6 +42,7 @@ const rootReducer = combineReducers({
   contacts,
   clientReducer,
   leadReducer,
+  systemEmailsReducer,
   rolesReducer,
   usersReducer,
   teamsReducer,
