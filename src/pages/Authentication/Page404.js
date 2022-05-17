@@ -6,6 +6,7 @@ import {
 } from "reactstrap";
 
 import img1 from "../../assets/images/users/avatar-1.jpg";
+import * as content from "content";
 
 import { withRouter } from "react-router-dom";
 
@@ -23,7 +24,7 @@ const items = [
   {
     id: 1,
     img: img1,
-    name: "Exiniti CRM",
+    name: content.clientName + " CRM",
     designation: "Support",
     description:
         "Uh-oh. Whatever you're looking for doesn't seem to exist. Which begs the question: How certain are you that what you're looking for is actually what you need?",

@@ -11,6 +11,7 @@ import {
   ADD_USERS_ERROR,
   ADD_USER_CLEAR,
   EDIT_USERS_START,
+  EDIT_USERS_PASS_START,
   EDIT_USERS_DONE,
   EDIT_USER_CLEAR,
   DELETE_USERS_START,
@@ -25,7 +26,7 @@ const initialState = {
   clearingCounter: 0,
   editClearingCounter: 0,
   deleteClearingCounter: 0,
-  addSuccess:false,
+  addSuccess: false,
   // totalDocs: 0,
   // docs: [],
   // page: 1
@@ -68,7 +69,7 @@ const usersReducer = (state = initialState, action) => {
         rolesloading: true,
       };
       break;
-    case FETCH_USERS_ROLES_SUCCESS: 
+    case FETCH_USERS_ROLES_SUCCESS:
       state = {
         ...state,
         rolesloading: false,
@@ -126,7 +127,15 @@ const usersReducer = (state = initialState, action) => {
         editLoading: true,
       };
       break;
-    case EDIT_USERS_DONE: 
+
+    case EDIT_USERS_PASS_START:
+      state = {
+        ...state,
+        editLoading: true,
+      };
+
+      break;
+    case EDIT_USERS_DONE:
       state = {
         ...state,
         editLoading: false,

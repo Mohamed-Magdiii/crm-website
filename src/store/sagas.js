@@ -11,6 +11,7 @@ import contactsSaga from "./contacts/saga";
 import leadSaga from "./leads/saga";
 import rolesSaga from "./roles/saga";
 import usersSaga from "./users/saga";
+import systemEmailsSaga from "./systemEmail/saga";
 import clientSaga from "./client/saga";
 import teamsSaga from "./teams/saga";
 import assetSaga from "./assests/saga";
@@ -18,6 +19,7 @@ import walletSaga from "./wallet/saga";
 import gatewaySaga from "./gateway/saga";
 import depositSaga from "./transactions/deposit/saga";
 import withdrawalSaga from "./transactions/withdrawal/saga";
+
 export default function* rootSaga() {
   yield all([
     //public
@@ -33,6 +35,7 @@ export default function* rootSaga() {
     fork(leadSaga),
     fork(rolesSaga),
     fork(usersSaga),
+    fork(systemEmailsSaga),
     fork(clientSaga),
     fork(teamsSaga),
     fork(assetSaga),

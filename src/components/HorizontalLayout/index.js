@@ -13,6 +13,7 @@ import {
   changelayoutMode,
   changeLayoutPosition
 } from "../../store/actions";
+import * as content from "content";
 
 //components
 import Navbar from "./Navbar";
@@ -41,7 +42,7 @@ const Layout = (props) => {
     let currentage = title.charAt(1).toUpperCase() + title.slice(2);
 
     document.title =
-      currentage + " | Minia - React Admin & Dashboard Template";
+      currentage + " | CRM Crypto - " + content.clientName;
   }, [props.location.pathname]);
 
   useEffect(() => {

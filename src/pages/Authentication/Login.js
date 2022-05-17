@@ -14,6 +14,7 @@ import { withRouter, Link } from "react-router-dom";
 // availity-reactstrap-validation
 import { AvForm, AvField } from "availity-reactstrap-validation";
 
+import * as content from "content";
 
 // actions
 import { loginUser } from "../../store/actions";
@@ -53,7 +54,7 @@ const Login = props => {
                   <div className="d-flex flex-column h-100">
                     <div className="mb-4 mb-md-5 text-center">
                       <Link to="/dashboard" className="d-block auth-logo">
-                        <img src={logo} alt="" height="28" /> <span className="logo-txt">Exiniti</span>
+                        <img src={logo} alt="" height="28" /> <span className="logo-txt">{content.clientName}</span>
                       </Link>
                     </div>
                     
@@ -68,7 +69,7 @@ const Login = props => {
                         <AvField
                           name="email"
                           label="Email"
-                          value="admin@themesbrand.com"
+                          value=""
                           className="form-control"
                           placeholder="Enter email"
                           type="email"
@@ -86,7 +87,7 @@ const Login = props => {
                         <div className="mb-3">
                           <AvField
                             name="password"
-                            value="123456"
+                            value=""
                             type="password"
                             className="form-control"
                             required
@@ -107,7 +108,7 @@ const Login = props => {
                     </div>
                   </div>
                   <div className="mt-4 mt-md-5 text-center">
-                    <p className="mb-0">© {new Date().getFullYear()} Minia . Crafted with <i className="mdi mdi-heart text-danger"></i> by Themesbrand</p>
+                    <p className="mb-0">© {new Date().getFullYear()} {content.clientName} . Crafted with <i className="mdi mdi-heart text-danger"></i> by Themesbrand</p>
                   </div>
                 </div>
                 

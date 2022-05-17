@@ -55,7 +55,7 @@ function * editRole(params){
     
     const { result } = data;
     yield put(editRoleDone({
-      result,
+      result: params.payload.values,
       id: params.payload.id  
     }));
     yield delay(2000);

@@ -15,8 +15,17 @@ import HorizontalLayout from "./components/HorizontalLayout/";
 import NonAuthLayout from "./components/NonAuthLayout";
 
 // Import scss
-import "./assets/scss/theme.scss";
 import "./assets/scss/preloader.scss";
+// import { default as themeRight } from "./assets/scss/theme-rtl.scss";
+// import { default as themeLeft } from "./assets/scss/theme.scss";
+
+
+const lang = localStorage.getItem("I18N_LANGUAGE");
+if (lang === "ar") {
+  import ("./assets/scss/theme-rtl.scss");
+} else {
+  import ("./assets/scss/theme.scss");
+}
 
 // Import Firebase Configuration file
 // import { initFirebaseBackend } from "./helpers/firebase_helper"
@@ -55,7 +64,7 @@ const App = props => {
     return layoutCls;
   }
 
-  const Layout = getLayout();
+  const Layout = getLayout(); // layout = layoutCls 
   return (
     <React.Fragment>
       <Router>
@@ -79,14 +88,13 @@ const App = props => {
               isAuthProtected={false}
               exact
             />
-          ))}
-
-          
+          ))}  
         </Switch>
       </Router>
     </React.Fragment>
   );
 };
+
 
 App.propTypes = {
   layout: PropTypes.any
@@ -97,5 +105,6 @@ const mapStateToProps = state => {
     layout: state.Layout,
   };
 };
+
 
 export default connect(mapStateToProps, null)(App);

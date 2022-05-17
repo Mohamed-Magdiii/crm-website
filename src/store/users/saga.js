@@ -6,6 +6,7 @@ import {
   FETCH_USERS_START,
   FETCH_USERS_ROLES_START,
   ADD_USERS_START,
+  EDIT_USERS_PASS_START,
   EDIT_USERS_START,
   DELETE_USERS_START
 } from "./actionTypes";
@@ -24,8 +25,7 @@ import {
 } from "./actions";
 
 //Include Both Helper File with needed methods
-import * as usersApi from "../../apis/users";
-
+import * as usersApi from "../../apis/users"; 
 
 function* fetchUsers(params) {
 
@@ -71,9 +71,7 @@ function* addUser(params) {
 
 function* editUser(params) {
   try {
-    const data = yield call(usersApi.editUser, params);
-
-
+    const data = yield call(usersApi.editUser, params); 
     const { result } = data;
     yield put(editUserDone({
       result,
@@ -86,11 +84,25 @@ function* editUser(params) {
     yield put(editUserError({ error: error.message }));
     yield delay(2000);
     yield put(editUserClear());
-  }
-
-
+  } 
 }
-
+function* editUserPass(params) {
+  try {
+    const data = yield call(usersApi.editUserPass, params); 
+    const { result } = data;
+    yield put(editUserDone({
+      result,
+      id: params.payload.id
+    }));
+    yield delay(2000);
+    yield put(editUserClear());
+  }
+  catch (error) {
+    yield put(editUserError({ error: error.message }));
+    yield delay(2000);
+    yield put(editUserClear());
+  } 
+}
 function* deleteUser(params) {
   try {
     const data = yield call(usersApi.deleteUser, params);
@@ -112,6 +124,7 @@ function* usersSaga() {
   yield takeEvery(FETCH_USERS_ROLES_START, fetchRoles);
   yield takeEvery(ADD_USERS_START, addUser);
   yield takeEvery(EDIT_USERS_START, editUser);
+  yield takeEvery(EDIT_USERS_PASS_START, editUserPass);
   yield takeEvery(DELETE_USERS_START, deleteUser);
 }
 

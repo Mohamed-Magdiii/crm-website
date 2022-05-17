@@ -12,6 +12,7 @@ import { withRouter, Link } from "react-router-dom";
 
 // availity-reactstrap-validation
 import { AvForm, AvField } from "availity-reactstrap-validation";
+import * as content from "content";
 
 // action
 import { userForgetPassword } from "../../store/actions";
@@ -36,7 +37,7 @@ const ForgetPasswordPage = props => {
     <React.Fragment>
       <MetaTags>
         <title>
-          Forget Password | Minia - React Admin & Dashboard Template
+          Forget Password | CRM Crypto - {content.clientName}
         </title>
       </MetaTags>
       <div className="auth-page">
@@ -48,13 +49,13 @@ const ForgetPasswordPage = props => {
                   <div className="d-flex flex-column h-100">
                     <div className="mb-4 mb-md-5 text-center">
                       <Link to="/dashboard" className="d-block auth-logo">
-                        <img src={logo} alt="" height="28" /> <span className="logo-txt">Minia</span>
+                        <img src={logo} alt="" height="28" /> <span className="logo-txt">{content.clientName}</span>
                       </Link>
                     </div>
                     <div className="auth-content my-auto">
                       <div className="text-center">
                         <h5 className="mb-0">Reset Password</h5>
-                        <p className="text-muted mt-2">Reset Password with Minia.</p>
+                        <p className="text-muted mt-2">Reset Password with {content.clientName}.</p>
                       </div>
 
                       {forgetError && forgetError ? (
@@ -92,7 +93,7 @@ const ForgetPasswordPage = props => {
                       </div>
                     </div>
                     <div className="mt-4 mt-md-5 text-center">
-                      <p className="mb-0">© {new Date().getFullYear()} Minia   . Crafted with <i className="mdi mdi-heart text-danger"></i> by Themesbrand</p>
+                      <p className="mb-0">© {new Date().getFullYear()} {content.clientName}   . Crafted with <i className="mdi mdi-heart text-danger"></i> by Themesbrand</p>
                     </div>
                   </div>
                 </div>

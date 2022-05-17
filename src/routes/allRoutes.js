@@ -5,7 +5,7 @@ import { Redirect } from "react-router-dom";
 import Dashboard from "../pages/Dashboard/index";
 
 // Authentication related pages
-import userProfile from "../pages/Authentication/user-profile";
+import UserProfile from "../pages/Authentication/Profile/UserProfile";
 import Login from "../pages/Authentication/Login";
 import Logout from "../pages/Authentication/Logout";
 import Register from "../pages/Authentication/Register";
@@ -15,10 +15,14 @@ import UsersList from "../pages/Users/UsersList";
 import LeadsList from "../pages/Leads/LeadList"; 
 import Teams from "../pages/Teams/Teams"; 
 import RolesList from "../pages/Roles/RolesList";
+import SystemEmailsList from "../pages/SystemEmail/SystemEmailList";
+// import LeadsList from "../components/Leads/lead.record.list.component";
 import Page404 from "../pages/Authentication/Page404";
 import AssetsList from "../pages/Assests/AssetsList";
 import Deposit from "pages/Transactions/Deposit";
 import Withdrawal from "pages/Transactions/Withdrawal";
+import Reminder from "../pages/Reminder/Reminder";
+
 const userRoutes = [
 
   //dashboard
@@ -30,7 +34,7 @@ const userRoutes = [
   //profile
   {
     path: "/profile",
-    component: userProfile 
+    component: UserProfile 
   },
   {
     path:"/clients",
@@ -50,9 +54,19 @@ const userRoutes = [
     path: "/teams",
     component: Teams 
   },
+  //calender
+  {
+    path: "/calendar/reminders",
+    component: Reminder 
+  },
   {
     path: "/roles",
     component: RolesList 
+  },
+  // system emails
+  {
+    path: "/system-emails",
+    component: SystemEmailsList
   },
   {
     path:"/assets",
