@@ -52,7 +52,7 @@ function UsersEditModal(props) {
                 label="Current Password"
                 placeholder="Current Password"
                 type="password"
-                errorMessage="Enter Current Password" 
+                errorMessage="Enter Current Password"
                 validate={{ required: { value: true } }}
               />
             </div>
@@ -62,7 +62,7 @@ function UsersEditModal(props) {
                 label="New Password"
                 type="password"
                 placeholder="Password"
-                errorMessage="Enter password"
+                errorMessage="Enter New password"
                 validate={{ required: { value: true } }}
               />
             </div>
@@ -72,7 +72,7 @@ function UsersEditModal(props) {
                 label="Confirm Password"
                 type="password"
                 placeholder="Re-type Password"
-                errorMessage="Enter Re-password"
+                errorMessage="Password Not Match"
                 validate={{
                   required: { value: true },
                   match: { value: "newPassword" },
@@ -91,7 +91,7 @@ function UsersEditModal(props) {
           </UncontrolledAlert>}
           {props.editResult && <UncontrolledAlert color="success">
             <i className="mdi mdi-check-all me-2"></i>
-            Role Updated successfully !!!
+            Update Pasword successfully !!!
           </UncontrolledAlert>}
         </ModalBody>
       </Modal>

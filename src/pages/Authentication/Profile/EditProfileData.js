@@ -75,14 +75,14 @@ function EditProfileData(props) {
                 type="number"
                 errorMessage="Enter Valid Mobile Number"
                 value={user.mobile || " "}
-                // validate={{
-                //   required: {
-                //     // value: true,
-                //     // number: true,
-                //     // min: {value: 0},
-                //     pattern: {value: "^[0-9]"},
-                //   }
-                // }}
+              // validate={{
+              //   required: {
+              //     // value: true,
+              //     // number: true,
+              //     // min: {value: 0},
+              //     pattern: {value: "^[0-9]"},
+              //   }
+              // }}
               />
             </div>
             <div className="mb-3">
@@ -93,14 +93,14 @@ function EditProfileData(props) {
                 type="number"
                 errorMessage="Enter Valid Phone Number"
                 value={user.phone || ""}
-                // validate={{
-                //   required: {
-                //     // value: true,
-                //     // number: true,
-                //     // min: {value: 0},
-                //     pattern: {value: "^[0-9]"},
-                //   }
-                // }}
+              // validate={{
+              //   required: {
+              //     // value: true,
+              //     // number: true,
+              //     // min: {value: 0},
+              //     pattern: {value: "^[0-9]"},
+              //   }
+              // }}
               />
             </div>
             <div className='text-center p-5'>
@@ -115,7 +115,7 @@ function EditProfileData(props) {
           </UncontrolledAlert>}
           {props.editResult && <UncontrolledAlert color="success">
             <i className="mdi mdi-check-all me-2"></i>
-            Role Updated successfully !!!
+            Update Profile successfully !!!
           </UncontrolledAlert>}
         </ModalBody>
       </Modal>
