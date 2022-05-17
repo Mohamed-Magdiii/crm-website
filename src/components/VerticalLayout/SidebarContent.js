@@ -194,7 +194,7 @@ const SidebarContent = (props) => {
                   <Link to="/roles">{props.t("Roles")}</Link>
                 </li>   
                 <li>
-                  <Link to="/email-templates">{props.t("Email Templates")}</Link>
+                  <Link to="/system-emails">{props.t("System Emails")}</Link>
                 </li>
                 <li>
                   <Link to="/user-logs">{props.t("User Logs")}</Link>

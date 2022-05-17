@@ -64,7 +64,7 @@ const App = props => {
     return layoutCls;
   }
 
-  const Layout = getLayout();
+  const Layout = getLayout(); // layout = layoutCls 
   return (
     <React.Fragment>
       <Router>
@@ -88,14 +88,13 @@ const App = props => {
               isAuthProtected={false}
               exact
             />
-          ))}
-
-          
+          ))}  
         </Switch>
       </Router>
     </React.Fragment>
   );
 };
+
 
 App.propTypes = {
   layout: PropTypes.any
@@ -106,5 +105,6 @@ const mapStateToProps = state => {
     layout: state.Layout,
   };
 };
+
 
 export default connect(mapStateToProps, null)(App);
