@@ -47,7 +47,10 @@ function DepositForm(props){
     setDepositModal(!addModal);
   };
   useEffect(()=>{
-    
+    dispatch(fetchClientsStart({
+      page:1,
+      limit:10
+    }));
     dispatch(fetchGatewaysStart());
     if (searchInput.length >= 3){
       dispatch(fetchClientsStart({

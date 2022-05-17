@@ -53,7 +53,10 @@ function WithdrawForm(props){
     setWithdrawalModal(!open);
   };
   useEffect(()=>{
-    
+    dispatch(fetchClientsStart({
+      page:1,
+      limit:10
+    }));
     dispatch(fetchGatewaysOfWithdrawalsStart());
     if (searchInput.length >= 3){
       dispatch(fetchClientsStart({
