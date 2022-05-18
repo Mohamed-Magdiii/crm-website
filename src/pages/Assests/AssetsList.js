@@ -16,6 +16,7 @@ import { fetchAssetsStart, deleteSymbolStart } from "store/assests/actions";
 import AssetForm from "./AssetAdd";
 import AssetEdit from "./AssetEdit";
 import DeleteModal from "components/Common/DeleteModal";
+import { withTranslation } from "react-i18next";
 function AssestsList(props){
   const [selectedSymbol, setSelectedSymbol] = useState();
   const [editModal, setEditModal] = useState(false);
@@ -27,31 +28,31 @@ function AssestsList(props){
     },
     {
       dataField: "createdAt",
-      text: "Date",
+      text: props.t("Date"),
       formatter: (val) => (new Date(val.createdAt).toLocaleDateString())
     }, 
     {
       dataField:"name",
-      text:"Name",
+      text:props.t("Name"),
       
     },
     {
       dataField:"symbol",
-      text:"Symbol"
+      text:props.t("Symbol")
     },
     {
       dataField: "explorerLink",
-      text: "Link",
+      text: props.t("Link"),
     
     },
     {
       dataField: "minAmount",
-      text: " Min deposit Amount",
+      text: props.t("Min deposit Amount"),
       formatter:(val)=>(`${val.minAmount.deposit}`)
     },
     {
       dataField:"minAmount",
-      text:"Min withdrawal Amount",
+      text:props.t("Min withdrawal Amount"),
       formatter:(val)=>(`${val.minAmount.withdrawal}`)
     },
     
@@ -62,14 +63,14 @@ function AssestsList(props){
     },
     {
       dataField:"fee",
-      text:"Withdrawal Fee",
+      text:props.t("Withdrawal Fee"),
       formatter:(val)=>(`${val.fee.withdrawal}`)
     },
     {
       dataField: "",
       isDummyField: true,
       editable: false,
-      text: "Action",
+      text:props.t("Action"),
       formatter: (item) => (
         <div className="d-flex gap-3">
           <Link className="text-success" to="#">
@@ -125,13 +126,13 @@ function AssestsList(props){
     <React.Fragment>
       <div className="page-content">
         <div className="container-fluid">
-          <h2>Symbols</h2>
+          <h2>{props.t("Symbols")}</h2>
           <Row>
             <Col className="col-12">
               <Card>
                 <CardHeader className="d-flex flex-column gap-3">
                   <div className="d-flex justify-content-between  align-items-center">
-                    <CardTitle>Symbols List ({props.totalDocs})</CardTitle>
+                    <CardTitle>{props.t("Symbols List")} ({props.totalDocs})</CardTitle>
                     <AssetForm/>
                   </div>
                   
@@ -204,4 +205,4 @@ const mapStateToProps = (state) => ({
   deleteLoading:state.assetReducer.deleteLoading,
   deleteModalClear:state.assetReducer.deleteModalClear
 });
-export default connect(mapStateToProps, null)(AssestsList);
+export default connect(mapStateToProps, null)(withTranslation()(AssestsList));
