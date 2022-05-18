@@ -25,6 +25,11 @@ function ClientsList(props) {
   const checkAllBoxes = ()=>{
     setCheckAll(!checkAll);
   };
+  function captilazeFirstLetter(word){
+    
+    const firstLetterCaptilaziedWord = word.charAt(0).toUpperCase() + word.slice(1);
+    return firstLetterCaptilaziedWord;
+  }
   const columns = [
     {
       dataField: "checkbox",
@@ -38,12 +43,12 @@ function ClientsList(props) {
     {
       dataField: "name",
       text: props.t("Name"),
-      formatter: (val) => (`${val.firstName} ${val.lastName}`),
+      formatter: (val) => (captilazeFirstLetter(`${val.firstName} ${val.lastName}`)),
     },
     {
       dataField: "category",
       text:props.t("Type"),
-      formatter: (val) => (val.category === "LIVE_INDIVIDUAL" ? "LIVE" : val.category),
+      formatter: (val) => (val.category === "LIVE_INDIVIDUAL" ? "Live" : val.category),
 
     },
     {
@@ -59,6 +64,7 @@ function ClientsList(props) {
     {
       dataField: "country",
       text: props.t("Country"),
+      formatter: (val) => (captilazeFirstLetter(`${val.country}`)),
 
     },
 
