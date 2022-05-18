@@ -1,8 +1,8 @@
 import React, { useCallback } from "react";
 import "./SearchBar.styles.scss";
 import { debounce } from "lodash";
-
-function SearchBar({ handleSearchInput, placeholder = "Search" }){
+import { withTranslation } from "react-i18next";
+function SearchBar({ handleSearchInput, placeholder = "Search", ...props }){
 
   const debouncedChangeHandler = useCallback(
     debounce(handleSearchInput, 1000), []
@@ -18,10 +18,10 @@ function SearchBar({ handleSearchInput, placeholder = "Search" }){
           type="text" 
           aria-labelledby="search-bar-0-label" 
           className="form-control u-padding-left" 
-          placeholder={placeholder}
+          placeholder={props.t(placeholder)}
         />
       </div>
     </div>
   );
 }
-export default SearchBar;
+export default withTranslation()(SearchBar);
