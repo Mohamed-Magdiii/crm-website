@@ -12,7 +12,7 @@ import {
 import {
   AvForm, AvField, 
 } from "availity-reactstrap-validation";
-
+import { withTranslation } from "react-i18next";
 import { editSymbolStart } from "store/assests/actions";
 function AssetEdit (props) {
   const { open, symbol = {}, onClose } = props;
@@ -54,7 +54,7 @@ function AssetEdit (props) {
       {/* <Link to="#" className="btn btn-light" onClick={onClose}><i className="bx bx-plus me-1"></i> Add New</Link> */}
       <Modal isOpen={open} toggle={onClose} centered={true}>
         <ModalHeader toggle={onClose} tag="h4">
-            Edit Symbol
+          {props.t("Edit Symbol")}
         </ModalHeader>
         <ModalBody >
           <AvForm
@@ -68,10 +68,10 @@ function AssetEdit (props) {
                 <div className="mb-3">
                   <AvField
                     name="name"
-                    label="Name"
-                    placeholder="Name"
+                    label={props.t("Name")}
+                    placeholder={props.t("Name")}
                     type="text"
-                    errorMessage="Enter name of the symbol"
+                    errorMessage={props.t("Enter name of the symbol")}
                     value={symbol.name}
                     validate={{ required:{ value:true } } }
                   />
@@ -81,10 +81,10 @@ function AssetEdit (props) {
                 <div className="mb-3">
                   <AvField
                     name="symbol"
-                    label="Symbol"
-                    placeholder="Symbol"
+                    label={props.t("Symbol")}
+                    placeholder={props.t("Symbol")}
                     type="text"
-                    errorMessage="Enter symbol"
+                    errorMessage={props.t("Enter symbol")}
                     value={symbol.symbol}
                     validate={{ required:{ value:true } } }
                   />
@@ -96,10 +96,10 @@ function AssetEdit (props) {
                 <div className="mb-3">
                   <AvField
                     name="description"
-                    label="Description"
-                    placeholder="Description"
+                    label={props.t("Description")}
+                    placeholder={props.t("Description")}
                     type="text"
-                    errorMessage="Enter description"
+                    errorMessage={props.t("Enter description")}
                     value={symbol.description}
                     validate={{ required:{ value:true } } }
                   />
@@ -109,10 +109,10 @@ function AssetEdit (props) {
                 <div className="mb-3">
                   <AvField
                     name="markup"
-                    label="Mark up"
-                    placeholder="Markup"
+                    label={props.t("Mark up")}
+                    placeholder={props.t("Markup")}
                     type="text"
-                    errorMessage="Enter valid markup"
+                    errorMessage={props.t("Enter valid markup")}
                     value={symbol.markup}
                     validate={{ required:{ value:true } } }
                   />
@@ -124,10 +124,10 @@ function AssetEdit (props) {
                 <div className="mb-3">
                   <AvField
                     name="depositFee"
-                    label="Desposit Fee"
-                    placeholder="Desposit Fee"
+                    label={props.t("Desposit Fee")}
+                    placeholder={props.t("Desposit Fee")}
                     type="text"
-                    errorMessage="Enter valid deposit fee"
+                    errorMessage={props.t("Enter valid deposit fee")}
                     value={depositFee}
                     validate={{ required:{ value:true } } }
                   />
@@ -137,10 +137,10 @@ function AssetEdit (props) {
                 <div className="mb-3">
                   <AvField
                     name="withdrawFee"
-                    label="Withdraw Fee"
-                    placeholder="Withdraw Fee"
+                    label={props.t("Withdraw Fee")}
+                    placeholder={props.t("Withdraw Fee")}
                     type="text"
-                    errorMessage="Enter valid withdraw fee"
+                    errorMessage={props.t("Enter valid withdraw fee")}
                     value={withdrawalFee}
                     validate={{ required:{ value:true } }}
                   />
@@ -152,10 +152,10 @@ function AssetEdit (props) {
                 <div className="mb-3">
                   <AvField
                     name="minDepositAmount"
-                    label="Min Deposit Amount"
-                    placeholder="deposit amount"
+                    label={props.t("Min Deposit Amount")}
+                    placeholder={props.t("deposit amount")}
                     type="text"
-                    errorMessage="Enter valid deposit amount"
+                    errorMessage={props.t("Enter valid deposit amount")}
                     value={minDepositAmount}
                     validate={{ required:{ value:true } }}
                   />
@@ -165,10 +165,10 @@ function AssetEdit (props) {
                 <div className="mb-3">
                   <AvField
                     name="minWithdrawAmount"
-                    label="Min Withdraw Amount"
-                    placeholder="withdraw amount"
+                    label={props.t("Min Withdraw Amount")}
+                    placeholder={props.t("withdraw amount")}
                     type="text"
-                    errorMessage="Enter valid withdraw amount"
+                    errorMessage={props.t("Enter valid withdraw amount")}
                     value={minWithdrawAmount}
                     validate={{ required:{ value:true } }}
                   />
@@ -188,17 +188,17 @@ function AssetEdit (props) {
             </div>
             <div className='text-center pt-3 p-2'>
               <Button disabled={props.addLoading} type="submit" color="primary" className="">
-                Update Symbol
+                {props.t("Update Symbol")}
               </Button>
             </div>
           </AvForm>
           {props.error && <UncontrolledAlert color="danger">
             <i className="mdi mdi-block-helper me-2"></i>
-            {props.error}
+            {props.t(props.error)}
           </UncontrolledAlert>}
           {props.editDone && <UncontrolledAlert color="success">
             <i className="mdi mdi-check-all me-2"></i>
-            Symbol Updated successfully !!!
+            {props.t("Symbol Updated successfully !!!")}
           </UncontrolledAlert>}
         </ModalBody>
       </Modal>
@@ -213,4 +213,4 @@ const mapStateToProps = (state) => ({
   editClear: state.assetReducer.editClear,  
   error:state.assetReducer.error
 });
-export default connect(mapStateToProps, null)(AssetEdit);
+export default connect(mapStateToProps, null)(withTranslation()(AssetEdit));

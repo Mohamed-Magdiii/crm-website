@@ -8,7 +8,7 @@ import {
   Col,
   Row
 } from "reactstrap";
-
+import { withTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
@@ -46,10 +46,10 @@ function ClientForm(props){
 
   return (
     <React.Fragment >
-      <Link to="#" className="btn btn-light" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> Add New</Link>
+      <Link to="#" className="btn btn-light" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i>{props.t("Add New")}</Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
-          Add New Client
+          {props.t("Add New Client")}
         </ModalHeader>
         <ModalBody >
           <AvForm
@@ -63,10 +63,10 @@ function ClientForm(props){
                 <div className="mb-3">
                   <AvField
                     name="firstName"
-                    label="First Name"
-                    placeholder="First Name"
+                    label={props.t("First Name")}
+                    placeholder={props.t("First Name")}
                     type="text"
-                    errorMessage="Enter First Name"
+                    errorMessage={props.t("Enter First Name")}
                     validate={{ required: { value: true } }}
                   />
                 </div>
@@ -75,10 +75,10 @@ function ClientForm(props){
                 <div className="mb-3">
                   <AvField
                     name="lastName"
-                    label="Last Name"
-                    placeholder="Last Name"
+                    label={props.t("Last Name")}
+                    placeholder={props.t("Last Name")}
                     type="text"
-                    errorMessage="Enter Last Name"
+                    errorMessage={props.t("Enter Last Name")}
                     validate={{ required: { value: true } }}
                   />
                 </div>
@@ -89,10 +89,10 @@ function ClientForm(props){
                 <div className="mb-3">
                   <AvField
                     name="email"
-                    label="Email"
-                    placeholder="Email"
+                    label={props.t("Email")}
+                    placeholder={props.t("Email")}
                     type="email"
-                    errorMessage="Enter Email"
+                    errorMessage={props.t("Enter Email")}
                     validate={{ required: { value: true } }}
                   />
                 </div>
@@ -101,10 +101,10 @@ function ClientForm(props){
                 <div className="mb-3">
                   <AvField
                     name="phone"
-                    label="Phone"
-                    placeholder="Phone"
+                    label={props.t("Phone")}
+                    placeholder={props.t("Phone")}
                     type="text"
-                    errorMessage="Enter valid phone"
+                    errorMessage={props.t("Enter valid phone")}
                     validate={{ required: { value: true } }}
                   />
                 </div>
@@ -113,10 +113,10 @@ function ClientForm(props){
             <div className="mb-3">
               <AvField
                 name="password"
-                label="Password"
-                placeholder="Password"
+                label={props.t("Password")}
+                placeholder={props.t("Password")}
                 type="password"
-                errorMessage="Enter valid password"
+                errorMessage={props.t("Enter valid password")}
                 validate={{ required: { value: true } }}
               />
             </div>
@@ -125,17 +125,17 @@ function ClientForm(props){
             </div>
             <div className='text-center pt-3 p-2'>
               <Button  type="submit" color="primary" className="">
-                    Add new Client 
+                {props.t("Add new Client")}
               </Button>
             </div>
           </AvForm>
           {props.error && <UncontrolledAlert color="danger">
             <i className="mdi mdi-block-helper me-2"></i>
-            {props.error}
+            {props.t(props.error)}
           </UncontrolledAlert>}
           {props.successMessage && <UncontrolledAlert color="success">
             <i className="mdi mdi-check-all me-2"></i>
-              Client Added successfully !!!
+            {props.t("Client Added successfully !!!")}
           </UncontrolledAlert>}
         </ModalBody>
       </Modal>
@@ -146,4 +146,4 @@ const mapStateToProps = (state) => ({
   error: state.clientReducer.error,
   successMessage: state.clientReducer.successMessage,
 });
-export default connect(mapStateToProps, null)(ClientForm);
+export default connect(mapStateToProps, null)(withTranslation()(ClientForm));

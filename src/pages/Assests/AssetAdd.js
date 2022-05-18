@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { addNewSymbol } from "store/assests/actions";
-
+import { withTranslation } from "react-i18next";
 function AssestForm(props){
 
   const [addModal, setAddUserModal] = useState(false);
@@ -40,10 +40,10 @@ function AssestForm(props){
 
   return (
     <React.Fragment >
-      <Link to="#" className="btn btn-light" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> Add New</Link>
+      <Link to="#" className="btn btn-light" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i>{props.t("Add New Symbol")}</Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
-          Add New Symbol
+          {props.t("Add New Symbol")}
         </ModalHeader>
         <ModalBody >
           <AvForm
@@ -57,10 +57,10 @@ function AssestForm(props){
                 <div className="mb-3">
                   <AvField
                     name="name"
-                    label="Name"
-                    placeholder="Name"
+                    label={props.t("Name")}
+                    placeholder={props.t("Name")}
                     type="text"
-                    errorMessage="Enter name of the symbol"
+                    errorMessage={props.t("Enter name of the symbol")}
                     validate={{ required: { value: true } }}
                   />
                 </div>
@@ -69,10 +69,10 @@ function AssestForm(props){
                 <div className="mb-3">
                   <AvField
                     name="symbol"
-                    label="Symbol"
-                    placeholder="Symbol"
+                    label={props.t("Symbol")}
+                    placeholder={props.t("Symbol")}
                     type="text"
-                    errorMessage="Enter symbol"
+                    errorMessage={props.t("Enter symbol")}
                     validate={{ required: { value: true } }}
                   />
                 </div>
@@ -83,10 +83,10 @@ function AssestForm(props){
                 <div className="mb-3">
                   <AvField
                     name="description"
-                    label="Description"
-                    placeholder="Description"
+                    label={props.t("Description")}
+                    placeholder={props.t("Description")}
                     type="text"
-                    errorMessage="Enter description"
+                    errorMessage={props.t("Enter description")}
                     validate={{ required: { value: true } }}
                   />
                 </div>
@@ -95,10 +95,10 @@ function AssestForm(props){
                 <div className="mb-3">
                   <AvField
                     name="markup"
-                    label="Mark up"
-                    placeholder="Markup"
+                    label={props.t("Mark up")}
+                    placeholder={props.t("Markup")}
                     type="text"
-                    errorMessage="Enter valid markup"
+                    errorMessage={props.t("Enter valid markup")}
                     validate={{ required: { value: true } }}
                   />
                 </div>
@@ -109,10 +109,10 @@ function AssestForm(props){
                 <div className="mb-3">
                   <AvField
                     name="depositFee"
-                    label="Desposit Fee"
-                    placeholder="Desposit Fee"
+                    label={props.t("Desposit Fee")}
+                    placeholder={props.t("Desposit Fee")}
                     type="text"
-                    errorMessage="Enter valid deposit fee"
+                    errorMessage={props.t("Enter valid deposit fee")}
                     validate={{ required: { value: true } }}
                   />
                 </div>
@@ -121,10 +121,10 @@ function AssestForm(props){
                 <div className="mb-3">
                   <AvField
                     name="withdrawFee"
-                    label="Withdraw Fee"
-                    placeholder="Withdraw Fee"
+                    label={props.t("Withdraw Fee")}
+                    placeholder={props.t("Withdraw Fee")}
                     type="text"
-                    errorMessage="Enter valid withdraw fee"
+                    errorMessage={props.t("Enter valid withdraw fee")}
                     validate={{ required: { value: true } }}
                   />
                 </div>
@@ -135,10 +135,10 @@ function AssestForm(props){
                 <div className="mb-3">
                   <AvField
                     name="minDepositAmount"
-                    label="Min Deposit Amount"
-                    placeholder="deposit amount"
+                    label={props.t("Min Deposit Amount")}
+                    placeholder={props.t("deposit amount")}
                     type="text"
-                    errorMessage="Enter valid deposit amount"
+                    errorMessage={props.t("Enter valid deposit amount")}
                     validate={{ required: { value: true } }}
                   />
                 </div>
@@ -147,10 +147,10 @@ function AssestForm(props){
                 <div className="mb-3">
                   <AvField
                     name="minWithdrawAmount"
-                    label="Min Withdraw Amount"
-                    placeholder="withdraw amount"
+                    label={props.t("Min Withdraw Amount")}
+                    placeholder={props.t("withdraw amount")}
                     type="text"
-                    errorMessage="Enter valid withdraw amount"
+                    errorMessage={props.t("Enter valid withdraw amount")}
                     validate={{ required: { value: true } }}
                   />
                 </div>
@@ -159,27 +159,27 @@ function AssestForm(props){
             <div className="mb-3">
               <AvField
                 name="explorerLink"
-                label="Link"
-                placeholder="explorer link"
+                label={props.t("Link")}
+                placeholder={props.t("explorer link")}
                 type="text"
-                errorMessage="explorer link"
+                errorMessage={props.t("explorer link")}
                 validate={{ required: { value: true } }}
               />
             </div>
             
             <div className='text-center pt-3 p-2'>
               <Button  type="submit" color="primary" className="">
-                    Add New Symbol 
+                {props.t("Add New Symbol")}
               </Button>
             </div>
           </AvForm>
           {props.error && <UncontrolledAlert color="danger">
             <i className="mdi mdi-block-helper me-2"></i>
-            {props.error}
+            {props.t(props.error)}
           </UncontrolledAlert>}
           {props.addSymbolSuccessMessage && <UncontrolledAlert color="success">
             <i className="mdi mdi-check-all me-2"></i>
-              Symbol Added successfully !!!
+            {props.t("Symbol Added successfully !!!")}
           </UncontrolledAlert>}
         </ModalBody>
       </Modal>
@@ -190,4 +190,4 @@ const mapStateToProps = (state) => ({
   error: state.assetReducer.error,
   addSymbolSuccessMessage: state.assetReducer.addSymbolSuccessMessage,
 });
-export default connect(mapStateToProps, null)(AssestForm);
+export default connect(mapStateToProps, null)(withTranslation()(AssestForm));
