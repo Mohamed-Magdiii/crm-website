@@ -15,7 +15,7 @@ import {
   AvRadio,
 } from "availity-reactstrap-validation";
 import { addNewEvent } from "../../apis/reminder";
-
+import { withTranslation } from "react-i18next";
 function AddReminderToClientModal(props) {
   const { selectedClient, onClose, openAdd } = props;
   const [errorMassage, seterrorMassage] = useState("");
@@ -56,7 +56,7 @@ function AddReminderToClientModal(props) {
     <React.Fragment >
       <Modal isOpen={openAdd} toggle={onClose} centered={true}>
         <ModalHeader toggle={onClose} tag="h4">
-          Add Reminder To Client
+          {props.t("Add Reminder To Client")}
         </ModalHeader>
         <ModalBody >
 
@@ -64,16 +64,16 @@ function AddReminderToClientModal(props) {
             <Row form>
 
               <Col className="col-12 mb-3">
-                <label>Client</label>
-                <h5>{selectedClient?.firstName + " " + selectedClient?.lastName}</h5>
+                <label>{props.t("Client")}</label>
+                <h5>{props.t(selectedClient?.firstName + " " + selectedClient?.lastName)}</h5>
               </Col>
 
               <Col className="col-12 mb-3">
                 <AvField
                   name="note"
-                  label="Reminder Note"
+                  label={props.t("Reminder Note")}
                   type="text"
-                  errorMessage="Invalid Reminder Note"
+                  errorMessage={props.t("Invalid Reminder Note")}
                   validate={{
                     required: { value: true },
                   }}
@@ -88,9 +88,9 @@ function AddReminderToClientModal(props) {
                 <AvField
                   type="datetime-local"
                   name="timeEnd"
-                  label="Reminder"
+                  label={props.t("Reminder")}
                   value={new Date().toISOString().slice(0, -5)}
-                  errorMessage="Invalid Reminder Note"
+                  errorMessage={props.t("Invalid Reminder Note")}
                 >
                 </AvField>
               </Col>
@@ -98,12 +98,12 @@ function AddReminderToClientModal(props) {
                 <AvRadioGroup
                   inline
                   name="type"
-                  label="Type"
+                  label={props.t("Type")}
                   required
-                  errorMessage="Invalid Reminder type"
+                  errorMessage={props.t("Invalid Reminder type")}
                 >
-                  <AvRadio label="Reminder" value="1" />
-                  <AvRadio label="Todo" value="0" />
+                  <AvRadio label={props.t("Reminder")} value="1" />
+                  <AvRadio label={props.t("Todo")} value="0" />
                 </AvRadioGroup>
               </Col>
 
@@ -115,7 +115,7 @@ function AddReminderToClientModal(props) {
                     type="submit"
                     className="btn btn-success save-event"
                   >
-                    Add
+                    {props.t("Add")}
                   </button>
                 </div>
               </Col>
@@ -124,13 +124,13 @@ function AddReminderToClientModal(props) {
           {alertShow && (
             <UncontrolledAlert color="success">
               <i className="mdi mdi-check-all me-2"></i>
-              {alertmsg}
+              {props.t(alertmsg)}
             </UncontrolledAlert>
           )}
           {errorAlert && (
             <UncontrolledAlert color="danger">
               <i className="mdi mdi-block-helper me-2"></i>
-              {errorMassage}
+              {props.t(errorMassage)}
             </UncontrolledAlert>
           )}
         </ModalBody>
@@ -139,4 +139,4 @@ function AddReminderToClientModal(props) {
   );
 }
 
-export default AddReminderToClientModal;
+export default withTranslation()(AddReminderToClientModal);
