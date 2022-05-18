@@ -16,7 +16,7 @@ import { AvForm, AvField } from "availity-reactstrap-validation";
 import { apiError, addNewLeadSuccess } from "store/leads/actions";
 import { addNewLead } from "../../store/leads/actions";
 import CountryDropDown from "../../components/Common/CountryDropDown";
-
+import { withTranslation } from "react-i18next";
 function LeadForm(props) {
 
   const [addModal, setAddUserModal] = useState(false);
@@ -49,11 +49,11 @@ function LeadForm(props) {
     <React.Fragment >
       <Link to="#" className="btn btn-light" onClick={toggleAddModal}>
         <i className="bx bx-plus me-1"/> 
-        Add New
+        {props.t("Add New")}
       </Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
-          Add New Lead
+          {props.t("Add New Lead")}
         </ModalHeader>
         <ModalBody >
           <AvForm
@@ -67,10 +67,10 @@ function LeadForm(props) {
                 <div className="mb-3">
                   <AvField
                     name="firstName"
-                    label="First Name"
-                    placeholder="First Name"
+                    label={props.t("First Name")}
+                    placeholder={props.t("First Name")}
                     type="text"
-                    errorMessage="Enter First Name"
+                    errorMessage={props.t("Enter First Name")}
                     validate={{ required: { value: true } }}
                   />
                 </div>
@@ -79,10 +79,10 @@ function LeadForm(props) {
                 <div className="mb-3">
                   <AvField
                     name="lastName"
-                    label="Last Name"
-                    placeholder="Last Name"
+                    label={props.t("Last Name")}
+                    placeholder={props.t("Last Name")}
                     type="text"
-                    errorMessage="Enter Last Name"
+                    errorMessage={props.t("Enter Last Name")}
                     validate={{ required: { value: true } }}
                   />
                 </div>
@@ -93,10 +93,10 @@ function LeadForm(props) {
                 <div className="mb-3">
                   <AvField
                     name="email"
-                    label="Email"
-                    placeholder="Email"
+                    label={props.t("Email")}
+                    placeholder={props.t("Email")}
                     type="email"
-                    errorMessage="Enter Email"
+                    errorMessage={props.t("Enter Email")}
                     validate={{ required: { value: true } }}
                   />
                 </div>
@@ -105,10 +105,10 @@ function LeadForm(props) {
                 <div className="mb-3">
                   <AvField
                     name="phone"
-                    label="Phone"
-                    placeholder="Phone"
+                    label={props.t("Phone")}
+                    placeholder={props.t("Phone")}
                     type="text"
-                    errorMessage="Enter valid phone"
+                    errorMessage={props.t("Enter valid phone")}
                     validate={{ required: { value: true } }}
                   />
                 </div>
@@ -117,10 +117,10 @@ function LeadForm(props) {
             <div className="mb-3">
               <AvField
                 name="password"
-                label="Password"
-                placeholder="Password"
+                label={props.t("Password")}
+                placeholder={props.t("Password")}
                 type="password"
-                errorMessage="Enter valid password"
+                errorMessage={props.t("Enter valid password")}
                 validate={{ required: { value: true } }}
               />
             </div>
@@ -129,7 +129,7 @@ function LeadForm(props) {
             </div>
             <div className='text-center pt-3 p-2'>
               <Button  type="submit" color="primary" className="">
-                    Add New Lead
+                {props.t("Add New Lead")}
               </Button>
             </div>
           </AvForm>
@@ -137,7 +137,7 @@ function LeadForm(props) {
             props.error && (
               <UncontrolledAlert color="danger">
                 <i className="mdi mdi-block-helper me-2"/>
-                {props.error}
+                {props.t(props.error)}
               </UncontrolledAlert>
             )
           }
@@ -145,7 +145,7 @@ function LeadForm(props) {
             props.successMessage && (
               <UncontrolledAlert color="success">
                 <i className="mdi mdi-check-all me-2"/>
-                  Lead Added successfully !!!
+                {props.t("Lead Added successfully !!!")}
               </UncontrolledAlert>
             )
           }
@@ -160,4 +160,4 @@ const mapStateToProps = (state) => ({
   successMessage: state.leadReducer.successMessage,
 });
 
-export default connect(mapStateToProps, null)(LeadForm);
+export default connect(mapStateToProps, null)(withTranslation()(LeadForm));
