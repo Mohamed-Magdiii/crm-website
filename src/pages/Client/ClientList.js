@@ -78,13 +78,39 @@ function ClientsList(props) {
         if (val.stages) {
           const { kycApproved, kycRejected } = val.stages;
           if (kycApproved) {
-            return "Approved";
+            return (<div className="d-flex gap-3">
+              <Link className="text-success" to="#">
+                <i
+                  className="mdi mdi-check-circle font-size-20"
+                  id="approve-icon"
+              
+                ></i>
+              </Link>
+            </div>);
           }
           if (kycRejected) {
-            return "Rejected";
+            return (
+              <div className="d-flex gap-3">
+                <Link className="text-danger" to="#">
+                  <i
+                    className="mdi mdi-close-thick font-size-20"
+                    id="reject-icon"
+                
+                  ></i>
+                </Link>
+              </div>);
+            
           }
           else {
-            return "Pending";
+            return (<div className="d-flex gap-3">
+              <Link className="text-warning" to="#">
+                <i
+                  className="mdi mdi-alert-decagram-outline font-size-20"
+                  id="pending-icon"
+                
+                ></i>
+              </Link>
+            </div>);
           }
         }
         else {
