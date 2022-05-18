@@ -15,7 +15,7 @@ import "./LeadList.scss";
 import { fetchLeadsStart } from "../../store/leads/actions";
 import LeadForm from "pages/Leads/LeadAdd";
 import SearchBar from "components/Common/SearchBar";
-
+import { withTranslation } from "react-i18next";
 function LeadsList(props) {
 
   const columns = [
@@ -25,45 +25,45 @@ function LeadsList(props) {
     },
     {
       dataField: "createdAt",
-      text: "Date",
+      text: props.t("Date"),
       formatter: (val) => (new Date(val.createdAt).toLocaleDateString()),
     }, 
     {
       dataField: "name",
-      text: "Name",
+      text: props.t("Name"),
       formatter: (val) => (`${val.firstName} ${val.lastName}`),
     },
     {
       dataField: "email",
-      text: "Email",
+      text:props.t("Email"),
     
     },
     {
       dataField: "phone",
-      text: "Phone",
+      text:props.t("Phone"),
     },
     {
       dataField: "language",
-      text: "Language",
+      text:props.t("Language"),
     },
     {
       dataField: "callStatus",
-      text: "Status",
+      text:props.t("Status"),
     
     },
     {
       dataField: "country",
-      text: "Country",
+      text: props.t("Country"),
   
     }, 
     {
       dataField: "agent",
-      text: "Agent",
+      text:props.t("Agent"),
       formatter: (val) => (val.agent ? val.agent._id : "-"),
     },
     {
       dataField: "source",
-      text: "Source",
+      text:props.t("Source"),
     }
   ];
  
@@ -100,13 +100,13 @@ function LeadsList(props) {
     <React.Fragment>
       <div className="page-content"> 
         <div className="container-fluid">
-          <h2>Leads List</h2>
+          <h2>{props.t("Leads List")}</h2>
           <Row>
             <Col className="col-12">
               <Card>
                 <CardHeader className="d-flex flex-column gap-3">
                   <div className="d-flex justify-content-between  align-items-center">
-                    <CardTitle>Leads List ({totalDocs})</CardTitle>
+                    <CardTitle>{props.t("Leads List")} ({totalDocs})</CardTitle>
                     <LeadForm/>
                   </div>
                   <SearchBar handleSearchInput={handleSearchInput} />
@@ -175,4 +175,4 @@ const mapStateToProps = (state) => ({
   prevPage: state.leadReducer.prevPage,
 });
 
-export default connect(mapStateToProps, null)(LeadsList);
+export default connect(mapStateToProps, null)(withTranslation()(LeadsList));

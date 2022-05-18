@@ -17,7 +17,7 @@ import { fetchClientsStart } from "store/client/actions";
 import "./ClientList.styles.scss";
 import SearchBar from "components/Common/SearchBar";
 import { Link } from "react-router-dom";
-
+import { withTranslation } from "react-i18next";
 function ClientsList(props) {
   const [addModal, setAddReminderToClientModal] = useState(false);
   const [selectedClient, setSelectedClient] = useState({});
@@ -32,47 +32,48 @@ function ClientsList(props) {
     },
     {
       dataField: "createdAt",
-      text: "Date",
+      text: props.t("Date"),
       formatter: (val) => (new Date(val.createdAt).toLocaleDateString())
     },
     {
       dataField: "name",
-      text: "Name",
+      text: props.t("Name"),
       formatter: (val) => (`${val.firstName} ${val.lastName}`),
     },
     {
       dataField: "category",
-      text: "Type",
+      text:props.t("Type"),
       formatter: (val) => (val.category === "LIVE_INDIVIDUAL" ? "LIVE" : val.category),
+
     },
     {
       dataField: "email",
-      text: "Email",
+      text:props.t("Email"),
 
     },
     {
       dataField: "phone",
-      text: "Phone",
+      text: props.t("Phone"),
 
     },
     {
       dataField: "country",
-      text: "Country",
+      text: props.t("Country"),
 
     },
 
     {
       dataField: "agent",
-      text: "Agent",
+      text:props.t("Agent"),
       formatter: (val) => (val.agent ? val.agent._id : "-"),
     },
     {
       dataField: "source",
-      text: "Source"
+      text:props.t("Source")
     },
     {
       dataField: "stages",
-      text: "KYC",
+      text: props.t("KYC"),
       formatter: (val) => {
         if (val.stages) {
           const { kycApproved, kycRejected } = val.stages;
@@ -95,7 +96,7 @@ function ClientsList(props) {
       dataField: "",
       isDummyField: true,
       editable: false,
-      text: "Action",
+      text: props.t("Action"),
       formatter: (user) => (
         <div className="d-flex gap-3">
           <Link className="text-success" to="#">
@@ -139,7 +140,7 @@ function ClientsList(props) {
     <React.Fragment>
       <div className="page-content">
         <div className="container-fluid">
-          <h2>Clients</h2>
+          <h2>{props.t("Clients")}</h2>
           {<AddReminderToClientModal openAdd={addModal} selectedClient={selectedClient} onClose={() => { setAddReminderToClientModal(false) }} />}
 
           <Row>
@@ -147,7 +148,7 @@ function ClientsList(props) {
               <Card>
                 <CardHeader className="d-flex flex-column gap-3">
                   <div className="d-flex justify-content-between  align-items-center">
-                    <CardTitle>Clients List ({props.totalDocs})</CardTitle>
+                    <CardTitle>{props.t("Clients List")} ({props.totalDocs})</CardTitle>
                     <ClientForm />
                   </div>
                   <SearchBar handleSearchInput={handleSearchInput} />
@@ -218,4 +219,4 @@ const mapStateToProps = (state) => ({
   prevPage: state.clientReducer.prevPage,
 
 });
-export default connect(mapStateToProps, null)(ClientsList);
+export default connect(mapStateToProps, null)(withTranslation()(ClientsList));
