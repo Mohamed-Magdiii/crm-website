@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import "./SearchBar.styles.scss";
 import { debounce } from "lodash";
 
-function SearchBar({ handleSearchInput }){
+function SearchBar({ handleSearchInput, placeholder = "Search" }){
 
   const debouncedChangeHandler = useCallback(
     debounce(handleSearchInput, 1000), []
@@ -18,7 +18,7 @@ function SearchBar({ handleSearchInput }){
           type="text" 
           aria-labelledby="search-bar-0-label" 
           className="form-control u-padding-left" 
-          placeholder="Search" 
+          placeholder={placeholder}
         />
       </div>
     </div>

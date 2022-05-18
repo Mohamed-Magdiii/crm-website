@@ -19,7 +19,10 @@ import SystemEmailsList from "../pages/SystemEmail/SystemEmailList";
 // import LeadsList from "../components/Leads/lead.record.list.component";
 import Page404 from "../pages/Authentication/Page404";
 import AssetsList from "../pages/Assests/AssetsList";
+import Deposit from "pages/Transactions/Deposit";
+import Withdrawal from "pages/Transactions/Withdrawal";
 import Reminder from "../pages/Reminder/Reminder";
+
 const userRoutes = [
 
   //dashboard
@@ -68,6 +71,14 @@ const userRoutes = [
   {
     path:"/assets",
     component:AssetsList
+  },
+  {
+    path:"/transactions/deposit",
+    component:Deposit
+  },
+  {
+    path:"/transactions/withdrawals",
+    component:Withdrawal
   },
   {
     path: "/",
