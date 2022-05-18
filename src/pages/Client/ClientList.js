@@ -21,11 +21,14 @@ import { Link } from "react-router-dom";
 function ClientsList(props) {
   const [addModal, setAddReminderToClientModal] = useState(false);
   const [selectedClient, setSelectedClient] = useState({});
-
+  const [checkAll, setCheckAll] = useState(false);
+  const checkAllBoxes = ()=>{
+    setCheckAll(!checkAll);
+  };
   const columns = [
     {
       dataField: "checkbox",
-      text: <input type="checkbox" />
+      text: <input type="checkbox" onChange={()=>checkAllBoxes()} />
     },
     {
       dataField: "createdAt",
@@ -39,7 +42,8 @@ function ClientsList(props) {
     },
     {
       dataField: "category",
-      text: "type"
+      text: "Type",
+      formatter: (val) => (val.category === "LIVE_INDIVIDUAL" ? "LIVE" : val.category),
     },
     {
       dataField: "email",
@@ -53,7 +57,7 @@ function ClientsList(props) {
     },
     {
       dataField: "country",
-      text: "country",
+      text: "Country",
 
     },
 
@@ -158,7 +162,7 @@ function ClientsList(props) {
                         id="tech-companies-1"
                         className="table "
                       >
-                        <Thead>
+                        <Thead className="text-center">
                           <Tr>
                             {columns.map((column, index) =>
                               <Th data-priority={index} key={index}>{column.text}</Th>
@@ -171,7 +175,7 @@ function ClientsList(props) {
                             <Tr key={rowIndex}>
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`}>
-                                  {column.dataField === "checkbox" ? <input type="checkbox" /> : ""}
+                                  {column.dataField === "checkbox" ? <input checked={checkAll}  type="checkbox" /> : ""}
                                   {column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
                                 </Td>
                               )}
