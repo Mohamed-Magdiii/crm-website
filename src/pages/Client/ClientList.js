@@ -30,6 +30,15 @@ function ClientsList(props) {
     const firstLetterCaptilaziedWord = word.charAt(0).toUpperCase() + word.slice(1);
     return firstLetterCaptilaziedWord;
   }
+  function displaySubString(word){
+    let subString = "";
+    for (let i = 0; i < 4; i++){
+      subString += word[i];
+    }
+    return subString;
+  }
+  
+  
   const columns = [
     {
       dataField: "checkbox",
@@ -48,12 +57,13 @@ function ClientsList(props) {
     {
       dataField: "category",
       text:props.t("Type"),
-      formatter: (val) => (val.category === "LIVE_INDIVIDUAL" ? "Live" : val.category),
+      formatter: (val) => (displaySubString(val.category)),
 
     },
     {
       dataField: "email",
       text:props.t("Email"),
+      formatter : (val)=>(captilazeFirstLetter(`${val.email}`))
 
     },
     {
@@ -71,11 +81,13 @@ function ClientsList(props) {
     {
       dataField: "agent",
       text:props.t("Agent"),
-      formatter: (val) => (val.agent ? val.agent._id : "-"),
+      formatter: (val) => (val.agent ? <select defaultValue={true}><option>{val.agent.firstName} {val.agent.lastName}</option></select> : 
+        <select disabled></select>),
     },
     {
       dataField: "source",
-      text:props.t("Source")
+      text:props.t("Source"),
+      formatter :(val)=> (val.source === "REGISTER_DEMO" ? "Register Demo" : val.source)
     },
     {
       dataField: "stages",
@@ -195,14 +207,14 @@ function ClientsList(props) {
                         id="tech-companies-1"
                         className="table "
                       >
-                        <Thead className="text-center">
+                        <Thead className="text-center" >
                           <Tr>
                             {columns.map((column, index) =>
                               <Th data-priority={index} key={index}>{column.text}</Th>
                             )}
                           </Tr>
                         </Thead>
-                        <Tbody>
+                        <Tbody className="text-center" style={{fontSize: "13px"}}>
                           {props.loading && <TableLoader colSpan={4} />}
                           {!props.loading && props.clients.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
