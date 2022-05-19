@@ -11,6 +11,10 @@ import Logout from "../pages/Authentication/Logout";
 import Register from "../pages/Authentication/Register";
 import ForgetPwd from "../pages/Authentication/ForgetPassword";
 import ClientList from "../pages/Client/ClientList";
+import ClientDetails from "../pages/Client/ClientDetails";
+import ClientBank from "../pages/Client/ClientBank";
+import ClientTransactions from "../pages/Client/ClientTransactions";
+import ClientWallets from "../pages/Client/ClientWallets";
 import UsersList from "../pages/Users/UsersList";
 import LeadsList from "../pages/Leads/LeadList"; 
 import Teams from "../pages/Teams/Teams"; 
@@ -39,6 +43,22 @@ const userRoutes = [
   {
     path:"/clients",
     component:ClientList 
+  },
+  {
+    path: "/clients/:id/details",
+    component: ClientDetails
+  },
+  {
+    path: "/clients/:id/bank",
+    component: ClientBank
+  },
+  {
+    path: "/clients/:id/transactions",
+    component: ClientTransactions
+  },
+  {
+    path: "/clients/:id/wallets",
+    component: ClientWallets
   },
   {
     path:"/leads",

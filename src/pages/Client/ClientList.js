@@ -18,9 +18,14 @@ import "./ClientList.styles.scss";
 import SearchBar from "components/Common/SearchBar";
 import { Link } from "react-router-dom";
 import { withTranslation } from "react-i18next";
+import ClientDetails from "./ClientDetails";
+
 function ClientsList(props) {
   const [addModal, setAddReminderToClientModal] = useState(false);
   const [selectedClient, setSelectedClient] = useState({});
+  // const clientDetailsOnClickHandler = () => {
+
+  // };
 
   const columns = [
     {
@@ -35,7 +40,22 @@ function ClientsList(props) {
     {
       dataField: "name",
       text: props.t("Name"),
-      formatter: (val) => (`${val.firstName} ${val.lastName}`),
+      formatter: (user) => (
+        // this link will lead the user to details page which
+        // contains two parts 
+        // 1- a navbar which is used in details, bank, transactions and wallets on top
+        // 2- the user details on bottom
+        // and it will send the selected client's Id to the details page
+        <div className="d-flex gap-3">
+          <Link 
+            to={"/clients/" + user.id + "/details"}
+            // onClick={setSelectedClient(user)}
+            params={{ id: selectedClient.id }}
+          >
+            <i>{user.firstName + " " + user.lastName}</i>
+          </Link>
+        </div>
+      )
     },
     {
       dataField: "category",
