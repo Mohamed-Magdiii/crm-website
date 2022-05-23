@@ -1,18 +1,13 @@
 import React from "react";
 
-import Layout from "./Layout";
-
-function ClientBank() {
+function ClientBank(props) {
+  const clientId = props.clientId;
 
   return (
     <React.Fragment>
       <div className="page-content">
         <div className="container-fluid">
-          <Layout> 
-            <h1>
-              Client Bank
-            </h1>
-          </Layout>
+          Client Bank {clientId}
         </div>
       </div>
     </React.Fragment>

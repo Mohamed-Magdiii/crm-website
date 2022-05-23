@@ -11,6 +11,7 @@ import Logout from "../pages/Authentication/Logout";
 import Register from "../pages/Authentication/Register";
 import ForgetPwd from "../pages/Authentication/ForgetPassword";
 import ClientList from "../pages/Client/ClientList";
+import ClientMainPage from "../pages/Client/ClientMainPage";
 import ClientDetails from "../pages/Client/ClientDetails";
 import ClientBank from "../pages/Client/ClientBank";
 import ClientTransactions from "../pages/Client/ClientTransactions";
@@ -43,6 +44,10 @@ const userRoutes = [
   {
     path:"/clients",
     component:ClientList 
+  },
+  {
+    path: "/clients/main-page",
+    component: ClientMainPage
   },
   {
     path: "/clients/:id/details",

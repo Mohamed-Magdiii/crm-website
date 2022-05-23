@@ -132,7 +132,7 @@ function SystemEmailEdit(props){
               </div>
             )}
 
-            <div className='d-flex justify-content-end col-sm-8 mt-3'>
+            <div className="d-flex justify-content-end col-sm-8 mt-3">
               {/* submit button */}
               <div className="p-2">
                 <Button 

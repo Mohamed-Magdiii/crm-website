@@ -1,18 +1,13 @@
 import React from "react";
 
-import Layout from "./Layout";
-
-function ClientTransactions() {
+function ClientTransactions(props) {
+  const clientId = props.clientId;
 
   return (
     <React.Fragment>
       <div className="page-content">
         <div className="container-fluid">
-          <Layout> 
-            <h1>
-              Client transactions
-            </h1>
-          </Layout>
+          Client transactions {clientId}
         </div>
       </div>
     </React.Fragment>
