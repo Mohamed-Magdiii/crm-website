@@ -33,6 +33,7 @@ import walletReducer from "./wallet/reducer";
 import gatewayReducer from "./gateway/reducer";
 import depositReducer from "./transactions/deposit/reducer";
 import withdrawalReducer from "./transactions/withdrawal/reducer";
+import dictionaryReducer from "./dictionary/reducer";
 const rootReducer = combineReducers({
   // public
   Layout,
@@ -54,7 +55,8 @@ const rootReducer = combineReducers({
   walletReducer,
   gatewayReducer,
   depositReducer,
-  withdrawalReducer
+  withdrawalReducer,
+  dictionaryReducer
 });
 
 export default rootReducer;
