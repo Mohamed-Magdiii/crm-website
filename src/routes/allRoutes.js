@@ -43,11 +43,17 @@ const userRoutes = [
   },
   {
     path:"/clients",
-    component:ClientList 
+    component:ClientList
   },
   {
     path: "/clients/main-page",
-    component: ClientMainPage
+    component: ClientMainPage,
+    innerPages: [
+      {
+        path: "/clients/:id/details",
+        component: ClientDetails
+      }
+    ]
   },
   {
     path: "/clients/:id/details",

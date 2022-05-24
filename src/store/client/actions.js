@@ -3,7 +3,12 @@ import {
   FETCH_CLIENTS_SUCCESS,
   ADD_NEW_CLIENT,
   ADD_NEW_CLIENT_SUCCESS,
-  API_ERROR
+  API_ERROR,
+
+  FETCH_CLIENT_DETAILS_REQUESTED,
+  FETCH_CLIENT_DETAILS_SUCCESS,
+  FETCH_CLIENT_DETAILS_FAIL,
+  FETCH_CLIENT_DETAILS_CLEAR
 } from "./actionsType";
 
 export const fetchClientsStart = (params = {})=>{
@@ -50,5 +55,31 @@ export const addNewClientSuccess = (message, newClient)=>{
       message,
       newClient
     }
+  };
+};
+
+// fetch client details by id
+export const fetchClientDetails = (params = {}) => {
+  return {
+    type: FETCH_CLIENT_DETAILS_REQUESTED,
+    payload: params 
+  };
+};
+export const fetchClientDetailsSuccess = (data) => {
+  return {
+    type: FETCH_CLIENT_DETAILS_SUCCESS,
+    payload: data
+  };
+};
+export const fetchClientDetailsFail = (error) => {
+  return {
+    type: FETCH_CLIENT_DETAILS_FAIL,
+    payload: { error }
+  };
+};
+export const fetchClientDetailsClear = (data) => {
+  return {
+    type: FETCH_CLIENT_DETAILS_CLEAR,
+    payload: data
   };
 };

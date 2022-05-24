@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { 
   BrowserRouter as Router, Redirect, Route, Switch, useLocation 
 } from "react-router-dom";
@@ -8,11 +8,16 @@ import ClientBank from "./ClientBank";
 import ClientDetails from "./ClientDetails";
 import ClientTransactions from "./ClientTransactions";
 import ClientWallets from "./ClientWallets";
-import ClientList from "./ClientList";
 
 function ClientMainPage() {
+  // const [redirectToListing, setRedirectToListing] = useState(false);
   const location = useLocation();
   const { clientId } = location.state;
+
+  // a callback function to handle change in redirect to listing 
+  // const redirectToListingHandler = () => {
+  //   setRedirectToListing(!redirectToListing);
+  // };
 
   return (
     <React.Fragment>
@@ -29,27 +34,26 @@ function ClientMainPage() {
                 </Route>
                 
                 {/*  client bank */}
-                <Route path="/clients/:id/bank">
+                <Route exact path="/clients/:id/bank">
                   <ClientBank clientId={clientId} />
                 </Route>
 
                 {/* client transactions */}
-                <Route path="/clients/:id/transactions">
+                <Route exact path="/clients/:id/transactions">
                   <ClientTransactions clientId={clientId} />
                 </Route>
 
                 {/* client wallets */}
-                <Route path="/clients/:id/wallets">
+                <Route exact path="/clients/:id/wallets">
                   <ClientWallets clientId={clientId} />
                 </Route>
-                
-                {/* default route to details */}
+
+                {/* default route to details right on loading */}
                 <Redirect to={"/clients/" + clientId + "/details"} />
-              </Switch> 
+                {/* redirect to listing page when back button in <Layout /> is clicked */}
+                {/* {redirectToListing && <Redirect to="/clients" />} */}
+              </Switch>
             </Layout>
-            <Route path="/clients">
-              <ClientList />
-            </Route>
           </Router>
         </div>
       </div>

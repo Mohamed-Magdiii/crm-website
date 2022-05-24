@@ -1,11 +1,26 @@
 import {
-  call, put, takeEvery 
+  call, put, takeEvery, delay
 } from "redux-saga/effects";
-import { getClients, addClient } from "apis/client";
+import { 
+  getClients, 
+  addClient,
+  getClientById 
+} from "apis/client";
 import {
-  fetchClientsSuccess, apiError, addNewClientSuccess
+  fetchClientsSuccess, 
+  apiError, 
+  addNewClientSuccess,
+  
+  fetchClientDetailsSuccess,
+  fetchClientDetailsFail,
+  fetchClientDetailsClear
 } from "./actions";
-import { ADD_NEW_CLIENT, FETCH_CLIENTS_START } from "./actionsType";
+import { 
+  ADD_NEW_CLIENT, 
+  FETCH_CLIENTS_START,
+  
+  FETCH_CLIENT_DETAILS_REQUESTED
+} from "./actionsType";
   
 function *fetchClients(params) {
   try {
@@ -29,9 +44,22 @@ function * addNewClient({ payload:{ newClient } }) {
   }
 }
 
+function * fetchClientDetails(params){
+  try {
+    const data = yield call(getClientById, params);
+    yield put(fetchClientDetailsSuccess(data));
+    yield delay(2000);
+    yield put(fetchClientDetailsClear());
+  } catch (error){
+    yield put(fetchClientDetailsFail({ error: error.message }));
+  }
+}
+
 function * clientSaga() {
   yield takeEvery(FETCH_CLIENTS_START, fetchClients);
   yield takeEvery(ADD_NEW_CLIENT, addNewClient);
+  yield takeEvery(FETCH_CLIENT_DETAILS_REQUESTED, fetchClientDetails);
 }
+
 
 export default clientSaga;
