@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { 
   useDispatch, connect 
 } from "react-redux";
-import { AvForm, AvField } from "availity-reactstrap-validation";
+
 import { fetchDictionaryStart } from "store/dictionary/actions";
 import {
   Card,
@@ -19,11 +19,11 @@ import {
 
 } from "reactstrap";
 import classnames from "classnames";
-import ActionsTab from "./ActionsTab";
-import CountriesTab from "./CountriesTab";
-import EmailProvidersTab from "./EmailProvidersTab";
-import ExchangesTab from "./ExchangesTab";
-function DictionaryList(props){
+import ActionsTab from "./Actions.js/ActionsTab";
+import CountriesTab from "./Countries/CountriesTab";
+import EmailProvidersTab from "./EmailProvider/EmailProvidersTab";
+import ExchangesTab from "./Exchanges/ExchangesTab";
+function DictionaryList(){
   const dispatch = useDispatch();
   useState(()=>{
     dispatch(fetchDictionaryStart());
@@ -44,12 +44,7 @@ function DictionaryList(props){
           <Row>
             <Col className="col-12">
               <Card>
-                <CardHeader className="d-flex flex-column gap-3">
-                  <div className="d-flex justify-content-between  align-items-center">
-                    <CardTitle>Dictionary</CardTitle>     
-                  </div>
-                      
-                </CardHeader>
+               
                 <CardBody>
                   <Nav tabs>
                     <NavItem>
