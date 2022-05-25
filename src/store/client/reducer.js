@@ -10,7 +10,11 @@ import {
 
   FETCH_CLIENT_WALLET_REQUESTED,
   FETCH_CLIENT_WALLET_SUCCESS,
-  FETCH_CLIENT_WALLET_FAIL
+  FETCH_CLIENT_WALLET_FAIL,
+
+  FETCH_CLIENT_TRANSACTIONS_REQUESTED,
+  FETCH_CLIENT_TRANSACTIONS_SUCCESS,
+  FETCH_CLIENT_TRANSACTIONS_FAIL
 } from "./actionsType";
 
 const initalState = {
@@ -90,18 +94,18 @@ export const clientReducer = (state = initalState, action)=>{
     case FETCH_CLIENT_DETAILS_SUCCESS:
       state = {
         ...state,
-        loading: false,
         error: false,
         success: true,
-        clientDetails: action.payload.result
+        clientDetails: action.payload.result,
+        loading: false
       };
       break;
     case FETCH_CLIENT_DETAILS_FAIL:
       state = {
         ...state,
-        loading: false, 
         error: true,
-        errorDetails: action.payload.error
+        errorDetails: action.payload.error,
+        loading: false
       };
       break;
     case FETCH_CLIENT_DETAILS_CLEAR:
@@ -120,18 +124,18 @@ export const clientReducer = (state = initalState, action)=>{
     case FETCH_CLIENT_BANK_ACCOUNT_SUCCESS:
       state = { 
         ...state,
-        loading: false,
         success: true,
         error: false,
-        clientBankAccountDetails: action.payload.result
+        clientBankAccountDetails: action.payload.result,
+        loading: false
       };
       break;
     case FETCH_CLIENT_BANK_ACCOUNT_FAIL:
       state = {
         ...state,
-        loading: false,
         error: true,
-        errorDetails: action.payload.error
+        errorDetails: action.payload.error,
+        loading: false
       };
       break;
 
@@ -145,21 +149,46 @@ export const clientReducer = (state = initalState, action)=>{
     case FETCH_CLIENT_WALLET_SUCCESS:
       state = {
         ...state,
-        loading: false,
         error: false,
         success: true,
-        clientWalletDetails: action.payload.result
+        clientWalletDetails: action.payload.result,
+        loading: false
       };
       break;
     case FETCH_CLIENT_WALLET_FAIL:
       state = { 
         ...state,
-        loading: false,
         error: true,
+        errorDetails: action.payload.error,
+        loading: false
+      };
+      break;
+
+    // fetch client transactions 
+    case FETCH_CLIENT_TRANSACTIONS_REQUESTED:
+      state = {
+        ...state,
+        loading: true
+      };
+      break;
+    case FETCH_CLIENT_TRANSACTIONS_SUCCESS:
+      state = {
+        ...state, 
+        clientTransactions: action.payload.result,
+        error: false,
+        success: true,
+        loading: false,
+      };
+      break;
+    case FETCH_CLIENT_TRANSACTIONS_FAIL:
+      state = {
+        ...state,
+        error: true,
+        success: false,
         errorDetails: action.payload.error
       };
       break;
-         
+      
     default:
       state = { ...state };
   }

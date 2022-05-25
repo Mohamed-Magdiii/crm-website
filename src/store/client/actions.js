@@ -16,7 +16,11 @@ import {
 
   FETCH_CLIENT_WALLET_REQUESTED,
   FETCH_CLIENT_WALLET_SUCCESS,
-  FETCH_CLIENT_WALLET_FAIL
+  FETCH_CLIENT_WALLET_FAIL,
+
+  FETCH_CLIENT_TRANSACTIONS_REQUESTED,
+  FETCH_CLIENT_TRANSACTIONS_SUCCESS,
+  FETCH_CLIENT_TRANSACTIONS_FAIL
 } from "./actionsType";
 
 export const fetchClientsStart = (params = {})=>{
@@ -128,6 +132,26 @@ export const fetchClientWalletSuccess = (data) => {
 export const fetchClientWalletFail = (error) => {
   return {
     type: FETCH_CLIENT_WALLET_FAIL,
+    payload: { error }
+  };
+};
+
+// fetch client transactions 
+export const fetchClientTransactions = (params = {}) => {
+  return {
+    type: FETCH_CLIENT_TRANSACTIONS_REQUESTED,  
+    payload: params
+  };
+};
+export const fetchClientTransactionsSuccess = (data) => {
+  return {
+    type: FETCH_CLIENT_TRANSACTIONS_SUCCESS,
+    payload: data
+  };
+};
+export const fetchClientTransactionsFail = (error) => {
+  return {
+    type: FETCH_CLIENT_TRANSACTIONS_FAIL,
     payload: { error }
   };
 };
