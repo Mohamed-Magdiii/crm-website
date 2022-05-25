@@ -12,7 +12,8 @@ import { withTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
-function CountriesAdd(){
+import { addNewItem } from "store/dictionary/actions";
+function CountriesAdd(props){
   const [addModal, setAddModal] = useState(false);
   const dispatch = useDispatch();
   const toggleAddModal = ()=>{
@@ -30,6 +31,8 @@ function CountriesAdd(){
             className='p-4'
             onValidSubmit={(e, v) => {
               e.preventDefault();
+              
+              dispatch(addNewItem(props.id, { countries: {...v } }));
             }}
           >
             
@@ -96,4 +99,11 @@ function CountriesAdd(){
     </React.Fragment>
   );
 }
-export default CountriesAdd;
+const mapStateToProps = (state)=>({
+  loading: state.dictionaryReducer.loading || false,
+  dictionary: state.dictionaryReducer.dictionary || [],
+  error : state.dictionaryReducer.error,
+  actions :state.dictionaryReducer.actions || [],
+  id :state.dictionaryReducer.id
+});
+export default connect(mapStateToProps, null)(CountriesAdd);

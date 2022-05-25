@@ -12,7 +12,8 @@ import { withTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
-function EmailProviderAdd(){
+import { addNewItem } from "store/dictionary/actions";
+function EmailProviderAdd(props){
   const [addModal, setAddModal] = useState(false);
   const dispatch = useDispatch();
   const toggleAddModal = ()=>{
@@ -30,6 +31,7 @@ function EmailProviderAdd(){
             className='p-4'
             onValidSubmit={(e, v) => {
               e.preventDefault();
+              dispatch(addNewItem(props.id, v));
             }}
           >
             
@@ -57,4 +59,9 @@ function EmailProviderAdd(){
     </React.Fragment>
   );
 }
-export default EmailProviderAdd;
+const mapStateToProps = (state)=>({
+  dictionary: state.dictionaryReducer.dictionary || [],
+  error : state.dictionaryReducer.error,
+  id :state.dictionaryReducer.id
+});
+export default connect(mapStateToProps, null)(EmailProviderAdd);
