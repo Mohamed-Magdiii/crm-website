@@ -30,6 +30,32 @@ const dictionaryReducer = (state = initialState, action)=>{
         
       };
       break;
+    case "ADD_ITEM_TO_ACTIONS":
+      state = {
+        ...state,
+        actions:[...state.actions, ...action.payload]
+      };
+      break;
+    case "ADD_ITEM_TO_EXCHANGES":
+      console.log(action.payload);
+      state = {
+        ...state,
+        exchanges:[...state.exchanges, ...action.payload]
+      };
+      break;
+    case "ADD_ITEM_TO_EMAIL_PROVIDERS":
+      state = {
+        ...state,
+        emailProviders:[...state.emailProviders, ...action.payload]
+      };
+      break;
+    case "ADD_ITEM_TO_COUNTRIES":
+      console.log(action.payload);
+      state = {
+        ...state,
+        countries:[...state.countries, ...action.payload]
+      };
+      break;
     case "API_ERROR":
       state = {
         ...state,

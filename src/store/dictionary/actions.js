@@ -1,5 +1,14 @@
-import { 
-  FETCH_DICTIONARY_START, FETCH_DICTIONARY_SUCCESS, API_ERROR, ADD_NEW_ITEM, REMOVE_ITEM
+import {
+
+  FETCH_DICTIONARY_START,
+  FETCH_DICTIONARY_SUCCESS,
+  API_ERROR, 
+  ADD_NEW_ITEM, 
+  REMOVE_ITEM,
+  ADD_ITEM_TO_ACTIONS,
+  ADD_ITEM_TO_EMAIL_PROVIDERS,
+  ADD_ITEM_TO_COUNTRIES,
+  ADD_ITEM_TO_EXCHANGES
 } from "./actionsType";
 
 export const fetchDictionaryStart = (params = {})=>{
@@ -36,5 +45,29 @@ export const removeItem = (id, data)=>{
       id, 
       data 
     }
+  };
+};
+export const addItemToActions = (value)=>{
+  return {
+    type:ADD_ITEM_TO_ACTIONS,
+    payload:value 
+  };
+};
+export const addItemToExchanges = (value)=>{
+  return {
+    type:ADD_ITEM_TO_EXCHANGES,
+    payload:value
+  };
+};
+export const addItemToEmailProviders = (value)=>{
+  return {
+    type:ADD_ITEM_TO_EMAIL_PROVIDERS,
+    payload:value
+  };
+};
+export const addItemToCountries = (value)=>{
+  return {
+    type:ADD_ITEM_TO_COUNTRIES,
+    payload:value
   };
 };
