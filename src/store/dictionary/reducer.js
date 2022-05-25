@@ -1,7 +1,12 @@
 const initialState = {
   dictionary:[],
   loading:false,
-  error:""
+  actions:[],
+  exchanges:[],
+  emailProviders:[],
+  countries:[],
+  error:"",
+  id:""
 };
 const dictionaryReducer = (state = initialState, action)=>{
   switch (action.type){
@@ -16,6 +21,11 @@ const dictionaryReducer = (state = initialState, action)=>{
       state = {
         ...state,
         dictionary:[...action.payload],
+        actions:[...action.payload[0].actions],
+        emailProviders : [...action.payload[0].emailProviders],
+        countries: [...action.payload[0].countries],
+        exchanges: [...action.payload[0].exchanges],
+        id:action.payload[0]._id,
         loading:false,
         
       };

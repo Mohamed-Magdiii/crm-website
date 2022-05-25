@@ -12,7 +12,8 @@ import { withTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
-function ActionsAdd(){
+import { addNewItem } from "store/dictionary/actions";
+function ActionsAdd(props){
   const [addModal, setAddModal] = useState(false);
   const dispatch = useDispatch();
   const toggleAddModal = ()=>{
@@ -30,6 +31,8 @@ function ActionsAdd(){
             className='p-4'
             onValidSubmit={(e, v) => {
               e.preventDefault();
+              console.log(v);
+              dispatch(addNewItem(props.id, v));
             }}
           >
             
@@ -57,4 +60,7 @@ function ActionsAdd(){
     </React.Fragment>
   );
 }
-export default ActionsAdd;
+const mapStateToProps = (state)=>({
+  id :state.dictionaryReducer.id
+});
+export default connect(mapStateToProps, null)(ActionsAdd);
