@@ -23,3 +23,23 @@ export const getClientById = async ({ payload }) => {
 
   return data;
 };
+
+export const getClientBankDetails = async ({ payload }) => {
+  const { id } = payload;
+  const data = await axiosHelper.get(`/clients/${id}/bank`);
+  if (data.isError){
+    throw new Error(data.isError);
+  }
+
+  return data;
+};
+
+export const getClientWalletDetails = async ({ payload }) => {
+  const { id } = payload;
+  const data = await axiosHelper.get(`/clients/${id}/wallets`);
+  if (data.isError){
+    throw new Error(data.isError);
+  }
+
+  return data;
+};

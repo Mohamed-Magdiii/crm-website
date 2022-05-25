@@ -4,7 +4,9 @@ import {
 import { 
   getClients, 
   addClient,
-  getClientById 
+  getClientById,
+  getClientBankDetails,
+  getClientWalletDetails
 } from "apis/client";
 import {
   fetchClientsSuccess, 
@@ -13,13 +15,21 @@ import {
   
   fetchClientDetailsSuccess,
   fetchClientDetailsFail,
-  fetchClientDetailsClear
+  fetchClientDetailsClear,
+
+  fetchClientBankAccountSuccess,
+  fetchClientBankAccountFail,
+
+  fetchClientWalletSuccess,
+  fetchClientWalletFail
 } from "./actions";
 import { 
   ADD_NEW_CLIENT, 
   FETCH_CLIENTS_START,
   
-  FETCH_CLIENT_DETAILS_REQUESTED
+  FETCH_CLIENT_DETAILS_REQUESTED,
+  FETCH_CLIENT_BANK_ACCOUNT_REQUESTED,
+  FETCH_CLIENT_WALLET_REQUESTED
 } from "./actionsType";
   
 function *fetchClients(params) {
@@ -55,11 +65,30 @@ function * fetchClientDetails(params){
   }
 }
 
+function * fetchClientBankAccount(params){
+  try {
+    const data = yield call(getClientBankDetails, params);
+    yield put (fetchClientBankAccountSuccess(data));
+  } catch (error){
+    yield put(fetchClientBankAccountFail({ error: error.message }));
+  }
+}
+
+function * fetchClientWallet(params){
+  try {
+    const data = yield call(getClientWalletDetails, params);
+    yield put (fetchClientWalletSuccess(data));
+  } catch (error){
+    yield put(fetchClientWalletFail({ error: error.message }));
+  }
+}
+
 function * clientSaga() {
   yield takeEvery(FETCH_CLIENTS_START, fetchClients);
   yield takeEvery(ADD_NEW_CLIENT, addNewClient);
   yield takeEvery(FETCH_CLIENT_DETAILS_REQUESTED, fetchClientDetails);
+  yield takeEvery(FETCH_CLIENT_BANK_ACCOUNT_REQUESTED, fetchClientBankAccount);
+  yield takeEvery(FETCH_CLIENT_WALLET_REQUESTED, fetchClientWallet);
 }
-
 
 export default clientSaga;

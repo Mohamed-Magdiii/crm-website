@@ -2,7 +2,15 @@ import {
   FETCH_CLIENT_DETAILS_REQUESTED,
   FETCH_CLIENT_DETAILS_SUCCESS,
   FETCH_CLIENT_DETAILS_FAIL,
-  FETCH_CLIENT_DETAILS_CLEAR
+  FETCH_CLIENT_DETAILS_CLEAR,
+
+  FETCH_CLIENT_BANK_ACCOUNT_REQUESTED,
+  FETCH_CLIENT_BANK_ACCOUNT_SUCCESS,
+  FETCH_CLIENT_BANK_ACCOUNT_FAIL,
+
+  FETCH_CLIENT_WALLET_REQUESTED,
+  FETCH_CLIENT_WALLET_SUCCESS,
+  FETCH_CLIENT_WALLET_FAIL
 } from "./actionsType";
 
 const initalState = {
@@ -92,7 +100,8 @@ export const clientReducer = (state = initalState, action)=>{
       state = {
         ...state,
         loading: false, 
-        error: action.payload.error
+        error: true,
+        errorDetails: action.payload.error
       };
       break;
     case FETCH_CLIENT_DETAILS_CLEAR:
@@ -100,11 +109,59 @@ export const clientReducer = (state = initalState, action)=>{
         ...state
       };
       break;
-      
+
+    // fetch client bank details
+    case FETCH_CLIENT_BANK_ACCOUNT_REQUESTED:
+      state = {
+        ...state,
+        loading: true
+      };
+      break;
+    case FETCH_CLIENT_BANK_ACCOUNT_SUCCESS:
+      state = { 
+        ...state,
+        loading: false,
+        success: true,
+        error: false,
+        clientBankAccountDetails: action.payload.result
+      };
+      break;
+    case FETCH_CLIENT_BANK_ACCOUNT_FAIL:
+      state = {
+        ...state,
+        loading: false,
+        error: true,
+        errorDetails: action.payload.error
+      };
+      break;
+
+    // fetch client wallet details
+    case FETCH_CLIENT_WALLET_REQUESTED:
+      state = { 
+        ...state,
+        loading: true
+      };
+      break;
+    case FETCH_CLIENT_WALLET_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        error: false,
+        success: true,
+        clientWalletDetails: action.payload.result
+      };
+      break;
+    case FETCH_CLIENT_WALLET_FAIL:
+      state = { 
+        ...state,
+        loading: false,
+        error: true,
+        errorDetails: action.payload.error
+      };
+      break;
+         
     default:
       state = { ...state };
-       
-
   }
   return state;
 };

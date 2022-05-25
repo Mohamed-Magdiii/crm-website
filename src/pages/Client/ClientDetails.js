@@ -22,7 +22,10 @@ function ClientDetails(props) {
     <React.Fragment>
       <div className="page-content">
         <div className="container-fluid">
-          <h1>{JSON.stringify(props.clientDetails)}</h1>
+          <h1>
+            {JSON.stringify(props.clientDetails)}
+            {props.error && JSON.stringify(props.errorDetails)}
+          </h1>
         </div>
       </div>
     </React.Fragment>
@@ -31,7 +34,9 @@ function ClientDetails(props) {
 
 const mapStateToProps = (state) => ({
   loading: state.clientReducer.loading,
-  clientDetails: state.clientReducer.clientDetails
+  clientDetails: state.clientReducer.clientDetails,
+  error: state.clientReducer.error,
+  errorDetials: state.clientReducer.errorDetails
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(ClientDetails));

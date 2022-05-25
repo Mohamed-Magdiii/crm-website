@@ -8,7 +8,15 @@ import {
   FETCH_CLIENT_DETAILS_REQUESTED,
   FETCH_CLIENT_DETAILS_SUCCESS,
   FETCH_CLIENT_DETAILS_FAIL,
-  FETCH_CLIENT_DETAILS_CLEAR
+  FETCH_CLIENT_DETAILS_CLEAR,
+
+  FETCH_CLIENT_BANK_ACCOUNT_REQUESTED,
+  FETCH_CLIENT_BANK_ACCOUNT_SUCCESS,
+  FETCH_CLIENT_BANK_ACCOUNT_FAIL,
+
+  FETCH_CLIENT_WALLET_REQUESTED,
+  FETCH_CLIENT_WALLET_SUCCESS,
+  FETCH_CLIENT_WALLET_FAIL
 } from "./actionsType";
 
 export const fetchClientsStart = (params = {})=>{
@@ -81,5 +89,45 @@ export const fetchClientDetailsClear = (data) => {
   return {
     type: FETCH_CLIENT_DETAILS_CLEAR,
     payload: data
+  };
+};
+
+// fetch client bank details
+export const fetchClientBankAccount = (params = {}) => {
+  return {
+    type: FETCH_CLIENT_BANK_ACCOUNT_REQUESTED,
+    payload: params
+  };
+};
+export const fetchClientBankAccountSuccess = (data) => {
+  return {
+    type: FETCH_CLIENT_BANK_ACCOUNT_SUCCESS,
+    payload: data
+  };
+};
+export const fetchClientBankAccountFail = (error) => {
+  return {
+    type: FETCH_CLIENT_BANK_ACCOUNT_FAIL,
+    payload: { error }
+  };
+};
+
+// fetch client wallet details
+export const fetchClientWallet = (params = {}) => {
+  return {
+    type: FETCH_CLIENT_WALLET_REQUESTED,
+    payload: params
+  };
+};
+export const fetchClientWalletSuccess = (data) => {
+  return {
+    type: FETCH_CLIENT_WALLET_SUCCESS,
+    payload: data
+  };
+};
+export const fetchClientWalletFail = (error) => {
+  return {
+    type: FETCH_CLIENT_WALLET_FAIL,
+    payload: { error }
   };
 };
