@@ -1,73 +1,91 @@
 import React from "react";
-import {useDispatch, connect} from "react-redux";
-import TableLoader from "components/Common/TableLoader";
-import {
-  Table, Thead, Tbody, Tr, Th, Td
-} from "react-super-responsive-table";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import {
-  CardBody, Card, CardTitle, CardHeader
+  CardBody, Card, CardTitle, CardHeader, Col, Row
 } from "reactstrap";
 import EmailProviderAdd from "./EmailProviderAdd";
+import BootstrapTable from "react-bootstrap-table-next";
+import cellEditFactory from "react-bootstrap-table2-editor";
+
 function EmailProvidersTab(props){
+  const columns = [
+    {
+      dataField:"emailProvider",
+      text:"Email Providers"
+    }, 
+    {
+      dataField: "",
+      isDummyField: true,
+      editable: false,
+      text: "Action",
+      formatter: (item) => (
+        <div className="d-flex gap-3">
+          <Link className="text-success" to="#">
+            <i
+              className="mdi mdi-pencil font-size-18"
+              id="edittooltip"
+              onClick={() => {}}
+            ></i>
+          </Link>
+          <Link className="text-danger" to="#">
+            <i
+              className="mdi mdi-delete font-size-18"
+              id="deletetooltip"
+              onClick={() => {}}
+            ></i>
+          </Link>
+        </div>
+      ),
+    }
+  ];
+  const customData = props.dictionary[0] ? props.emailProviders.map(emailProvider=>{
+    return {
+      id:Math.random(),
+      emailProvider
+    };
+  }) : [] ; 
   return (
 
     <React.Fragment>
-      <Card>
-        <CardHeader className="d-flex flex-column gap-3">
-          <div className="d-flex justify-content-between  align-items-center">
-            <CardTitle>Actions</CardTitle>
-            <EmailProviderAdd/>
-          </div>
-        </CardHeader>
-        <CardBody>
-          <div className="table-rep-plugin">
-            <div
-              className="table-responsive mb-0"
-              data-pattern="priority-columns"
-            >
-              <Table
-                id="tech-companies-1"
-                className="table "
-              >
-                <Thead>
-                  <Tr>
-                    <Th>Email Providers</Th>
-                    <Th>Actions</Th>
-                  </Tr>
-                </Thead>
-                {props.dictionary[0] ? <Tbody>
-                  {props.loading && <TableLoader colSpan={4} />}
-                  {!props.loading && props.dictionary[0].emailProviders.map((row, rowIndex) =>
-                    <Tr key={rowIndex}>
-                      <Td>{row}</Td>
-                      <Td>
-                        <div className="d-flex gap-3">
-                          <Link className="text-success" to="#">
-                            <i
-                              className="mdi mdi-pencil font-size-18"
-                              id="edittooltip"
-                      
-                            ></i>
-                          </Link>
-                        </div>
-                      </Td>
-                    </Tr>
-              
-                  )}
-                </Tbody> : <Tbody></Tbody>
-                }
-              </Table>
-       
-            </div>
-          </div>
-        </CardBody>
-      </Card>
+      <div className="container-fluid">
+  
+        <Row>
+          <Col>
+            <Card>
+              <CardHeader className="d-flex flex-column gap-3">
+                <div className="d-flex justify-content-between  align-items-center">
+                  <CardTitle>Email Providers</CardTitle>
+                  <EmailProviderAdd />
+                </div>
+              </CardHeader>
+              <CardBody>
+
+                <div className="table-responsive">
+                  <BootstrapTable
+                    keyField="id"
+                    data={customData}
+                    columns={columns}
+                    cellEdit={cellEditFactory({ 
+                      mode: "click", 
+                  
+                    }
+                    )}
+                    
+                  />
+                </div>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </div>
     </React.Fragment>
   );
 }
 const mapStateToProps = (state)=>({
-  dictionary:state.dictionaryReducer.dictionary || []
+  dictionary:state.dictionaryReducer.dictionary || [],
+  emailProviders :state.dictionaryReducer.emailProviders || [],
+  id:state.dictionaryReducer.id
 });
 
 export default connect(mapStateToProps, null)(EmailProvidersTab);

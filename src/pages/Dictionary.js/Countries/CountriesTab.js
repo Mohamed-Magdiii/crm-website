@@ -2,79 +2,101 @@ import React from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import {useDispatch, connect} from "react-redux";
 import {
-  CardBody, Card, CardTitle, CardHeader
+  CardBody, Card, CardTitle, CardHeader, Col, Row
 } from "reactstrap";
-import TableLoader from "components/Common/TableLoader";
-import {
-  Table, Thead, Tbody, Tr, Th, Td
-} from "react-super-responsive-table";
 import { Link } from "react-router-dom";
 import CountriesAdd from "./CountriesAdd";
+import BootstrapTable from "react-bootstrap-table-next";
+import cellEditFactory from "react-bootstrap-table2-editor";
 function CountriesTab(props){
+  const columns = [
+    {
+      dataField:"alpha2",
+      text:"Alpha2"
+    }, 
+    {
+      dataField:"alpha3",
+      text:"Alpha3"
+    },
+    {
+      dataField:"callingCode",
+      text:"Calling Code"
+    },
+    {
+      dataField:"ar",
+      text:"AR"
+    },
+    {
+      dataField:"en",
+      text:"EN"
+    },
+    {
+      dataField: "",
+      isDummyField: true,
+      editable: false,
+      text: "Action",
+      formatter: (item) => {
+        
+        return (
+          <div className="d-flex gap-3">
+            <Link className="text-success" to="#">
+              <i
+                className="mdi mdi-pencil font-size-18"
+                id="edittooltip"
+                onClick={() => {}}
+              ></i>
+            </Link>
+            <Link className="text-danger" to="#">
+              <i
+                className="mdi mdi-delete font-size-18"
+                id="deletetooltip"
+                onClick={() => {}}
+              ></i>
+            </Link>
+          </div>
+        );
+      }
+    }
+  ];
+ 
   return (
+
     <React.Fragment>
-      <Card>
-        <CardHeader className="d-flex flex-column gap-3">
-          <div className="d-flex justify-content-between  align-items-center">
-            <CardTitle>Countries</CardTitle>
-            <CountriesAdd/>
-          </div>
-        </CardHeader>
-        <CardBody>
-          <div className="table-rep-plugin">
-            <div
-              className="table-responsive mb-0"
-              data-pattern="priority-columns"
-            >
-              <Table
-                id="tech-companies-1"
-                className="table "
-              >
-                <Thead>
-                  <Tr>
-                    <Th>Alpha2</Th>
-                    <Th>Alpha2</Th>
-                    <Th>Calling Code</Th>
-                    <Th>AR</Th>
-                    <Th>EN</Th>
-                    <Th>Actions</Th>
-                  </Tr>
-                </Thead>
-                {props.dictionary[0] ? <Tbody>
-                  {props.loading && <TableLoader colSpan={4} />}
-                  {!props.loading && props.dictionary[0].countries.map((row, rowIndex) =>
-                    <Tr key={rowIndex}>
-                      <Td>{row.alpha2}</Td>
-                      <Td>{row.alpha3}</Td>
-                      <Td>{row.callingCode}</Td>
-                      <Td>{row.ar}</Td>
-                      <Td>{row.en}</Td>
-                      <Td>
-                        <div className="d-flex gap-3">
-                          <Link className="text-success" to="#">
-                            <i
-                              className="mdi mdi-pencil font-size-18"
-                              id="edittooltip"
-                  
-                            ></i>
-                          </Link>
-                        </div>
-                      </Td>
-                    </Tr>
-          
-                  )}
-                </Tbody> : <Tbody></Tbody>
-                }
-              </Table>
-   
-            </div>
-          </div>
-        </CardBody>
-      </Card>
+      <div className="container-fluid">
+  
+        <Row>
+          <Col>
+            <Card>
+              <CardHeader className="d-flex flex-column gap-3">
+                <div className="d-flex justify-content-between  align-items-center">
+                  <CardTitle>Exchanges</CardTitle>
+                  <CountriesAdd/>
+                </div>
+              </CardHeader>
+              <CardBody>
+
+                <div className="table-responsive">
+                  <BootstrapTable
+                    keyField="id"
+                    data={props.countries}
+                    columns={columns}
+                    cellEdit={cellEditFactory({ 
+                      mode: "click", 
+                    }
+                    )}
+                  />
+                </div>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </div>
     </React.Fragment>
   );
 }
 const mapStateToProps = (state)=>({
-  dictionary:state.dictionaryReducer.dictionary || []
+  dictionary:state.dictionaryReducer.dictionary || [],
+  countries :state.dictionaryReducer.countries || [],
+  
 });
 export default connect(mapStateToProps, null)(CountriesTab);

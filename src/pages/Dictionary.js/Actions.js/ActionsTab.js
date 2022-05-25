@@ -1,28 +1,19 @@
 import React from "react";
-import {useDispatch, connect} from "react-redux";
+import { connect } from "react-redux";
 import {
   Row, Col, Card, CardBody, CardTitle, CardHeader 
 } from "reactstrap";
-import TableLoader from "components/Common/TableLoader";
-import {
-  Table, Thead, Tbody, Tr, Th, Td
-} from "react-super-responsive-table";
 import { Link } from "react-router-dom";
 import ActionsAdd from "./ActionsAdd";
 import BootstrapTable from "react-bootstrap-table-next";
-import cellEditFactory, {Type} from "react-bootstrap-table2-editor";
-
+import cellEditFactory from "react-bootstrap-table2-editor";
+import Notification from "components/Common/Notification";
 function ActionsTab(props){
   
   const columns = [
     {
       dataField:"action",
-      text:"Action",
-      editor: {
-        type: Type.TEXT,
-        
-      },
-      
+      text:"Action", 
     },
     {
       dataField: "",
@@ -50,17 +41,17 @@ function ActionsTab(props){
     },
     
   ];
-  const customData = props.dictionary[0] ? props.dictionary[0].actions.map(action=>{
+  const customData = props.dictionary[0] ? props.actions.map(action=>{
     return {
-      id:2, 
+      id:Math.random(),
       action:action 
     };
   }) : [] ; 
-  
+  console.log(props.actions);
   return (
     <React.Fragment>
       <div className="container-fluid">
-
+  
         <Row>
           <Col>
             <Card>
@@ -82,7 +73,7 @@ function ActionsTab(props){
                       
                     }
                     )}
-                    onTableChange={()=>console.log("hi")}
+                    
                   />
                 </div>
               </CardBody>
