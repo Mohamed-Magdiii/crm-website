@@ -103,7 +103,7 @@ function SystemEmailEdit(props){
                 placeholder={props.t("Subject")}
                 type="text"
                 value={role.content[selectedLanguage].subject}
-                errorMessage="Subject is required"
+                errorMessage={props.t("Subject is required")}
                 validate={{ required: { value: true } }}
               />
             </div>
@@ -159,7 +159,7 @@ function SystemEmailEdit(props){
             {props.editContentError && <UncontrolledAlert color="danger" className="col-sm-8">
               <i className="mdi mdi-block-helper me-2"></i>
               {/* TODO this need to be handled in translation */}
-              {props.t("props.editContentError")}
+              {props.t(props.editContentError)}
             </UncontrolledAlert>}
             {props.editContentResult && <UncontrolledAlert color="success" className="col-sm-8">
               <i className="mdi mdi-check-all me-2"></i>

@@ -14,14 +14,21 @@ import {
 
   FETCH_CLIENT_TRANSACTIONS_REQUESTED,
   FETCH_CLIENT_TRANSACTIONS_SUCCESS,
-  FETCH_CLIENT_TRANSACTIONS_FAIL
+  FETCH_CLIENT_TRANSACTIONS_FAIL,
+
+  EDIT_CLIENT_DETAILS_REQUESTED,
+  EDIT_CLIENT_DETAILS_SUCCESS,
+  EDIT_CLIENT_DETAILS_FAIL,
+  EDIT_CLIENT_DETAILS_CLEAR
 } from "./actionsType";
 
 const initalState = {
   error:"",
   loading:false,
   clients:[],
-  successMessage:""
+  successMessage:"",
+  clientDetails: {},
+  editSuccess: false
 };
 
 export const clientReducer = (state = initalState, action)=>{
@@ -186,6 +193,40 @@ export const clientReducer = (state = initalState, action)=>{
         error: true,
         success: false,
         errorDetails: action.payload.error
+      };
+      break;
+
+    // update client details
+    case EDIT_CLIENT_DETAILS_REQUESTED:
+      state = {
+        ...state,
+        loading: true
+      };
+      break;
+    case EDIT_CLIENT_DETAILS_SUCCESS:
+      state = { 
+        ...state, 
+        updatedClientDetails: action.payload.result,
+        editSuccess: true,
+        error: false,
+        loading: false
+      };
+      break;
+    // TODO check the error message with the backend
+    case EDIT_CLIENT_DETAILS_FAIL:
+      state = { 
+        ...state,
+        success: false,
+        editError: true,
+        EditErrorDetails: action.payload.error,
+        loading: false
+      };
+      break;
+    case EDIT_CLIENT_DETAILS_CLEAR:
+      state = {
+        ...state,
+        editSuccess: false,
+        error: false
       };
       break;
       

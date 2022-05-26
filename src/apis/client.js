@@ -53,3 +53,13 @@ export const getClientTransactions = async ({ payload }) => {
 
   return data;
 };
+
+export const updateClientDetails = async ({ payload }) => {
+  const { id, values } = payload;
+  const data = await axiosHelper.patch(`/clients/${id}`, values);
+  if (data.isError){
+    throw new Error(data.isError);
+  }
+
+  return data;
+};

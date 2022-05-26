@@ -7,7 +7,8 @@ import {
   getClientById,
   getClientBankDetails,
   getClientWalletDetails,
-  getClientTransactions
+  getClientTransactions,
+  updateClientDetails
 } from "apis/client";
 import {
   fetchClientsSuccess, 
@@ -25,7 +26,11 @@ import {
   fetchClientWalletFail,
 
   fetchClientTransactionsSuccess,
-  fetchClientTransactionsFail
+  fetchClientTransactionsFail,
+
+  editClientDetailsSuccess,
+  editClientDetailsFail,
+  editClientDetailsClear
 } from "./actions";
 import { 
   ADD_NEW_CLIENT, 
@@ -34,7 +39,8 @@ import {
   FETCH_CLIENT_DETAILS_REQUESTED,
   FETCH_CLIENT_BANK_ACCOUNT_REQUESTED,
   FETCH_CLIENT_WALLET_REQUESTED,
-  FETCH_CLIENT_TRANSACTIONS_REQUESTED
+  FETCH_CLIENT_TRANSACTIONS_REQUESTED,
+  EDIT_CLIENT_DETAILS_REQUESTED
 } from "./actionsType";
   
 function *fetchClients(params) {
@@ -97,6 +103,18 @@ function * fetchClientTransactions(params){
   }
 }
 
+function * editClientDetails(params){
+  console.log(params);
+  try {
+    const data = yield call(updateClientDetails, params);
+    yield put(editClientDetailsSuccess(data));
+    yield delay(2000);
+    yield put(editClientDetailsClear());
+  } catch (error){
+    yield put(editClientDetailsFail({ error: error.message }));
+  }
+}
+
 function * clientSaga() {
   yield takeEvery(FETCH_CLIENTS_START, fetchClients);
   yield takeEvery(ADD_NEW_CLIENT, addNewClient);
@@ -104,6 +122,7 @@ function * clientSaga() {
   yield takeEvery(FETCH_CLIENT_BANK_ACCOUNT_REQUESTED, fetchClientBankAccount);
   yield takeEvery(FETCH_CLIENT_WALLET_REQUESTED, fetchClientWallet);
   yield takeEvery(FETCH_CLIENT_TRANSACTIONS_REQUESTED, fetchClientTransactions);
+  yield takeEvery(EDIT_CLIENT_DETAILS_REQUESTED, editClientDetails);
 }
 
 export default clientSaga;

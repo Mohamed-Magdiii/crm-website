@@ -20,7 +20,12 @@ import {
 
   FETCH_CLIENT_TRANSACTIONS_REQUESTED,
   FETCH_CLIENT_TRANSACTIONS_SUCCESS,
-  FETCH_CLIENT_TRANSACTIONS_FAIL
+  FETCH_CLIENT_TRANSACTIONS_FAIL,
+
+  EDIT_CLIENT_DETAILS_REQUESTED,
+  EDIT_CLIENT_DETAILS_SUCCESS,
+  EDIT_CLIENT_DETAILS_FAIL,
+  EDIT_CLIENT_DETAILS_CLEAR
 } from "./actionsType";
 
 export const fetchClientsStart = (params = {})=>{
@@ -153,5 +158,31 @@ export const fetchClientTransactionsFail = (error) => {
   return {
     type: FETCH_CLIENT_TRANSACTIONS_FAIL,
     payload: { error }
+  };
+};
+
+// update client details 
+export const editClientDetails = (params = {}) => {
+  return {
+    type: EDIT_CLIENT_DETAILS_REQUESTED,
+    payload: params
+  };
+};
+export const editClientDetailsSuccess = (data) => {
+  return {
+    type: EDIT_CLIENT_DETAILS_SUCCESS,
+    payload: data 
+  };
+};
+export const editClientDetailsFail = (error) => {
+  return {
+    type: EDIT_CLIENT_DETAILS_FAIL,
+    payload: { error }
+  };
+};
+export const editClientDetailsClear = (data) => {
+  return {
+    type: EDIT_CLIENT_DETAILS_CLEAR,
+    payload: data
   };
 };
