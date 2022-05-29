@@ -24,7 +24,7 @@ import {
 
 const initalState = {
   error:"",
-  loading:false,
+  loading:true,
   clients:[],
   successMessage:"",
   clientDetails: {},
@@ -133,7 +133,7 @@ export const clientReducer = (state = initalState, action)=>{
         ...state,
         success: true,
         error: false,
-        clientBankAccountDetails: action.payload.result,
+        clientBankAccountDetails: [...action.payload.result],
         loading: false
       };
       break;

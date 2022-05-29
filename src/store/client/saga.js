@@ -104,7 +104,6 @@ function * fetchClientTransactions(params){
 }
 
 function * editClientDetails(params){
-  console.log(params);
   try {
     const data = yield call(updateClientDetails, params);
     yield put(editClientDetailsSuccess(data));

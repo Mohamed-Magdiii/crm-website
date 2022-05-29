@@ -94,7 +94,8 @@ function SystemEmailsList(props){
             id={item.id} 
             switch="none" 
             defaultChecked={item.isActive} 
-            onClick={() => { switchSelectedSystemEmailStatusHandler(item) }} />
+            onClick={() => { switchSelectedSystemEmailStatusHandler(item) }} 
+          />
           <Label className="me-1" htmlFor={item.id} data-on-label={props.t("Active")} data-off-label=""></Label>
         </div>
       ),

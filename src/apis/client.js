@@ -16,7 +16,7 @@ export const addClient = async (values) => {
 
 export const getClientById = async ({ payload }) => {
   const id = payload;
-  const data = await axiosHelper.get(`/clients/${id}/details`);
+  const data = await axiosHelper.get(`/clients/${id}`);
   if (data.isError){
     throw new Error(data.isError);
   }
@@ -25,8 +25,8 @@ export const getClientById = async ({ payload }) => {
 };
 
 export const getClientBankDetails = async ({ payload }) => {
-  const { id } = payload;
-  const data = await axiosHelper.get(`/clients/${id}/bank`);
+  const id  = payload;
+  const data = await axiosHelper.get(`/bank-accounts/${id}`);
   if (data.isError){
     throw new Error(data.isError);
   }
@@ -35,8 +35,8 @@ export const getClientBankDetails = async ({ payload }) => {
 };
 
 export const getClientWalletDetails = async ({ payload }) => {
-  const { id } = payload;
-  const data = await axiosHelper.get(`/clients/${id}/wallets`);
+  const id = payload;
+  const data = await axiosHelper.get(`/wallets/${id}/client`, { crypto: true });
   if (data.isError){
     throw new Error(data.isError);
   }
@@ -45,9 +45,14 @@ export const getClientWalletDetails = async ({ payload }) => {
 };
 
 export const getClientTransactions = async ({ payload }) => {
-  const { id } = payload;
-  const data = await axiosHelper.get(`/clients/${id}/transactions`);
-  if (data.isError){
+  const id = payload;
+  const withdrawals = await axiosHelper.get(`/transactions/withdraw/${id}/client`);
+  const deposits = await axiosHelper.get(`/transactions/deposit/${id}/client`);
+  const data = {
+    withdrawals: withdrawals, 
+    deposits: deposits
+  };
+  if (withdrawals.isError || deposits.isError){
     throw new Error(data.isError);
   }
 
