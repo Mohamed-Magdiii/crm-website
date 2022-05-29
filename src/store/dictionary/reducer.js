@@ -68,7 +68,6 @@ const dictionaryReducer = (state = initialState, action)=>{
       };
       break;
     case "REMOVE_ITEM_FROM_ACTIONS":
-      console.log("inside reducer");
       state = {
         ...state,
         actions:state.actions.filter(actions=>actions !== action.payload[0])

@@ -61,13 +61,13 @@ function * addItem({ payload }){
 }
 function * removeItemFromDictionary({ payload }){
   try {
-    console.log(payload);
+    
     const result = yield call(removeItem, payload); 
     const { status } = result;
     const { data } = payload;
     const actionValue = Object.values(data);
     const key = Object.keys(data);
-    console.log(actionValue);
+  
     if ( status.code === 200){
       if (key[0] === "actions"){
         yield put(removeItemFromActions(actionValue));

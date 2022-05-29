@@ -34,7 +34,6 @@ export const updateCountries = async ({ value, body })=>{
 };
 export  const addNewItem = async({ id, data }) =>{
   try {
-    console.log(data);
     const result = await axiosHelper.patch(`/dictionaries/addItem/${id}`, data );
     return result;
   } catch (error){
@@ -44,8 +43,6 @@ export  const addNewItem = async({ id, data }) =>{
 export const removeItem = async ({ id, data })=>{
   try {
     const result = await axiosHelper.patch(`/dictionaries/removeItem/${id}`, data);
-    console.log(data);
-    console.log("helloe there", result);
     return result;
   } catch (error){
     throw new Error("Error happened while removing this item ");
