@@ -10,7 +10,7 @@ export const getDictionary = async()=>{
 };
 export const updateExchange = async ({ value, body }) =>{
   try {
-    const result = await axiosHelper.patch(`/dictionaries/exchanges/${value}`, body);
+    const result = await axiosHelper.patch(`/dictionaries/exchanges?newValue=${value}`, body);
     return result;
   } catch (error){
     throw new Error("Error happened during updating this exchange");
@@ -20,7 +20,7 @@ export const updateExchange = async ({ value, body }) =>{
 };
 export const updateEmailProvider = async ({ value, body })=>{
   try {
-    const result = await axiosHelper.patch(`/dictionaries/emailProviders/${value}`, body);
+    const result = await axiosHelper.patch(`/dictionaries/emailProviders?newValue=${value}`, body);
     return result;
   } catch (error){
     throw new Error("Error happened during updating this email provider");
@@ -28,7 +28,7 @@ export const updateEmailProvider = async ({ value, body })=>{
 };
 export const updateActions = async ({ value, body }) =>{
   try {
-    const result = await axiosHelper.patch(`/dictionaries/action/${value}`, body);
+    const result = await axiosHelper.patch(`/dictionaries/actions?newValue=${value}`, body);
     return result;
   } catch (error){
     throw new Error("Error happened during updating this action");
@@ -36,7 +36,7 @@ export const updateActions = async ({ value, body }) =>{
 };
 export const updateCountries = async ({ value, body })=>{
   try {
-    const result = await axiosHelper.patch(`/dictionaries/countries/${value}`, body);
+    const result = await axiosHelper.patch("/dictionaries/countries", body);
     return result;
   } catch (error){
     throw new Error("Error happened during updating this action");
