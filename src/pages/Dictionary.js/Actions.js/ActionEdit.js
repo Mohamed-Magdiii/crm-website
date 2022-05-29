@@ -5,11 +5,8 @@ import {
   ModalHeader,
   ModalBody,
   UncontrolledAlert,
-  Col,
-  Row
 } from "reactstrap";
 import { withTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { updateActionStart } from "store/dictionary/actions";
@@ -55,6 +52,14 @@ function ActionsEdit(props){
               </Button>
             </div>
           </AvForm>
+          {props.error && <UncontrolledAlert color="danger">
+            <i className="mdi mdi-block-helper me-2"></i>
+            {props.error}
+          </UncontrolledAlert>}
+          {props.editSuccess && <UncontrolledAlert color="success">
+            <i className="mdi mdi-check-all me-2"></i>
+             Action has been updated successfully!
+          </UncontrolledAlert>}
         </ModalBody>
       </Modal>
     </React.Fragment>
@@ -65,6 +70,7 @@ const mapStateToProps = (state)=>({
   dictionary: state.dictionaryReducer.dictionary || [],
   error : state.dictionaryReducer.error,
   actions :state.dictionaryReducer.actions || [],
-  id :state.dictionaryReducer.id
+  id :state.dictionaryReducer.id,
+  editSuccess:state.dictionaryReducer.editSuccess
 });
 export default connect(mapStateToProps, null)(ActionsEdit);

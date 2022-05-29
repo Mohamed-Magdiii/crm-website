@@ -10,7 +10,7 @@ import {
 } from "reactstrap";
 import { withTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import React, { useState} from "react";
+import React, { useState, useEffect} from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { addNewItem } from "store/dictionary/actions";
 
@@ -20,6 +20,11 @@ function EmailProviderAdd(props){
   const toggleAddModal = ()=>{
     setAddModal(preValue => !preValue);
   };
+  useEffect(()=>{
+    if (!props.showAddSuccessMessage && addModal){
+      setAddModal(false);
+    }
+  }, [props.showAddSuccessMessage]); 
   return (
     <React.Fragment >
       <Link to="#" className="btn btn-light" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i>Add New Email Provider</Link>
@@ -55,6 +60,14 @@ function EmailProviderAdd(props){
               </Button>
             </div>
           </AvForm>
+          {props.error && <UncontrolledAlert color="danger">
+            <i className="mdi mdi-block-helper me-2"></i>
+            {props.error}
+          </UncontrolledAlert>}
+          {props.showAddSuccessMessage && <UncontrolledAlert color="success">
+            <i className="mdi mdi-check-all me-2"></i>
+             Email Provider has been added successfully!
+          </UncontrolledAlert>}
         </ModalBody>
       </Modal>
     </React.Fragment>
@@ -63,6 +76,7 @@ function EmailProviderAdd(props){
 const mapStateToProps = (state)=>({
   dictionary: state.dictionaryReducer.dictionary || [],
   error : state.dictionaryReducer.error,
-  id :state.dictionaryReducer.id
+  id :state.dictionaryReducer.id,
+  showAddSuccessMessage:state.dictionaryReducer.showAddSuccessMessage
 });
 export default connect(mapStateToProps, null)(EmailProviderAdd);

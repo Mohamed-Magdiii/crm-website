@@ -20,7 +20,9 @@ import {
   UPDATE_ACTION_SUCCESS,
   UPDATE_EXCHANGE_SUCCESS,
   UPDATE_EMAIL_PROVIDER_SUCCESS,
-  UPDATE_COUNTRY_SUCCESS
+  UPDATE_COUNTRY_SUCCESS,
+  EDIT_CLEAR,
+  ADD_CLEAR
 } from "./actionsType";
 
 export const fetchDictionaryStart = (params = {})=>{
@@ -167,5 +169,15 @@ export const updateCountrySuccess = (oldValue, newValue)=>{
       oldValue,
       newValue
     },
+  };
+};
+export const editClear = ()=>{
+  return {
+    type:EDIT_CLEAR
+  };
+};
+export const addClear = ()=>{
+  return {
+    type:ADD_CLEAR
   };
 };

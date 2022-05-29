@@ -10,7 +10,7 @@ import {
 } from "reactstrap";
 import { withTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { addNewItem } from "store/dictionary/actions";
 function ActionsAdd(props){
@@ -19,6 +19,11 @@ function ActionsAdd(props){
   const toggleAddModal = ()=>{
     setAddModal(preValue => !preValue);
   };
+  useEffect(()=>{
+    if (!props.showAddSuccessMessage && addModal){
+      setAddModal(false);
+    }
+  }, [props.showAddSuccessMessage]);
   return (
     <React.Fragment >
       <Link to="#" className="btn btn-light" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i>Add New Action</Link>
@@ -54,12 +59,22 @@ function ActionsAdd(props){
               </Button>
             </div>
           </AvForm>
+          {props.error && <UncontrolledAlert color="danger">
+            <i className="mdi mdi-block-helper me-2"></i>
+            {props.editError}
+          </UncontrolledAlert>}
+          {props.showAddSuccessMessage && <UncontrolledAlert color="success">
+            <i className="mdi mdi-check-all me-2"></i>
+             Action has been added successfully!
+          </UncontrolledAlert>}
         </ModalBody>
       </Modal>
     </React.Fragment>
   );
 }
 const mapStateToProps = (state)=>({
-  id :state.dictionaryReducer.id
+  id :state.dictionaryReducer.id,
+  error:state.dictionaryReducer.error,
+  showAddSuccessMessage: state.dictionaryReducer.showAddSuccessMessage
 });
 export default connect(mapStateToProps, null)(ActionsAdd);

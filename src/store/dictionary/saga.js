@@ -1,5 +1,5 @@
 import { 
-  call, put, takeEvery
+  call, delay, put, takeEvery
 } from "redux-saga/effects";
 import { 
   getDictionary, addNewItem, removeItem, updateActions, updateEmailProvider, updateCountries, updateExchange
@@ -18,7 +18,9 @@ import {
   updateActionSuccess,
   updateEmailProviderSuccess,
   updateExchangeSuccess,
-  updateCountrySuccess
+  updateCountrySuccess,
+  editClear,
+  addClear
 } from "./actions";
 import {
   FETCH_DICTIONARY_START,
@@ -63,7 +65,8 @@ function * addItem({ payload }){
     }
     
   }
-  
+  yield delay(2000);
+  yield put(addClear());
   
 }
 function * updateAction({ payload }){
@@ -73,6 +76,8 @@ function * updateAction({ payload }){
     const { body, value } = payload;
     const { actions: oldValue } = body;
     yield put(updateActionSuccess(oldValue, value));
+    yield delay(2000); 
+    yield put(editClear());
   } catch (error){
     yield put(apiError(error));
   }
@@ -80,9 +85,11 @@ function * updateAction({ payload }){
 function * updateEmailProviderValue({ payload }){
   try {
     yield call(updateEmailProvider, payload);
-    const {body, value : newValue } = payload;
+    const { body, value : newValue } = payload;
     const { emailProviders :oldValue } = body;
     yield put(updateEmailProviderSuccess(oldValue, newValue));
+    yield delay(2000);
+    yield put(editClear());
   } catch (error){
     yield put(apiError(error));
   }
@@ -93,6 +100,8 @@ function * updateExchangeValue ({ payload }){
     const { body, value:newValue } = payload;
     const { exchanges:oldValue } = body;
     yield put(updateExchangeSuccess(oldValue, newValue));
+    yield delay(2000);
+    yield put(editClear());
   } catch (error){
     yield put(apiError(error));
   }

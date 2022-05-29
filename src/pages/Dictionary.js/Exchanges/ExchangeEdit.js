@@ -15,9 +15,9 @@ import { AvForm, AvField } from "availity-reactstrap-validation";
 import { updateExchangeStart } from "store/dictionary/actions";
 function ExchangeEdit(props){
   
-  const {selectedExchange = {}, onClose, open } = props;
+  const { selectedExchange = {}, onClose, open } = props;
   const dispatch = useDispatch();
-  const {exchanges} = selectedExchange;
+  const { exchanges } = selectedExchange;
   return (
     <React.Fragment >
 
@@ -56,6 +56,14 @@ function ExchangeEdit(props){
               </Button>
             </div>
           </AvForm>
+          {props.error && <UncontrolledAlert color="danger">
+            <i className="mdi mdi-block-helper me-2"></i>
+            {props.error}
+          </UncontrolledAlert>}
+          {props.editSuccess && <UncontrolledAlert color="success">
+            <i className="mdi mdi-check-all me-2"></i>
+             Exchange has been updated successfully!
+          </UncontrolledAlert>}
         </ModalBody>
       </Modal>
     </React.Fragment>
@@ -66,6 +74,7 @@ const mapStateToProps = (state)=>({
   dictionary: state.dictionaryReducer.dictionary || [],
   error : state.dictionaryReducer.error,
   actions :state.dictionaryReducer.actions || [],
-  id :state.dictionaryReducer.id
+  id :state.dictionaryReducer.id,
+  editSuccess :state.dictionaryReducer.editSuccess
 });
 export default connect(mapStateToProps, null)(ExchangeEdit);

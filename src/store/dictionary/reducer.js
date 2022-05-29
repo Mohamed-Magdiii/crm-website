@@ -33,24 +33,28 @@ const dictionaryReducer = (state = initialState, action)=>{
     case "ADD_ITEM_TO_ACTIONS":
       state = {
         ...state,
+        showAddSuccessMessage:true,
         actions:[...state.actions, ...action.payload]
       };
       break;
     case "ADD_ITEM_TO_EXCHANGES":
       state = {
         ...state,
+        showAddSuccessMessage:true,
         exchanges:[...state.exchanges, ...action.payload]
       };
       break;
     case "ADD_ITEM_TO_EMAIL_PROVIDERS":
       state = {
         ...state,
+        showAddSuccessMessage:true,
         emailProviders:[...state.emailProviders, ...action.payload]
       };
       break;
     case "ADD_ITEM_TO_COUNTRIES":
       state = {
         ...state,
+        showAddSuccessMessage:true,
         countries:[...state.countries, ...action.payload]
       };
       break;
@@ -88,6 +92,7 @@ const dictionaryReducer = (state = initialState, action)=>{
     case "UPDATE_ACTION_SUCCESS":
       state = {
         ...state,
+        editSuccess:true,
         actions : state.actions.map(actionValue=>{
           if (actionValue === action.payload.oldValue){
             return action.payload.newValue;
@@ -101,6 +106,7 @@ const dictionaryReducer = (state = initialState, action)=>{
     case "UPDATE_EXCHANGE_SUCCESS":
       state = {
         ...state,
+        editSuccess:true,
         exchanges : state.exchanges.map(exchange=>{
           if (exchange === action.payload.oldValue){
             return action.payload.newValue;
@@ -112,9 +118,9 @@ const dictionaryReducer = (state = initialState, action)=>{
       };
       break;
     case "UPDATE_EMAIL_PROVIDER_SUCCESS":
-      console.log(action.payload);
       state = {
         ...state,
+        editSuccess:true,
         emailProviders : state.emailProviders.map(emailProvider=>{
           if (emailProvider === action.payload.oldValue){
             return action.payload.newValue;
@@ -123,6 +129,19 @@ const dictionaryReducer = (state = initialState, action)=>{
             return emailProvider;
           }
         })
+      };
+      break;
+    case "EDIT_CLEAR" :
+       
+      state = {
+        ...state,
+        editSuccess:false
+      };
+      break;
+    case "ADD_CLEAR":
+      state = {
+        ...state,
+        showAddSuccessMessage:false
       };
       break;
     case "API_ERROR":

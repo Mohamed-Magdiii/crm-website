@@ -19,6 +19,11 @@ function CountriesAdd(props){
   const toggleAddModal = ()=>{
     setAddModal(preValue => !preValue);
   };
+  useEffect(()=>{
+    if (!props.showAddSuccessMessage && addModal){
+      setAddModal(false);
+    }
+  }, [props.showAddSuccessMessage]);
   return (
     <React.Fragment >
       <Link to="#" className="btn btn-light" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i>Add New Country</Link>
@@ -94,6 +99,14 @@ function CountriesAdd(props){
               </Button>
             </div>
           </AvForm>
+          {props.error && <UncontrolledAlert color="danger">
+            <i className="mdi mdi-block-helper me-2"></i>
+            {props.editError}
+          </UncontrolledAlert>}
+          {props.showAddSuccessMessage && <UncontrolledAlert color="success">
+            <i className="mdi mdi-check-all me-2"></i>
+             Country has been added successfully!
+          </UncontrolledAlert>}
         </ModalBody>
       </Modal>
     </React.Fragment>
@@ -103,7 +116,7 @@ const mapStateToProps = (state)=>({
   loading: state.dictionaryReducer.loading || false,
   dictionary: state.dictionaryReducer.dictionary || [],
   error : state.dictionaryReducer.error,
-  actions :state.dictionaryReducer.actions || [],
-  id :state.dictionaryReducer.id
+  id :state.dictionaryReducer.id,
+  showAddSuccessMessage:state.dictionaryReducer.showAddSuccessMessage
 });
 export default connect(mapStateToProps, null)(CountriesAdd);
