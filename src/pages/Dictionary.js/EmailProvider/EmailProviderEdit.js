@@ -12,10 +12,11 @@ import { withTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
+import { updateEmailProviderStart } from "store/dictionary/actions";
 function EmailProviderEdit(props){
-  const {open, onClose, emailProvider = {}} = props;
+  const { open, onClose, selectedEmailProvider = {} } = props;
   const dispatch = useDispatch();
-  const {emailProviders} = emailProvider;
+  const { emailProviders } = selectedEmailProvider;
 
   return (
     <React.Fragment >
@@ -29,12 +30,17 @@ function EmailProviderEdit(props){
             className='p-4'
             onValidSubmit={(e, v) => {
               e.preventDefault();
+              const { newEmailProvider } = v;
+              dispatch(updateEmailProviderStart({
+                body:selectedEmailProvider,
+                value:newEmailProvider
+              }));
             }}
           >
             
             <div className="mb-3">
               <AvField
-                name="emailProviders"
+                name="newEmailProvider"
                 label="Email Provider"
                 placeholder="Enter Email Provider"
                 type="text"

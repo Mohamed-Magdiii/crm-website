@@ -113,7 +113,7 @@ function EmailProvidersTab(props){
           </div>
         </CardBody>
       </Card>
-      {<EmailProviderEdit open={editMoal} emailProvider={selectedEmailProvider} onClose={()=>setEditMoal(false)}/>}
+      {<EmailProviderEdit open={editMoal} selectedEmailProvider={selectedEmailProvider} onClose={()=>setEditMoal(false)}/>}
       {<DeleteModal loading={props.deleteLoading} show ={deleteModal} onDeleteClick={deleteEmailProvider} onCloseClick={()=>setDeleteModal(false)}/>}
     </React.Fragment>
   );

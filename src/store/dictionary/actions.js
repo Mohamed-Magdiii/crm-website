@@ -16,7 +16,11 @@ import {
   UPATE_EMAIL_PROVIDER_START,
   UPDATE_ACTION_START,
   UPDATE_COUNTRY_START,
-  UPDATE_EXCHANGE_START
+  UPDATE_EXCHANGE_START,
+  UPDATE_ACTION_SUCCESS,
+  UPDATE_EXCHANGE_SUCCESS,
+  UPDATE_EMAIL_PROVIDER_SUCCESS,
+  UPDATE_COUNTRY_SUCCESS
 } from "./actionsType";
 
 export const fetchDictionaryStart = (params = {})=>{
@@ -108,5 +112,60 @@ export const updateActionStart = (value)=>{
   return {
     type:UPDATE_ACTION_START,
     payload :value
+  };
+};
+export const updateEmailProviderStart = (value)=>{
+  return {
+    type:UPATE_EMAIL_PROVIDER_START,
+    payload :value
+  };
+};
+export const updateExchangeStart = (value)=>{
+  return {
+    type:UPDATE_EXCHANGE_START,
+    payload:value
+  };
+};
+export const updateCountryStart = (value)=>{
+  return {
+    type:UPDATE_COUNTRY_START,
+    payload:value
+  };
+};
+export const updateActionSuccess = (oldValue, newValue)=>{
+  return {
+    type:UPDATE_ACTION_SUCCESS,
+    payload:{
+      oldValue,
+      newValue
+    }
+  };
+};
+export const updateExchangeSuccess = (oldValue, newValue)=>{
+  return {
+    type:UPDATE_EXCHANGE_SUCCESS,
+    payload:{
+      oldValue,
+      newValue
+    }
+
+  };
+};
+export const updateEmailProviderSuccess = (oldValue, newValue)=>{
+  return {
+    type:UPDATE_EMAIL_PROVIDER_SUCCESS,
+    payload:{
+      oldValue,
+      newValue
+    }
+  };
+};
+export const updateCountrySuccess = (oldValue, newValue)=>{
+  return {
+    type:UPDATE_COUNTRY_SUCCESS,
+    payload:{
+      oldValue,
+      newValue
+    },
   };
 };

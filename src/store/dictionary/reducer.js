@@ -85,6 +85,46 @@ const dictionaryReducer = (state = initialState, action)=>{
         countries : state.countries.filter(country=>country._id !== action.payload[0]._id)
       };
       break;
+    case "UPDATE_ACTION_SUCCESS":
+      state = {
+        ...state,
+        actions : state.actions.map(actionValue=>{
+          if (actionValue === action.payload.oldValue){
+            return action.payload.newValue;
+          }
+          else {
+            return actionValue;
+          }
+        })
+      };
+      break;
+    case "UPDATE_EXCHANGE_SUCCESS":
+      state = {
+        ...state,
+        exchanges : state.exchanges.map(exchange=>{
+          if (exchange === action.payload.oldValue){
+            return action.payload.newValue;
+          }
+          else {
+            return exchange;
+          }
+        })
+      };
+      break;
+    case "UPDATE_EMAIL_PROVIDER_SUCCESS":
+      console.log(action.payload);
+      state = {
+        ...state,
+        emailProviders : state.emailProviders.map(emailProvider=>{
+          if (emailProvider === action.payload.oldValue){
+            return action.payload.newValue;
+          }
+          else {
+            return emailProvider;
+          }
+        })
+      };
+      break;
     case "API_ERROR":
       state = {
         ...state,

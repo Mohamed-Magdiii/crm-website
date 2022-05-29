@@ -14,8 +14,11 @@ import {
   removeItemFromActions,
   removeItemFromCountries,
   removeItemFromExchanges,
-  removeItemFromEmailProviders
-  
+  removeItemFromEmailProviders,
+  updateActionSuccess,
+  updateEmailProviderSuccess,
+  updateExchangeSuccess,
+  updateCountrySuccess
 } from "./actions";
 import {
   FETCH_DICTIONARY_START,
@@ -64,10 +67,32 @@ function * addItem({ payload }){
   
 }
 function * updateAction({ payload }){
-  console.log(payload);
+  
   try {
-    const result = yield call(updateActions, payload);
-    console.log(result);
+    yield call(updateActions, payload);
+    const { body, value } = payload;
+    const { actions: oldValue } = body;
+    yield put(updateActionSuccess(oldValue, value));
+  } catch (error){
+    yield put(apiError(error));
+  }
+}
+function * updateEmailProviderValue({ payload }){
+  try {
+    yield call(updateEmailProvider, payload);
+    const {body, value : newValue } = payload;
+    const { emailProviders :oldValue } = body;
+    yield put(updateEmailProviderSuccess(oldValue, newValue));
+  } catch (error){
+    yield put(apiError(error));
+  }
+}
+function * updateExchangeValue ({ payload }){
+  try {
+    yield call(updateExchange, payload);
+    const { body, value:newValue } = payload;
+    const { exchanges:oldValue } = body;
+    yield put(updateExchangeSuccess(oldValue, newValue));
   } catch (error){
     yield put(apiError(error));
   }
@@ -106,6 +131,8 @@ function * dictionarySaga (){
   yield takeEvery(ADD_NEW_ITEM, addItem);
   yield takeEvery(REMOVE_ITEM, removeItemFromDictionary);
   yield takeEvery (UPDATE_ACTION_START, updateAction);
-
+  yield takeEvery(UPDATE_EXCHANGE_START, updateExchangeValue);
+  yield takeEvery(UPATE_EMAIL_PROVIDER_START, updateEmailProviderValue);
+  
 }
 export default dictionarySaga;

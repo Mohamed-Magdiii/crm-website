@@ -112,7 +112,7 @@ function ExchangesTab(props){
           </div>
         </CardBody>
       </Card>
-      {<ExchangeEdit open={editModal} exchange={selectedExchange} onClose={()=>setEditModal(false)}/>}
+      {<ExchangeEdit open={editModal} selectedExchange={selectedExchange} onClose={()=>setEditModal(false)}/>}
       {<DeleteModal loading={props.deleteLoading} show ={deleteModal} onDeleteClick={deleteExchange} onCloseClick={()=>setDeleteModal(false)}/>}
     </React.Fragment>
   );

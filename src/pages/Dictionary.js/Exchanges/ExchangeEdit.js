@@ -12,11 +12,12 @@ import { withTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
+import { updateExchangeStart } from "store/dictionary/actions";
 function ExchangeEdit(props){
   
-  const {exchange = {}, onClose, open } = props;
+  const {selectedExchange = {}, onClose, open } = props;
   const dispatch = useDispatch();
-  const {exchanges} = exchange;
+  const {exchanges} = selectedExchange;
   return (
     <React.Fragment >
 
@@ -29,12 +30,17 @@ function ExchangeEdit(props){
             className='p-4'
             onValidSubmit={(e, v) => {
               e.preventDefault();
+              const { newExchangeValue } = v;
+              dispatch(updateExchangeStart({
+                body:selectedExchange,
+                value:newExchangeValue
+              }));
             }}
           >
             
             <div className="mb-3">
               <AvField
-                name="exchanges"
+                name="newExchangeValue"
                 label="Exchange"
                 placeholder="Enter Exchange"
                 type="text"
