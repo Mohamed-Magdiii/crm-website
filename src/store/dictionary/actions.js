@@ -12,7 +12,11 @@ import {
   REMOVE_ITEM_FROM_ACTIONS,
   REMOVE_ITEM_FROM_EMAIL_PROVIDERS,
   REMOVE_ITEM_FROM_EXCHANGES,
-  REMOVE_ITEM_FROM_COUNTRIES
+  REMOVE_ITEM_FROM_COUNTRIES,
+  UPATE_EMAIL_PROVIDER_START,
+  UPDATE_ACTION_START,
+  UPDATE_COUNTRY_START,
+  UPDATE_EXCHANGE_START
 } from "./actionsType";
 
 export const fetchDictionaryStart = (params = {})=>{
@@ -98,5 +102,11 @@ export const removeItemFromExchanges = (value)=>{
   return {
     type:REMOVE_ITEM_FROM_EXCHANGES,
     payload:value
+  };
+};
+export const updateActionStart = (value)=>{
+  return {
+    type:UPDATE_ACTION_START,
+    payload :value
   };
 };
