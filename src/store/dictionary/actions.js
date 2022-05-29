@@ -8,7 +8,11 @@ import {
   ADD_ITEM_TO_ACTIONS,
   ADD_ITEM_TO_EMAIL_PROVIDERS,
   ADD_ITEM_TO_COUNTRIES,
-  ADD_ITEM_TO_EXCHANGES
+  ADD_ITEM_TO_EXCHANGES,
+  REMOVE_ITEM_FROM_ACTIONS,
+  REMOVE_ITEM_FROM_EMAIL_PROVIDERS,
+  REMOVE_ITEM_FROM_EXCHANGES,
+  REMOVE_ITEM_FROM_COUNTRIES
 } from "./actionsType";
 
 export const fetchDictionaryStart = (params = {})=>{
@@ -39,6 +43,7 @@ export const addNewItem = (id, data)=>{
   };
 };
 export const removeItem = (id, data)=>{
+  console.log("removing Item");
   return {
     type:REMOVE_ITEM,
     payload:{ 
@@ -68,6 +73,30 @@ export const addItemToEmailProviders = (value)=>{
 export const addItemToCountries = (value)=>{
   return {
     type:ADD_ITEM_TO_COUNTRIES,
+    payload:value
+  };
+};
+export const removeItemFromCountries = (value)=>{
+  return {
+    type:REMOVE_ITEM_FROM_COUNTRIES,
+    payload:value
+  };
+};
+export const removeItemFromActions = (value)=>{
+  return {
+    type:REMOVE_ITEM_FROM_ACTIONS,
+    payload:value
+  };
+};
+export const removeItemFromEmailProviders = (value)=>{
+  return {
+    type:REMOVE_ITEM_FROM_EMAIL_PROVIDERS,
+    payload:value
+  };
+};
+export const removeItemFromExchanges = (value)=>{
+  return {
+    type:REMOVE_ITEM_FROM_EXCHANGES,
     payload:value
   };
 };

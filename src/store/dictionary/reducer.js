@@ -37,7 +37,6 @@ const dictionaryReducer = (state = initialState, action)=>{
       };
       break;
     case "ADD_ITEM_TO_EXCHANGES":
-      console.log(action.payload);
       state = {
         ...state,
         exchanges:[...state.exchanges, ...action.payload]
@@ -50,10 +49,41 @@ const dictionaryReducer = (state = initialState, action)=>{
       };
       break;
     case "ADD_ITEM_TO_COUNTRIES":
-      console.log(action.payload);
       state = {
         ...state,
         countries:[...state.countries, ...action.payload]
+      };
+      break;
+    case "REMOVE_ITEM":
+      state = {
+        ...state,
+        deleteLoading :true
+      };
+      break;
+    case "REMOVE_ITEM_FROM_EMAIL_PROVIDERS":
+      
+      state = {
+        ...state,
+        emailProviders:state.emailProviders.filter(emailProviders=> emailProviders !== action.payload[0])
+      };
+      break;
+    case "REMOVE_ITEM_FROM_ACTIONS":
+      console.log("inside reducer");
+      state = {
+        ...state,
+        actions:state.actions.filter(actions=>actions !== action.payload[0])
+      };
+      break;
+    case "REMOVE_ITEM_FROM_EXCHANGES":
+      state = {
+        ...state,
+        exchanges: state.exchanges.filter(exchange=> exchange !== action.payload[0])
+      };
+      break;
+    case "REMOVE_ITEM_FROM_COUNTRIES":
+      state = {
+        ...state,
+        countries : state.countries.filter(country=>country._id !== action.payload[0]._id)
       };
       break;
     case "API_ERROR":
