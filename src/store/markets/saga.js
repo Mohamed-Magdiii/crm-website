@@ -7,7 +7,7 @@ import {
 import { 
   getMarkets, addNewMarketAPI, updateMarket
 } from "apis/markets";
-import { apiError } from "../markets/actions";
+import { addNewMarketError, apiError } from "../markets/actions";
 import {
   ADD_NEW_MARKET, EDIT_MARKET_START, FETCH_MARKETS_START 
 } from "./actionTypes";
@@ -17,7 +17,7 @@ function * fetchMarket(params){
     const data = yield call(getMarkets, params);
     yield put(fetchMarketsSuccess(data));
   } catch (error){
-    yield put(apiError(error));
+    // yield put(apiError(error));
   }
 }
 function * addNewMarket({ payload :{ newMarket } }) {
@@ -36,9 +36,9 @@ function * addNewMarket({ payload :{ newMarket } }) {
     }
     
   } catch (error){
-    yield put(apiError("Please Enter valid data"));
+    yield put(addNewMarketError("Please Enter valid data"));
     yield delay(2000);
-    yield put(apiError(""));
+    yield put(addNewMarketError(""));
   }
 }
 function * editMarket(params){
@@ -54,7 +54,7 @@ function * editMarket(params){
     yield delay(2000);
     yield put(marketEditModalClear());
   } catch (error){
-    yield put(apiError("Please Enter Valid data"));
+    // yield put(apiError("Please Enter Valid data"));
   }
   
 }

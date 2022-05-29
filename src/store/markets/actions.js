@@ -1,5 +1,5 @@
 import {
-  API_ERROR, 
+  ADD_MARKET_ERROR, 
   FETCH_MARKETS_START,
   FETCH_MARKETS_SUCCESS, 
   ADD_NEW_MARKET,
@@ -34,10 +34,16 @@ export const addMarketModalClear = (data)=>{
     payload:data
   };
 };
+export const addNewMarketError = (error)=>{
+  return {
+    type:ADD_MARKET_ERROR,
+    payload: error 
+  };
+};
 export const apiError = (error)=>{
   return {
-    type:API_ERROR,
-    payload:{ error }
+    // type:ADD_MARKET_ERROR,
+    // payload:{ error }
   };
 };
 export const addNewMarketSuccess = (newMarket)=>{

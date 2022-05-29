@@ -1,10 +1,11 @@
 import {
-  FETCH_MARKETS_START, FETCH_MARKETS_SUCCESS, EDIT_MARKET_START, EDIT_MARKET_SUCCESS, EDIT_MARKET_CLEAR, ADD_NEW_MARKET, ADD_NEW_MARKET_SUCCESS, ADD_MARKET_CLEAR
+  FETCH_MARKETS_START, FETCH_MARKETS_SUCCESS, EDIT_MARKET_START, EDIT_MARKET_SUCCESS, EDIT_MARKET_CLEAR, ADD_NEW_MARKET, ADD_NEW_MARKET_SUCCESS, ADD_MARKET_CLEAR, ADD_MARKET_ERROR
 } from "./actionTypes";
 
 const initialState = {
   loading:false,
   markets:[],
+  error:""
 };
 const marketsReducer = (state = initialState, action)=>{
   switch (action.type) {
@@ -72,7 +73,13 @@ const marketsReducer = (state = initialState, action)=>{
     case ADD_MARKET_CLEAR:
       return {
         ...state,
-        addMarketSuccessMessage:""
+        addMarketSuccessMessage:"",
+        error:""
+      };
+    case ADD_MARKET_ERROR:
+      return {
+        ...state,
+        error:action.payload
       };
     default:
       return state;
