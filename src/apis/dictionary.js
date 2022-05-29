@@ -41,9 +41,11 @@ export  const addNewItem = async({ id, data }) =>{
     throw new Error("Error happened during adding this item");
   }
 };
-export const removeItem = async ({ id, body })=>{
+export const removeItem = async ({ id, data })=>{
   try {
-    const result = await axiosHelper(`/dictionaries/removeItem/${id}`, body);
+    const result = await axiosHelper.patch(`/dictionaries/removeItem/${id}`, data);
+    console.log(data);
+    console.log("helloe there", result);
     return result;
   } catch (error){
     throw new Error("Error happened while removing this item ");
