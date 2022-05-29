@@ -110,7 +110,7 @@ function ActionsTab(props){
           </div>
         </CardBody>
       </Card>
-      {<ActionEdit open={editModal} action ={selectedAction} onClose= {()=>setEditModal(false)}/>}
+      {<ActionEdit open={editModal} selectedAction ={selectedAction} onClose= {()=>setEditModal(false)}/>}
       {<DeleteModal  loading={props.deleteLoading} show={deleteModal} onDeleteClick={deleteAction} onCloseClick={()=>setDeleteModal(false)}/>}
     </React.Fragment>
   );
