@@ -31,7 +31,6 @@ function ActionsAdd(props){
             className='p-4'
             onValidSubmit={(e, v) => {
               e.preventDefault();
-              console.log(v);
               dispatch(addNewItem(props.id, v));
             }}
           >
