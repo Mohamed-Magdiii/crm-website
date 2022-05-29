@@ -14,9 +14,9 @@ import React, { useState, useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { addNewItem } from "store/dictionary/actions";
 function CountriesEdit(props){
-  const {open, onClose, country} = props;
+  const {open, onClose, country = {}} = props;
   const dispatch = useDispatch();
-  
+  const {alpha2, alpha3, ar, en, callingCode} = country;
   return (
     <React.Fragment >
       
@@ -40,6 +40,7 @@ function CountriesEdit(props){
                 placeholder="Alpha2"
                 type="text"
                 errorMessage="Enter valid alpha2"
+                value={alpha2}
                 validate={{ required: { value: true } }}
               />
             </div>
@@ -49,6 +50,7 @@ function CountriesEdit(props){
                 label="Alpha3"
                 placeholder="Alpha3"
                 type="text"
+                value = {alpha3}
                 errorMessage="Enter valid alpha3"
                 validate={{ required: { value: true } }}
               />
@@ -59,6 +61,7 @@ function CountriesEdit(props){
                 label="Calling Code"
                 placeholder="Calling Code"
                 type="text"
+                value = {callingCode}
                 errorMessage="Enter valid calling code"
                 validate={{ required: { value: true } }}
               />
@@ -69,6 +72,7 @@ function CountriesEdit(props){
                 label="Ar"
                 placeholder="AR"
                 type="text"
+                value = {ar}
                 errorMessage="Enter valid ar"
                 validate={{ required: { value: true } }}
               />
@@ -79,6 +83,7 @@ function CountriesEdit(props){
                 label="EN"
                 placeholder="en"
                 type="text"
+                value = {en}
                 errorMessage="Enter valid en"
                 validate={{ required: { value: true } }}
               />

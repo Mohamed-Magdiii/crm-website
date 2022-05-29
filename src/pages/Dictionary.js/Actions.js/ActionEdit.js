@@ -12,10 +12,11 @@ import { withTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
+import { updateActionStart } from "store/dictionary/actions";
 function ActionsEdit(props){
-  const {onClose, open, action} = props;
+  const { onClose, open, selectedAction = {} } = props;
   const dispatch = useDispatch();
-  
+  const { actions } = selectedAction;
   return (
     <React.Fragment >
       
@@ -28,6 +29,11 @@ function ActionsEdit(props){
             className='p-4'
             onValidSubmit={(e, v) => {
               e.preventDefault();
+              const { action } = v;
+              dispatch(updateActionStart({
+                value:action,
+                body:{ ...selectedAction }
+              }));
             }}
           >
             
@@ -37,6 +43,7 @@ function ActionsEdit(props){
                 label="Action"
                 placeholder="Enter action"
                 type="text"
+                value = {actions}
                 errorMessage="Enter valid action"
                 validate={{ required: { value: true } }}
               />

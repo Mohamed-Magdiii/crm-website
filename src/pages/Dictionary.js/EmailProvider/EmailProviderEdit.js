@@ -13,9 +13,10 @@ import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 function EmailProviderEdit(props){
-  const {open, onClose, emailProvider} = props;
+  const {open, onClose, emailProvider = {}} = props;
   const dispatch = useDispatch();
-  
+  const {emailProviders} = emailProvider;
+
   return (
     <React.Fragment >
       
@@ -37,6 +38,7 @@ function EmailProviderEdit(props){
                 label="Email Provider"
                 placeholder="Enter Email Provider"
                 type="text"
+                value = {emailProviders}
                 errorMessage="Enter valid Email Provider"
                 validate={{ required: { value: true } }}
               />

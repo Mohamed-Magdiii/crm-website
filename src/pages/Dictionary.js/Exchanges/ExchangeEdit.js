@@ -14,9 +14,9 @@ import React, { useState, useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 function ExchangeEdit(props){
   
-  const {exchange, onClose, open } = props;
+  const {exchange = {}, onClose, open } = props;
   const dispatch = useDispatch();
-
+  const {exchanges} = exchange;
   return (
     <React.Fragment >
 
@@ -38,6 +38,7 @@ function ExchangeEdit(props){
                 label="Exchange"
                 placeholder="Enter Exchange"
                 type="text"
+                value = {exchanges}
                 errorMessage="Enter Valid Exchange "
                 validate={{ required: { value: true } }}
               />
