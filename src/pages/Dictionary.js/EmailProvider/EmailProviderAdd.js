@@ -5,8 +5,6 @@ import {
   ModalHeader,
   ModalBody,
   UncontrolledAlert,
-  Col,
-  Row
 } from "reactstrap";
 import { withTranslation } from "react-i18next";
 import { Link } from "react-router-dom";

@@ -54,7 +54,6 @@ export const addNewItem = (id, data)=>{
   };
 };
 export const removeItem = (id, data)=>{
-  console.log("removing Item");
   return {
     type:REMOVE_ITEM,
     payload:{ 

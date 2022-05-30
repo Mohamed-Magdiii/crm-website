@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import {useDispatch, connect} from "react-redux";
+import { useDispatch, connect } from "react-redux";
 import {
   CardBody, CardHeader, Card
 } from "reactstrap";
