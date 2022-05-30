@@ -12,73 +12,77 @@ import Register from "../pages/Authentication/Register";
 import ForgetPwd from "../pages/Authentication/ForgetPassword";
 import ClientList from "../pages/Client/ClientList";
 import UsersList from "../pages/Users/UsersList";
-import LeadsList from "../pages/Leads/LeadList"; 
-import Teams from "../pages/Teams/Teams"; 
+import LeadsList from "../pages/Leads/LeadList";
+import Teams from "../pages/Teams/Teams";
 import RolesList from "../pages/Roles/RolesList";
 import SystemEmailsList from "../pages/SystemEmail/SystemEmailList";
 // import LeadsList from "../components/Leads/lead.record.list.component";
 import Page404 from "../pages/Authentication/Page404";
 import AssetsList from "../pages/Assests/AssetsList";
+import CurrencyPairsList from "../pages/CurrencyPairs/CurrencyPairsList";
 import Deposit from "pages/Transactions/Deposit";
 import Withdrawal from "pages/Transactions/Withdrawal";
 import Reminder from "../pages/Reminder/Reminder";
 import DictionaryList from "pages/Dictionary.js/DictionaryList";
 const userRoutes = [
-
   //dashboard
   {
     path: "/dashboard",
-    component: Dashboard 
+    component: Dashboard,
   },
 
   //profile
   {
     path: "/profile",
-    component: UserProfile 
+    component: UserProfile,
   },
   {
-    path:"/clients",
-    component:ClientList 
+    path: "/clients",
+    component: ClientList,
   },
   {
-    path:"/leads",
-    component: LeadsList 
+    path: "/leads",
+    component: LeadsList,
   },
   //users
   {
     path: "/users",
-    component: UsersList 
+    component: UsersList,
   },
   //teams
   {
     path: "/teams",
-    component: Teams 
+    component: Teams,
   },
   //calender
   {
     path: "/calendar/reminders",
-    component: Reminder 
+    component: Reminder,
   },
   {
     path: "/roles",
-    component: RolesList 
+    component: RolesList,
   },
   // system emails
   {
     path: "/system-emails",
-    component: SystemEmailsList
+    component: SystemEmailsList,
   },
   {
-    path:"/assets",
-    component:AssetsList
+    path: "/assets",
+    component: AssetsList,
   },
   {
-    path:"/transactions/deposit",
-    component:Deposit
+    path: "/currency-pairs",
+    component: CurrencyPairsList,
   },
   {
-    path:"/transactions/withdrawals",
-    component:Withdrawal
+    path: "/transactions/deposit",
+    component: Deposit,
+  },
+  {
+    path: "/transactions/withdrawals",
+    component: Withdrawal,
   },
   {
     path:"/dictionaries",
@@ -87,7 +91,7 @@ const userRoutes = [
   {
     path: "/",
     exact: true,
-    component: () => <Redirect to="/dashboard" /> 
+    component: () => <Redirect to="/dashboard" />,
   },
 
   // this route should be at the end of all other routes
@@ -97,26 +101,25 @@ const authRoutes = [
   //authencation page
   {
     path: "/logout",
-    component: Logout 
+    component: Logout,
   },
   {
     path: "/login",
-    component: Login 
+    component: Login,
   },
   {
     path: "/forgot-password",
-    component: ForgetPwd 
+    component: ForgetPwd,
   },
   {
     path: "/register",
-    component: Register 
+    component: Register,
   },
   {
     path: "*",
     exact: true,
-    component: Page404 
+    component: Page404,
   },
-  
 ];
 
 export { userRoutes, authRoutes };
