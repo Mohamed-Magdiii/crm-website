@@ -7,20 +7,19 @@ import {
   UncontrolledAlert,
 } from "reactstrap";
 import { withTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
-import React, { useEffect } from "react";
+import React from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { updateCountryStart } from "store/dictionary/actions";
 function CountriesEdit(props){
-  const {open, onClose, country = {}} = props;
+  const {open, onClose, country = {} } = props;
   const dispatch = useDispatch();
-  const {alpha2, alpha3, ar, en, callingCode} = country;
+  const {alpha2, alpha3, ar, en, callingCode } = country;
   return (
     <React.Fragment >
       
       <Modal isOpen={open} toggle={onClose} centered={true}>
         <ModalHeader toggle={onClose} tag="h4">
-          Edit Country
+          {props.t("Edit Country")}
         </ModalHeader>
         <ModalBody >
           <AvForm
@@ -40,72 +39,72 @@ function CountriesEdit(props){
             <div className="mb-3">
               <AvField
                 name="alpha2"
-                label="Alpha2"
-                placeholder="Alpha2"
+                label={props.t("Alpha2")}
+                placeholder={props.t("Alpha2")}
                 type="text"
-                errorMessage="Enter valid alpha2"
-                value={alpha2}
+                errorMessage={props.t("Enter valid alpha2")}
+                value={props.t(alpha2)}
                 validate={{ required: { value: true } }}
               />
             </div>
             <div className="mb-3">
               <AvField
                 name="alpha3"
-                label="Alpha3"
-                placeholder="Alpha3"
+                label={props.t("Alpha3")}
+                placeholder={props.t("Alpha3")}
                 type="text"
-                value = {alpha3}
-                errorMessage="Enter valid alpha3"
+                value = {props.t(alpha3)}
+                errorMessage={props.t("Enter valid alpha3")}
                 validate={{ required: { value: true } }}
               />
             </div>
             <div className="mb-3">
               <AvField
                 name="callingCode"
-                label="Calling Code"
-                placeholder="Calling Code"
+                label={props.t("Calling Code")}
+                placeholder={props.t("Calling Code")}
                 type="text"
-                value = {callingCode}
-                errorMessage="Enter valid calling code"
+                value = {props.t(callingCode)}
+                errorMessage={props.t("Enter valid calling code")}
                 validate={{ required: { value: true } }}
               />
             </div>
             <div className="mb-3">
               <AvField
                 name="ar"
-                label="Ar"
-                placeholder="AR"
+                label={props.t("Ar")}
+                placeholder={props.t("AR")}
                 type="text"
-                value = {ar}
-                errorMessage="Enter valid ar"
+                value = {props.t(ar)}
+                errorMessage={props.t("Enter valid ar")}
                 validate={{ required: { value: true } }}
               />
             </div>
             <div className="mb-3">
               <AvField
                 name="en"
-                label="EN"
-                placeholder="en"
+                label={props.t("EN")}
+                placeholder={props.t("en")}
                 type="text"
-                value = {en}
-                errorMessage="Enter valid en"
+                value = {props.t(en)}
+                errorMessage={props.t("Enter valid en")}
                 validate={{ required: { value: true } }}
               />
             </div>
             
             <div className='text-center pt-3 p-2'>
               <Button  type="submit" color="primary" className="">
-                     Edit Country
+                {props.t("Edit Country")}
               </Button>
             </div>
           </AvForm>
           {props.error && <UncontrolledAlert color="danger">
             <i className="mdi mdi-block-helper me-2"></i>
-            {props.error}
+            {props.t(props.error)}
           </UncontrolledAlert>}
           {props.editSuccess && <UncontrolledAlert color="success">
             <i className="mdi mdi-check-all me-2"></i>
-              Country has been updated successfully!
+            {props.t("Country has been updated successfully!")}
           </UncontrolledAlert>}
         </ModalBody>
       </Modal>
@@ -119,4 +118,4 @@ const mapStateToProps = (state)=>({
   id :state.dictionaryReducer.id,
   editSuccess:state.dictionaryReducer.editSuccess
 });
-export default connect(mapStateToProps, null)(CountriesEdit);
+export default connect(mapStateToProps, null)(withTranslation()(CountriesEdit));

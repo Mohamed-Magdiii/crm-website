@@ -5,8 +5,6 @@ import {
   ModalHeader,
   ModalBody,
   UncontrolledAlert,
-  Col,
-  Row
 } from "reactstrap";
 import { withTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
@@ -26,10 +24,10 @@ function CountriesAdd(props){
   }, [props.showAddSuccessMessage]);
   return (
     <React.Fragment >
-      <Link to="#" className="btn btn-primary" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i>Add New Country</Link>
+      <Link to="#" className="btn btn-primary" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i>{props.t("Add New Country")}</Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
-          Add New Country
+          {props.t("Add New Country")}
         </ModalHeader>
         <ModalBody >
           <AvForm
@@ -37,7 +35,7 @@ function CountriesAdd(props){
             onValidSubmit={(e, v) => {
               e.preventDefault();
               
-              dispatch(addNewItem(props.id, { countries: {...v } }));
+              dispatch(addNewItem(props.id, { countries: { ...v } }));
             }}
           >
             
@@ -45,67 +43,67 @@ function CountriesAdd(props){
             <div className="mb-3">
               <AvField
                 name="alpha2"
-                label="Alpha2"
-                placeholder="Alpha2"
+                label={props.t("Alpha2")}
+                placeholder={props.t("Alpha2")}
                 type="text"
-                errorMessage="Enter valid alpha2"
+                errorMessage={props.t("Enter valid alpha2")}
                 validate={{ required: { value: true } }}
               />
             </div>
             <div className="mb-3">
               <AvField
                 name="alpha3"
-                label="Alpha3"
-                placeholder="Alpha3"
+                label={props.t("Alpha3")}
+                placeholder={props.t("Alpha3")}
                 type="text"
-                errorMessage="Enter valid alpha3"
+                errorMessage={props.t("Enter valid alpha3")}
                 validate={{ required: { value: true } }}
               />
             </div>
             <div className="mb-3">
               <AvField
                 name="callingCode"
-                label="Calling Code"
-                placeholder="Calling Code"
+                label={props.t("Calling Code")}
+                placeholder={props.t("Calling Code")}
                 type="text"
-                errorMessage="Enter valid calling code"
+                errorMessage={props.t("Enter valid calling code")}
                 validate={{ required: { value: true } }}
               />
             </div>
             <div className="mb-3">
               <AvField
                 name="ar"
-                label="Ar"
-                placeholder="AR"
+                label={props.t("Ar")}
+                placeholder={props.t("AR")}
                 type="text"
-                errorMessage="Enter valid ar"
+                errorMessage={props.t("Enter valid ar")}
                 validate={{ required: { value: true } }}
               />
             </div>
             <div className="mb-3">
               <AvField
                 name="en"
-                label="EN"
-                placeholder="en"
+                label={props.t("EN")}
+                placeholder={props.t("en")}
                 type="text"
-                errorMessage="Enter valid en"
+                errorMessage={props.t("Enter valid en")}
                 validate={{ required: { value: true } }}
               />
             </div>
             
             <div className='text-center pt-3 p-2'>
               <Button  type="submit" color="primary" className="">
-                     Add New Country
+                {props.t("Add New Country")}
               </Button>
             </div>
           </AvForm>
           {props.error && <UncontrolledAlert color="danger">
             <i className="mdi mdi-block-helper me-2"></i>
-            {props.editError}
+            {props.t(props.editError)}
           </UncontrolledAlert>}
           {props.showAddSuccessMessage && <UncontrolledAlert color="success">
             <i className="mdi mdi-check-all me-2"></i>
-             Country has been added successfully!
+            {props.t("Country has been added successfully!")}
           </UncontrolledAlert>}
         </ModalBody>
       </Modal>
@@ -119,4 +117,4 @@ const mapStateToProps = (state)=>({
   id :state.dictionaryReducer.id,
   showAddSuccessMessage:state.dictionaryReducer.showAddSuccessMessage
 });
-export default connect(mapStateToProps, null)(CountriesAdd);
+export default connect(mapStateToProps, null)(withTranslation()(CountriesAdd));

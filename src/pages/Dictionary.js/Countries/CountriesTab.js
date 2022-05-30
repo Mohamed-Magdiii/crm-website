@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from "react";
 import { useDispatch, connect } from "react-redux";
 import {
-  CardBody, Card, CardTitle, CardHeader
+  CardBody, Card, CardHeader
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import CountriesAdd from "./CountriesAdd";
@@ -12,6 +12,7 @@ import {
 import DeleteModal from "components/Common/DeleteModal";
 import CountriesEdit from "./CountriesEdit";
 import { removeItem } from "store/dictionary/actions";
+import { withTranslation } from "react-i18next";
 function CountriesTab(props){
   
   const [deleteModal, setDeleteModal] = useState(false);
@@ -32,29 +33,29 @@ function CountriesTab(props){
   const columns = [
     {
       dataField:"alpha2",
-      text:"Alpha2"
+      text:props.t("Alpha2")
     }, 
     {
       dataField:"alpha3",
-      text:"Alpha3"
+      text:props.t("Alpha3")
     },
     {
       dataField:"callingCode",
-      text:"Calling Code"
+      text:props.t("Calling Code")
     },
     {
       dataField:"ar",
-      text:"AR"
+      text:props.t("AR")
     },
     {
       dataField:"en",
-      text:"EN"
+      text:props.t("EN")
     },
     {
       dataField: "",
       isDummyField: true,
       editable: false,
-      text: "Action",
+      text: props.t("Action"),
       formatter: (item) => {
         
         return (
@@ -87,7 +88,7 @@ function CountriesTab(props){
     
       <Card>
         <CardHeader>
-          <div className="d-flex justify-content-between  align-items-center">
+          <div className="d-flex justify-content-end align-items-center">
             <CountriesAdd/>
           </div>
                
@@ -142,4 +143,4 @@ const mapStateToProps = (state)=>({
   deleteLoading:state.dictionaryReducer.deleteLoading,
   clearDeleteModal :state.dictionaryReducer.clearDeleteModal
 });
-export default connect(mapStateToProps, null)(CountriesTab);
+export default connect(mapStateToProps, null)(withTranslation()(CountriesTab));
