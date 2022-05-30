@@ -1,11 +1,10 @@
 import React, {useState, useEffect} from "react";
 import { connect, useDispatch } from "react-redux";
 import {
-  Card, CardBody, CardTitle, CardHeader 
+  Card, CardBody, CardHeader 
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import ActionsAdd from "./ActionsAdd";
-import Notification from "components/Common/Notification";
 import DeleteModal from "components/Common/DeleteModal";
 import TableLoader from "components/Common/TableLoader";
 import ActionEdit from "./ActionEdit";
@@ -13,7 +12,7 @@ import { removeItem } from "store/dictionary/actions";
 import {
   Table, Thead, Tbody, Tr, Th, Td
 } from "react-super-responsive-table";
-
+import { withTranslation } from "react-i18next";
 function ActionsTab(props){
   
   const [deleteModal, setDeleteModal] = useState(false);
@@ -34,13 +33,13 @@ function ActionsTab(props){
   const columns = [
     {
       dataField:"actions",
-      text:"Name", 
+      text:props.t("Name"), 
     }, 
     {
       dataField: "",
       isDummyField: true,
       editable: false,
-      text: "Action",
+      text: props.t("Action"),
       formatter: (item) => (
         <div className="d-flex gap-3">
           <Link className="text-success" to="#">
@@ -77,7 +76,7 @@ function ActionsTab(props){
     
       <Card>
         <CardHeader>
-          <div className="d-flex justify-content-between  align-items-center">
+          <div className="d-flex justify-content-end  align-items-center">
             <ActionsAdd/>
           </div>
                
@@ -134,4 +133,4 @@ const mapStateToProps = (state)=>({
   editSuccess :state.dictionaryReducer.editSuccess,
   clearDeleteModal :state.dictionaryReducer.clearDeleteModal
 });
-export default connect(mapStateToProps, null)(ActionsTab);
+export default connect(mapStateToProps, null)(withTranslation()(ActionsTab));

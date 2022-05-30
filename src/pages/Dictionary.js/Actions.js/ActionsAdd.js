@@ -5,8 +5,6 @@ import {
   ModalHeader,
   ModalBody,
   UncontrolledAlert,
-  Col,
-  Row
 } from "reactstrap";
 import { withTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
@@ -26,10 +24,10 @@ function ActionsAdd(props){
   }, [props.showAddSuccessMessage]);
   return (
     <React.Fragment >
-      <Link to="#" className="btn btn-primary" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i>Add New Action</Link>
+      <Link to="#" className="btn btn-primary" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i>{props.t("Add New Action")}</Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
-          Add New Action
+          {props.t("Add New Action")}
         </ModalHeader>
         <ModalBody >
           <AvForm
@@ -38,16 +36,14 @@ function ActionsAdd(props){
               e.preventDefault();
               dispatch(addNewItem(props.id, v));
             }}
-          >
-            
-            
+          > 
             <div className="mb-3">
               <AvField
                 name="actions"
-                label="Actions"
-                placeholder="Actions"
+                label={props.t("Actions")}
+                placeholder={props.t("Actions")}
                 type="text"
-                errorMessage="Enter valid action"
+                errorMessage={props.t("Enter valid action")}
                 validate={{ required: { value: true } }}
               />
             </div>
@@ -55,7 +51,7 @@ function ActionsAdd(props){
             
             <div className='text-center pt-3 p-2'>
               <Button  type="submit" color="primary" className="">
-                     Add new Action
+                {props.t("Add new Action")}
               </Button>
             </div>
           </AvForm>
@@ -65,7 +61,7 @@ function ActionsAdd(props){
           </UncontrolledAlert>}
           {props.showAddSuccessMessage && <UncontrolledAlert color="success">
             <i className="mdi mdi-check-all me-2"></i>
-             Action has been added successfully!
+            {props.t("Action has been added successfully!")}
           </UncontrolledAlert>}
         </ModalBody>
       </Modal>
@@ -77,4 +73,4 @@ const mapStateToProps = (state)=>({
   error:state.dictionaryReducer.error,
   showAddSuccessMessage: state.dictionaryReducer.showAddSuccessMessage
 });
-export default connect(mapStateToProps, null)(ActionsAdd);
+export default connect(mapStateToProps, null)(withTranslation()(ActionsAdd));

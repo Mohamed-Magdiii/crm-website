@@ -7,7 +7,7 @@ import {
   UncontrolledAlert,
 } from "reactstrap";
 import { withTranslation } from "react-i18next";
-import React, { useEffect } from "react";
+import React from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { updateActionStart } from "store/dictionary/actions";
 function ActionsEdit(props){
@@ -37,28 +37,28 @@ function ActionsEdit(props){
             <div className="mb-3">
               <AvField
                 name="action"
-                label="Action"
-                placeholder="Enter action"
+                label={props.t("Action")}
+                placeholder={props.t("Enter action")}
                 type="text"
                 value = {actions}
-                errorMessage="Enter valid action"
+                errorMessage={props.t("Enter valid action")}
                 validate={{ required: { value: true } }}
               />
             </div>
           
             <div className='text-center pt-3 p-2'>
               <Button  type="submit" color="primary" className="">
-                     Edit Action
+                {props.t("Edit Action")}
               </Button>
             </div>
           </AvForm>
           {props.error && <UncontrolledAlert color="danger">
             <i className="mdi mdi-block-helper me-2"></i>
-            {props.error}
+            {props.t(props.error)}
           </UncontrolledAlert>}
           {props.editSuccess && <UncontrolledAlert color="success">
             <i className="mdi mdi-check-all me-2"></i>
-             Action has been updated successfully!
+            {props.t("Action has been updated successfully!")}
           </UncontrolledAlert>}
         </ModalBody>
       </Modal>
@@ -73,4 +73,4 @@ const mapStateToProps = (state)=>({
   id :state.dictionaryReducer.id,
   editSuccess:state.dictionaryReducer.editSuccess
 });
-export default connect(mapStateToProps, null)(ActionsEdit);
+export default connect(mapStateToProps, null)(withTranslation()(ActionsEdit));
