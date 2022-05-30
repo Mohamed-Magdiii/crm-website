@@ -50,7 +50,7 @@ function PaginationComponent({
               </div>
               <div>Records:{docs.length}</div>
               <div>
-                <select onChange={(e) => setSizePerPage(e.target.value)} className="form-select" aria-label="Default select example">
+                <select onChange={(e) => setSizePerPage(e.target.value)} className="p-1" aria-label="Default select example">
                   <option defaultValue value={10}>10</option>
                   <option value={15}>15</option>
                   <option value={20}>20</option>
