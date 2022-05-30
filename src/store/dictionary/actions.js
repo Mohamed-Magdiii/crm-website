@@ -22,7 +22,8 @@ import {
   UPDATE_EMAIL_PROVIDER_SUCCESS,
   UPDATE_COUNTRY_SUCCESS,
   EDIT_CLEAR,
-  ADD_CLEAR
+  ADD_CLEAR,
+  CLEAR_DELETE_MODAL
 } from "./actionsType";
 
 export const fetchDictionaryStart = (params = {})=>{
@@ -179,5 +180,10 @@ export const editClear = ()=>{
 export const addClear = ()=>{
   return {
     type:ADD_CLEAR
+  };
+};
+export const clearDeleteModal = ()=>{
+  return {
+    type:CLEAR_DELETE_MODAL
   };
 };

@@ -7,7 +7,7 @@ import {
   UncontrolledAlert,
 } from "reactstrap";
 import { withTranslation } from "react-i18next";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { updateActionStart } from "store/dictionary/actions";
 function ActionsEdit(props){

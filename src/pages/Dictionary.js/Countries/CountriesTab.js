@@ -1,5 +1,5 @@
-import React, {useState} from "react";
-import {useDispatch, connect} from "react-redux";
+import React, { useState, useEffect} from "react";
+import { useDispatch, connect } from "react-redux";
 import {
   CardBody, Card, CardTitle, CardHeader
 } from "reactstrap";
@@ -19,6 +19,16 @@ function CountriesTab(props){
   const [editModal, setEditModal] = useState();
   const [selectedCountry, setSelectedCountry] = useState();
   const dispatch = useDispatch();
+  useEffect(()=>{
+    if (!props.editSuccess && editModal){
+      setEditModal(false);
+    }
+  }, [props.editSuccess]);
+  useEffect(()=>{
+    if (props.clearDeleteModal && deleteModal){
+      setDeleteModal(false);
+    }
+  }, [props.clearDeleteModal]);
   const columns = [
     {
       dataField:"alpha2",
@@ -121,13 +131,16 @@ function CountriesTab(props){
         </CardBody>
       </Card>
       {<CountriesEdit open={editModal} country={selectedCountry} onClose={()=>setEditModal(false)}/>}
-      {<DeleteModal loading={props.deleteLoading} show ={deleteModal} onDeleteClick={deleteCountry} onCloseClick={()=>setDeleteModal(false)}/>}
+      {<DeleteModal show ={deleteModal} onDeleteClick={deleteCountry} onCloseClick={()=>setDeleteModal(false)}/>}
     </React.Fragment>
   );
 }
 const mapStateToProps = (state)=>({
   dictionary:state.dictionaryReducer.dictionary || [],
   countries :state.dictionaryReducer.countries || [],
-  id:state.dictionaryReducer.id
+  id:state.dictionaryReducer.id,
+  editSuccess:state.dictionaryReducer.editSuccess,
+  deleteLoading:state.dictionaryReducer.deleteLoading,
+  clearDeleteModal :state.dictionaryReducer.clearDeleteModal
 });
 export default connect(mapStateToProps, null)(CountriesTab);

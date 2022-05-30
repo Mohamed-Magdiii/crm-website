@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 
 import {useDispatch, connect} from "react-redux";
 import {
@@ -20,6 +20,16 @@ function ExchangesTab(props){
   const [selectedExchange, setSelectedExchange] = useState();
   const [editModal, setEditModal] = useState(false);
   const dispatch = useDispatch();
+  useEffect(()=>{
+    if (!props.editSuccess && editModal){
+      setEditModal(false);
+    }
+  }, [props.editSuccess]);
+  useEffect(()=>{
+    if (props.clearDeleteModal && deleteModal){
+      setDeleteModal(false);
+    }
+  }, [props.clearDeleteModal]);
   let columns = [
     {
       dataField:"exchanges",
@@ -113,7 +123,7 @@ function ExchangesTab(props){
         </CardBody>
       </Card>
       {<ExchangeEdit open={editModal} selectedExchange={selectedExchange} onClose={()=>setEditModal(false)}/>}
-      {<DeleteModal loading={props.deleteLoading} show ={deleteModal} onDeleteClick={deleteExchange} onCloseClick={()=>setDeleteModal(false)}/>}
+      {<DeleteModal  show ={deleteModal} onDeleteClick={deleteExchange} onCloseClick={()=>setDeleteModal(false)}/>}
     </React.Fragment>
   );
 }
@@ -121,6 +131,9 @@ const mapStateToProps = (state)=>({
   dictionary:state.dictionaryReducer.dictionary || [],
   exchanges: state.dictionaryReducer.exchanges  || [],
   deleteLoading :state.dictionaryReducer.deleteLoading,
-  id:state.dictionaryReducer.id
+  id:state.dictionaryReducer.id,
+  editSuccess:state.dictionaryReducer.editSuccess,
+  clearDeleteModal:state.dictionaryReducer.clearDeleteModal
+  
 });
 export default connect(mapStateToProps, null)(ExchangesTab);

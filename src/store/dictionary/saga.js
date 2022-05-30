@@ -20,7 +20,8 @@ import {
   updateExchangeSuccess,
   updateCountrySuccess,
   editClear,
-  addClear
+  addClear,
+  clearDeleteModal
 } from "./actions";
 import {
   FETCH_DICTIONARY_START,
@@ -129,6 +130,8 @@ function * removeItemFromDictionary({ payload }){
         yield put(removeItemFromCountries(actionValue));
       }
     }
+    yield delay(1000);
+    yield put(clearDeleteModal());
   } catch (error){
     yield put(apiError(error));
   }

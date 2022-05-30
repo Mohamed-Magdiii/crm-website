@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { connect, useDispatch } from "react-redux";
 import {
   Card, CardBody, CardTitle, CardHeader 
@@ -21,6 +21,16 @@ function ActionsTab(props){
   const [editModal, setEditModal] = useState(false);
   const [selectedAction, setSelectedAction] = useState();
   const dispatch = useDispatch();
+  useEffect(()=>{
+    if (!props.editSuccess && editModal){
+      setEditModal(false);
+    }
+  }, [props.editSuccess]);
+  useEffect(()=>{
+    if (props.clearDeleteModal && deleteModal){
+      setDeleteModal(false);
+    }
+  }, [props.clearDeleteModal]);
   const columns = [
     {
       dataField:"actions",
@@ -111,7 +121,7 @@ function ActionsTab(props){
         </CardBody>
       </Card>
       {<ActionEdit open={editModal} selectedAction ={selectedAction} onClose= {()=>setEditModal(false)}/>}
-      {<DeleteModal  loading={props.deleteLoading} show={deleteModal} onDeleteClick={deleteAction} onCloseClick={()=>setDeleteModal(false)}/>}
+      {<DeleteModal  show={deleteModal} onDeleteClick={deleteAction} onCloseClick={()=>setDeleteModal(false)}/>}
     </React.Fragment>
   );
 }
@@ -121,7 +131,8 @@ const mapStateToProps = (state)=>({
   error : state.dictionaryReducer.error,
   actions :state.dictionaryReducer.actions || [],
   id :state.dictionaryReducer.id,
-  deleteLoading : state.dictionaryReducer.deleteLoading
-  
+  deleteLoading : state.dictionaryReducer.deleteLoading,
+  editSuccess :state.dictionaryReducer.editSuccess,
+  clearDeleteModal :state.dictionaryReducer.clearDeleteModal
 });
 export default connect(mapStateToProps, null)(ActionsTab);

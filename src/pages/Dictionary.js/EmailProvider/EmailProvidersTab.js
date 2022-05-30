@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import { 
   connect, 
   useDispatch
@@ -19,9 +19,18 @@ function EmailProvidersTab(props){
   const [selectedEmailProvider, setSelectedEmailProvider] = useState();
   const [deletedItem, setDeletedItem] = useState();
   const [ deleteModal, setDeleteModal] = useState(false);
-  const [editMoal, setEditMoal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
   const dispatch = useDispatch();
-
+  useEffect(()=>{
+    if (!props.editSuccess && editModal){
+      setEditModal(false);
+    }
+  }, [props.editSuccess]);
+  useEffect(()=>{
+    if (props.clearDeleteModal && deleteModal){
+      setDeleteModal(false);
+    }
+  }, [props.clearDeleteModal]);
   const columns = [
     {
       dataField:"emailProviders",
@@ -41,7 +50,7 @@ function EmailProvidersTab(props){
               <i
                 className="mdi mdi-pencil font-size-18"
                 id="edittooltip"
-                onClick={() => {setSelectedEmailProvider(item); setEditMoal(true)}}
+                onClick={() => {setSelectedEmailProvider(item); setEditModal(true)}}
               ></i>
             </Link>
             <Link className="text-danger" to="#">
@@ -113,8 +122,8 @@ function EmailProvidersTab(props){
           </div>
         </CardBody>
       </Card>
-      {<EmailProviderEdit open={editMoal} selectedEmailProvider={selectedEmailProvider} onClose={()=>setEditMoal(false)}/>}
-      {<DeleteModal loading={props.deleteLoading} show ={deleteModal} onDeleteClick={deleteEmailProvider} onCloseClick={()=>setDeleteModal(false)}/>}
+      {<EmailProviderEdit open={editModal} selectedEmailProvider={selectedEmailProvider} onClose={()=>setEditModal(false)}/>}
+      {<DeleteModal show ={deleteModal} onDeleteClick={deleteEmailProvider} onCloseClick={()=>setDeleteModal(false)}/>}
     </React.Fragment>
   );
 }
@@ -122,7 +131,9 @@ const mapStateToProps = (state)=>({
   dictionary:state.dictionaryReducer.dictionary || [],
   emailProviders :state.dictionaryReducer.emailProviders || [],
   id:state.dictionaryReducer.id,
-  deleteLoading : state.dictionaryReducer.deletingLoading || false
+  deleteLoading : state.dictionaryReducer.deletingLoading || false,
+  editSuccess : state.dictionaryReducer.editSuccess,
+  clearDeleteModal :state.dictionaryReducer.clearDeleteModal
 });
 
 export default connect(mapStateToProps, null)(EmailProvidersTab);

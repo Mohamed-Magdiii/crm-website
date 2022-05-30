@@ -68,24 +68,28 @@ const dictionaryReducer = (state = initialState, action)=>{
       
       state = {
         ...state,
+        clearDeleteModal:false,
         emailProviders:state.emailProviders.filter(emailProviders=> emailProviders !== action.payload[0])
       };
       break;
     case "REMOVE_ITEM_FROM_ACTIONS":
       state = {
         ...state,
+        clearDeleteModal:false,
         actions:state.actions.filter(actions=>actions !== action.payload[0])
       };
       break;
     case "REMOVE_ITEM_FROM_EXCHANGES":
       state = {
         ...state,
+        clearDeleteModal:false,
         exchanges: state.exchanges.filter(exchange=> exchange !== action.payload[0])
       };
       break;
     case "REMOVE_ITEM_FROM_COUNTRIES":
       state = {
         ...state,
+        clearDeleteModal:false,
         countries : state.countries.filter(country=>country._id !== action.payload[0]._id)
       };
       break;
@@ -142,6 +146,12 @@ const dictionaryReducer = (state = initialState, action)=>{
       state = {
         ...state,
         showAddSuccessMessage:false
+      };
+      break;
+    case "CLEAR_DELETE_MODAL":
+      state = {
+        ...state,
+        clearDeleteModal:true
       };
       break;
     case "API_ERROR":
