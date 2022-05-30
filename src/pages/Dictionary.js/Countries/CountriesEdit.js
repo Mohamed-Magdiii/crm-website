@@ -10,6 +10,7 @@ import { withTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import React, { useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
+import { updateCountryStart } from "store/dictionary/actions";
 function CountriesEdit(props){
   const {open, onClose, country = {}} = props;
   const dispatch = useDispatch();
@@ -26,6 +27,12 @@ function CountriesEdit(props){
             className='p-4'
             onValidSubmit={(e, v) => {
               e.preventDefault();
+              dispatch(updateCountryStart({
+                value:v,
+                body:{
+                  countries :{ _id:country._id }
+                }
+              }));
             }}
           >
             

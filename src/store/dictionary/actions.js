@@ -163,11 +163,11 @@ export const updateEmailProviderSuccess = (oldValue, newValue)=>{
     }
   };
 };
-export const updateCountrySuccess = (oldValue, newValue)=>{
+export const updateCountrySuccess = (countryId, newValue)=>{
   return {
     type:UPDATE_COUNTRY_SUCCESS,
     payload:{
-      oldValue,
+      countryId,
       newValue
     },
   };

@@ -135,6 +135,23 @@ const dictionaryReducer = (state = initialState, action)=>{
         })
       };
       break;
+    case "UPDATE_COUNTRY_SUCCESS":
+      state = {
+        ...state,
+        editSuccess:true,
+        countries:state.countries.map(country=>{
+          if (country._id === action.payload.countryId){
+            return {
+              ...country,
+              ...action.payload.newValue
+            };
+          }
+          else {
+            return country;
+          }
+        })
+      };
+      break;
     case "EDIT_CLEAR" :
        
       state = {

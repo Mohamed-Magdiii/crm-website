@@ -137,7 +137,19 @@ function * removeItemFromDictionary({ payload }){
   }
   
 }
-
+function * updateCountry({ payload }){
+  try {
+    yield call(updateCountries, payload);
+    const { body } = payload;
+    const { countries } = body;
+    const { value } = payload;
+    yield put(updateCountrySuccess(countries._id, value));
+    yield delay(2000);
+    yield put(editClear());
+  } catch (error) {
+    yield put(apiError(error));
+  }
+}
 function * dictionarySaga (){
   yield takeEvery(FETCH_DICTIONARY_START, fetchDictionary);
   yield takeEvery(ADD_NEW_ITEM, addItem);
@@ -145,6 +157,6 @@ function * dictionarySaga (){
   yield takeEvery (UPDATE_ACTION_START, updateAction);
   yield takeEvery(UPDATE_EXCHANGE_START, updateExchangeValue);
   yield takeEvery(UPATE_EMAIL_PROVIDER_START, updateEmailProviderValue);
-  
+  yield takeEvery(UPDATE_COUNTRY_START, updateCountry);
 }
 export default dictionarySaga;

@@ -1,4 +1,5 @@
 import * as axiosHelper from "./api_helper";
+import qs from "qs";
 export const getDictionary = async()=>{
   try {
     const dictionary = await axiosHelper.get("/dictionaries");
@@ -35,8 +36,9 @@ export const updateActions = async ({ value, body }) =>{
   }
 };
 export const updateCountries = async ({ value, body })=>{
+  
   try {
-    const result = await axiosHelper.patch("/dictionaries/countries", body);
+    const result = await axiosHelper.patch(`/dictionaries/countries?${qs.stringify(value)}`, body);
     return result;
   } catch (error){
     throw new Error("Error happened during updating this action");
