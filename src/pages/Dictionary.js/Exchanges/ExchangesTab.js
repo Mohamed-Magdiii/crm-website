@@ -1,10 +1,10 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 
 import {useDispatch, connect} from "react-redux";
 import {
-  CardBody, CardHeader, Card, CardTitle
+  CardBody, CardHeader, Card
 } from "reactstrap";
-
+import { withTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import ExchangeAddModal from "./ExchangeAddModal";
 import DeleteModal from "components/Common/DeleteModal";
@@ -33,13 +33,13 @@ function ExchangesTab(props){
   let columns = [
     {
       dataField:"exchanges",
-      text:"Exchanges"
+      text:props.t("Exchanges")
     }, 
     {
       dataField: "",
       isDummyField: true,
       editable: false,
-      text: "Action",
+      text: props.t("Action"),
       formatter: (item ) => {
         
         return (
@@ -79,7 +79,7 @@ function ExchangesTab(props){
     
       <Card>
         <CardHeader>
-          <div className="d-flex  end  align-items-center">
+          <div className="d-flex  justify-content-end  align-items-center">
             <ExchangeAddModal/>
           </div>
                
@@ -135,4 +135,4 @@ const mapStateToProps = (state)=>({
   clearDeleteModal:state.dictionaryReducer.clearDeleteModal
   
 });
-export default connect(mapStateToProps, null)(ExchangesTab);
+export default connect(mapStateToProps, null)(withTranslation()(ExchangesTab));

@@ -5,8 +5,6 @@ import {
   ModalHeader,
   ModalBody,
   UncontrolledAlert,
-  Col,
-  Row
 } from "reactstrap";
 import { withTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
@@ -26,10 +24,10 @@ function ExchangeAddModal(props){
   }, [props.showAddSuccessMessage]);
   return (
     <React.Fragment >
-      <Link to="#" className="btn btn-primary" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i>{("Add New Exchange")}</Link>
+      <Link to="#" className="btn btn-primary" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i>{props.t("Add New Exchange")}</Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
-          Add New Exchange
+          {props.t("Add New Exchange")}
         </ModalHeader>
         <ModalBody >
           <AvForm
@@ -44,8 +42,8 @@ function ExchangeAddModal(props){
             <div className="mb-3">
               <AvField
                 name="exchanges"
-                label={"Exchanges"}
-                placeholder="Exchanges"
+                label={props.t("Exchanges")}
+                placeholder={props.t("Exchanges")}
                 type="text"
                 errorMessage="Enter valid exchange"
                 validate={{ required: { value: true } }}
@@ -55,17 +53,17 @@ function ExchangeAddModal(props){
             
             <div className='text-center pt-3 p-2'>
               <Button  type="submit" color="primary" className="">
-                     Add new Exchange
+                {props.t("Add new Exchange")}
               </Button>
             </div>
           </AvForm>
           {props.error && <UncontrolledAlert color="danger">
             <i className="mdi mdi-block-helper me-2"></i>
-            {props.error}
+            {props.t(props.error)}
           </UncontrolledAlert>}
           {props.showAddSuccessMessage && <UncontrolledAlert color="success">
             <i className="mdi mdi-check-all me-2"></i>
-             Exchange has been added successfully!
+            {props.t("Exchange has been added successfully!")}
           </UncontrolledAlert>}
         </ModalBody>
       </Modal>
@@ -79,4 +77,4 @@ const mapStateToProps = (state)=>({
   id :state.dictionaryReducer.id,
   showAddSuccessMessage:state.dictionaryReducer.showAddSuccessMessage
 });
-export default connect(mapStateToProps, null)(ExchangeAddModal);
+export default connect(mapStateToProps, null)(withTranslation()(ExchangeAddModal));

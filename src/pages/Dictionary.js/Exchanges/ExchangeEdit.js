@@ -5,12 +5,9 @@ import {
   ModalHeader,
   ModalBody,
   UncontrolledAlert,
-  Col,
-  Row
 } from "reactstrap";
 import { withTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { updateExchangeStart } from "store/dictionary/actions";
 function ExchangeEdit(props){
@@ -23,7 +20,7 @@ function ExchangeEdit(props){
 
       <Modal isOpen={open} toggle={onClose} centered={true}>
         <ModalHeader toggle={onClose} tag="h4">
-          Edit Exchange
+          {props.t("Edit Exchange")}
         </ModalHeader>
         <ModalBody >
           <AvForm
@@ -41,28 +38,28 @@ function ExchangeEdit(props){
             <div className="mb-3">
               <AvField
                 name="newExchangeValue"
-                label="Exchange"
-                placeholder="Enter Exchange"
+                label={props.t("Exchange")}
+                placeholder={props.t("Enter Exchange")}
                 type="text"
                 value = {exchanges}
-                errorMessage="Enter Valid Exchange "
+                errorMessage={props.t("Enter Valid Exchange ")}
                 validate={{ required: { value: true } }}
               />
             </div>
           
             <div className='text-center pt-3 p-2'>
               <Button  type="submit" color="primary" className="">
-                     Edit Exchange
+                {props.t("Edit Exchange")}
               </Button>
             </div>
           </AvForm>
           {props.error && <UncontrolledAlert color="danger">
             <i className="mdi mdi-block-helper me-2"></i>
-            {props.error}
+            {props.t(props.error)}
           </UncontrolledAlert>}
           {props.editSuccess && <UncontrolledAlert color="success">
             <i className="mdi mdi-check-all me-2"></i>
-             Exchange has been updated successfully!
+            {props.t("Exchange has been updated successfully!")}
           </UncontrolledAlert>}
         </ModalBody>
       </Modal>
@@ -77,4 +74,4 @@ const mapStateToProps = (state)=>({
   id :state.dictionaryReducer.id,
   editSuccess :state.dictionaryReducer.editSuccess
 });
-export default connect(mapStateToProps, null)(ExchangeEdit);
+export default connect(mapStateToProps, null)(withTranslation()(ExchangeEdit));
