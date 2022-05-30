@@ -55,7 +55,7 @@ function ExchangesTab(props){
               <i
                 className="mdi mdi-delete font-size-18"
                 id="deletetooltip"
-                onClick={() => {setDeletedItem(item); console.log(item); setDeleteModal(true)}}
+                onClick={() => {setDeletedItem(item); setDeleteModal(true)}}
               ></i>
             </Link>
           </div>
@@ -79,8 +79,7 @@ function ExchangesTab(props){
     
       <Card>
         <CardHeader>
-          <div className="d-flex justify-content-between  align-items-center">
-            <CardTitle>Exchanges</CardTitle>
+          <div className="d-flex  end  align-items-center">
             <ExchangeAddModal/>
           </div>
                

@@ -80,7 +80,6 @@ function EmailProvidersTab(props){
       <Card>
         <CardHeader>
           <div className="d-flex justify-content-between  align-items-center">
-            <CardTitle>Email Providers</CardTitle>
             <EmailProviderAdd/>
           </div>
                

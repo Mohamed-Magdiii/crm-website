@@ -88,7 +88,6 @@ function CountriesTab(props){
       <Card>
         <CardHeader>
           <div className="d-flex justify-content-between  align-items-center">
-            <CardTitle>Countries</CardTitle>
             <CountriesAdd/>
           </div>
                

@@ -34,7 +34,7 @@ function ActionsTab(props){
   const columns = [
     {
       dataField:"actions",
-      text:"Action", 
+      text:"Name", 
     }, 
     {
       dataField: "",
@@ -78,7 +78,6 @@ function ActionsTab(props){
       <Card>
         <CardHeader>
           <div className="d-flex justify-content-between  align-items-center">
-            <CardTitle>Actions</CardTitle>
             <ActionsAdd/>
           </div>
                
