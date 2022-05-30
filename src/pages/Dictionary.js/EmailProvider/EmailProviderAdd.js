@@ -27,7 +27,7 @@ function EmailProviderAdd(props){
   }, [props.showAddSuccessMessage]); 
   return (
     <React.Fragment >
-      <Link to="#" className="btn btn-primary" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i>Add New Email Provider</Link>
+      <Link to="#" className="btn btn-primary" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i>{props.t("Add New Email Provider")}</Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
           Add New Email Provider
@@ -45,10 +45,10 @@ function EmailProviderAdd(props){
             <div className="mb-3">
               <AvField
                 name="emailProviders"
-                label="Email Providers"
-                placeholder="Email Providers"
+                label={props.t("Email Providers")}
+                placeholder={props.t("Email Providers")}
                 type="text"
-                errorMessage="Enter valid email provider"
+                errorMessage={props.t("Enter valid email provider")}
                 validate={{ required: { value: true } }}
               />
             </div>
@@ -56,17 +56,17 @@ function EmailProviderAdd(props){
             
             <div className='text-center pt-3 p-2'>
               <Button  type="submit" color="primary" className="">
-                     Add New Email Provider
+                {props.t("Add New Email Provider")}
               </Button>
             </div>
           </AvForm>
           {props.error && <UncontrolledAlert color="danger">
             <i className="mdi mdi-block-helper me-2"></i>
-            {props.error}
+            {props.t(props.error)}
           </UncontrolledAlert>}
           {props.showAddSuccessMessage && <UncontrolledAlert color="success">
             <i className="mdi mdi-check-all me-2"></i>
-             Email Provider has been added successfully!
+            {props.t("Email Provider has been added successfully!")}
           </UncontrolledAlert>}
         </ModalBody>
       </Modal>
@@ -79,4 +79,4 @@ const mapStateToProps = (state)=>({
   id :state.dictionaryReducer.id,
   showAddSuccessMessage:state.dictionaryReducer.showAddSuccessMessage
 });
-export default connect(mapStateToProps, null)(EmailProviderAdd);
+export default connect(mapStateToProps, null)(withTranslation()(EmailProviderAdd));

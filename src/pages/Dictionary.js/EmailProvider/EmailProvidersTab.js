@@ -5,8 +5,9 @@ import {
 } from "react-redux";
 import { Link } from "react-router-dom";
 import {
-  CardBody, Card, CardTitle, CardHeader
+  CardBody, Card, CardHeader
 } from "reactstrap";
+import { withTranslation } from "react-i18next";
 import EmailProviderAdd from "./EmailProviderAdd";
 import {
   Table, Thead, Tbody, Tr, Th, Td
@@ -34,15 +35,13 @@ function EmailProvidersTab(props){
   const columns = [
     {
       dataField:"emailProviders",
-      text:"Email Providers",
-      editable:true,
-      
+      text:props.t("Email Providers"),
     }, 
     {
       dataField: "",
       isDummyField: true,
       editable: false,
-      text: "Action",
+      text: props.t("Action"),
       formatter: (item) => {
         return (
           <div className="d-flex gap-3">
@@ -79,7 +78,7 @@ function EmailProvidersTab(props){
     
       <Card>
         <CardHeader>
-          <div className="d-flex justify-content-between  align-items-center">
+          <div className="d-flex justify-content-end  align-items-center">
             <EmailProviderAdd/>
           </div>
                
@@ -135,4 +134,4 @@ const mapStateToProps = (state)=>({
   clearDeleteModal :state.dictionaryReducer.clearDeleteModal
 });
 
-export default connect(mapStateToProps, null)(EmailProvidersTab);
+export default connect(mapStateToProps, null)(withTranslation()(EmailProvidersTab));

@@ -5,12 +5,9 @@ import {
   ModalHeader,
   ModalBody,
   UncontrolledAlert,
-  Col,
-  Row
 } from "reactstrap";
 import { withTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { updateEmailProviderStart } from "store/dictionary/actions";
 function EmailProviderEdit(props){
@@ -23,7 +20,7 @@ function EmailProviderEdit(props){
       
       <Modal isOpen={open} toggle={onClose} centered={true}>
         <ModalHeader toggle={onClose} tag="h4">
-          Edit Email Provider
+          {props.t("Edit Email Provider")}
         </ModalHeader>
         <ModalBody >
           <AvForm
@@ -41,18 +38,18 @@ function EmailProviderEdit(props){
             <div className="mb-3">
               <AvField
                 name="newEmailProvider"
-                label="Email Provider"
-                placeholder="Enter Email Provider"
+                label={props.t("Email Provider")}
+                placeholder={props.t("Enter Email Provider")}
                 type="text"
                 value = {emailProviders}
-                errorMessage="Enter valid Email Provider"
+                errorMessage={props.t("Enter valid Email Provider")}
                 validate={{ required: { value: true } }}
               />
             </div>
           
             <div className='text-center pt-3 p-2'>
               <Button  type="submit" color="primary" className="">
-                     Edit Email Provider
+                {props.t("Edit Email Provider")}
               </Button>
             </div>
           </AvForm>
@@ -62,7 +59,7 @@ function EmailProviderEdit(props){
           </UncontrolledAlert>}
           {props.editSuccess && <UncontrolledAlert color="success">
             <i className="mdi mdi-check-all me-2"></i>
-             Email Provider has been updated successfully!
+            {props.t("Email Provider has been updated successfully!")}
           </UncontrolledAlert>}
         </ModalBody>
       </Modal>
@@ -76,4 +73,4 @@ const mapStateToProps = (state)=>({
   id :state.dictionaryReducer.id,
   editSuccess: state.dictionaryReducer.editSuccess
 });
-export default connect(mapStateToProps, null)(EmailProviderEdit);
+export default connect(mapStateToProps, null)(withTranslation()(EmailProviderEdit));
