@@ -2,10 +2,17 @@ import React, { useEffect, useState } from "react";
 import { withTranslation } from "react-i18next";
 import { connect, useDispatch } from "react-redux";
 import {
-  Card, CardBody, CardHeader, CardTitle, Col, Input, Label, Row 
+  Card,
+  CardBody,
+  CardHeader,
+  CardTitle,
+  Col,
+  Input,
+  Label,
+  Row,
 } from "reactstrap";
 import {
-  Table, Thead, Tbody, Tr, Th, Td
+  Table, Thead, Tbody, Tr, Th, Td 
 } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 import TableLoader from "components/Common/TableLoader";
@@ -16,7 +23,6 @@ import { Link } from "react-router-dom";
 import DeleteModal from "components/Common/DeleteModal";
 import MarketEdit from "./MarketEdit";
 
-
 function CurrencyPairsList(props) {
   const [selectedMarket, setSelectedMarket] = useState();
   const [editModal, setEditModal] = useState(false);
@@ -25,40 +31,43 @@ function CurrencyPairsList(props) {
   const dispatch = useDispatch();
   const t = props.t;
 
-  useEffect(()=>{
+  useEffect(() => {
     loadMarkets(1, sizePerPage);
   }, [sizePerPage, 1]);
-  
-  const loadMarkets = ( page, limit) => {
-    dispatch(fetchMarketsStart({
-      limit,
-      page
-    })) ;
+
+  const loadMarkets = (page, limit) => {
+    dispatch(
+      fetchMarketsStart({
+        limit,
+        page,
+      })
+    );
   };
+
   const switchSelectedMarketStatusHandler = (selectedItem) => {
     selectedItem.active = !selectedItem.active;
   };
-  const deleteMarket = ()=>{
+  const deleteMarket = () => {
     // dispatch(deleteSymbolStart(selectedMarket._id));
   };
-  useEffect(()=>{
+  useEffect(() => {
     if (props.deleteModalClear && deleteModal) {
       setDeleteModal(false);
     }
   }, [props.deleteModalClear]);
   const columns = [
     {
-      dataField:"checkbox",
-      text: <input type="checkbox"/>
+      dataField: "checkbox",
+      text: <input type="checkbox" />,
     },
     {
       dataField: "createdAt",
       text: props.t("Date"),
-      formatter: (val) => (new Date(val.createdAt).toLocaleDateString())
-    }, 
+      formatter: (val) => new Date(val.createdAt).toLocaleDateString(),
+    },
     {
-      dataField:"name",
-      text:props.t("Name"),
+      dataField: "name",
+      text: props.t("Name"),
     },
     {
       dataField: "pairName",
@@ -67,12 +76,12 @@ function CurrencyPairsList(props) {
     {
       dataField: "fee",
       text: "Fee",
-      formatter:(val) => (`${val.fee["$numberDecimal"]}`),
+      formatter: (val) => `${val.fee["$numberDecimal"]}`,
     },
     {
       dataField: "minAmount",
       text: props.t("Min Amount"),
-      formatter:(val) => (`${val.minAmount["$numberDecimal"]}`),
+      formatter: (val) => `${val.minAmount["$numberDecimal"]}`,
     },
     {
       dataField: "baseAsset",
@@ -87,43 +96,21 @@ function CurrencyPairsList(props) {
       text: props.t("Active"),
       formatter: (item) => (
         <div className="d-flex gap-3">
-          <Input 
-            type="checkbox" 
-            id={item.id} 
-            switch="none" 
-            defaultChecked={item.active} 
-            onClick={() => { switchSelectedMarketStatusHandler(item) }} />
-          <Label className="me-1" htmlFor={item.id} data-on-label={props.t("Active")} data-off-label=""></Label>
-        </div>
-      ),
-    },
-    {
-      dataField: "",
-      isDummyField: true,
-      editable: false,
-      text:props.t("Action"),
-      formatter: (item) => (
-        <div className="d-flex gap-3">
-          <Link className="text-success" to="#">
-            <i
-              className="mdi mdi-pencil font-size-18"
-              id="edittooltip"
-              onClick={()=>{
-                setSelectedMarket(item) ;
-                setEditModal(true);
-              }}
-            ></i>
-          </Link>
-          {/* <Link className="text-danger" to="#">
-            <i
-              className="mdi mdi-delete font-size-18"
-              id="deletetooltip"
-              onClick={()=>{
-                setSelectedMarket(item);
-                setDeleteModal(true);
-              }}
-            ></i>
-          </Link> */}
+          <Input
+            type="checkbox"
+            id={item.id}
+            switch="none"
+            defaultChecked={item.active}
+            onClick={() => {
+              switchSelectedMarketStatusHandler(item);
+            }}
+          />
+          <Label
+            className="me-1"
+            htmlFor={item.id}
+            data-on-label={props.t("Active")}
+            data-off-label=""
+          ></Label>
         </div>
       ),
     },
@@ -139,8 +126,10 @@ function CurrencyPairsList(props) {
               <Card>
                 <CardHeader className="d-flex flex-column gap-3">
                   <div className="d-flex justify-content-between  align-items-center">
-                    <CardTitle>{props.t("Currency Pairs List")} ({props.totalDocs})</CardTitle>
-                    <MarketForm/>
+                    <CardTitle>
+                      {props.t("Currency Pairs List")} ({props.totalDocs})
+                    </CardTitle>
+                    <MarketForm />
                   </div>
                 </CardHeader>
                 <CardBody>
@@ -149,29 +138,35 @@ function CurrencyPairsList(props) {
                       className="table-responsive mb-0"
                       data-pattern="priority-columns"
                     >
-                      <Table
-                        id="tech-companies-1"
-                        className="table "
-                      >
+                      <Table id="tech-companies-1" className="table ">
                         <Thead>
                           <Tr>
-                            {columns.map((column, index) =>
-                              <Th data-priority={index} key={index}>{column.text}</Th>
-                            )}
+                            {columns.map((column, index) => (
+                              <Th data-priority={index} key={index}>
+                                {column.text}
+                              </Th>
+                            ))}
                           </Tr>
                         </Thead>
                         <Tbody>
                           {props.loading && <TableLoader colSpan={4} />}
-                          {!props.loading && props.markets.map((row, rowIndex) =>
-                            <Tr key={rowIndex}>
-                              {columns.map((column, index) =>
-                                <Td key={`${rowIndex}-${index}`}>
-                                  { column.dataField === "checkbox" ? <input type="checkbox"/> : ""}
-                                  { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
-                                </Td>
-                              )}
-                            </Tr>
-                          )}
+                          {!props.loading &&
+                            props.markets.map((row, rowIndex) => (
+                              <Tr key={rowIndex}>
+                                {columns.map((column, index) => (
+                                  <Td key={`${rowIndex}-${index}`}>
+                                    {column.dataField === "checkbox" ? (
+                                      <input type="checkbox" />
+                                    ) : (
+                                      ""
+                                    )}
+                                    {column.formatter
+                                      ? column.formatter(row, rowIndex)
+                                      : row[column.dataField]}
+                                  </Td>
+                                ))}
+                              </Tr>
+                            ))}
                         </Tbody>
                       </Table>
                       <CustomPagination
@@ -187,7 +182,13 @@ function CurrencyPairsList(props) {
               </Card>
             </Col>
           </Row>
-          {<MarketEdit open={editModal} market={selectedMarket} onClose={()=>setEditModal(false)}/>}
+          {
+            <MarketEdit
+              open={editModal}
+              market={selectedMarket}
+              onClose={() => setEditModal(false)}
+            />
+          }
           {/* {<DeleteModal loading={props.deleteLoading} onDeleteClick={deleteMarket} show={deleteModal}  onCloseClick={()=>setDeleteModal(false)}/>}  */}
         </div>
       </div>
@@ -206,7 +207,10 @@ const mapStateToProps = (state) => ({
   nextPage: state.marketsReducer.nextPage,
   pagingCounter: state.marketsReducer.pagingCounter,
   prevPage: state.marketsReducer.prevPage,
-  deleteLoading:state.marketsReducer.deleteLoading,
-  deleteModalClear:state.marketsReducer.deleteModalClear
+  deleteLoading: state.marketsReducer.deleteLoading,
+  deleteModalClear: state.marketsReducer.deleteModalClear,
 });
-export default connect(mapStateToProps, null)(withTranslation()(CurrencyPairsList));
+export default connect(
+  mapStateToProps,
+  null
+)(withTranslation()(CurrencyPairsList));
