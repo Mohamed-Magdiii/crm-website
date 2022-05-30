@@ -55,7 +55,7 @@ const dictionaryReducer = (state = initialState, action)=>{
       state = {
         ...state,
         showAddSuccessMessage:true,
-        countries:[...state.countries, ...action.payload]
+        countries:[...action.payload, ...state.countries]
       };
       break;
     case "REMOVE_ITEM":
