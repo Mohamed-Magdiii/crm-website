@@ -29,6 +29,13 @@ const feeGroupReducer = (state = initalState, action)=>{
       };
        
       break;
+    case "ADD_FEES_GROUP_SUCCESS":
+      state = {
+        ...state,
+        feeGroups:[{ ...action.payload }, ...state.feeGroups],
+        totalDocs: state.totalDocs + 1
+      };
+      break;
     case "API_ERROR":
       state = {
         ...state,
