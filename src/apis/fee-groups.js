@@ -1,7 +1,7 @@
 import * as axioHelper from "./api_helper";
 import qs from "qs";
 
-export async function fetchFeeGroups ({ params }){
+export async function fetchFeeGroups (params){
   try {
     const result = await axioHelper.get(`/fee-groups?${qs.stringify(params)}`);
     return result;
@@ -19,9 +19,9 @@ export async function updateFeeGroup ({ body, id }){
     throw new Error("Error happened while updating data");
   }
 }
-export async function addFeeGroup ({ body }){
+export async function addFeeGroup (payload){
   try {
-    const result = await axioHelper.post("/fee-groups", body);
+    const result = await axioHelper.post("/fee-groups", payload);
     return result;
   } catch (error){
     throw new Error("Error happened while adding data");
