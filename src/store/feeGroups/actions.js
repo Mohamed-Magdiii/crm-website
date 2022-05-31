@@ -1,7 +1,9 @@
 import {
   FETCH_FEE_GROUPS_START,
   FETCH_FEE_GROUPS_SUCCESS,
-  API_ERROR
+  API_ERROR,
+  ADD_FEES_GROUPS_START,
+  ADD_FEES_GROUPS_SUCCESS
 } from "./actionsType";
 export const fetchFeeGroupStart = (params)=>{
   return {
@@ -20,4 +22,9 @@ export const apiError = ({ error })=> {
     type:API_ERROR,
     payload:{ error }
   };
+};
+export const addFeesGroupStart = ()=>{
+  return {
+    
+  }
 };
