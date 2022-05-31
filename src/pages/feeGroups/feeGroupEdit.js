@@ -1,0 +1,148 @@
+
+import { useDispatch, connect } from "react-redux";
+import {
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  UncontrolledAlert,
+  Col,
+  Row
+} from "reactstrap";
+
+import React, { useEffect } from "react";
+import { AvForm, AvField } from "availity-reactstrap-validation";
+import { withTranslation } from "react-i18next";
+function feeGroupAdd(props) {
+  
+  const {open, selectedItem = {}, onClose } = props;
+  const dispatch = useDispatch();
+  const updateFeeGroup = (event, values)=>{
+    event.preventDefault();
+   
+  }; 
+  useEffect(()=>{
+    if (props.successMessage) {
+
+      
+    }
+  }, [props.successMessage]);
+
+  return (
+    <React.Fragment >
+      
+      <Modal isOpen={open} toggle={onClose} centered={true}>
+        <ModalHeader toggle={onClose} tag="h4">
+          {props.t("Update Fee Group")}
+        </ModalHeader>
+        <ModalBody >
+          <AvForm
+            className='p-4'
+            onValidSubmit={(e, v) => {
+              
+            }}
+          >
+            <Row>
+              <Col md="6">
+                <div className="mb-3">
+                  <AvField
+                    name="value"
+                    label={props.t("Value")}
+                    placeholder={props.t("value")}
+                    type="text"
+                    value={selectedItem.value}
+                    errorMessage={props.t("Enter valid fees group value")}
+                    validate={{ required: { value: true } }}
+                  />
+                </div>
+              </Col>
+              <Col md="6"> 
+                <div className="mb-3">
+                  <AvField
+                    name="minValue"
+                    label={props.t("Min value")}
+                    placeholder={props.t("min value")}
+                    type="text"
+                    value={selectedItem.minValue}
+                    errorMessage={props.t("Enter valid min fees group value")}
+                    validate={{ required: { value: true } }}
+                  />
+                </div>
+              </Col>
+            </Row>
+            <Row>
+              <Col md="6">
+                <div className="mb-3">
+                  <AvField
+                    name="maxValue"
+                    label={props.t("Max Value")}
+                    placeholder={props.t("Max Value")}
+                    type="email"
+                    value= {selectedItem.maxValue}
+                    errorMessage={props.t("Enter Valid max feees group value")}
+                    validate={{ required: { value: true } }}
+                  />
+                </div>
+              </Col>
+              <Col md="6">
+                <div className="mb-3">
+                  <AvField
+                    name="title"
+                    label={props.t("Title")}
+                    placeholder={props.t("title")}
+                    type="text"
+                    value = {selectedItem.maxValue}
+                    errorMessage={props.t("Enter Valid title")}
+                    validate={{ required: { value: true } }}
+                  />
+                </div>
+              </Col>
+            </Row> 
+            <div className="mb-3">
+              <AvField
+                name="isPercentage"
+                label={props.t("Is Percentage")}
+                placeholder={props.t("Is percentage?")}
+                type="select"
+                errorMessage={props.t("Please Select a value")}
+                validate={{ required: { value: true } }}
+              >
+                <option>True</option>
+                <option>False</option>
+              </AvField>
+            </div>
+            
+            <div className='text-center pt-3 p-2'>
+              <Button  type="submit" color="primary" className="">
+                {props.t("Update Fee Group")}
+              </Button>
+            </div>
+          </AvForm>
+          {
+            props.error && (
+              <UncontrolledAlert color="danger">
+                <i className="mdi mdi-block-helper me-2"/>
+                {props.t(props.error)}
+              </UncontrolledAlert>
+            )
+          }
+          {
+            props.successMessage && (
+              <UncontrolledAlert color="success">
+                <i className="mdi mdi-check-all me-2"/>
+                {props.t("Fees Group is updated successfully !!!")}
+              </UncontrolledAlert>
+            )
+          }
+        </ModalBody>
+      </Modal>
+    </React.Fragment>
+  );
+}
+
+const mapStateToProps = (state) => ({
+  error: state.feeGroupReducer.error,
+  successMessage: state.feeGroupReducer.successMessage,
+});
+
+export default connect(mapStateToProps, null)(withTranslation()(feeGroupAdd));
