@@ -12,10 +12,18 @@ import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
 import SearchBar from "components/Common/SearchBar";
+import { Link } from "react-router-dom";
 import { withTranslation } from "react-i18next";
 import { fetchFeeGroupStart } from "store/feeGroups/actions";
-function FeeGroupsList(props) {
+import DeleteModal from "components/Common/DeleteModal";
+import FeeGroupAdd from "./feeGroupAdd";
+import FeeGroupEdit from "./feeGroupEdit";
 
+function FeeGroupsList(props) {
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [deletedItem, setDeletedItem] = useState();
+  const [selectedItem, setSelectedItem] = useState();
+  const [editModal, setEditModal ] = useState(false);
   const columns = [
     {
       dataField:"checkbox",
@@ -29,7 +37,7 @@ function FeeGroupsList(props) {
     {
       dataField: "isPercentage",
       text: props.t("isPercentage"),
-      
+      formatter: (val) => (val.isPercentage ? "TRUE" : "FALSE"),
     },
     {
       dataField: "value",
@@ -44,7 +52,30 @@ function FeeGroupsList(props) {
       dataField: "maxValue",
       text:props.t("Max Value"),
     },
-   
+    {
+      dataField: "",
+      isDummyField: true,
+      editable: false,
+      text: "Action",
+      formatter: (item) => (
+        <div className="d-flex gap-3">
+          <Link className="text-success" to="#">
+            <i
+              className="mdi mdi-pencil font-size-18"
+              id="edittooltip"
+              onClick={() => {setEditModal(!editModal); setSelectedItem(item)}}
+            ></i>
+          </Link>
+          <Link className="text-danger" to="#">
+            <i
+              className="mdi mdi-delete font-size-18"
+              id="deletetooltip"
+              onClick={() => {setDeleteModal(!deleteModal) ; setDeletedItem(item)}}
+            ></i>
+          </Link>
+        </div>
+      ),
+    },
   ];
  
   const [sizePerPage, setSizePerPage] = useState(10);
@@ -62,7 +93,9 @@ function FeeGroupsList(props) {
       limit
     }));
   };
-
+  const deleteFeeGroup = ()=>{
+    
+  };
   const handleSearchInput = (e) => (setSearchInputText(e.target.value));
 
   return (
@@ -76,7 +109,7 @@ function FeeGroupsList(props) {
                 <CardHeader className="d-flex flex-column gap-3">
                   <div className="d-flex justify-content-between  align-items-center">
                     <CardTitle>{props.t("Fee Groups List")} ({props.totalDocs})</CardTitle>
-                    
+                    <FeeGroupAdd/>
                   </div>
                   <SearchBar handleSearchInput={handleSearchInput} />
                 </CardHeader>
@@ -124,6 +157,8 @@ function FeeGroupsList(props) {
               </Card>
             </Col>
           </Row>
+          {<FeeGroupEdit open ={editModal} selectedItem={selectedItem} onClose={()=>setEditModal(false)}/>}
+          {<DeleteModal show={deleteModal} onDeleteClick={deleteFeeGroup} onCloseClick={()=>setDeleteModal(false)}/>}
         </div>
       </div>
     </React.Fragment>
@@ -132,7 +167,7 @@ function FeeGroupsList(props) {
 
 const mapStateToProps = (state) => ({
   loading: state.feeGroupReducer.loading || false,
-  feeGroups: state.feeGroupReducer.leads || [],
+  feeGroups: state.feeGroupReducer.feeGroups || [],
   page: state.feeGroupReducer.page || 1,
   totalDocs: state.feeGroupReducer.totalDocs || 0,
   totalPages: state.feeGroupReducer.totalPages || 0,
