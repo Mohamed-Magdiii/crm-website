@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { withTranslation } from "react-i18next";
+import { addFeesGroupStart } from "store/feeGroups/actions";
 function feeGroupAdd(props) {
 
   const [addModal, setAddUserModal] = useState(false);
@@ -22,7 +23,7 @@ function feeGroupAdd(props) {
   
   const handleAddFeesGroup = (event, values)=>{
     event.preventDefault();
-   
+    dispatch(addFeesGroupStart(values));
   }; 
 
   const toggleAddModal = () => {
@@ -50,7 +51,7 @@ function feeGroupAdd(props) {
           <AvForm
             className='p-4'
             onValidSubmit={(e, v) => {
-              
+              handleAddFeesGroup(e, v);
             }}
           >
             <Row>
@@ -86,7 +87,7 @@ function feeGroupAdd(props) {
                     name="maxValue"
                     label={props.t("Max Value")}
                     placeholder={props.t("Max Value")}
-                    type="email"
+                    type="text"
                     errorMessage={props.t("Enter Valid max feees group value")}
                     validate={{ required: { value: true } }}
                   />
@@ -114,8 +115,8 @@ function feeGroupAdd(props) {
                 errorMessage={props.t("Please Select a value")}
                 validate={{ required: { value: true } }}
               >
-                <option>True</option>
-                <option>False</option>
+                <option>true</option>
+                <option>false</option>
               </AvField>
             </div>
             
