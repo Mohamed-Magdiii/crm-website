@@ -21,7 +21,7 @@ import depositSaga from "./transactions/deposit/saga";
 import withdrawalSaga from "./transactions/withdrawal/saga";
 import dictionarySaga from "./dictionary/saga";
 import marketSaga from "./markets/saga";
-
+import feeGroupSaga from "./feeGroups/saga";
 export default function* rootSaga() {
   yield all([
     //public
@@ -46,6 +46,7 @@ export default function* rootSaga() {
     fork(depositSaga),
     fork(withdrawalSaga),
     fork(dictionarySaga),
-    fork(marketSaga)
+    fork(marketSaga),
+    fork(feeGroupSaga)
   ]);
 }

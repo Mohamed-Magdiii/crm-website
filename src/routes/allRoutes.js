@@ -24,6 +24,7 @@ import Deposit from "pages/Transactions/Deposit";
 import Withdrawal from "pages/Transactions/Withdrawal";
 import Reminder from "../pages/Reminder/Reminder";
 import DictionaryList from "pages/Dictionary.js/DictionaryList";
+import feeGroupList from "pages/feeGroups/feeGroupList";
 const userRoutes = [
   //dashboard
   {
@@ -87,6 +88,10 @@ const userRoutes = [
   {
     path:"/dictionaries",
     component:DictionaryList
+  },
+  {
+    path:"/fee-groups",
+    component:feeGroupList
   },
   {
     path: "/",

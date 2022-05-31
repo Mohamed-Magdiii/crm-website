@@ -2,11 +2,11 @@ import {
   FETCH_FEE_GROUPS_START,
   FETCH_FEE_GROUPS_SUCCESS,
   API_ERROR
-} from "./actions";
-export const fetchFeeGroupStart = (payload)=>{
+} from "./actionsType";
+export const fetchFeeGroupStart = (params)=>{
   return {
     type:FETCH_FEE_GROUPS_START,
-    payload
+    payload:{ params }
   };
 };
 export const fetchFeeGroupsSuccess = (data)=>{

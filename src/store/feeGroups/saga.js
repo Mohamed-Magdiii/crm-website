@@ -6,9 +6,9 @@ import {
 import { fetchFeeGroups } from "apis/fee-groups";
 import { FETCH_FEE_GROUPS_START } from "./actionsType";
 import { fetchFeeGroupsSuccess, apiError } from "./actions";
-function * getFeeGroups({ payload }){
+function * getFeeGroups({ payload :{ params } }){
   try {
-    const result = yield call(fetchFeeGroups, payload);
+    const result = yield call(fetchFeeGroups, params);
     yield put(fetchFeeGroupsSuccess(result));
   } catch (error){
     yield put(apiError(error));

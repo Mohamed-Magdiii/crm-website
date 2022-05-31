@@ -57,10 +57,10 @@ function FeeGroupsList(props) {
   }, [sizePerPage, 1, searchInputText]);
   
   const loadFeeGroups = (page, limit) => {
-    fetchFeeGroupStart({
+    dispatch(fetchFeeGroupStart({
       page,
       limit
-    });
+    }));
   };
 
   const handleSearchInput = (e) => (setSearchInputText(e.target.value));
