@@ -25,7 +25,8 @@ function AddMarkup(props) {
     setAddMarkupModal(!addModal);
   };
 
-  const handleAddMarkup = (e, v) => {     
+  const handleAddMarkup = (e, v) => {   
+    e.preventDefault();  
     dispatch(addMarkupStart(v));
   };
 

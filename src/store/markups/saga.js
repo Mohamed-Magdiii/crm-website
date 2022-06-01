@@ -68,8 +68,8 @@ function * addMarkup({ payload: newMarkup }){
     if (data.status){
       yield put(addNewMarkupSuccess(data.result));
       yield delay(2000);
+      yield put(addMarkupModalClear());
     }
-    yield put(addMarkupModalClear());
   } catch (error){   
     yield put(apiError(error));
     yield delay(2000);

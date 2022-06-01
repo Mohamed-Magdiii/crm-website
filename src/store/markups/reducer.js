@@ -16,6 +16,7 @@ const initialState = {
   loading: false,
   markups: [],
   error: "",
+  addMarkupSuccess:false,
   addMarkupSuccessMessage: ""
 };
 
@@ -96,10 +97,7 @@ const markupsReducer = (state = initialState, action) => {
     case ADD_MARKUP_SUCCESS:
       return {
         ...state,
-        totalDocs:state.totalDocs + 1,
-        markups:[{       
-          ...action.payload
-        }, ...state.markups],
+        addMarkupSuccess:true,
         addMarkupSuccessMessage:"New markup is added successfully",
       };
     case MARKUP_API_ERROR:
@@ -110,6 +108,7 @@ const markupsReducer = (state = initialState, action) => {
     case ADD_MARKUP_CLEAR:
       return {
         ...state,
+        addMarkupSuccessMessage:""
       };
     default:
       return state;

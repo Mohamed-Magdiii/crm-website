@@ -39,10 +39,6 @@ function MarkUpsList(props) {
 
   const columns = [
     {
-      dataField: "checkbox",
-      text: <input type="checkbox" />,
-    },
-    {
       dataField: "createdAt",
       text: props.t("Date"),
       formatter: (val) => new Date(val.createdAt).toLocaleDateString(),
@@ -63,76 +59,32 @@ function MarkUpsList(props) {
     {
       dataField: "isActive",
       text: props.t("isActive"),
-      formatter: (item) => (
-        <div className="d-flex gap-3">
-          <Input
-            type="checkbox"
-            id={`{${item.id}}-isActive`}
-            switch="none"
-            name="isActive"
-            disabled={true}
-            defaultChecked={item.isActive}
-            onClick={(event) => {
-              switchSelectedMarketHandler(item, event);
-            }}
-          />
-          <Label
-            className="me-1"
-            htmlFor={`{${item.id}}-isActive`}
-            data-on-label={props.t("isActive")}
-            data-off-label=""
-          ></Label>
-        </div>
-      ),
+      formatter: (item) => {
+        if (item.isActive)
+          return <i className="mdi mdi-checkbox-marked-circle-outline font-size-22" style={{ color:"green" }}></i>;
+        else
+          return <i className="mdi mdi-close-circle-outline font-size-22" style={{ color:"red" }}></i>;
+      },
     },
     {
       dataField: "isDefault",
       text: props.t("isDefault"),
-      formatter: (item) => (
-        <div className="d-flex gap-3">
-          <Input
-            type="checkbox"
-            id={`{${item.id}}-isDefault`}
-            switch="none"
-            name="isDefault"
-            disabled={true}
-            defaultChecked={item.isDefault}
-            onClick={(event) => {
-              switchSelectedMarketHandler(item, event);
-            }}
-          />
-          <Label
-            className="me-1"
-            htmlFor={`{${item.id}}-isDefault`}
-            data-on-label={props.t("isDefault")}
-            data-off-label=""
-          ></Label>
-        </div>
-      ),
+      formatter: (item) => {
+        if (item.isDefault)
+          return <i className="mdi mdi-checkbox-marked-circle-outline font-size-22" style={{ color:"green" }}></i>;
+        else
+          return <i className="mdi mdi-close-circle-outline font-size-22" style={{ color:"red" }}></i>;
+      },
     },
     {
       dataField: "isPercentage",
       text: props.t("isPercentage"),
-      formatter: (item) => (
-        <div className="d-flex gap-3">
-          <Input
-            type="checkbox"
-            id={`{${item.id}}-isPercentage`}
-            switch="none"
-            name="isPercentage"
-            defaultChecked={item.isPercentage}
-            onClick={(event) => {
-              switchSelectedMarketHandler(item, event);
-            }}
-          />
-          <Label
-            className="me-1"
-            htmlFor={`{${item.id}}-isPercentage`}
-            data-on-label={props.t("isPercentage")}
-            data-off-label=""
-          ></Label>
-        </div>
-      ),
+      formatter: (item) => {
+        if (item.isPercentage)
+          return <i className="mdi mdi-checkbox-marked-circle-outline font-size-22" style={{ color:"green" }}></i>;
+        else
+          return <i className="mdi mdi-close-circle-outline font-size-22" style={{ color:"red" }}></i>;
+      },
     },
     {
       dataField: "",
@@ -168,7 +120,7 @@ function MarkUpsList(props) {
 
   useEffect(() => {
     loadMarkups(1, sizePerPage);
-  }, [sizePerPage, 1]);
+  }, [sizePerPage, 1, props.addMarkupSuccess]);
 
   const loadMarkups = (page, limit) => {
     dispatch(
@@ -227,7 +179,7 @@ function MarkUpsList(props) {
                           </Tr>
                         </Thead>
                         <Tbody>
-                          {props.loading && <TableLoader colSpan={4} />}
+                          {props.loading && <TableLoader colSpan={12} />}
                           {!props.loading &&
                             props.markups.map((row, rowIndex) => (
                               <Tr key={rowIndex}>
@@ -286,7 +238,8 @@ const mapStateToProps = (state) => ({
   prevPage: state.markupsReducer.prevPage,
   deleteLoading: state.markupsReducer.deleteLoading,
   deleteModalClear: state.markupsReducer.deleteModalClear,
-  error: state.markupsReducer.error
+  error: state.markupsReducer.error,
+  addMarkupSuccess:state.markupsReducer.addMarkupSuccess
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(MarkUpsList));
