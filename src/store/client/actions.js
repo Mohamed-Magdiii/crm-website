@@ -25,7 +25,21 @@ import {
   EDIT_CLIENT_DETAILS_REQUESTED,
   EDIT_CLIENT_DETAILS_SUCCESS,
   EDIT_CLIENT_DETAILS_FAIL,
-  EDIT_CLIENT_DETAILS_CLEAR
+  EDIT_CLIENT_DETAILS_CLEAR,
+
+  ADD_BANK_ACCOUNT_REQUESTED,
+  ADD_BANK_ACCOUNT_SUCCESS,
+  ADD_BANK_ACCOUNT_FAIL,
+  ADD_BANK_ACCOUNT_CLEAR,
+
+  DELETE_BANK_ACCOUNT_REQUESTED,
+  DELETE_BANK_ACCOUNT_SUCCESS,
+  DELETE_BANK_ACCOUNT_FAIL,
+
+  EDIT_BANK_ACCOUNT_REQUESTED,
+  EDIT_BANK_ACCOUNT_SUCCESS,
+  EDIT_BANK_ACCOUNT_FAIL,
+  EDIT_BANK_ACCOUNT_CLEAR
 } from "./actionsType";
 
 export const fetchClientsStart = (params = {})=>{
@@ -183,6 +197,78 @@ export const editClientDetailsFail = (error) => {
 export const editClientDetailsClear = (data) => {
   return {
     type: EDIT_CLIENT_DETAILS_CLEAR,
+    payload: data
+  };
+};
+
+// add bank account
+export const addBankAccount = (params = {}) => {
+  return {
+    type: ADD_BANK_ACCOUNT_REQUESTED,
+    payload: params
+  };
+};
+export const addBankAccountSuccess = (data) => {
+  return {
+    type: ADD_BANK_ACCOUNT_SUCCESS,
+    payload: data
+  };
+};
+export const addBankAccountFail = (error) => {
+  return {
+    type: ADD_BANK_ACCOUNT_FAIL,
+    payload: { error }
+  };
+};
+export const addBankAccountClear = (data) => {
+  return {
+    type: ADD_BANK_ACCOUNT_CLEAR,
+    payload: data
+  };
+};
+
+// delete bank account
+export const deleteBankAccount = (params) => {
+  return {
+    type: DELETE_BANK_ACCOUNT_REQUESTED,
+    payload: params
+  };
+};
+export const deleteBankAccountSuccess = (data) => {
+  return {
+    type: DELETE_BANK_ACCOUNT_SUCCESS,
+    payload: data
+  };
+};
+export const deleteBankAccountFail = (error) => {
+  return {
+    type: DELETE_BANK_ACCOUNT_FAIL,
+    payload: { error }
+  };
+};
+
+// edit bank account
+export const editBankAccount = (params) => {
+  return {
+    type: EDIT_BANK_ACCOUNT_REQUESTED,
+    payload: params
+  };
+};
+export const editBankAccountSuccess = (data) => {
+  return {
+    type: EDIT_BANK_ACCOUNT_SUCCESS,
+    payload: data
+  };
+};
+export const editBankAccountFail = (error) => {
+  return {
+    type: EDIT_BANK_ACCOUNT_FAIL,
+    payload: { error }
+  };
+};
+export const editBankAccountClear = (data) => {
+  return {
+    type: EDIT_BANK_ACCOUNT_CLEAR,
     payload: data
   };
 };

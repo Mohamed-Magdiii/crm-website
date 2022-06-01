@@ -8,7 +8,7 @@ import {
 } from "reactstrap";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 
-import {  addSystemEmail } from "store/systemEmail/actions";
+import { addBankAccount } from "store/client/actions";
 // i18n
 import { withTranslation } from "react-i18next";
 
@@ -16,17 +16,16 @@ function ClientAddBankAccountModal(props){
   const [addModal, setAddModal] = useState(false);
   const dispatch = useDispatch();
   const addBankAccountHandler = (e, values) => {
-    // dispatch(addSystemEmail(values));
+    dispatch(addBankAccount(values));
   };
   const toggleAddModal = () => {
     setAddModal(!addModal);
   };
   useEffect(()=>{
-    if (props.clearingCounter > 0 && addModal) {
-      props.switchComponents();
+    if (props.addClearingCounter > 0 && addModal) {
       setAddModal(false);
     }
-  }, [props.clearingCounter]);
+  }, [props.addClearingCounter]);
   
   return (
     <React.Fragment >
@@ -146,7 +145,7 @@ function ClientAddBankAccountModal(props){
           </UncontrolledAlert>}
           {props.addSuccess && <UncontrolledAlert color="success">
             <i className="mdi mdi-check-all me-2"></i>
-            {props.t("First step completed successfully")} !!!
+            {props.t("Bank account added successfully")} !!!
           </UncontrolledAlert>}
         </ModalBody>
       </Modal>
@@ -155,12 +154,11 @@ function ClientAddBankAccountModal(props){
 }
 
 const mapStateToProps = (state) => ({
-  addLoading: state.systemEmailsReducer.addLoading,
-  addErrorDetails: state.systemEmailsReducer.addErrorDetails,
-  addSuccess: state.systemEmailsReducer.addSuccess,
-  addError: state.systemEmailsReducer.addError,  
-  clearingCounter: state.systemEmailsReducer.clearingCounter,
-  activeComponentProp: state.systemEmailsReducer.activeComponentProp
+  addLoading: state.clientReducer.addLoading,
+  addErrorDetails: state.clientReducer.addErrorDetails,
+  addSuccess: state.clientReducer.addSuccess,
+  addError: state.clientReducer.addError,  
+  addClearingCounter: state.clientReducer.addClearingCounter
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(ClientAddBankAccountModal));

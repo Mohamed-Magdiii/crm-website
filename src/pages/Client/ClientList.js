@@ -131,7 +131,7 @@ function ClientsList(props) {
   useEffect(() => {
     loadClients(1, sizePerPage);
   }, [sizePerPage, 1, searchInputText]);
-
+  
   const loadClients = (page, limit) => {
     if (searchInputText !== "" && searchInputText.length >= 3) {
       dispatch(fetchClientsStart({
@@ -228,7 +228,6 @@ const mapStateToProps = (state) => ({
   limit: state.clientReducer.limit,
   nextPage: state.clientReducer.nextPage,
   pagingCounter: state.clientReducer.pagingCounter,
-  prevPage: state.clientReducer.prevPage,
-
+  prevPage: state.clientReducer.prevPage
 });
 export default connect(mapStateToProps, null)(withTranslation()(ClientsList));

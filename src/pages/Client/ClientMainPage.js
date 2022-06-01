@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { 
   BrowserRouter as Router, Redirect, Route, Switch, useLocation 
 } from "react-router-dom";
@@ -10,14 +10,8 @@ import ClientTransactions from "./ClientTransactions";
 import ClientWallets from "./ClientWallets";
 
 function ClientMainPage() {
-  // const [redirectToListing, setRedirectToListing] = useState(false);
   const location = useLocation();
   const { clientId } = location.state;
-
-  // a callback function to handle change in redirect to listing 
-  // const redirectToListingHandler = () => {
-  //   setRedirectToListing(!redirectToListing);
-  // };
 
   return (
     <React.Fragment>
@@ -50,8 +44,6 @@ function ClientMainPage() {
 
                 {/* default route to details right on loading */}
                 <Redirect to={"/clients/" + clientId + "/details"} />
-                {/* redirect to listing page when back button in <Layout /> is clicked */}
-                {/* {redirectToListing && <Redirect to="/clients" />} */}
               </Switch>
             </Layout>
           </Router>

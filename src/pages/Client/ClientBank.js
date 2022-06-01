@@ -1,32 +1,56 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, connect } from "react-redux";
 import {
-  Row, Col, Card, CardBody, CardTitle, CardHeader, Input, Label
+  Row, Col, Card, CardBody, CardTitle, CardHeader
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import {
   Table, Thead, Tbody, Tr, Th, Td
 } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
+
 import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
-
-
 // i18n
 import { withTranslation } from "react-i18next";
-import { fetchClientBankAccount } from "store/client/actions";
+import { 
+  fetchClientBankAccount, deleteBankAccount
+} from "store/client/actions";
 import ClientAddBankAccountModal from "./ClientAddBankAccountModal";
+import BankAccountEditModal from "./EditBankAccountModal";
+import DeleteModal from "../../components/Common/DeleteModal";
 
 function ClientBank(props) {
-  const [sizePerPage, setSizePerPage] = useState(5);
   const clientId = props.clientId;
   const dispatch = useDispatch();
-  const loadClientBankDetails = () => {
-    dispatch(fetchClientBankAccount(clientId));
+  const [sizePerPage, setSizePerPage] = useState(5);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
+  const [isBankAccountModified, setIsBankAccountModified] = useState(false);
+  const [selectedBankAccount, setSelectedBankAccount] = useState();
+  const deleteBankAccountFunction = () => {
+    dispatch(deleteBankAccount(selectedBankAccount._id));
+  };
+  const loadClientBankDetails = (page, limit) => {
+    dispatch(fetchClientBankAccount({ 
+      clientId: clientId,
+      page,
+      limit
+    }));
+  };
+  const bankAccountUpdateHanlder = () => {
+    setIsBankAccountModified(!isBankAccountModified);
   };
   useEffect(() => {
-    loadClientBankDetails();
-  }, []);
+    loadClientBankDetails(1, sizePerPage);
+
+  }, [sizePerPage, 1, props.deleteClearingCounter, isBankAccountModified, props.addClearingCounter]);
+  useEffect(() => {
+    if (props.deleteClearingCounter > 0 && deleteModal){
+      setDeleteModal(false);
+    }
+
+  }, [props.deleteClearingCounter]);
 
   const columns = [
     {
@@ -34,12 +58,8 @@ function ClientBank(props) {
       text: props.t("Bank name")
     },
     {
-      dataField: "swift",
-      text: props.t("Swift")
-    },
-    {
-      dataField: "bankAddress",
-      text: props.t("Bank address")
+      dataField: "swiftCode",
+      text: props.t("Swift code")
     },
     {
       dataField: "iban",
@@ -51,29 +71,27 @@ function ClientBank(props) {
     },
     {
       dataField: "currency",
-      text: props.t("Currenct")
-    },
-    {
-      dataField: "beneficiaryName",
-      text: props.t("Beneficiary name")
+      text: props.t("Currency")
     },
     {
       dataField: "",
       isDummyField: true,
       editable: false,
-      text: props.t("Actions"), 
+      text: props.t("Actions"),
       formatter: (item) => (
         <div className="d-flex gap-3">
           <Link className="text-success" to="#">
             <i
               className="mdi mdi-pencil font-size-18"
               id="edittooltip"
+              onClick={() => {setSelectedBankAccount(item); setEditModal(true)}}
             ></i>
           </Link>
           <Link className="text-danger" to="#">
             <i
               className="mdi mdi-delete font-size-18"
               id="deletetooltip"
+              onClick={() => {setSelectedBankAccount(item); setDeleteModal(true)}}
             ></i>
           </Link>
         </div>
@@ -111,7 +129,7 @@ function ClientBank(props) {
                         </Thead>
                         <Tbody>
                           {props.loading && <TableLoader colSpan={4} />}
-                          {!props.loading && props.clientBankAccountDetails.map((row, rowIndex) =>
+                          {!props.loading && props.clientBankAccounts.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`}>
@@ -134,6 +152,18 @@ function ClientBank(props) {
               </Card>
             </Col>
           </Row>
+          {<DeleteModal 
+            loading={props.deleteLoading} 
+            onDeleteClick={deleteBankAccountFunction} 
+            show={deleteModal} 
+            onCloseClick={()=>{setDeleteModal(false)}} 
+          />}
+          {<BankAccountEditModal 
+            open={editModal}  
+            selectedBankAccount={selectedBankAccount} 
+            onClose={()=>{setEditModal(false)}} 
+            bankAccountUpdateHandler={bankAccountUpdateHanlder} 
+          />}
         </div>
       </div>
     </React.Fragment>
@@ -141,10 +171,22 @@ function ClientBank(props) {
 }
 
 const mapStateToProps = (state) => ({
-  loading: state.clientReducer.loading,
-  clientBankAccountDetails: state.clientReducer.clientBankAccountDetails || [],
-  error: state.clientReducer.error,
-  errorDetails: state.clientReducer.errorDetails
+  loading: state.clientReducer.loading || false,
+  docs: state.clientReducer.docs || [],
+  page: state.clientReducer.page || 1,
+  totalDocs: state.clientReducer.totalDocs || 0,
+  totalPages: state.clientReducer.totalPages || 0,
+  hasNextPage: state.clientReducer.hasNextPage,
+  hasPrevPage: state.clientReducer.hasPrevPage,
+  limit: state.clientReducer.limit,
+  nextPage: state.clientReducer.nextPage,
+  pagingCounter: state.clientReducer.pagingCounter,
+  prevPage: state.clientReducer.prevPage,
+  deleteLoading: state.clientReducer.deleteLoading,
+  deleteClearingCounter: state.clientReducer.deleteClearingCounter,
+  clearingCounter: state.clientReducer.clearingCounter,
+  clientBankAccounts: state.clientReducer.clientBankAccounts || [],
+  addClearingCounter: state.clientReducer.addClearingCounter
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(ClientBank));

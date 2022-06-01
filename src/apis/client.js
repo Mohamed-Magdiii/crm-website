@@ -25,8 +25,12 @@ export const getClientById = async ({ payload }) => {
 };
 
 export const getClientBankDetails = async ({ payload }) => {
-  const id  = payload;
-  const data = await axiosHelper.get(`/bank-accounts/${id}`);
+  const id  = payload.clientId;
+  const paginationPayload = { 
+    limit: payload.limit,
+    page: payload.page
+  };
+  const data = await axiosHelper.get(`/bank-accounts/${id}?${qs.stringify(paginationPayload)}`);
   if (data.isError){
     throw new Error(data.isError);
   }
@@ -36,7 +40,7 @@ export const getClientBankDetails = async ({ payload }) => {
 
 export const getClientWalletDetails = async ({ payload }) => {
   const id = payload;
-  const data = await axiosHelper.get(`/wallets/${id}/client`, { crypto: true });
+  const data = await axiosHelper.get(`/wallets/${id}`, { crypto: true });
   if (data.isError){
     throw new Error(data.isError);
   }
@@ -62,6 +66,35 @@ export const getClientTransactions = async ({ payload }) => {
 export const updateClientDetails = async ({ payload }) => {
   const { id, values } = payload;
   const data = await axiosHelper.patch(`/clients/${id}`, values);
+  if (data.isError){
+    throw new Error(data.isError);
+  }
+
+  return data;
+};
+
+export const postBankAccount = async ({ payload }) => {
+  const data = await axiosHelper.post("/bank-accounts", payload);
+  if (data.isError){
+    throw new Error(data.isError);
+  }
+
+  return data;
+};
+
+export const deleteBankAccount = async ({ payload }) => {
+  const id = payload;
+  const data = await axiosHelper.del(`/bank-accounts/${id}`);
+  if (data.isError){
+    throw new Error(data.isError);
+  }
+
+  return data;
+};
+
+export const updateBankAccount = async ({ payload }) => {
+  const { id, values } = payload;
+  const data = await axiosHelper.patch(`/bank-accounts/${id}`, values);
   if (data.isError){
     throw new Error(data.isError);
   }

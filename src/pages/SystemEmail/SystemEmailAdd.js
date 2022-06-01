@@ -39,7 +39,7 @@ function SystemEmailAdd(props){
         </ModalHeader>
         <ModalBody >
           <AvForm
-            className='p-4' 
+            className='p-4'
             onValidSubmit={(e, v) => {
               handleAddSystemEmail(e, v);
             }}
