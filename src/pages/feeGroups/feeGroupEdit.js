@@ -7,21 +7,24 @@ import {
   ModalBody,
   UncontrolledAlert,
   Col,
-  Row
+  Row,
+  Label
 } from "reactstrap";
 
-import React from "react";
+import React, { useState } from "react";
 import { 
   AvForm, 
   AvField,
-  AvRadioGroup,
-  AvRadio
+  AvGroup,
+  AvInput
 } from "availity-reactstrap-validation";
 import { withTranslation } from "react-i18next";
 import { editFeeGroupStart } from "store/feeGroups/actions";
 function feeGroupAdd(props) {
   
   const { open, selectedItem = {}, onClose, disabled } = props;
+
+  const [isPercentage, setIsPercentage] = useState(false);
   const dispatch = useDispatch();
   const updateFeeGroup = (event, values)=>{
     event.preventDefault();
@@ -40,6 +43,7 @@ function feeGroupAdd(props) {
           <AvForm
             className='p-4'
             onValidSubmit={(e, v) => {
+              console.log(v);
               updateFeeGroup(e, v);
             }}
           >
@@ -102,11 +106,10 @@ function feeGroupAdd(props) {
             </Row> 
           
             <div className="mb-3">
-              <AvRadioGroup inline name="isPercentage"  label="Is Percentage?" required>
-                <AvRadio customInput label="Yes" value="true" />
-                <AvRadio customInput label="No" value="false" />
-          
-              </AvRadioGroup>
+              <AvGroup check>
+                <AvInput type="checkbox" name="isPercentage" onClick={()=>setIsPercentage(preValue=>!preValue)} value={isPercentage ? true : false} />
+                <Label check for="checkItOut">Is Percentage</Label>
+              </AvGroup>
             </div>
           
             
