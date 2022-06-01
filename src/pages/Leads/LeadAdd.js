@@ -47,9 +47,9 @@ function LeadForm(props) {
 
   return (
     <React.Fragment >
-      <Link to="#" className="btn btn-light" onClick={toggleAddModal}>
+      <Link to="#" className="btn btn-primary" onClick={toggleAddModal}>
         <i className="bx bx-plus me-1"/> 
-        {props.t("Add New")}
+        {props.t("Add New Lead")}
       </Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
@@ -129,7 +129,7 @@ function LeadForm(props) {
             </div>
             <div className='text-center pt-3 p-2'>
               <Button  type="submit" color="primary" className="">
-                {props.t("Add New Lead")}
+                {props.t("Add")}
               </Button>
             </div>
           </AvForm>
