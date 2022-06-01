@@ -14,11 +14,13 @@ import {
   deleteMarkupDone,
   addNewMarkupSuccess,
   apiError,
-  addMarkupModalClear
+  addMarkupModalClear,
+  deletModalClear
 } from "./actions";
 import {
   updateMarkup, deleteMarkupAPI, addMarkupAPI
 } from "apis/markup";
+import { showErrorNotification } from "store/notifications/actions";
 
 function* fetchMarket(params) {
   try {
@@ -53,29 +55,32 @@ function* deleteMarkup(params) {
     const data = yield call(deleteMarkupAPI, params.payload);
 
     const { result } = data;
-    if (result){  
+    if (result) {
       yield put(deleteMarkupDone({
         result,
         id: params.payload,
-      }));}
+      }));
+    }
   } catch (error) {
-    // yield put(apiError("An error happned during deleting this record"));
+    yield put(showErrorNotification(error.message));
+    yield delay(2000);
+    yield put(deletModalClear());
   }
 }
-function * addMarkup({ payload: newMarkup }){
+function* addMarkup({ payload: newMarkup }) {
   try {
     const data = yield call(addMarkupAPI, newMarkup);
-    if (data.status){
+    if (data.status) {
       yield put(addNewMarkupSuccess(data.result));
       yield delay(2000);
       yield put(addMarkupModalClear());
     }
-  } catch (error){   
+  } catch (error) {
     yield put(apiError(error));
     yield delay(2000);
     yield put(apiError(""));
   }
- 
+
 }
 function* markupSaga() {
   yield takeEvery(FETCH_MARKUPS_START, fetchMarket);

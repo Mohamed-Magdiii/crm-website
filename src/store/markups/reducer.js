@@ -9,14 +9,15 @@ import {
   ADD_MARKUP_START,
   ADD_MARKUP_SUCCESS,
   MARKUP_API_ERROR,
-  ADD_MARKUP_CLEAR
+  ADD_MARKUP_CLEAR,
+  DELETE_MARKUP_CLEAR
 } from "./actionTypes";
 
 const initialState = {
   loading: false,
   markups: [],
   error: "",
-  addMarkupSuccess:false,
+  addMarkupSuccess: false,
   addMarkupSuccessMessage: ""
 };
 
@@ -97,18 +98,23 @@ const markupsReducer = (state = initialState, action) => {
     case ADD_MARKUP_SUCCESS:
       return {
         ...state,
-        addMarkupSuccess:true,
-        addMarkupSuccessMessage:"New markup is added successfully",
+        addMarkupSuccess: true,
+        addMarkupSuccessMessage: "New markup is added successfully",
       };
     case MARKUP_API_ERROR:
       return {
         ...state,
-        error:action.payload
+        error: action.payload
       };
     case ADD_MARKUP_CLEAR:
       return {
         ...state,
-        addMarkupSuccessMessage:""
+        addMarkupSuccessMessage: ""
+      };
+    case DELETE_MARKUP_CLEAR:
+      return {
+        ...state,
+        closeDeleteModal: true
       };
     default:
       return state;

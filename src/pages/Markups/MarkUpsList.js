@@ -61,9 +61,9 @@ function MarkUpsList(props) {
       text: props.t("isActive"),
       formatter: (item) => {
         if (item.isActive)
-          return <i className="mdi mdi-checkbox-marked-circle-outline font-size-22" style={{ color:"green" }}></i>;
+          return <i className="mdi mdi-checkbox-marked-circle-outline font-size-22" style={{ color: "green" }}></i>;
         else
-          return <i className="mdi mdi-close-circle-outline font-size-22" style={{ color:"red" }}></i>;
+          return <i className="mdi mdi-close-circle-outline font-size-22" style={{ color: "red" }}></i>;
       },
     },
     {
@@ -71,9 +71,9 @@ function MarkUpsList(props) {
       text: props.t("isDefault"),
       formatter: (item) => {
         if (item.isDefault)
-          return <i className="mdi mdi-checkbox-marked-circle-outline font-size-22" style={{ color:"green" }}></i>;
+          return <i className="mdi mdi-checkbox-marked-circle-outline font-size-22" style={{ color: "green" }}></i>;
         else
-          return <i className="mdi mdi-close-circle-outline font-size-22" style={{ color:"red" }}></i>;
+          return <i className="mdi mdi-close-circle-outline font-size-22" style={{ color: "red" }}></i>;
       },
     },
     {
@@ -81,9 +81,9 @@ function MarkUpsList(props) {
       text: props.t("isPercentage"),
       formatter: (item) => {
         if (item.isPercentage)
-          return <i className="mdi mdi-checkbox-marked-circle-outline font-size-22" style={{ color:"green" }}></i>;
+          return <i className="mdi mdi-checkbox-marked-circle-outline font-size-22" style={{ color: "green" }}></i>;
         else
-          return <i className="mdi mdi-close-circle-outline font-size-22" style={{ color:"red" }}></i>;
+          return <i className="mdi mdi-close-circle-outline font-size-22" style={{ color: "red" }}></i>;
       },
     },
     {
@@ -134,6 +134,11 @@ function MarkUpsList(props) {
   const deleteMarkup = () => {
     dispatch(deleteMarkupStart(selectedMarkup._id));
   };
+
+  useEffect(() => {
+    if (props.closeDeleteModal)
+      setDeleteModal(false);
+  }, [props.closeDeleteModal]);
 
   useEffect(() => {
     if (props.deleteModalClear && deleteModal) {
@@ -239,7 +244,8 @@ const mapStateToProps = (state) => ({
   deleteLoading: state.markupsReducer.deleteLoading,
   deleteModalClear: state.markupsReducer.deleteModalClear,
   error: state.markupsReducer.error,
-  addMarkupSuccess:state.markupsReducer.addMarkupSuccess
+  addMarkupSuccess: state.markupsReducer.addMarkupSuccess,
+  closeDeleteModal: state.markupsReducer.closeDeleteModal
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(MarkUpsList));
