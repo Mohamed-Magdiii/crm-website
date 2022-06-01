@@ -42,6 +42,19 @@ function feeGroupAdd(props) {
               <Col md="6">
                 <div className="mb-3">
                   <AvField
+                    name="title"
+                    label={props.t("Title")}
+                    placeholder={props.t("title")}
+                    type="text"
+                    value = {selectedItem.title}
+                    errorMessage={props.t("Enter Valid title")}
+                    validate={{ required: { value: true } }}
+                  />
+                </div>
+              </Col>
+              <Col md="6">
+                <div className="mb-3">
+                  <AvField
                     name="value"
                     label={props.t("Value")}
                     placeholder={props.t("value")}
@@ -52,19 +65,7 @@ function feeGroupAdd(props) {
                   />
                 </div>
               </Col>
-              <Col md="6"> 
-                <div className="mb-3">
-                  <AvField
-                    name="minValue"
-                    label={props.t("Min value")}
-                    placeholder={props.t("min value")}
-                    type="text"
-                    value={selectedItem.minValue}
-                    errorMessage={props.t("Enter valid min fees group value")}
-                    validate={{ required: { value: true } }}
-                  />
-                </div>
-              </Col>
+              
             </Row>
             <Row>
               <Col md="6">
@@ -80,15 +81,15 @@ function feeGroupAdd(props) {
                   />
                 </div>
               </Col>
-              <Col md="6">
+              <Col md="6"> 
                 <div className="mb-3">
                   <AvField
-                    name="title"
-                    label={props.t("Title")}
-                    placeholder={props.t("title")}
+                    name="minValue"
+                    label={props.t("Min value")}
+                    placeholder={props.t("min value")}
                     type="text"
-                    value = {selectedItem.title}
-                    errorMessage={props.t("Enter Valid title")}
+                    value={selectedItem.minValue}
+                    errorMessage={props.t("Enter valid min fees group value")}
                     validate={{ required: { value: true } }}
                   />
                 </div>

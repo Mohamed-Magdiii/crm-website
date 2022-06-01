@@ -58,23 +58,23 @@ function feeGroupAdd(props) {
               <Col md="6">
                 <div className="mb-3">
                   <AvField
+                    name="title"
+                    label={props.t("Title")}
+                    placeholder={props.t("title")}
+                    type="text"
+                    errorMessage={props.t("Enter Valid title")}
+                    validate={{ required: { value: true } }}
+                  />
+                </div>
+              </Col>
+              <Col md="6">
+                <div className="mb-3">
+                  <AvField
                     name="value"
                     label={props.t("Value")}
                     placeholder={props.t("value")}
                     type="text"
                     errorMessage={props.t("Enter valid fees group value")}
-                    validate={{ required: { value: true } }}
-                  />
-                </div>
-              </Col>
-              <Col md="6"> 
-                <div className="mb-3">
-                  <AvField
-                    name="minValue"
-                    label={props.t("Min value")}
-                    placeholder={props.t("min value")}
-                    type="text"
-                    errorMessage={props.t("Enter valid min fees group value")}
                     validate={{ required: { value: true } }}
                   />
                 </div>
@@ -93,14 +93,14 @@ function feeGroupAdd(props) {
                   />
                 </div>
               </Col>
-              <Col md="6">
+              <Col md="6"> 
                 <div className="mb-3">
                   <AvField
-                    name="title"
-                    label={props.t("Title")}
-                    placeholder={props.t("title")}
+                    name="minValue"
+                    label={props.t("Min value")}
+                    placeholder={props.t("min value")}
                     type="text"
-                    errorMessage={props.t("Enter Valid title")}
+                    errorMessage={props.t("Enter valid min fees group value")}
                     validate={{ required: { value: true } }}
                   />
                 </div>
@@ -115,6 +115,7 @@ function feeGroupAdd(props) {
                 errorMessage={props.t("Please Select a value")}
                 validate={{ required: { value: true } }}
               >
+                <option hidden={true}></option>
                 <option>true</option>
                 <option>false</option>
               </AvField>
