@@ -14,7 +14,7 @@ import React, { useState, useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 
 import { 
-  addNewClient, addNewClientSuccess, apiError
+  addNewClient
 } from "../../store/client/actions";
 import CountryDropDown from "../../components/Common/CountryDropDown";
 function ClientForm(props){
@@ -25,11 +25,8 @@ function ClientForm(props){
 
   const handleAddLead = (event, values) => {
     event.preventDefault();
+    console.log(values);
     dispatch(addNewClient(values));
-    setTimeout(()=>{
-      dispatch(addNewClientSuccess(""));
-      dispatch(apiError(""));
-    }, 2000);
   }; 
 
   const toggleAddModal = () => {
@@ -37,12 +34,10 @@ function ClientForm(props){
   };
 
   useEffect(() => {
-    if (props.successMessage  && addModal) {
-      setTimeout(()=>{
-        setAddUserModal(false);
-      }, 2000);
+    if (!props.showAddSuccessMessage  && addModal) {
+      setAddUserModal(false);
     }
-  }, [props.successMessage]);
+  }, [props.showAddSuccessMessage]);
 
   return (
     <React.Fragment >
@@ -124,7 +119,7 @@ function ClientForm(props){
               <CountryDropDown/>
             </div>
             <div className='text-center pt-3 p-2'>
-              <Button  type="submit" color="primary" className="">
+              <Button disabled={props.disableAddButton} type="submit" color="primary" className="">
                 {props.t("Add new Client")}
               </Button>
             </div>
@@ -133,7 +128,7 @@ function ClientForm(props){
             <i className="mdi mdi-block-helper me-2"></i>
             {props.t(props.error)}
           </UncontrolledAlert>}
-          {props.successMessage && <UncontrolledAlert color="success">
+          {props.showAddSuccessMessage && <UncontrolledAlert color="success">
             <i className="mdi mdi-check-all me-2"></i>
             {props.t("Client Added successfully !!!")}
           </UncontrolledAlert>}
@@ -144,6 +139,7 @@ function ClientForm(props){
 }
 const mapStateToProps = (state) => ({
   error: state.clientReducer.error,
-  successMessage: state.clientReducer.successMessage,
+  showAddSuccessMessage: state.clientReducer.showAddSuccessMessage,
+  disableAddButton: state.clientReducer.disableAddButton
 });
 export default connect(mapStateToProps, null)(withTranslation()(ClientForm));

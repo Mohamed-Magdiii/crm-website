@@ -220,7 +220,7 @@ function ClientsList(props) {
                             <Tr key={rowIndex}>
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`}>
-                                  {column.dataField === "checkbox" ? <input checked={checkAll}  type="checkbox" /> : ""}
+                                  {column.dataField === "checkbox" ? <input   type="checkbox" /> : ""}
                                   {column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
                                 </Td>
                               )}

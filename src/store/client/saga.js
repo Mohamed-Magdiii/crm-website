@@ -1,9 +1,9 @@
 import {
-  call, put, takeEvery 
+  call, put, takeEvery, delay
 } from "redux-saga/effects";
 import { getClients, addClient } from "apis/client";
 import {
-  fetchClientsSuccess, apiError, addNewClientSuccess
+  fetchClientsSuccess, apiError, addNewClientSuccess, addModalClear
 } from "./actions";
 import { ADD_NEW_CLIENT, FETCH_CLIENTS_START } from "./actionsType";
   
@@ -19,10 +19,15 @@ function *fetchClients(params) {
 
 function * addNewClient({ payload:{ newClient } }) {
   try {
+    
+    console.log(newClient);
     const data = yield call(addClient, newClient);
     const { status } = data;
     if (status){
-      yield put(addNewClientSuccess("Client is added successfully", newClient));
+      console.log("hi");
+      //yield put(addNewClientSuccess(newClient));
+      //yield delay(2000);
+      yield put(addModalClear());
     }
   } catch (error){
     yield put(apiError("Invalid data"));
