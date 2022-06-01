@@ -214,6 +214,9 @@ const SidebarContent = (props) => {
                 <li>
                   <Link to="/currency-pairs">{props.t("Currency Pairs")}</Link>
                 </li>   
+                <li>
+                  <Link to="/fee-groups">{props.t("Fee Groups")}</Link>
+                </li>
               </ul>
             </li> 
 
