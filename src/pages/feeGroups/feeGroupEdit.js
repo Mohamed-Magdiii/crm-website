@@ -13,20 +13,16 @@ import {
 import React, { useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { withTranslation } from "react-i18next";
+import { editFeeGroupStart } from "store/feeGroups/actions";
 function feeGroupAdd(props) {
   
-  const {open, selectedItem = {}, onClose } = props;
+  const { open, selectedItem = {}, onClose, disabled } = props;
   const dispatch = useDispatch();
   const updateFeeGroup = (event, values)=>{
     event.preventDefault();
-   
-  }; 
-  useEffect(()=>{
-    if (props.successMessage) {
-
-      
-    }
-  }, [props.successMessage]);
+    dispatch(editFeeGroupStart(selectedItem._id, values
+    ));
+  };
 
   return (
     <React.Fragment >
@@ -39,7 +35,7 @@ function feeGroupAdd(props) {
           <AvForm
             className='p-4'
             onValidSubmit={(e, v) => {
-              
+              updateFeeGroup(e, v);
             }}
           >
             <Row>
@@ -77,7 +73,7 @@ function feeGroupAdd(props) {
                     name="maxValue"
                     label={props.t("Max Value")}
                     placeholder={props.t("Max Value")}
-                    type="email"
+                    type="text"
                     value= {selectedItem.maxValue}
                     errorMessage={props.t("Enter Valid max feees group value")}
                     validate={{ required: { value: true } }}
@@ -91,7 +87,7 @@ function feeGroupAdd(props) {
                     label={props.t("Title")}
                     placeholder={props.t("title")}
                     type="text"
-                    value = {selectedItem.maxValue}
+                    value = {selectedItem.title}
                     errorMessage={props.t("Enter Valid title")}
                     validate={{ required: { value: true } }}
                   />
@@ -107,13 +103,14 @@ function feeGroupAdd(props) {
                 errorMessage={props.t("Please Select a value")}
                 validate={{ required: { value: true } }}
               >
-                <option>True</option>
-                <option>False</option>
+                <option hidden={true}></option>
+                <option>true</option>
+                <option>false</option>
               </AvField>
             </div>
             
             <div className='text-center pt-3 p-2'>
-              <Button  type="submit" color="primary" className="">
+              <Button  disabled={disabled} type="submit" color="primary" className="">
                 {props.t("Update Fee Group")}
               </Button>
             </div>
@@ -127,7 +124,7 @@ function feeGroupAdd(props) {
             )
           }
           {
-            props.successMessage && (
+            props.showEditSuccessMessage && (
               <UncontrolledAlert color="success">
                 <i className="mdi mdi-check-all me-2"/>
                 {props.t("Fees Group is updated successfully !!!")}
@@ -142,7 +139,7 @@ function feeGroupAdd(props) {
 
 const mapStateToProps = (state) => ({
   error: state.feeGroupReducer.error,
-  successMessage: state.feeGroupReducer.successMessage,
+  showEditSuccessMessage: state.feeGroupReducer.showEditSuccessMessage,
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(feeGroupAdd));
