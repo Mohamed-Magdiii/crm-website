@@ -7,12 +7,17 @@ import {
   ModalBody,
   UncontrolledAlert,
   Col,
-  Row
+  Row,
 } from "reactstrap";
 
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
-import { AvForm, AvField } from "availity-reactstrap-validation";
+import { 
+  AvForm, 
+  AvField,
+  AvRadioGroup,
+  AvRadio 
+} from "availity-reactstrap-validation";
 import { withTranslation } from "react-i18next";
 import { addFeesGroupStart } from "store/feeGroups/actions";
 function feeGroupAdd(props) {
@@ -106,20 +111,15 @@ function feeGroupAdd(props) {
                 </div>
               </Col>
             </Row> 
-            <div className="mb-3">
-              <AvField
-                name="isPercentage"
-                label={props.t("Is Percentage")}
-                placeholder={props.t("Password")}
-                type="select"
-                errorMessage={props.t("Please Select a value")}
-                validate={{ required: { value: true } }}
-              >
-                <option hidden={true}></option>
-                <option>true</option>
-                <option>false</option>
-              </AvField>
-            </div>
+            <Col>
+              <div className="mb-3">
+                <AvRadioGroup inline name="isPercentage"  label="Is Percentage?" required>
+                  <AvRadio customInput label="Yes" value="true" />
+                  <AvRadio customInput label="No" value="false" />
+                </AvRadioGroup>
+              </div>
+            </Col>
+           
             
             <div className='text-center pt-3 p-2'>
               <Button disabled={props.addButtonDisabled} type="submit" color="primary" className="">

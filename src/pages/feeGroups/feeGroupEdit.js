@@ -10,8 +10,13 @@ import {
   Row
 } from "reactstrap";
 
-import React, { useEffect } from "react";
-import { AvForm, AvField } from "availity-reactstrap-validation";
+import React from "react";
+import { 
+  AvForm, 
+  AvField,
+  AvRadioGroup,
+  AvRadio
+} from "availity-reactstrap-validation";
 import { withTranslation } from "react-i18next";
 import { editFeeGroupStart } from "store/feeGroups/actions";
 function feeGroupAdd(props) {
@@ -95,20 +100,15 @@ function feeGroupAdd(props) {
                 </div>
               </Col>
             </Row> 
+          
             <div className="mb-3">
-              <AvField
-                name="isPercentage"
-                label={props.t("Is Percentage")}
-                placeholder={props.t("Is percentage?")}
-                type="select"
-                errorMessage={props.t("Please Select a value")}
-                validate={{ required: { value: true } }}
-              >
-                <option hidden={true}></option>
-                <option>true</option>
-                <option>false</option>
-              </AvField>
+              <AvRadioGroup inline name="isPercentage"  label="Is Percentage?" required>
+                <AvRadio customInput label="Yes" value="true" />
+                <AvRadio customInput label="No" value="false" />
+          
+              </AvRadioGroup>
             </div>
+          
             
             <div className='text-center pt-3 p-2'>
               <Button  disabled={disabled} type="submit" color="primary" className="">
