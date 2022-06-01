@@ -113,7 +113,7 @@ function FeeGroupsList(props) {
   const deleteFeeGroup = ()=>{
     dispatch(deleteFeeGroupStart(deletedItem._id));
   };
-  const handleSearchInput = (e) => (setSearchInputText(e.target.value));
+  
 
   return (
     <React.Fragment>
@@ -128,7 +128,6 @@ function FeeGroupsList(props) {
                     <CardTitle>{props.t("Fee Groups List")} ({props.totalDocs})</CardTitle>
                     <FeeGroupAdd/>
                   </div>
-                  <SearchBar handleSearchInput={handleSearchInput} />
                 </CardHeader>
                 <CardBody>
                   <div className="table-rep-plugin">
