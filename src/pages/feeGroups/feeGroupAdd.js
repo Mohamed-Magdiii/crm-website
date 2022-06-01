@@ -31,11 +31,11 @@ function feeGroupAdd(props) {
   };
 
   useEffect(()=>{
-    if (props.successMessage  && addModal) {
+    if (!props.showAddSuccessMessage  && addModal) {
 
-      
+      setAddUserModal(false);
     }
-  }, [props.successMessage]);
+  }, [props.showAddSuccessMessage]);
 
   return (
     <React.Fragment >
@@ -121,7 +121,7 @@ function feeGroupAdd(props) {
             </div>
             
             <div className='text-center pt-3 p-2'>
-              <Button  type="submit" color="primary" className="">
+              <Button disabled={props.addButtonDisabled} type="submit" color="primary" className="">
                 {props.t("Add New Fees Group")}
               </Button>
             </div>
@@ -135,7 +135,7 @@ function feeGroupAdd(props) {
             )
           }
           {
-            props.successMessage && (
+            props.showAddSuccessMessage && (
               <UncontrolledAlert color="success">
                 <i className="mdi mdi-check-all me-2"/>
                 {props.t("New Fees Group is added successfully !!!")}
@@ -150,7 +150,8 @@ function feeGroupAdd(props) {
 
 const mapStateToProps = (state) => ({
   error: state.feeGroupReducer.error,
-  successMessage: state.feeGroupReducer.successMessage,
+  showAddSuccessMessage: state.feeGroupReducer.showAddSuccessMessage,
+  addButtonDisabled: state.feeGroupReducer.addButtonDisabled
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(feeGroupAdd));
