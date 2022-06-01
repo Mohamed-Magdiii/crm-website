@@ -25,8 +25,8 @@ function * addNewClient({ payload:{ newClient } }) {
     const { status } = data;
     if (status){
       console.log("hi");
-      //yield put(addNewClientSuccess(newClient));
-      //yield delay(2000);
+      yield put(addNewClientSuccess(newClient));
+      yield delay(2000);
       yield put(addModalClear());
     }
   } catch (error){
