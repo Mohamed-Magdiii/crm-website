@@ -35,6 +35,7 @@ import depositReducer from "./transactions/deposit/reducer";
 import withdrawalReducer from "./transactions/withdrawal/reducer";
 import dictionaryReducer from "./dictionary/reducer";
 import marketsReducer from "./markets/reducer";
+import { reducer as notifications } from "react-notification-system-redux";
 
 const rootReducer = combineReducers({
   // public
@@ -60,6 +61,7 @@ const rootReducer = combineReducers({
   withdrawalReducer,
   dictionaryReducer,
   marketsReducer,
+  notifications
 });
 
 export default rootReducer;
