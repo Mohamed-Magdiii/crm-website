@@ -24,7 +24,7 @@ import MarkUpsList from "../pages/Markups/MarkUpsList";
 import Deposit from "pages/Transactions/Deposit";
 import Withdrawal from "pages/Transactions/Withdrawal";
 import Reminder from "../pages/Reminder/Reminder";
-
+import DictionaryList from "pages/Dictionary.js/DictionaryList";
 const userRoutes = [
   //dashboard
   {
@@ -88,6 +88,10 @@ const userRoutes = [
   {
     path: "/transactions/withdrawals",
     component: Withdrawal,
+  },
+  {
+    path:"/dictionaries",
+    component:DictionaryList
   },
   {
     path: "/",
