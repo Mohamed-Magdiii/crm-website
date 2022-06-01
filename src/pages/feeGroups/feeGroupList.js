@@ -11,7 +11,6 @@ import {
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
-import SearchBar from "components/Common/SearchBar";
 import { Link } from "react-router-dom";
 import { withTranslation } from "react-i18next";
 import { fetchFeeGroupStart, deleteFeeGroupStart } from "store/feeGroups/actions";
@@ -51,12 +50,12 @@ function FeeGroupsList(props) {
     
     },
     {
-      dataField: "minValue",
-      text:props.t("Min Value"),
-    },
-    {
       dataField: "maxValue",
       text:props.t("Max Value"),
+    },
+    {
+      dataField: "minValue",
+      text:props.t("Min Value"),
     },
     {
       dataField: "",
@@ -85,13 +84,13 @@ function FeeGroupsList(props) {
   ];
  
   const [sizePerPage, setSizePerPage] = useState(10);
-  const [searchInputText, setSearchInputText] = useState("");
+
   const dispatch = useDispatch();
   
   
   useEffect(() => {
     loadFeeGroups(1, sizePerPage);
-  }, [sizePerPage, 1, searchInputText]);
+  }, [sizePerPage, 1]);
   useEffect(()=>{
     if (!props.showEditSuccessMessage && editModal) {
       setEditModal(false);
