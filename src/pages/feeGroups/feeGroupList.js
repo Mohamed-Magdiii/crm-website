@@ -14,7 +14,7 @@ import TableLoader from "components/Common/TableLoader";
 import SearchBar from "components/Common/SearchBar";
 import { Link } from "react-router-dom";
 import { withTranslation } from "react-i18next";
-import { fetchFeeGroupStart } from "store/feeGroups/actions";
+import { fetchFeeGroupStart, deleteFeeGroupStart } from "store/feeGroups/actions";
 import DeleteModal from "components/Common/DeleteModal";
 import FeeGroupAdd from "./feeGroupAdd";
 import FeeGroupEdit from "./feeGroupEdit";
@@ -24,16 +24,22 @@ function FeeGroupsList(props) {
   const [deletedItem, setDeletedItem] = useState();
   const [selectedItem, setSelectedItem] = useState();
   const [editModal, setEditModal ] = useState(false);
+  
   const columns = [
     {
       dataField:"checkbox",
       text: <input type="checkbox"/>
     },
+    
     {
       dataField: "createdAt",
       text: props.t("Date"),
       formatter: (val) => (new Date(val.createdAt).toLocaleDateString()),
     }, 
+    {
+      dataField:"title",
+      text : props.t("Title")
+    },
     {
       dataField: "isPercentage",
       text: props.t("isPercentage"),
@@ -86,7 +92,18 @@ function FeeGroupsList(props) {
   useEffect(() => {
     loadFeeGroups(1, sizePerPage);
   }, [sizePerPage, 1, searchInputText]);
-  
+  useEffect(()=>{
+    if (!props.showEditSuccessMessage && editModal) {
+      setEditModal(false);
+      
+    }
+  }, [props.showEditSuccessMessage]);
+  useEffect(()=>{
+    if (!props.showDeleteModal && deleteModal) {
+      setDeleteModal(false);
+      
+    }
+  }, [props.showDeleteModal]);
   const loadFeeGroups = (page, limit) => {
     dispatch(fetchFeeGroupStart({
       page,
@@ -94,7 +111,7 @@ function FeeGroupsList(props) {
     }));
   };
   const deleteFeeGroup = ()=>{
-    
+    dispatch(deleteFeeGroupStart(deletedItem._id));
   };
   const handleSearchInput = (e) => (setSearchInputText(e.target.value));
 
@@ -102,7 +119,7 @@ function FeeGroupsList(props) {
     <React.Fragment>
       <div className="page-content"> 
         <div className="container-fluid">
-          <h2>{props.t("Fee Groups List")}</h2>
+          <h2>{props.t("Fee Groups")}</h2>
           <Row>
             <Col className="col-12">
               <Card>
@@ -123,20 +140,20 @@ function FeeGroupsList(props) {
                         id="tech-companies-1"
                         className="table "
                       >
-                        <Thead>
+                        <Thead className="text-center">
                           <Tr>
                             {columns.map((column, index) =>
                               <Th data-priority={index} key={index}>{column.text}</Th>
                             )}
                           </Tr>
                         </Thead>
-                        <Tbody>
+                        <Tbody className="text-center" style={{ fontSize: "13px" }}>
                           {props.loading && <TableLoader colSpan={4} />}
                           {!props.loading && props.feeGroups.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`}>
-                                  { column.dataField === "checkbox" ? <input type="checkbox"/> : ""}
+                                  { column.dataField === "checkbox" ? <input  type="checkbox"/> : ""}
                                   {column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
                                 </Td>
                               )}
@@ -157,8 +174,8 @@ function FeeGroupsList(props) {
               </Card>
             </Col>
           </Row>
-          {<FeeGroupEdit open ={editModal} selectedItem={selectedItem} onClose={()=>setEditModal(false)}/>}
-          {<DeleteModal show={deleteModal} onDeleteClick={deleteFeeGroup} onCloseClick={()=>setDeleteModal(false)}/>}
+          {<FeeGroupEdit disabled= {props.editButtonDisabled} open ={editModal} selectedItem={selectedItem} onClose={()=>setEditModal(false)}/>}
+          {<DeleteModal loading ={props.deleteLoading} show={deleteModal} onDeleteClick={deleteFeeGroup} onCloseClick={()=>setDeleteModal(false)}/>}
         </div>
       </div>
     </React.Fragment>
@@ -177,6 +194,10 @@ const mapStateToProps = (state) => ({
   nextPage: state.feeGroupReducer.nextPage,
   pagingCounter: state.feeGroupReducer.pagingCounter,
   prevPage: state.feeGroupReducer.prevPage,
+  showEditSuccessMessage:state.feeGroupReducer.showEditSuccessMessage,
+  showDeleteModal:state.feeGroupReducer.showDeleteModal,
+  deleteLoading :state.feeGroupReducer.deleteLoading,
+  editButtonDisabled: state.feeGroupReducer.editButtonDisabled
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(FeeGroupsList));
