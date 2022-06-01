@@ -196,6 +196,7 @@ export const clientReducer = (state = initalState, action)=>{
         error: false,
         success: true,
         clientWalletDetails: action.payload.result,
+        totalWalletDocs: action.payload.result.totalDocs,
         loading: false
       };
       break;

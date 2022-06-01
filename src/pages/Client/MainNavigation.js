@@ -9,8 +9,8 @@ function MainNavigation(props){
   
   return (
     <React.Fragment>
-      <div className="card-body">
-        <div className="card-body">
+      <div className="navbar-header">
+        <div className="d-flex">
           <ul className="nav-tabs-custom nav-justified nav nav-tabs">
             <li className="nav-item">
               <NavLink 
@@ -56,6 +56,10 @@ function MainNavigation(props){
               </NavLink>
             </li>
           </ul>
+        </div>
+      </div>
+      <div className="card-body">
+        <div className="card-body">
         </div>
       </div>
     </React.Fragment>

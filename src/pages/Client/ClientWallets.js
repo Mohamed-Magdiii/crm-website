@@ -1,11 +1,23 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, connect } from "react-redux";
+import { Link } from "react-router-dom";
+import {
+  Row, Col, Card, CardBody, CardTitle, CardHeader
+} from "reactstrap";
+import {
+  Table, Thead, Tbody, Tr, Th, Td
+} from "react-super-responsive-table";
+import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
+
 // i18n 
 import { withTranslation } from "react-i18next";
 import { fetchClientWallet } from "store/client/actions";
+import CustomPagination from "components/Common/CustomPagination";
+import TableLoader from "components/Common/TableLoader";
 
 function ClientWallets(props) {
   const clientId = props.clientId;
+  const [sizePerPage, setSizePerPage] = useState(5);
   const dispatch = useDispatch();
   const loadClientWalletDetails = () => {
     dispatch(fetchClientWallet(clientId));
@@ -14,12 +26,110 @@ function ClientWallets(props) {
     loadClientWalletDetails();
   }, []);
 
+  const columns = [
+    {
+      dataField: "asset",
+      text: props.t("Asset")
+    },
+    {
+      dataField: "active",
+      text: props.t("Active"),
+      formatter: (item) => (
+        item.active ? "Active" : "Inactive"
+      )
+    },
+    {
+      dataField: "amount",
+      text: props.t("Amount")
+    }, 
+    {
+      dataField: "isCrypto",
+      text: props.t("Crypto"),
+      formatter: (item) => (
+        item.isCrypto ? "Crypto wallet" : "Traditional wallet"
+      )
+    },
+    {
+      dataField: "",
+      isDummyField: true,
+      editable: false,
+      text: props.t("Actions"),
+      formatter: () => (
+        <div className="d-flex gap-3">
+          <Link className="text-success" to="#">
+            <i
+              className="mdi mdi-pencil font-size-18"
+              id="edittooltip"
+              onClick={() => {}}
+            ></i>
+          </Link>
+          <Link className="text-danger" to="#">
+            <i
+              className="mdi mdi-delete font-size-18"
+              id="deletetooltip"
+              onClick={() => {}}
+            ></i>
+          </Link>
+        </div>
+      )
+    },
+  ];
+
+
   return (
     <React.Fragment>
       <div className="page-content">
         <div className="container-fluid">
-          {props.error && JSON.stringify(props.errorDetails)}
-          {props.success && JSON.stringify(props.clientWalletDetails)}
+          <Row>
+            <Col className="col-12">
+              <Card>
+                <CardHeader className="d-flex justify-content-between  align-items-center">
+                  <CardTitle>
+                    {props.t("Transactions list")} ({props.totalWalletDocs})
+                  </CardTitle>
+                </CardHeader>
+                <CardBody>
+                  <div className="table-rep-plugin">
+                    <div
+                      className="table-responsive mb-0"
+                      data-pattern="priority-columns"
+                    >
+                      <Table
+                        id="tech-companies-1"
+                        className="table "
+                      >
+                        <Thead>
+                          <Tr>
+                            {columns.map((column, index) =>
+                              <Th data-priority={index} key={index}>{column.text}</Th>
+                            )}
+                          </Tr>
+                        </Thead>
+                        {props.clientWalletDetails && <Tbody>
+                          {props.loading && <TableLoader colSpan={4} />}
+                          {!props.loading && props.clientWalletDetails.docs.map((row, rowIndex) =>
+                            <Tr key={rowIndex}>
+                              {columns.map((column, index) =>
+                                <Td key={`${rowIndex}-${index}`}>
+                                  { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
+                                </Td>
+                              )}
+                            </Tr>
+                          )}
+                        </Tbody>}
+                      </Table>
+                      <CustomPagination
+                        {...props}
+                        setSizePerPage={setSizePerPage}
+                        sizePerPage={sizePerPage}
+                        onChange={loadClientWalletDetails}
+                      />
+                    </div>
+                  </div>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
         </div>
       </div>
     </React.Fragment>
@@ -31,7 +141,8 @@ const mapStateToProps = (state) => ({
   error: state.clientReducer.error,
   errorDetails: state.clientReducer.errorDetails,
   success: state.clientReducer.success,
-  clientWalletDetails: state.clientReducer.clientWalletDetails
+  clientWalletDetails: state.clientReducer.clientWalletDetails,
+  totalWalletDocs: state.clientReducer.totalWalletDocs
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(ClientWallets));
