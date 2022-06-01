@@ -10,7 +10,6 @@ import {
   ADD_MARKUP_SUCCESS,
   MARKUP_API_ERROR,
   ADD_MARKUP_CLEAR,
-  ADD_MARKUP_ERROR
 } from "./actionTypes";
 
 export const fetchMarkupsStart = (params) => {

@@ -1,4 +1,3 @@
-import qs from "qs";
 import * as axiosHelper from "./api_helper";
 
 export const updateMarkup = async ({ payload }) => {
