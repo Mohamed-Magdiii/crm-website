@@ -34,6 +34,7 @@ import gatewayReducer from "./gateway/reducer";
 import depositReducer from "./transactions/deposit/reducer";
 import withdrawalReducer from "./transactions/withdrawal/reducer";
 import marketsReducer from "./markets/reducer";
+import markupsReducer from "./markups/reducer";
 
 const rootReducer = combineReducers({
   // public
@@ -58,6 +59,7 @@ const rootReducer = combineReducers({
   depositReducer,
   withdrawalReducer,
   marketsReducer,
+  markupsReducer
 });
 
 export default rootReducer;
