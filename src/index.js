@@ -4,11 +4,12 @@ import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import "./i18n"; 
 import { Provider } from "react-redux";
-
+import Notifications from "./components/Common/NotificationPopup";
 import store from "./store";
 
 const app = (
   <Provider store={store}>
+    <Notifications store={store} />
     <BrowserRouter>
       <App />
     </BrowserRouter>
