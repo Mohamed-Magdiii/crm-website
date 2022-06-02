@@ -89,6 +89,12 @@ const markupsReducer = (state = initialState, action) => {
         deleteError: action.payload.error,
         totalDocs: state.totalDocs - 1
       };
+    case DELETE_MARKUP_CLEAR:
+      return {
+        ...state,
+        deleteModalClear: true,
+        deleteLoading:false
+      };
     case ADD_MARKUP_START:
       return {
         ...state,
@@ -110,11 +116,6 @@ const markupsReducer = (state = initialState, action) => {
       return {
         ...state,
         addMarkupSuccessMessage: ""
-      };
-    case DELETE_MARKUP_CLEAR:
-      return {
-        ...state,
-        closeDeleteModal: true
       };
     default:
       return state;

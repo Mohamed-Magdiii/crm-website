@@ -20,7 +20,7 @@ import {
 import {
   updateMarkup, deleteMarkupAPI, addMarkupAPI
 } from "apis/markup";
-import { showErrorNotification } from "store/notifications/actions";
+import { showErrorNotification, showSuccessNotification } from "store/notifications/actions";
 
 function* fetchMarket(params) {
   try {
@@ -60,10 +60,11 @@ function* deleteMarkup(params) {
         result,
         id: params.payload,
       }));
+      yield put(showSuccessNotification("Markup deleted successfully"));
     }
   } catch (error) {
     yield put(showErrorNotification(error.message));
-    yield delay(2000);
+    yield delay(1000);
     yield put(deletModalClear());
   }
 }

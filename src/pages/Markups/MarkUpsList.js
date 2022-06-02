@@ -245,7 +245,6 @@ const mapStateToProps = (state) => ({
   deleteModalClear: state.markupsReducer.deleteModalClear,
   error: state.markupsReducer.error,
   addMarkupSuccess: state.markupsReducer.addMarkupSuccess,
-  closeDeleteModal: state.markupsReducer.closeDeleteModal
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(MarkUpsList));
