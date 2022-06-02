@@ -28,7 +28,7 @@ function feeGroupAdd(props) {
   const dispatch = useDispatch();
   
   const handleAddFeesGroup = (event, values)=>{
-    console.log(values);
+    
     event.preventDefault();
     dispatch(addFeesGroupStart(values));
   }; 
