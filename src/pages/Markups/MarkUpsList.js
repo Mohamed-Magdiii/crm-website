@@ -50,7 +50,7 @@ function MarkUpsList(props) {
     {
       dataField: "createdBy",
       text: props.t("Created By"),
-      formatter: (val) => (`${val.createdBy.firstName} ${val.createdBy.lastName}`)
+      formatter: (val) => (val && val.createdBy && `${val.createdBy.firstName} ${val.createdBy.lastName}`)
     },
     {
       dataField: "value",
