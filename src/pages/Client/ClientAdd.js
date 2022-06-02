@@ -98,8 +98,17 @@ function ClientForm(props){
                     label={props.t("Phone")}
                     placeholder={props.t("Enter Your Phone")}
                     type="text"
-                    errorMessage={props.t("Enter valid phone")}
-                    validate={{ required: { value: true } }}
+                   
+                    validate={
+                      { 
+                        required: { value: true },
+                        pattern :{
+                          // eslint-disable-next-line no-useless-escape
+                          value:"/^[\+][(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im",
+                          errorMessage:"Phone number must be digits only with country key"
+                        }
+                      }
+                    }
                   />
                 </div>
               </Col>
