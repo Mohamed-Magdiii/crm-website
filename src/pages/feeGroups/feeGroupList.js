@@ -138,14 +138,14 @@ function FeeGroupsList(props) {
                         id="tech-companies-1"
                         className="table "
                       >
-                        <Thead className="text-center">
+                        <Thead >
                           <Tr>
                             {columns.map((column, index) =>
                               <Th data-priority={index} key={index}>{column.text}</Th>
                             )}
                           </Tr>
                         </Thead>
-                        <Tbody className="text-center" style={{ fontSize: "13px" }}>
+                        <Tbody style={{ fontSize: "13px" }}>
                           {props.loading && <TableLoader colSpan={4} />}
                           {!props.loading && props.feeGroups.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
