@@ -21,6 +21,7 @@ import depositSaga from "./transactions/deposit/saga";
 import withdrawalSaga from "./transactions/withdrawal/saga";
 import dictionarySaga from "./dictionary/saga";
 import marketSaga from "./markets/saga";
+import feeGroupSaga from "./feeGroups/saga";
 import markupSaga from "./markups/saga";
 
 export default function* rootSaga() {
@@ -49,5 +50,7 @@ export default function* rootSaga() {
     fork(marketSaga),
     fork(markupSaga),
     fork(dictionarySaga),
+    fork(marketSaga),
+    fork(feeGroupSaga)
   ]);
 }
