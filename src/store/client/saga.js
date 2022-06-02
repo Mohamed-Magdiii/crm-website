@@ -20,8 +20,9 @@ function *fetchClients(params) {
 function * addNewClient({ payload:{ newClient } }) {
   try {
     
-    console.log(newClient);
+  
     const data = yield call(addClient, newClient);
+    console.log(data);
     const { status } = data;
     if (status){
       console.log("hi");

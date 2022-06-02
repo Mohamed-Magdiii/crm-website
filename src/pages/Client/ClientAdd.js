@@ -25,7 +25,6 @@ function ClientForm(props){
 
   const handleAddLead = (event, values) => {
     event.preventDefault();
-    console.log(values);
     dispatch(addNewClient(values));
   }; 
 
@@ -59,7 +58,7 @@ function ClientForm(props){
                   <AvField
                     name="firstName"
                     label={props.t("First Name")}
-                    placeholder={props.t("First Name")}
+                    placeholder={props.t("Enter First Name")}
                     type="text"
                     errorMessage={props.t("Enter First Name")}
                     validate={{ required: { value: true } }}
@@ -71,7 +70,7 @@ function ClientForm(props){
                   <AvField
                     name="lastName"
                     label={props.t("Last Name")}
-                    placeholder={props.t("Last Name")}
+                    placeholder={props.t("Enter Last Name")}
                     type="text"
                     errorMessage={props.t("Enter Last Name")}
                     validate={{ required: { value: true } }}
@@ -85,9 +84,9 @@ function ClientForm(props){
                   <AvField
                     name="email"
                     label={props.t("Email")}
-                    placeholder={props.t("Email")}
+                    placeholder={props.t("Enter Email")}
                     type="email"
-                    errorMessage={props.t("Enter Email")}
+                    errorMessage={props.t("Enter Your Email")}
                     validate={{ required: { value: true } }}
                   />
                 </div>
@@ -97,7 +96,7 @@ function ClientForm(props){
                   <AvField
                     name="phone"
                     label={props.t("Phone")}
-                    placeholder={props.t("Phone")}
+                    placeholder={props.t("Enter Your Phone")}
                     type="text"
                     errorMessage={props.t("Enter valid phone")}
                     validate={{ required: { value: true } }}
@@ -109,10 +108,20 @@ function ClientForm(props){
               <AvField
                 name="password"
                 label={props.t("Password")}
-                placeholder={props.t("Password")}
+                placeholder={props.t("Enter Your Password")}
                 type="password"
-                errorMessage={props.t("Enter valid password")}
-                validate={{ required: { value: true } }}
+                validate= {{
+                  required: { value : true },
+                  pattern :{ 
+                    // eslint-disable-next-line no-useless-escape
+                    value:"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$",
+                    errorMessage :"Must contain at least eight characters, at least one number and both lower and uppercase letters and special characters"
+                  }
+                  
+                }
+                }
+                
+                
               />
             </div>
             <div className="mb-3">
@@ -120,7 +129,7 @@ function ClientForm(props){
             </div>
             <div className='text-center pt-3 p-2'>
               <Button disabled={props.disableAddButton} type="submit" color="primary" className="">
-                {props.t("Add new Client")}
+                {props.t("Add")}
               </Button>
             </div>
           </AvForm>
