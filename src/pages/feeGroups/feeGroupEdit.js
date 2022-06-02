@@ -11,27 +11,29 @@ import {
   Label
 } from "reactstrap";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { 
   AvForm, 
   AvField,
-  AvGroup,
-  AvInput
+  
 } from "availity-reactstrap-validation";
 import { withTranslation } from "react-i18next";
 import { editFeeGroupStart } from "store/feeGroups/actions";
 function feeGroupAdd(props) {
   
   const { open, selectedItem = {}, onClose, disabled } = props;
-
-  const [isPercentage, setIsPercentage] = useState(false);
+  
+  
+  const [isPercentage, setIsPercentage] = useState();
+  useEffect(()=>{
+    setIsPercentage(selectedItem.isPercentage);
+  }, [selectedItem.isPercentage]);
   const dispatch = useDispatch();
   const updateFeeGroup = (event, values)=>{
     event.preventDefault();
     dispatch(editFeeGroupStart(selectedItem._id, values
     ));
   };
-
   return (
     <React.Fragment >
       
@@ -43,8 +45,10 @@ function feeGroupAdd(props) {
           <AvForm
             className='p-4'
             onValidSubmit={(e, v) => {
-              console.log(v);
-              updateFeeGroup(e, v);
+              updateFeeGroup(e, {
+                ...v,
+                isPercentage:isPercentage
+              });
             }}
           >
             <Row>
@@ -106,13 +110,17 @@ function feeGroupAdd(props) {
             </Row> 
           
             <div className="mb-3">
-              <AvGroup check>
-                <AvInput type="checkbox" name="isPercentage" onClick={()=>setIsPercentage(preValue=>!preValue)} value={isPercentage ? true : false} />
-                <Label check for="checkItOut">Is Percentage</Label>
-              </AvGroup>
+            
+              <input 
+                checked={isPercentage}
+                type="checkbox"
+                name="isPercentage"
+                onChange={()=>setIsPercentage(preValue=>!preValue)} 
+                value={isPercentage ? "True" : "False"} />
+              <Label check for="isPercentage">Is Percentage</Label>
+        
             </div>
           
-            
             <div className='text-center pt-3 p-2'>
               <Button  disabled={disabled} type="submit" color="primary" className="">
                 {props.t("Update Fee Group")}
