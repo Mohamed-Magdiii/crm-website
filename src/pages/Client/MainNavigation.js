@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 // i18n
 import { withTranslation } from "react-i18next";
@@ -9,8 +9,8 @@ function MainNavigation(props){
   
   return (
     <React.Fragment>
-      <div className="navbar-header">
-        <div className="d-flex">
+      <div className="navbar-header" /*className="" to make it all the way to the left*/>
+        <div className="d-flex justify-content-between">
           <ul className="nav-tabs-custom nav-justified nav nav-tabs">
             <li className="nav-item">
               <NavLink 
@@ -19,7 +19,7 @@ function MainNavigation(props){
                   "nav-link" + (!isActive ? " unselected" : "")
                 }
               >
-                {props.t("Client Details")}
+                {props.t("Details")}
               </NavLink>
             </li>
 
@@ -30,7 +30,7 @@ function MainNavigation(props){
                   "nav-link" + (!isActive ? " unselected" : "")
                 }
               >
-                {props.t("Client bank")}
+                {props.t("Bank accounts")}
               </NavLink>
             </li>
             
@@ -41,7 +41,7 @@ function MainNavigation(props){
                   "nav-link" + (!isActive ? " unselected" : "")
                 }
               >
-                {props.t("Client transactions")}
+                {props.t("Transactions")}
               </NavLink>
             </li>
             
@@ -52,14 +52,10 @@ function MainNavigation(props){
                   "nav-link" + (!isActive ? " unselected" : "")
                 }
               >
-                {props.t("Client wallets")}
+                {props.t("Wallets")}
               </NavLink>
             </li>
           </ul>
-        </div>
-      </div>
-      <div className="card-body">
-        <div className="card-body">
         </div>
       </div>
     </React.Fragment>
@@ -67,3 +63,56 @@ function MainNavigation(props){
 }
 
 export default withTranslation()(MainNavigation);
+
+
+{/* <React.Fragment>
+  <div className="navbar-header">
+    <div className="d-flex">
+      <ul className="nav-tabs-custom nav-justified nav nav-tabs">
+        <li className="nav-item">
+          <NavLink 
+            to={"/clients/" + clientId + "/details"}
+            className={isActive =>
+              "nav-link" + (!isActive ? " unselected" : "")
+            }
+          >
+            {props.t("Details")}
+          </NavLink>
+        </li>
+
+        <li className="nav-item">
+          <NavLink 
+            to={"/clients/" + clientId + "/bank"}
+            className={isActive =>
+              "nav-link" + (!isActive ? " unselected" : "")
+            }
+          >
+            {props.t("Bank accounts")}
+          </NavLink>
+        </li>
+        
+        <li className="nav-item">
+          <NavLink 
+            to={"/clients/" + clientId + "/transactions"}
+            className={isActive =>
+              "nav-link" + (!isActive ? " unselected" : "")
+            }
+          >
+            {props.t("Transactions")}
+          </NavLink>
+        </li>
+        
+        <li className="nav-item">
+          <NavLink 
+            to={"/clients/" + clientId + "/wallets"}
+            className={isActive =>
+              "nav-link" + (!isActive ? " unselected" : "")
+            }
+          >
+            {props.t("Wallets")}
+          </NavLink>
+        </li>
+      </ul>
+    </div>
+  </div>
+</React.Fragment> */}

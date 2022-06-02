@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, connect } from "react-redux";
 import { Link } from "react-router-dom";
 import {
-  Row, Col, Card, CardBody, CardTitle, CardHeader
+  Row, Col, Card, CardBody, CardTitle, CardHeader, Input, Label
 } from "reactstrap";
 import {
   Table, Thead, Tbody, Tr, Th, Td
@@ -26,21 +26,21 @@ function ClientWallets(props) {
     loadClientWalletDetails();
   }, []);
 
+  const switchSelectedWalletStatus = (item) => {
+    item.active = !item.active;
+  };
+  
   const columns = [
     {
       dataField: "asset",
       text: props.t("Asset")
     },
     {
-      dataField: "active",
-      text: props.t("Active"),
-      formatter: (item) => (
-        item.active ? "Active" : "Inactive"
-      )
-    },
-    {
       dataField: "amount",
-      text: props.t("Amount")
+      text: props.t("Amount"),
+      formatter: (item) => (
+        item.amount != " " ? "N/A" : item.amount
+      )
     }, 
     {
       dataField: "isCrypto",
@@ -48,6 +48,22 @@ function ClientWallets(props) {
       formatter: (item) => (
         item.isCrypto ? "Crypto wallet" : "Traditional wallet"
       )
+    },
+    {
+      dataField: "active",
+      text: props.t("Active"),
+      formatter: (item) => (
+        <div className="d-flex gap-3">
+          <Input 
+            type="checkbox" 
+            id={item.id} 
+            switch="none" 
+            defaultChecked={item.active} 
+            onClick={() => { switchSelectedWalletStatus(item) }} 
+          />
+          <Label className="me-1" htmlFor={item.id} data-on-label={props.t("Active")} data-off-label=""></Label>
+        </div>
+      ),
     },
     {
       dataField: "",
@@ -72,7 +88,7 @@ function ClientWallets(props) {
           </Link>
         </div>
       )
-    },
+    }
   ];
 
 

@@ -34,152 +34,166 @@ function ClientDetails(props) {
       <div className="page-content">
         <div className="container-fluid">
           <Row>
-            <Col className="col-12"> 
+            {/* form on the left side */}
+            <Col className="col-10"> 
               <AvForm
                 onValidSubmit={(e, v) => {
                   loadUpdatedClientDetailsHandler(e, v);
                 }}
               >
-                {/* title */}
-                <div className="col-sm-8">
-                  <AvField
-                    name="title"
-                    label={props.t("Title")}
-                    placeholder={props.t("Title")}
-                    type="text"
-                    errorMessage={props.t("Title is required")}
-                    validate={{ required: { value: true } }}
-                    value={props.clientDetails.title}
-                  />
-                </div>
+                <div className="">
+                  {/* first row */}
+                  <div className="input-group">
+                    {/* first name */}
+                    <AvField
+                      className="group-control"
+                      name="firstName"
+                      label={props.t("First name")}
+                      placeholder={props.t("First name")}
+                      type="text"
+                      errorMessage={props.t("First name is required")}
+                      validate={{ required: { value: true } }}
+                      value={props.clientDetails.firstName}
+                    />
 
-                {/* first name */}
-                <div className="col-sm-8">
-                  <AvField
-                    name="firstName"
-                    label={props.t("First name")}
-                    placeholder={props.t("First name")}
-                    type="text"
-                    errorMessage={props.t("First name is required")}
-                    validate={{ required: { value: true } }}
-                    value={props.clientDetails.firstName}
-                  />
-                </div>
+                    {/* last name */}
+                    <AvField
+                      name="lastName"
+                      label={props.t("Last name")}
+                      placeholder={props.t("Last name")}
+                      type="text"
+                      errorMessage={props.t("Last name is required")}
+                      validate={{ required: { value: true } }}
+                      value={props.clientDetails.lastName}
+                    />
+                  </div>
 
-                {/* last name */}
-                <div className="col-sm-8">
-                  <AvField
-                    name="lastName"
-                    label={props.t("Last name")}
-                    placeholder={props.t("Last name")}
-                    type="text"
-                    errorMessage={props.t("Last name is required")}
-                    validate={{ required: { value: true } }}
-                    value={props.clientDetails.lastName}
-                  />
-                </div>
+                  {/* second row */}
+                  <div className="input-group">
+                    {/* title */}
+                    <AvField
+                      name="title"
+                      label={props.t("Title")}
+                      placeholder={props.t("Title")}
+                      type="text"
+                      errorMessage={props.t("Title is required")}
+                      validate={{ required: { value: true } }}
+                      value={props.clientDetails.title}
+                    />
+                    
+                    {/* phone number */}
+                    <AvField
+                      name="phone"
+                      label={props.t("Phone")}
+                      placeholder={props.t("Phone")}
+                      type="text"
+                      errorMessage={props.t("Phone is required")}
+                      validate={{ required: { value: true } }}
+                      value={props.clientDetails.phone}
+                    />
+                  </div>
 
-                {/* nationality */}
-                <div className="col-sm-8">
-                  <AvField
-                    name="nationality"
-                    label={props.t("Nationality")}
-                    placeholder={props.t("Nationality")}
-                    type="text"
-                    errorMessage={props.t("Nationality is required")}
-                    validate={{ required: { value: true } }}
-                    value={props.clientDetails.nationality}
-                  />
-                </div>
+                  <div className="col-sm-3">
+                  </div>
+                  <div className="col-sm-3">
+                  </div>
+                  <div className="col-sm-3">
+                  </div>
 
-                {/* phone */}
-                <div className="col-sm-8">
-                  <AvField
-                    name="phone"
-                    label={props.t("Phone")}
-                    placeholder={props.t("Phone")}
-                    type="text"
-                    errorMessage={props.t("Phone is required")}
-                    validate={{ required: { value: true } }}
-                    value={props.clientDetails.phone}
-                  />
-                </div>
+                  {/* nationality */}
+                  <div className="col-sm-8">
+                    <AvField
+                      name="nationality"
+                      label={props.t("Nationality")}
+                      placeholder={props.t("Nationality")}
+                      type="text"
+                      errorMessage={props.t("Nationality is required")}
+                      validate={{ required: { value: true } }}
+                      value={props.clientDetails.nationality}
+                    />
+                  </div>
 
-                {/* country */}
-                <div className="col-sm-8">
-                  <AvField
-                    name="country"
-                    label={props.t("Country")}
-                    placeholder={props.t("Country")}
-                    type="text"
-                    errorMessage={props.t("Country is required")}
-                    validate={{ required: { value: true } }}
-                    value={props.clientDetails.country}
-                  />
-                </div>
+                  {/* phone */}
+                  <div className="col-sm-8">
+                    
+                  </div>
 
-                {/* city */}
-                <div className="col-sm-8">
-                  <AvField
-                    name="city"
-                    label={props.t("City")}
-                    placeholder={props.t("City")}
-                    type="text"
-                    errorMessage={props.t("City is required")}
-                    validate={{ required: { value: true } }}
-                    value={props.clientDetails.city}
-                  />
-                </div>
+                  {/* country */}
+                  <div className="col-sm-8">
+                    <AvField
+                      name="country"
+                      label={props.t("Country")}
+                      placeholder={props.t("Country")}
+                      type="text"
+                      errorMessage={props.t("Country is required")}
+                      validate={{ required: { value: true } }}
+                      value={props.clientDetails.country}
+                    />
+                  </div>
 
-                {/* agent */}
-                <div className="col-sm-8">
-                  <AvField
-                    name="agent"
-                    label={props.t("Agent")}
-                    placeholder={props.t("Agent")}
-                    type="text"
-                    errorMessage={props.t("Agent is required")}
-                    validate={{ required: { value: true } }}
-                    value={props.clientDetails.agent}
-                  />
-                </div>
+                  {/* city */}
+                  <div className="col-sm-8">
+                    <AvField
+                      name="city"
+                      label={props.t("City")}
+                      placeholder={props.t("City")}
+                      type="text"
+                      errorMessage={props.t("City is required")}
+                      validate={{ required: { value: true } }}
+                      value={props.clientDetails.city}
+                    />
+                  </div>
 
-                {/* call status */}
-                <div className="col-sm-8">
-                  <AvField
-                    name="callStatus"
-                    label={props.t("Call status")}
-                    placeholder={props.t("Call status")}
-                    type="text"
-                    errorMessage={props.t("Call status is required")}
-                    validate={{ required: { value: true } }}
-                    value={props.clientDetails.callStatus}
-                  />
-                </div>
+                  {/* agent */}
+                  <div className="col-sm-8">
+                    <AvField
+                      name="agent"
+                      label={props.t("Agent")}
+                      placeholder={props.t("Agent")}
+                      type="text"
+                      errorMessage={props.t("Agent is required")}
+                      validate={{ required: { value: true } }}
+                      value={props.clientDetails.agent}
+                    />
+                  </div>
 
-                {/* dob */}
-                <div className="col-sm-8">
-                  <AvField
-                    name="dob"
-                    label={props.t("Dob")}
-                    placeholder={props.t("Dob")}
-                    type="text"
-                    errorMessage={props.t("Dob is required")}
-                    validate={{ required: { value: true } }}
-                    value={props.clientDetails.dob}
-                  />
-                </div>
+                  {/* call status */}
+                  <div className="col-sm-8">
+                    <AvField
+                      name="callStatus"
+                      label={props.t("Call status")}
+                      placeholder={props.t("Call status")}
+                      type="text"
+                      errorMessage={props.t("Call status is required")}
+                      validate={{ required: { value: true } }}
+                      value={props.clientDetails.callStatus}
+                    />
+                  </div>
 
-                <div className="d-flex justify-content-end col-sm-8 mt-3">
-                  {/* submit button */}
-                  <div className="p-2">
-                    <Button 
-                      disabled={props.editLoading}  
-                      type="submit" 
-                      color="primary"
-                    >
-                      {props.t("Update")}
-                    </Button>
+                  {/* dob */}
+                  <div className="col-sm-8">
+                    <AvField
+                      name="dob"
+                      label={props.t("Dob")}
+                      placeholder={props.t("Dob")}
+                      type="text"
+                      errorMessage={props.t("Dob is required")}
+                      validate={{ required: { value: true } }}
+                      value={props.clientDetails.dob}
+                    />
+                  </div>
+
+                  <div className="d-flex justify-content-end col-sm-8 mt-3">
+                    {/* submit button */}
+                    <div className="p-2">
+                      <Button 
+                        disabled={props.editLoading}  
+                        type="submit" 
+                        color="primary"
+                      >
+                        {props.t("Update")}
+                      </Button>
+                    </div>
                   </div>
                 </div>
                 {/* TODO this error message needs to be handled to disappear after a while */}
@@ -194,6 +208,7 @@ function ClientDetails(props) {
                 </UncontrolledAlert>}
               </AvForm>
             </Col>
+            {/* card on the right side */}
           </Row>
         </div>
       </div>
