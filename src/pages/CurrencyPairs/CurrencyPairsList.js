@@ -57,10 +57,6 @@ function CurrencyPairsList(props) {
   }, [props.deleteModalClear]);
   const columns = [
     {
-      dataField: "checkbox",
-      text: <input type="checkbox" />,
-    },
-    {
       dataField: "createdAt",
       text: props.t("Date"),
       formatter: (val) => new Date(val.createdAt).toLocaleDateString(),
@@ -149,7 +145,7 @@ function CurrencyPairsList(props) {
                           </Tr>
                         </Thead>
                         <Tbody>
-                          {props.loading && <TableLoader colSpan={4} />}
+                          {props.loading && <TableLoader colSpan={12} />}
                           {!props.loading &&
                             props.markets.map((row, rowIndex) => (
                               <Tr key={rowIndex}>

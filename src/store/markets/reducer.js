@@ -38,7 +38,6 @@ const marketsReducer = (state = initialState, action)=>{
         ...state,
         editLoading:false,
         editClear:true,
-        markets:state.markets.map(()=>{})
       };
     case EDIT_MARKET_CLEAR:
       return {
