@@ -3,7 +3,8 @@ import {
   FETCH_LEADS_SUCCESS,
   API_ERROR,
   ADD_NEW_LEAD,
-  ADD_NEW_LEAD_SUCCESS
+  ADD_NEW_LEAD_SUCCESS,
+  ADD_MODAL_CLEAR
 } from "./actionsType";
 export const fetchLeadsStart = (params = {})=>{
   return {
@@ -30,12 +31,16 @@ export const addNewLead = (newLead)=>{
     payload:{ newLead }
   }; 
 };
-export const addNewLeadSuccess = (message, newLead)=>{
+export const addNewLeadSuccess = (newLead)=>{
   return {
     type:ADD_NEW_LEAD_SUCCESS,
     payload:{ 
-      message, 
       newLead 
     }
+  };
+};
+export const addModalClear = ()=>{
+  return {
+    type:ADD_MODAL_CLEAR
   };
 };

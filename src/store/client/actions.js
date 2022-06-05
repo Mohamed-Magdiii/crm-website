@@ -3,7 +3,8 @@ import {
   FETCH_CLIENTS_SUCCESS,
   ADD_NEW_CLIENT,
   ADD_NEW_CLIENT_SUCCESS,
-  API_ERROR
+  API_ERROR,
+  ADD_MODAL_CLEAR
 } from "./actionsType";
 
 export const fetchClientsStart = (params = {})=>{
@@ -24,31 +25,24 @@ export const apiError = (error)=>{
     payload:{ error }
   };
 };
-
-export const fetchClientsFromAPI = (dispatch, setTotalDocs, sizePerPage, currentPage)=>{
-    
-  fetch(`http://localhost:3001/api/v1/crm/clients?limit=${sizePerPage}&page=${currentPage}`)
-    .then(result=>result.json())
-    .then(data=>{
-      dispatch(fetchClientsStart(data.result.docs)); 
-      setTotalDocs(data.result.totalDocs);
-      dispatch(fetchClientsSuccess(false));
-    }).catch(error=>{
-      dispatch(error);
-    });
-};
+   
 export const addNewClient = (newClient)=>{
+  console.log("add new client");
   return {
     type:ADD_NEW_CLIENT,
     payload:{ newClient }
   };
 };
-export const addNewClientSuccess = (message, newClient)=>{
+export const addNewClientSuccess = (newClient)=>{
   return {
     type:ADD_NEW_CLIENT_SUCCESS,
     payload:{
-      message,
       newClient
     }
+  };
+};
+export const addModalClear = ()=>{
+  return {
+    type:ADD_MODAL_CLEAR
   };
 };
