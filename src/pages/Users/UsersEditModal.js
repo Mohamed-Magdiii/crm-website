@@ -17,7 +17,7 @@ import { editUser } from "store/users/actions";
 function UsersEditModal(props) {
   const { open, user = {}, onClose, usersRoles } = props;
   const { _id, title } = user.roleId || "";
-
+  const {update} = props.userPermissions;
   const dispatch = useDispatch();
   // console.log(usersRoles);
   const handleEditUser = (e, values) => {
@@ -37,7 +37,7 @@ function UsersEditModal(props) {
   return (
     <React.Fragment >
       {/* <Link to="#" className="btn btn-light" onClick={onClose}><i className="bx bx-plus me-1"></i> Add New</Link> */}
-      <Modal isOpen={open} toggle={onClose} centered={true}>
+      <Modal isOpen={open && update} toggle={onClose} centered={true}>
         <ModalHeader toggle={onClose} tag="h4">
           Edit User
         </ModalHeader>
@@ -128,5 +128,6 @@ const mapStateToProps = (state) => ({
   editError: state.usersReducer.editError,
   editSuccess: state.usersReducer.editSuccess,
   editClearingCounter: state.usersReducer.editClearingCounter,
+  userPermissions: state.Profile.userPermissions
 });
 export default connect(mapStateToProps, null)(UsersEditModal);
