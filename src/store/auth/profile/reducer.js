@@ -4,9 +4,9 @@ import {
 } from "./actionTypes";
 
 const initialState = {
-  roles:{},
-  users:{},
-  clients:{},
+  rolesPermissions:{},
+  userPermissions:{},
+  clientPermissions:{},
   error: "",
   success: "",
 };
@@ -37,9 +37,9 @@ const profile = (state = initialState, action) => {
     case "GET_PROFILE_SUCCESS":
       state = {
         ...state,
-        roles:{ ...action.payload.roles },
-        users :{ ...action.payload.users },
-        clients : { ...action.payload.clients }
+        rolesPermissions:{ ...action.payload.roles },
+        userPermissions:{ ...action.payload.users },
+        clientPermissions : { ...action.payload.clients }
       };
       break;
     default:
