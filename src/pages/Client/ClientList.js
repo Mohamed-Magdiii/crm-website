@@ -18,10 +18,12 @@ import "./ClientList.styles.scss";
 import SearchBar from "components/Common/SearchBar";
 import { Link } from "react-router-dom";
 import { withTranslation } from "react-i18next";
+import { getUserProfile } from "store/auth/profile/actions";
 function ClientsList(props) {
   const [addModal, setAddReminderToClientModal] = useState(false);
   const [selectedClient, setSelectedClient] = useState({});
   const [checkAll, setCheckAll] = useState(false);
+  const { get } = props.clientPermissions;
   const checkAllBoxes = ()=>{
     setCheckAll(!checkAll);
   };
@@ -161,6 +163,7 @@ function ClientsList(props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(getUserProfile());
     loadClients(1, sizePerPage);
   }, [sizePerPage, 1, searchInputText]);
 
@@ -215,8 +218,8 @@ function ClientsList(props) {
                           </Tr>
                         </Thead>
                         <Tbody className="text-center" style={{fontSize: "13px"}}>
-                          {props.loading && <TableLoader colSpan={4} />}
-                          {!props.loading && props.clients.map((row, rowIndex) =>
+                          {get && props.loading && <TableLoader colSpan={4} />}
+                          {get && !props.loading && props.clients.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`}>
@@ -261,6 +264,6 @@ const mapStateToProps = (state) => ({
   nextPage: state.clientReducer.nextPage,
   pagingCounter: state.clientReducer.pagingCounter,
   prevPage: state.clientReducer.prevPage,
-
+  clientPermissions: state.Profile.clientPermissions || {}
 });
 export default connect(mapStateToProps, null)(withTranslation()(ClientsList));

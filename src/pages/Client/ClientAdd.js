@@ -20,7 +20,7 @@ import CountryDropDown from "../../components/Common/CountryDropDown";
 function ClientForm(props){
 
   const [addModal, setAddUserModal] = useState(false);
-
+  const { create } = props.clientPermissions;
   const dispatch = useDispatch();
 
   const handleAddLead = (event, values) => {
@@ -46,7 +46,7 @@ function ClientForm(props){
 
   return (
     <React.Fragment >
-      <Link to="#" className="btn btn-primary" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> {props.t("Add New Client")}</Link>
+      <Link to="#" className={`btn btn-primary ${!create ? "disabled" : ""}`}  onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> {props.t("Add New Client")}</Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
           {props.t("Add New Client")}
@@ -145,5 +145,6 @@ function ClientForm(props){
 const mapStateToProps = (state) => ({
   error: state.clientReducer.error,
   successMessage: state.clientReducer.successMessage,
+  clientPermissions: state.Profile.clientPermissions
 });
 export default connect(mapStateToProps, null)(withTranslation()(ClientForm));
