@@ -7,13 +7,15 @@ export const getClients = async ({ payload }) => {
 };
 
 export const addClient = async (values) => {
-  console.log("inside add client");
-  const data = await axiosHelper.post("/clients", { ...values });
-  console.log(data);
-  if (data.code === 500) {
-    throw new Error("");
+  try {
+    
+    const data = await axiosHelper.post("/clients", { ...values });
+    return data;
+  } catch (error){
+    throw new Error("Invalid data");
   }
-  return data;
+
+ 
 };
 
 export const getClientById = async (id) => {
