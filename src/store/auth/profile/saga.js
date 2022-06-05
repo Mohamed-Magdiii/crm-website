@@ -6,8 +6,7 @@ import {
 import { EDIT_PROFILE, GET_PROFILE} from "./actionTypes";
 import { 
   profileSuccess,
-  profileError, 
-  getUserProfile, 
+  profileError,  
   getProfileSuccess
 } from "./actions";
 
@@ -52,9 +51,7 @@ export function* watchProfile() {
 export function * getUserProfileData(){
   try {
     const data =  yield call(getProfile);
-    console.log(data);
     const { roleId :{ permissions } } = data.result;
-    console.log(permissions);
     yield put(getProfileSuccess(permissions));
     
   } catch (error){
