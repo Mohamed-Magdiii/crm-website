@@ -21,11 +21,11 @@ import RolesAdd from "./RolesAdd";
 import RolesEdit from "./RolesEdit";
 import { getUserProfile } from "store/auth/profile/actions";
 function RolesList(props){
- 
+  
   const [editModal, setEditUserModal] = useState(false);
   const [deleteModal, setDeleteUserModal] = useState(false);
   const [selectedRole, setSelectedRole] = useState();
-  console.log(props.roles);
+  const { get, delete:deleteRolePermission }  = props.rolesPermissions;
   const columns = [
     {
       dataField: "createdAt",
@@ -131,8 +131,8 @@ function RolesList(props){
                           </Tr>
                         </Thead>
                         <Tbody>
-                          {props.loading && <TableLoader colSpan={4} />}
-                          {!props.loading && props.docs.map((row, rowIndex) =>
+                          {get && props.loading && <TableLoader colSpan={4} />}
+                          {get && !props.loading && props.docs.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`}>
@@ -158,7 +158,7 @@ function RolesList(props){
             </Col>
           </Row>
           {<RolesEdit open={editModal}  role={selectedRole} onClose={()=>{setEditUserModal(false)}} />}
-          {<DeleteModal loading={props.deleteLoading} onDeleteClick={deleteRole} show={deleteModal} onCloseClick={()=>{setDeleteUserModal(false)}} />}
+          {<DeleteModal loading={props.deleteLoading} onDeleteClick={deleteRole} show={deleteModal & deleteRolePermission} onCloseClick={()=>{setDeleteUserModal(false)}} />}
         </div>
       </div>
     </React.Fragment>
@@ -179,10 +179,9 @@ const mapStateToProps = (state) => ({
   nextPage: state.rolesReducer.nextPage,
   pagingCounter: state.rolesReducer.pagingCounter,
   prevPage: state.rolesReducer.prevPage,
-
   deleteLoading: state.rolesReducer.deleteLoading,
   deleteClearingCounter: state.rolesReducer.deleteClearingCounter,
-  roles: state.Profile.roles || {}
+  rolesPermissions: state.Profile.rolesPermissions || {}
 
 });
 export default connect(mapStateToProps, null)(RolesList);
