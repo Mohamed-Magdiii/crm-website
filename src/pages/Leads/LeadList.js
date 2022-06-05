@@ -17,12 +17,13 @@ import LeadForm from "pages/Leads/LeadAdd";
 import SearchBar from "components/Common/SearchBar";
 import { withTranslation } from "react-i18next";
 import { captilazeFirstLetter } from "common/utils/manipulateString";
+import { checkAllBoxes } from "common/utils/checkAllBoxes";
 function LeadsList(props) {
 
   const columns = [
     {
       dataField:"checkbox",
-      text: <input type="checkbox"/>
+      text: <input type="checkbox" id="select-all-leads-checkbox" onChange={()=>{checkAllBoxes("select-all-leads-checkbox", ".leads-checkbox")}}/>
     },
     {
       dataField: "createdAt",
@@ -137,7 +138,7 @@ function LeadsList(props) {
                             <Tr key={rowIndex}>
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`}>
-                                  { column.dataField === "checkbox" ? <input type="checkbox"/> : ""}
+                                  { column.dataField === "checkbox" ? <input className="leads-checkbox" type="checkbox"/> : ""}
                                   {column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
                                 </Td>
                               )}
