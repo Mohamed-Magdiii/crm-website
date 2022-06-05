@@ -19,12 +19,13 @@ import TableLoader from "components/Common/TableLoader";
 import DeleteModal from "components/Common/DeleteModal";
 import RolesAdd from "./RolesAdd";
 import RolesEdit from "./RolesEdit";
-
+import { getUserProfile } from "store/auth/profile/actions";
 function RolesList(props){
  
   const [editModal, setEditUserModal] = useState(false);
   const [deleteModal, setDeleteUserModal] = useState(false);
   const [selectedRole, setSelectedRole] = useState();
+  console.log(props.roles);
   const columns = [
     {
       dataField: "createdAt",
@@ -79,6 +80,7 @@ function RolesList(props){
   const dispatch = useDispatch();
   
   useEffect(()=>{
+    dispatch(getUserProfile());
     loadRoles(1, sizePerPage);
   }, [sizePerPage, 1]);
 
@@ -180,6 +182,7 @@ const mapStateToProps = (state) => ({
 
   deleteLoading: state.rolesReducer.deleteLoading,
   deleteClearingCounter: state.rolesReducer.deleteClearingCounter,
+  roles: state.Profile.roles || {}
 
 });
 export default connect(mapStateToProps, null)(RolesList);
