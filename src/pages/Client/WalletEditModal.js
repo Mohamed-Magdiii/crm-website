@@ -17,7 +17,7 @@ import { editBankAccount } from "store/bankAccount/actions";
 // i18n
 import { withTranslation } from "react-i18next";
 
-function BankAccountEditModal(props){
+function WalletEditModal(props){
   const { open, selectedBankAccount = {}, onClose } = props;
   const dispatch = useDispatch();
   const handleEditSystemEmail = (e, values) => {
@@ -48,9 +48,9 @@ function BankAccountEditModal(props){
           >
             <div className="mb-3">
               <AvField
-                name="bankName"
-                label={props.t("Bank name")}
-                placeholder={props.t("Bank name")}
+                name="assetId"
+                label={props.t("Asset Id")}
+                placeholder={props.t("Asset id")}
                 type="text"
                 value={selectedBankAccount.bankName}
                 errorMessage={props.t("Bank name is required")}
@@ -58,53 +58,6 @@ function BankAccountEditModal(props){
               />
             </div>
 
-            <div className="mb-3">
-              <AvField
-                name="swiftCode"
-                label={props.t("Swift code")}
-                placeholder={props.t("Swift code")}
-                type="text"
-                value={selectedBankAccount.swiftCode}
-                errorMessage={props.t("Swift code is required")}
-                validate={{ required: { value: true } }}
-              />
-            </div>
-
-            <div className="mb-3">
-              <AvField
-                name="iban"
-                label={props.t("IBAN")}
-                placeholder={props.t("IBAN")}
-                type="text"
-                value={selectedBankAccount.swiftCode}
-                errorMessage={props.t("IBAN is required")}
-                validate={{ required: { value: true } }}
-              />
-            </div>
-
-            <div className="mb-3">
-              <AvField
-                name="accountNumber"
-                label={props.t("Account number")}
-                placeholder={props.t("Account number")}
-                type="text"
-                value={selectedBankAccount.accountNumber}
-                errorMessage={props.t("Account number is required")}
-                validate={{ required: { value: true } }}
-              />
-            </div>
-
-            <div className="mb-3">
-              <AvField
-                name="currency"
-                label={props.t("Currency")}
-                placeholder={props.t("Currency")}
-                type="text"
-                value={selectedBankAccount.currency}
-                errorMessage={props.t("Currency is required")}
-                validate={{ required: { value: true } }}
-              />
-            </div>
             {/* submit button */}
             <div className='text-center pt-3 p-2'>
               <Button disabled={props.addLoading} type="submit" color="primary">
@@ -119,7 +72,7 @@ function BankAccountEditModal(props){
           </UncontrolledAlert>}
           {props.editResult && <UncontrolledAlert color="success">
             <i className="mdi mdi-check-all me-2"></i>
-            {props.t("Bank account updated successfully")} !!!
+            {props.t("Wallet updated successfully")} !!!
           </UncontrolledAlert>}
         </ModalBody>
       </Modal>
@@ -129,10 +82,10 @@ function BankAccountEditModal(props){
 
 
 const mapStateToProps = (state) => ({
-  addLoading: state.bankAccountReducer.addLoading,
-  editResult: state.bankAccountReducer.editResult,
-  editError: state.bankAccountReducer.editError,
-  bankAccountEditClearingCounter: state.bankAccountReducer.bankAccountEditClearingCounter
+  addLoading: state.walletReducer.addLoading,
+  editResult: state.walletReducer.editResult,
+  editError: state.walletReducer.editError,
+  bankAccountEditClearingCounter: state.walletReducer.bankAccountEditClearingCounter
 });
 
-export default connect(mapStateToProps, null)(withTranslation()(BankAccountEditModal));
+export default connect(mapStateToProps, null)(withTranslation()(WalletEditModal));

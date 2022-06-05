@@ -5,13 +5,29 @@ import {
   delay
 } from "redux-saga/effects";
 import { 
-  addWithdrawal, getWithdrawals, approveWithdrawal, rejectWithdrawal, 
+  addWithdrawal, 
+  getWithdrawals, 
+  approveWithdrawal, 
+  rejectWithdrawal,
+  getClientWithdrawals
 } from "apis/withdrawal";
 import { 
-  MAKE_WITHDRAWAL_START, FETCH_WITHDRAWALS_START, WITHDRAW_APPROVE, WITHDRAW_REJECT 
+  MAKE_WITHDRAWAL_START, 
+  FETCH_WITHDRAWALS_START, 
+  WITHDRAW_APPROVE, 
+  WITHDRAW_REJECT,
+  
+  FETCH_CLIENT_WITHDRAWALS_REQUESTED
 } from "./actionTypes";
 import { 
-  makeWithdrawalSuccess, fetchWithdrawalsSuccess, withdrawalError, modalClear, withdrawStatusChangeSuccess
+  makeWithdrawalSuccess, 
+  fetchWithdrawalsSuccess, 
+  withdrawalError, 
+  modalClear, 
+  withdrawStatusChangeSuccess,
+
+  fetchClientWithdrawalsSuccess,
+  fetchClientWithdrawalsFail 
 } from "./action";
 
 function *fetchWithdrawals(params){
@@ -63,10 +79,21 @@ function * withdrawApprove({ payload : { id } }){
   }
  
 }
+
+function * fetchClientWithdrawals(params){
+  try {
+    const data = yield call(getClientWithdrawals, params);
+    yield put(fetchClientWithdrawalsSuccess(data));
+  } catch (error){ 
+    yield put(fetchClientWithdrawalsFail({ error: error.message }));
+  }
+}
+
 function * withdrawalSaga(){
   yield takeEvery(FETCH_WITHDRAWALS_START, fetchWithdrawals);
   yield takeEvery(MAKE_WITHDRAWAL_START, makeWithdrawal);
   yield takeEvery(WITHDRAW_APPROVE, withdrawApprove);
   yield takeEvery( WITHDRAW_REJECT, WithdrawReject);
+  yield takeEvery( FETCH_CLIENT_WITHDRAWALS_REQUESTED, fetchClientWithdrawals);
 }
 export default withdrawalSaga;

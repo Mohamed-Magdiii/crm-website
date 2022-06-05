@@ -12,12 +12,14 @@ import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 
 // i18n
 import { withTranslation } from "react-i18next";
-import { fetchClientTransactions } from "store/client/actions";
 import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
 import CustomDropdown from "components/Common/CustomDropDown";
+import { fetchClientWithdrawals } from "store/transactions/withdrawal/action";
 import {
-  depositRejectStart, depositApproveStart  
+  depositRejectStart, 
+  depositApproveStart,
+  fetchClientDeposits  
 } from "store/transactions/deposit/action";
 import Notification from "components/Common/Notification";
 import logo from "../../assets/images/logo-sm.svg";
@@ -35,7 +37,8 @@ function ClientTransactions(props) {
     setSelectedTransactionType(e.target.innerText);
   };
   const loadClientTransactionsdetails = () => {
-    dispatch(fetchClientTransactions(clientId));
+    dispatch(fetchClientDeposits(clientId));
+    dispatch(fetchClientWithdrawals(clientId));
   };
   useEffect(() => {
     loadClientTransactionsdetails();
@@ -81,8 +84,22 @@ function ClientTransactions(props) {
       text: props.t("Status")
     },
     {
+      dataField: "reason",
+      text: props.t("Reason"),
+      formatter: (item) => (
+        item.reason ? item.reason : "N/A"
+      )
+    },
+    {
       dataField: "amount",
       text: props.t("Amount")
+    },
+    {
+      dataField: "comments",
+      text: props.t("Comments"),
+      formatter: (item) => (
+        item.comments.length === 0 ? "N/A" : item.comments
+      )
     },
     {
       dataField: "dropdown", 
@@ -209,11 +226,11 @@ function ClientTransactions(props) {
 const mapStateToProps = (state) => ({
   loading: state.clientReducer.loading,
   error: state.clientReducer.error,
-  clientDeposits: state.clientReducer.clientDeposits,
-  clientWithdrawal: state.clientReducer.clientWithdrawal,
+  clientDeposits: state.depositReducer.clientDeposits,
+  clientWithdrawal: state.withdrawalReducer.clientWithdrawal,
   errorDetails: state.clientReducer.errorDetails,
-  depositsTotalDocs: state.clientReducer.depositsTotalDocs,
-  withdrawalsTotalDocs: state.clientReducer.withdrawalsTotalDocs
+  depositsTotalDocs: state.depositReducer.depositsTotalDocs,
+  withdrawalsTotalDocs: state.withdrawalReducer.withdrawalsTotalDocs
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(ClientTransactions));

@@ -11,13 +11,18 @@ import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 
 // i18n 
 import { withTranslation } from "react-i18next";
-import { fetchClientWallet } from "store/client/actions";
+import { fetchClientWallet } from "store/wallet/action";
 import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
+import ClientAddWallet from "./ClientAddWallet";
+import DeleteModal from "components/Common/DeleteModal";
+import WalletEditModal from "./WalletEditModal";
 
 function ClientWallets(props) {
   const clientId = props.clientId;
   const [sizePerPage, setSizePerPage] = useState(5);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [walletEditModal, setWalletEditModal] = useState(false);
   const dispatch = useDispatch();
   const loadClientWalletDetails = () => {
     dispatch(fetchClientWallet(clientId));
@@ -50,6 +55,13 @@ function ClientWallets(props) {
       )
     },
     {
+      dataField: "freezeAmount",
+      text: props.t("Freeze amount"),
+      formatter: (item) => (
+        item.freezeAmount != " " ? "N/A" : item.freezeAmount 
+      )
+    },
+    {
       dataField: "active",
       text: props.t("Active"),
       formatter: (item) => (
@@ -61,7 +73,12 @@ function ClientWallets(props) {
             defaultChecked={item.active} 
             onClick={() => { switchSelectedWalletStatus(item) }} 
           />
-          <Label className="me-1" htmlFor={item.id} data-on-label={props.t("Active")} data-off-label=""></Label>
+          <Label 
+            className="me-1" 
+            htmlFor={item.id} 
+            data-on-label={props.t("Active")} 
+            data-off-label=""
+          />
         </div>
       ),
     },
@@ -76,21 +93,20 @@ function ClientWallets(props) {
             <i
               className="mdi mdi-pencil font-size-18"
               id="edittooltip"
-              onClick={() => {}}
+              onClick={() => {setWalletEditModal(true)}}
             ></i>
           </Link>
           <Link className="text-danger" to="#">
             <i
               className="mdi mdi-delete font-size-18"
               id="deletetooltip"
-              onClick={() => {}}
+              onClick={() => {setDeleteModal(true)}}
             ></i>
           </Link>
         </div>
       )
     }
   ];
-
 
   return (
     <React.Fragment>
@@ -101,8 +117,9 @@ function ClientWallets(props) {
               <Card>
                 <CardHeader className="d-flex justify-content-between  align-items-center">
                   <CardTitle>
-                    {props.t("Transactions list")} ({props.totalWalletDocs})
+                    {props.t("Client wallets list")} ({props.totalWalletDocs})
                   </CardTitle>
+                  <ClientAddWallet />
                 </CardHeader>
                 <CardBody>
                   <div className="table-rep-plugin">
@@ -146,6 +163,18 @@ function ClientWallets(props) {
               </Card>
             </Col>
           </Row>
+          {<DeleteModal 
+            loading={props.deleteLoading} 
+            // onDeleteClick={deleteBankAccountFunction} 
+            show={deleteModal} 
+            onCloseClick={()=>{setDeleteModal(false)}} 
+          />}
+          {<WalletEditModal 
+            open={walletEditModal}  
+            // selectedBankAccount={selectedBankAccount} 
+            onClose={()=>{setWalletEditModal(false)}} 
+            // bankAccountUpdateHandler={bankAccountUpdateHanlder} 
+          />}
         </div>
       </div>
     </React.Fragment>
@@ -153,12 +182,12 @@ function ClientWallets(props) {
 }
 
 const mapStateToProps = (state) => ({
-  loading: state.clientReducer.loading,
-  error: state.clientReducer.error,
-  errorDetails: state.clientReducer.errorDetails,
-  success: state.clientReducer.success,
-  clientWalletDetails: state.clientReducer.clientWalletDetails,
-  totalWalletDocs: state.clientReducer.totalWalletDocs
+  loading: state.walletReducer.loading,
+  error: state.walletReducer.error,
+  errorDetails: state.walletReducer.errorDetails,
+  success: state.walletReducer.success,
+  clientWalletDetails: state.walletReducer.clientWalletDetails,
+  totalWalletDocs: state.walletReducer.totalWalletDocs
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(ClientWallets));

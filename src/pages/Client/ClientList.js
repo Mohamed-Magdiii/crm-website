@@ -56,7 +56,7 @@ function ClientsList(props) {
     },
     {
       dataField: "category",
-      text: props.t("type")
+      text: props.t("Type")
     },
     {
       dataField: "email",
@@ -70,7 +70,7 @@ function ClientsList(props) {
     },
     {
       dataField: "country",
-      text: props.t("country"),
+      text: props.t("Country"),
 
     },
 
@@ -153,8 +153,11 @@ function ClientsList(props) {
       <div className="page-content">
         <div className="container-fluid">
           <h2>{props.t("Clients")}</h2>
-          {<AddReminderToClientModal openAdd={addModal} selectedClient={selectedClient} onClose={() => { setAddReminderToClientModal(false) }} />}
-
+          { <AddReminderToClientModal 
+            openAdd={addModal} 
+            selectedClient={selectedClient} 
+            onClose={() => { setAddReminderToClientModal(false) }} />
+          }
           <Row>
             <Col className="col-12">
               <Card>

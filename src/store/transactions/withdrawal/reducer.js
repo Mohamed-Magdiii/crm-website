@@ -1,3 +1,9 @@
+import {
+  FETCH_CLIENT_WITHDRAWALS_REQUESTED,
+  FETCH_CLIENT_WITHDRAWALS_SUCCESS,
+  FETCH_CLIENT_WITHDRAWALS_FAIL
+} from "./actionTypes";
+
 const initalState = {
   withdrawals:[],
   loading:false,
@@ -75,6 +81,32 @@ const withdrawalReducer = (state = { initalState }, action)=>{
       state = {
         ...state,
         error:action.payload.error
+      };
+      break;
+
+    // fetch client withdrawals 
+    case FETCH_CLIENT_WITHDRAWALS_REQUESTED:
+      state = {
+        ...state,
+        loading: true
+      };
+      break;
+    case FETCH_CLIENT_WITHDRAWALS_SUCCESS:
+      state = {
+        ...state,
+        clientWithdrawal: action.payload.withdrawals,
+        withdrawalsTotalDocs: action.payload.withdrawals.result.totalDocs,
+        error: false,
+        success: true,
+        loading: false
+      };
+      break;
+    case FETCH_CLIENT_WITHDRAWALS_FAIL:
+      state = {
+        ...state,
+        error: true,
+        success: false,
+        errorDetails: action.payload.error
       };
       break;
     default:

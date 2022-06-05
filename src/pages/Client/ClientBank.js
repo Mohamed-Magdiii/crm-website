@@ -14,8 +14,9 @@ import TableLoader from "components/Common/TableLoader";
 // i18n
 import { withTranslation } from "react-i18next";
 import { 
-  fetchClientBankAccount, deleteBankAccount
-} from "store/client/actions";
+  fetchClientBankAccount, 
+  deleteBankAccount 
+} from "store/bankAccount/actions";
 import ClientAddBankAccountModal from "./ClientAddBankAccountModal";
 import BankAccountEditModal from "./EditBankAccountModal";
 import DeleteModal from "../../components/Common/DeleteModal";
@@ -58,6 +59,10 @@ function ClientBank(props) {
       text: props.t("Bank name")
     },
     {
+      dataField: "accountHolderName",
+      text: props.t("Owner")
+    },
+    {
       dataField: "swiftCode",
       text: props.t("Swift code")
     },
@@ -98,7 +103,7 @@ function ClientBank(props) {
       )
     },
   ];
-  
+
   return (
     <React.Fragment>
       <div className="page-content">
@@ -171,22 +176,22 @@ function ClientBank(props) {
 }
 
 const mapStateToProps = (state) => ({
-  loading: state.clientReducer.loading || false,
-  docs: state.clientReducer.docs || [],
-  page: state.clientReducer.page || 1,
-  totalDocs: state.clientReducer.totalDocs || 0,
-  totalPages: state.clientReducer.totalPages || 0,
-  hasNextPage: state.clientReducer.hasNextPage,
-  hasPrevPage: state.clientReducer.hasPrevPage,
-  limit: state.clientReducer.limit,
-  nextPage: state.clientReducer.nextPage,
-  pagingCounter: state.clientReducer.pagingCounter,
-  prevPage: state.clientReducer.prevPage,
-  deleteLoading: state.clientReducer.deleteLoading,
-  deleteClearingCounter: state.clientReducer.deleteClearingCounter,
-  clearingCounter: state.clientReducer.clearingCounter,
-  clientBankAccounts: state.clientReducer.clientBankAccounts || [],
-  addClearingCounter: state.clientReducer.addClearingCounter
+  loading: state.bankAccountReducer.loading || false,
+  docs: state.bankAccountReducer.docs || [],
+  page: state.bankAccountReducer.page || 1,
+  totalDocs: state.bankAccountReducer.totalDocs || 0,
+  totalPages: state.bankAccountReducer.totalPages || 0,
+  hasNextPage: state.bankAccountReducer.hasNextPage,
+  hasPrevPage: state.bankAccountReducer.hasPrevPage,
+  limit: state.bankAccountReducer.limit,
+  nextPage: state.bankAccountReducer.nextPage,
+  pagingCounter: state.bankAccountReducer.pagingCounter,
+  prevPage: state.bankAccountReducer.prevPage,
+  clearingCounter: state.bankAccountReducer.clearingCounter,
+  clientBankAccounts: state.bankAccountReducer.clientBankAccounts || [],
+  deleteLoading: state.bankAccountReducer.deleteLoading,
+  deleteClearingCounter: state.bankAccountReducer.deleteClearingCounter,
+  addClearingCounter: state.bankAccountReducer.addClearingCounter
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(ClientBank));

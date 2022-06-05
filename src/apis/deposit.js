@@ -21,3 +21,16 @@ export const rejectDeposit = async (id)=>{
   const result = await axiosHelper.patch(`/transactions/deposit/${id}/reject`);
   return result;
 };
+
+export const getClientDeposits = async ({ payload }) => {
+  const id = payload;
+  const deposits = await axiosHelper.get(`/transactions/deposit/${id}/client`);
+  const data = { 
+    deposits: deposits
+  };
+  if (deposits.isError){
+    throw new Error(data.isError);
+  }
+
+  return data;
+};

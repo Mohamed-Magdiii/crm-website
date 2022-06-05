@@ -4,36 +4,10 @@ import {
   FETCH_CLIENT_DETAILS_FAIL,
   FETCH_CLIENT_DETAILS_CLEAR,
 
-  FETCH_CLIENT_BANK_ACCOUNT_REQUESTED,
-  FETCH_CLIENT_BANK_ACCOUNT_SUCCESS,
-  FETCH_CLIENT_BANK_ACCOUNT_FAIL,
-
-  FETCH_CLIENT_WALLET_REQUESTED,
-  FETCH_CLIENT_WALLET_SUCCESS,
-  FETCH_CLIENT_WALLET_FAIL,
-
-  FETCH_CLIENT_TRANSACTIONS_REQUESTED,
-  FETCH_CLIENT_TRANSACTIONS_SUCCESS,
-  FETCH_CLIENT_TRANSACTIONS_FAIL,
-
   EDIT_CLIENT_DETAILS_REQUESTED,
   EDIT_CLIENT_DETAILS_SUCCESS,
   EDIT_CLIENT_DETAILS_FAIL,
-  EDIT_CLIENT_DETAILS_CLEAR,
-
-  ADD_BANK_ACCOUNT_REQUESTED,
-  ADD_BANK_ACCOUNT_SUCCESS,
-  ADD_BANK_ACCOUNT_FAIL,
-  ADD_BANK_ACCOUNT_CLEAR,
-
-  DELETE_BANK_ACCOUNT_REQUESTED,
-  DELETE_BANK_ACCOUNT_SUCCESS,
-  DELETE_BANK_ACCOUNT_FAIL,
-
-  EDIT_BANK_ACCOUNT_REQUESTED,
-  EDIT_BANK_ACCOUNT_SUCCESS,
-  EDIT_BANK_ACCOUNT_FAIL,
-  EDIT_BANK_ACCOUNT_CLEAR
+  EDIT_CLIENT_DETAILS_CLEAR
 } from "./actionsType";
 
 const initalState = {
@@ -42,10 +16,7 @@ const initalState = {
   clients:[],
   successMessage:"",
   clientDetails: {},
-  editSuccess: false,
-  deleteClearingCounter: 0,
-  addClearingCounter: 0,
-  bankAccountEditClearingCounter: 0
+  editSuccess: false
 };
 
 export const clientReducer = (state = initalState, action)=>{
@@ -147,96 +118,6 @@ export const clientReducer = (state = initalState, action)=>{
       };
       break;
 
-    // fetch client bank details
-    case FETCH_CLIENT_BANK_ACCOUNT_REQUESTED:
-      state = {
-        ...state,
-        loading: true
-      };
-      break;
-    case FETCH_CLIENT_BANK_ACCOUNT_SUCCESS:
-      state = { 
-        ...state,
-        success: true,
-        error: false,
-        loading: false,
-        clientBankAccounts: [...action.payload.result.docs],
-        totalDocs: action.payload.result.totalDocs,
-        docs: action.payload.result.totalDocs,
-        hasNextPage: action.payload.result.hasNextPage,
-        hasPrevPage: action.payload.result.hasPrevPage,
-        limit: action.payload.result.limit,
-        nextPage: action.payload.result.nextPage,
-        page: action.payload.result.page,
-        pagingCounter: action.payload.result.pagingCounter,
-        prevPage: action.payload.result.prevPage,
-        totalPages: action.payload.result.totalPages,
-        addError: false
-      };
-      break;
-    case FETCH_CLIENT_BANK_ACCOUNT_FAIL:
-      state = {
-        ...state,
-        error: true,
-        errorDetails: action.payload.error,
-        loading: false
-      };
-      break;
-
-    // fetch client wallet details
-    case FETCH_CLIENT_WALLET_REQUESTED:
-      state = { 
-        ...state,
-        loading: true
-      };
-      break;
-    case FETCH_CLIENT_WALLET_SUCCESS:
-      state = {
-        ...state,
-        error: false,
-        success: true,
-        clientWalletDetails: action.payload.result,
-        totalWalletDocs: action.payload.result.totalDocs,
-        loading: false
-      };
-      break;
-    case FETCH_CLIENT_WALLET_FAIL:
-      state = { 
-        ...state,
-        error: true,
-        errorDetails: action.payload.error,
-        loading: false
-      };
-      break;
-
-    // fetch client transactions 
-    case FETCH_CLIENT_TRANSACTIONS_REQUESTED:
-      state = {
-        ...state,
-        loading: true
-      };
-      break;
-    case FETCH_CLIENT_TRANSACTIONS_SUCCESS:
-      state = {
-        ...state, 
-        clientDeposits: action.payload.deposits,
-        depositsTotalDocs: action.payload.deposits.result.totalDocs,
-        clientWithdrawal: action.payload.withdrawals,
-        withdrawalsTotalDocs: action.payload.withdrawals.result.totalDocs,
-        error: false,
-        success: true,
-        loading: false
-      };
-      break;
-    case FETCH_CLIENT_TRANSACTIONS_FAIL:
-      state = {
-        ...state,
-        error: true,
-        success: false,
-        errorDetails: action.payload.error
-      };
-      break;
-
     // update client details
     case EDIT_CLIENT_DETAILS_REQUESTED:
       state = {
@@ -270,104 +151,6 @@ export const clientReducer = (state = initalState, action)=>{
         error: false
       };
       break;
-    
-    // add bank account
-    case ADD_BANK_ACCOUNT_REQUESTED:
-      state = {
-        ...state,
-        addLoading: true
-      };
-      break;
-    case ADD_BANK_ACCOUNT_SUCCESS:
-      state = {
-        ...state,
-        newBankAccount: action.payload.result,
-        addSuccess: true,
-        addError: false,
-        addLoading: false
-      };
-      break;
-    case ADD_BANK_ACCOUNT_FAIL:
-      state = {
-        ...state,
-        addError: true,
-        addSuccess: false,
-        addErrorDetails: action.payload.error,
-        addLoading: false
-      };
-      break;
-    case ADD_BANK_ACCOUNT_CLEAR:
-      state = {
-        ...state,
-        addClearingCounter: state.addClearingCounter + 1,
-        addSuccess: false,
-        addError: false
-      };
-      break;
-    
-    // delete bank account
-    case DELETE_BANK_ACCOUNT_REQUESTED:
-      state = {
-        ...state,
-        loading: true,
-        deleteLoading: true
-      };
-      break;
-    case DELETE_BANK_ACCOUNT_SUCCESS:
-      state = {
-        ...state,
-        success: true,
-        fail: false,
-        loading: false,
-        deleteLoading: false,
-        deleteClearingCounter: state.deleteClearingCounter + 1
-      };
-      break;
-    case DELETE_BANK_ACCOUNT_FAIL:
-      state = {
-        ...state,
-        success: false,
-        fail: true,
-        loading:false,
-        deleteFailDetails: action.payload.error
-      };
-      break;
-
-    // edit bank account
-    case EDIT_BANK_ACCOUNT_REQUESTED:
-      state = {
-        ...state,
-        loading: true
-      };
-      break;
-    case EDIT_BANK_ACCOUNT_SUCCESS:
-      state = {
-        ...state,
-        loading: false,
-        editResult: action.payload.result,
-        editSuccess: true,
-        editError: false
-      };
-      break;
-    case EDIT_BANK_ACCOUNT_FAIL:
-      state = {
-        ...state,
-        loading: false,
-        editSuccess: false,
-        editError: true,
-        editErrorDetails: action.payload.error
-      };
-      break;
-    case EDIT_BANK_ACCOUNT_CLEAR:
-      state = {
-        ...state,
-        loading: false,
-        bankAccountEditClearingCounter: state.bankAccountEditClearingCounter + 1,
-        editError: false,
-        editResult: null
-      };
-      break;
-
     
     default:
       state = { ...state };
