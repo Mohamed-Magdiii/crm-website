@@ -20,6 +20,7 @@ function OrdersAddModal(props) {
   const [addModal, setAddOrderModal] = useState(false);
   const [symbolValue, setSymbolValue] = useState(null);
   const [clientId, setClientId] = useState(props?.clientId);
+  const [priceFlag, setPriceFlag] = useState(true);
 
   const dispatch = useDispatch();
   // const { usersRoles } = props;
@@ -50,7 +51,14 @@ function OrdersAddModal(props) {
   const defaultAdditional = {
     page: 1,
   };
-
+  const price = (val) => {
+    if (val?.target?.value == "market") {
+      setPriceFlag(false);
+    } else {
+      setPriceFlag(true);
+    }
+    console.log(val.target.value);
+  };
   const loadPageOptions = async (q, prevOptions, { page }) => {
     const { options, hasMore } = await loadOptions(q, page);
 
@@ -98,6 +106,7 @@ function OrdersAddModal(props) {
                 label="type"
                 type="select"
                 name="type"
+                onChange={price}
                 // value={status}
                 validate={{
                   required: { value: true },
@@ -105,7 +114,7 @@ function OrdersAddModal(props) {
               >
                 <option value="">select</option>
                 <option>limit</option>
-                <option>market</option> 
+                <option>market</option>
 
               </AvField>
             </div>
@@ -121,7 +130,7 @@ function OrdersAddModal(props) {
               >
                 <option value="">select</option>
                 <option>buy</option>
-                <option>sell</option> 
+                <option>sell</option>
 
               </AvField>
             </div>
@@ -138,33 +147,33 @@ function OrdersAddModal(props) {
             <div className="mb-3">
               <AvField
                 name="tp"
-                label="tp"
-                placeholder="tp"
+                label="Take Profit"
+                placeholder="Take Profit"
                 type="number"
-                errorMessage="Enter tp"
-                validate={{ required: { value: true } }}
+                errorMessage="Enter Take Profit"
               />
             </div>
             <div className="mb-3">
               <AvField
                 name="sl"
-                label="sl"
-                placeholder="sl"
+                label="Stop Loss"
+                placeholder="Stop Loss"
                 type="number"
-                errorMessage="Enter sl"
-                validate={{ required: { value: true } }}
+                errorMessage="Enter Stop Loss"
               />
             </div>
-            <div className="mb-3">
-              <AvField
-                name="price"
-                label="price"
-                placeholder="price"
-                type="number"
-                errorMessage="Enter price"
-                validate={{ required: { value: true } }}
-              />
-            </div>
+            {priceFlag ?
+              <div className="mb-3">
+                <AvField
+                  name="price"
+                  label="price"
+                  placeholder="price"
+                  type="number"
+                  errorMessage="Enter price"
+                  validate={{ required: { value: true } }}
+                />
+              </div>
+              : ""}
             <div className="text-center p-5">
               <Button type="submit" color="primary" className="">
                 Add New Order
