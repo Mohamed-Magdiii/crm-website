@@ -36,13 +36,7 @@ function MarketPrice(props) {
     loadMarkups();
     loadPricing(1, sizePerPage);
     loadOrderBook(1, sizePerPage);
-  }, []);
-
-  useEffect(() => {
-    loadMarkups();
-    loadPricing(1, sizePerPage);
-    loadOrderBook(1, sizePerPage);
-  }, [markup, sizePerPage, selectedMarket]);
+  }, [markup]);
 
   const loadMarkups = () => {
     dispatch(
@@ -210,12 +204,16 @@ function MarketPrice(props) {
         </div>
         <Row>
           <Col className="col-12">
-            <div className="m-5">
-              {props.marketPrices.docs.map((row, index) => {
-                return <h6 key={index}>
-                  {row.marketPrice["$numberDecimal"] ? row.marketPrice["$numberDecimal"] : row.marketPrice} ({selectedMarket.quoteAsset})
-                </h6>;
-              })}
+            <div>
+              <Card>
+                <CardBody>
+                  {props.marketPrices.docs.map((row, index) => {
+                    return <h6 key={index}>
+                      {row.marketPrice["$numberDecimal"] ? row.marketPrice["$numberDecimal"] : row.marketPrice} ({selectedMarket.quoteAsset})
+                    </h6>;
+                  })}
+                </CardBody>
+              </Card>   
             </div>
           </Col>
         </Row>
