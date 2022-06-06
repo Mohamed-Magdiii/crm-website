@@ -33,7 +33,7 @@ function RolesAdd (props) {
   return (
     <React.Fragment >
       {/* <Link to="#" className="btn btn-light" onClick={onClose}><i className="bx bx-plus me-1"></i> Add New</Link> */}
-      <Modal isOpen={open} toggle={onClose} centered={true}>
+      <Modal isOpen={open} toggle={onClose} centered={true} size={"lg"}>
         <ModalHeader toggle={onClose} tag="h4">
             Edit Role
         </ModalHeader>
