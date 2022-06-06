@@ -70,7 +70,7 @@ function OrderList(props) {
       dataField: "symbol",
       sort: true,
       formatter: (order) => (
-        <a className=" " href={"/page/price/" + order?.symbol}>
+        <a className=" " href={"/price/" + order?.symbol?.split("/").join("_")}>
           <Label className="me-1" data-on-label="roleId" data-off-label="">{order?.symbol}</Label>
         </a>
       ),
@@ -135,9 +135,9 @@ function OrderList(props) {
       isDummyField: true,
       editable: false,
       text: "Action",
-      formatter: (Order) => (
+      formatter: (Order) => ( 
         <div className="d-flex gap-3">
-          {(Order?.status !== "canceled") ?
+          {(Order?.status !== "canceled" && Order?.status !== "closed") ?
             <Link className="text-danger" to="#">
               <i
                 className="mdi mdi-delete font-size-18"
