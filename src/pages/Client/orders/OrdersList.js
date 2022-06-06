@@ -28,7 +28,7 @@ function OrderList(props) {
   const [deleteModal, setDeleteOrderModal] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState();
   const [clientId, setClientId] = useState(props?.clientId);
- 
+
   const {
     loading,
     docs,
@@ -63,7 +63,7 @@ function OrderList(props) {
     // roles: state.ordersReducer.rolesData,
     clearingCounter: state.ordersReducer.clearingCounter,
     // editClearingCounter: state.ordersReducer.editClearingCounter,
-  })); 
+  }));
   const columns = [
     {
       text: "symbol",
@@ -85,7 +85,7 @@ function OrderList(props) {
       dataField: "amount",
       sort: true,
       formatter: (order) => (
-        <> 
+        <>
           <Label className="me-1" data-on-label="roleId" data-off-label="">{order?.amount?.$numberDecimal}</Label>
         </>
       ),
@@ -95,7 +95,7 @@ function OrderList(props) {
       dataField: "tp",
       sort: true,
       formatter: (order) => (
-        <> 
+        <>
           <Label className="me-1" data-on-label="roleId" data-off-label="">{order?.paramsData?.tp}</Label>
         </>
       ),
@@ -105,7 +105,7 @@ function OrderList(props) {
       dataField: "sl",
       sort: true,
       formatter: (order) => (
-        <> 
+        <>
           <Label className="me-1" data-on-label="roleId" data-off-label="">{order?.paramsData?.sl}</Label>
         </>
       ),
@@ -115,7 +115,7 @@ function OrderList(props) {
       dataField: "price",
       sort: true,
       formatter: (order) => (
-        <> 
+        <>
           <Label className="me-1" data-on-label="roleId" data-off-label="">{order?.price?.$numberDecimal}</Label>
         </>
       ),
@@ -132,16 +132,18 @@ function OrderList(props) {
       text: "Action",
       formatter: (Order) => (
         <div className="d-flex gap-3">
-          <Link className="text-danger" to="#">
-            <i
-              className="mdi mdi-delete font-size-18"
-              id="deletetooltip"
-              onClick={() => { setSelectedOrder(Order); setDeleteOrderModal(true) }} ></i>
-          </Link>
+          {(Order?.status !== "canceled") ?
+            <Link className="text-danger" to="#">
+              <i
+                className="mdi mdi-delete font-size-18"
+                id="deletetooltip"
+                onClick={() => { setSelectedOrder(Order); setDeleteOrderModal(true) }} ></i>
+            </Link>
+            : ""}
         </div>
       ),
     },
-  ];
+  ]; 
   const [sizePerPage, setSizePerPage] = useState(10);
   const [SearchInputValue, setSearchInputValue] = useState("");
   const [currentPage, setcurrentPagePage] = useState(1);
