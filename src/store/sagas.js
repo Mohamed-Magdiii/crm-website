@@ -22,6 +22,7 @@ import withdrawalSaga from "./transactions/withdrawal/saga";
 import dictionarySaga from "./dictionary/saga";
 import marketSaga from "./markets/saga";
 import markupSaga from "./markups/saga";
+import marketPricingSaga from "./marketPricing/saga";
 
 export default function* rootSaga() {
   yield all([
@@ -49,5 +50,6 @@ export default function* rootSaga() {
     fork(marketSaga),
     fork(markupSaga),
     fork(dictionarySaga),
+    fork(marketPricingSaga)
   ]);
 }

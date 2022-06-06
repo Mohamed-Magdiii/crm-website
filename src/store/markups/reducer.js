@@ -10,7 +10,8 @@ import {
   ADD_MARKUP_SUCCESS,
   MARKUP_API_ERROR,
   ADD_MARKUP_CLEAR,
-  DELETE_MARKUP_CLEAR
+  DELETE_MARKUP_CLEAR,
+  FETCH_MARKUP_DETAILS_START
 } from "./actionTypes";
 
 const initialState = {
@@ -93,7 +94,7 @@ const markupsReducer = (state = initialState, action) => {
       return {
         ...state,
         deleteModalClear: true,
-        deleteLoading:false
+        deleteLoading: false
       };
     case ADD_MARKUP_START:
       return {
@@ -116,6 +117,11 @@ const markupsReducer = (state = initialState, action) => {
       return {
         ...state,
         addMarkupSuccessMessage: ""
+      };
+    case FETCH_MARKUP_DETAILS_START:
+      return {
+        ...state,
+        fetchSingleMarkupLoading: true
       };
     default:
       return state;

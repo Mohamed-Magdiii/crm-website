@@ -1,11 +1,11 @@
 import {
-  DELETE_MARKUP_START, FETCH_MARKUPS_START, MARKUP_EDIT_START, ADD_MARKUP_START
+  DELETE_MARKUP_START, FETCH_MARKUPS_START, MARKUP_EDIT_START, ADD_MARKUP_START, FETCH_MARKUP_DETAILS_START
 } from "./actionTypes";
 import {
   call, put, takeEvery, delay
 } from "redux-saga/effects";
 import {
-  getMarkups
+  getMarkups, fetchSingleMarkupAPI
 } from "apis/markups";
 import {
   fetchMarkupsSuccess,
@@ -22,7 +22,7 @@ import {
 } from "apis/markup";
 import { showErrorNotification, showSuccessNotification } from "store/notifications/actions";
 
-function* fetchMarket(params) {
+function* fetchMarkups(params) {
   try {
     const data = yield call(getMarkups, params);
     yield put(fetchMarkupsSuccess(data));
@@ -81,12 +81,20 @@ function* addMarkup({ payload: newMarkup }) {
     yield delay(2000);
     yield put(apiError(""));
   }
-
+}
+function* fetchSingleMarkup({ payload }) {
+  try {
+    const data = yield call(fetchSingleMarkupAPI, payload);
+    console.log(data);
+  } catch (error) {
+    yield(showErrorNotification(error.message));
+  }
 }
 function* markupSaga() {
-  yield takeEvery(FETCH_MARKUPS_START, fetchMarket);
+  yield takeEvery(FETCH_MARKUPS_START, fetchMarkups);
   yield takeEvery(MARKUP_EDIT_START, editMarket);
   yield takeEvery(DELETE_MARKUP_START, deleteMarkup);
   yield takeEvery(ADD_MARKUP_START, addMarkup);
+  yield takeEvery(FETCH_MARKUP_DETAILS_START, fetchSingleMarkup);
 }
 export default markupSaga;
