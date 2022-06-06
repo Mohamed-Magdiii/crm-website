@@ -96,18 +96,37 @@ function MarketPrice(props) {
     {
       dataField: 0,
       text: props.t("Price"),
+      formatter: (val) => {
+        return val[0] ? parseFloat(val[0]).toFixed(4)  : <></>;
+      }
     },
     {
       dataField: 1,
       text: props.t("Amount"),
+      formatter: (val) => {
+        return val[1] ? parseFloat(val[1]).toFixed(4)  : <></>;
+      }
     },
     {
       dataField: 2,
-      text: props.t("Total"),
+      text: props.t(`Total (${selectedMarket.quoteAsset})`),
+      formatter: (val) => {
+        const total = val[0] * val[1];
+        val[2] = total;
+        return total.toFixed(4);
+      }
     },
     {
       dataField: 3,
-      text: props.t("Sum"),
+      text: props.t(`Sum (${selectedMarket.quoteAsset})`),
+      formatter: (val, index) => {
+        const total = val[0] * val[1];
+        let sum = total;
+        if (index > 0)
+          sum = sum + props.orderBooks.docs[0]?.bids[index - 1][3];
+        val[3] = sum;
+        return sum.toFixed(4);
+      }
     },
   ];
 
@@ -115,18 +134,37 @@ function MarketPrice(props) {
     {
       dataField: 0,
       text: props.t("Price"),
+      formatter: (val) => {
+        return val[0] ? parseFloat(val[0]).toFixed(4)  : <></>;
+      }
     },
     {
       dataField: 1,
       text: props.t("Amount"),
+      formatter: (val) => {
+        return val[1] ? parseFloat(val[1]).toFixed(4)  : <></>;
+      }
     },
     {
       dataField: 2,
-      text: props.t("Total"),
+      text: props.t(`Total (${selectedMarket.quoteAsset})`),
+      formatter: (val) => {
+        const total = val[0] * val[1];
+        val[2] = total;
+        return total.toFixed(4);
+      }
     },
     {
       dataField: 3,
-      text: props.t("Sum"),
+      text: props.t(`Sum (${selectedMarket.quoteAsset})`),
+      formatter: (val, index) => {
+        const total = val[0] * val[1];
+        let sum = total;
+        if (index > 0)
+          sum = sum + props.orderBooks.docs[0]?.asks[index - 1][3];
+        val[3] = sum;
+        return sum.toFixed(4);
+      }
     },
   ];
 
@@ -159,6 +197,9 @@ function MarketPrice(props) {
               {props.loading && <div className="spinner-border" role="status">
                 <span className="visually-hidden">Loading...</span>
               </div>}
+              <DropdownItem key={"Markup-Dropdown-None"} onClick={() => { handleChooseMarkup() }}>
+                None
+              </DropdownItem>
               {!props.loading && props.markups.map((markup, index) => {
                 return <DropdownItem key={`Markup-Dropdown-${index}`} onClick={() => { handleChooseMarkup(markup) }}>
                   {markup.title} ({markup.value})
@@ -169,68 +210,17 @@ function MarketPrice(props) {
         </div>
         <Row>
           <Col className="col-12">
-            <Card>
-              <CardHeader className="d-flex flex-column gap-3">
-                <div className="d-flex justify-content-between  align-items-center">
-                  <CardTitle>
-                    {props.t("Pricing")}
-                  </CardTitle>
-                </div>
-              </CardHeader>
-              <CardBody>
-                <div>
-                  {props.marketPrices.docs.map((row, index) => {
-                    return <h6 key={index}>
-                      {row.marketPrice["$numberDecimal"] ? row.marketPrice["$numberDecimal"] : row.marketPrice}
-                    </h6>;
-                  })}
-                </div>
-                {/* <div className="table-rep-plugin">
-                  <div
-                    className="table-responsive mb-0"
-                    data-pattern="priority-columns"
-                  >
-                    <Table id="tech-companies-1" className="table ">
-                      <Thead>
-                        <Tr>
-                          {columns.map((column, index) => (
-                            <Th data-priority={index} key={index}>
-                              {column.text}
-                            </Th>
-                          ))}
-                        </Tr>
-                      </Thead>
-                      <Tbody>
-                        {props.marketPricesLoading && <TableLoader colSpan={12} />}
-                        {!props.marketPricesLoading &&
-                          props.marketPrices.docs.map((row, rowIndex) => (
-                            <Tr key={rowIndex}>
-                              {columns.map((column, index) => (
-                                <Td key={`${rowIndex}-${index}`}>
-                                  {column.formatter
-                                    ? column.formatter(row, rowIndex)
-                                    : row[column.dataField]}
-                                </Td>
-                              ))}
-                            </Tr>
-                          ))}
-                      </Tbody>
-                    </Table>
-                    <CustomPagination
-                      {...props}
-                      setSizePerPage={setSizePerPage}
-                      sizePerPage={sizePerPage}
-                      onChange={loadPricing}
-                      docs={props.marketPrices.docs}
-                    />
-                  </div>
-                </div> */}
-              </CardBody>
-            </Card>
+            <div className="m-5">
+              {props.marketPrices.docs.map((row, index) => {
+                return <h6 key={index}>
+                  {row.marketPrice["$numberDecimal"] ? row.marketPrice["$numberDecimal"] : row.marketPrice} ({selectedMarket.quoteAsset})
+                </h6>;
+              })}
+            </div>
           </Col>
         </Row>
         <Row>
-          <Col className="col-6">
+          <Col className="col-12 col-md-6">
             <Card>
               <CardHeader className="d-flex flex-column gap-3">
                 <div className="d-flex justify-content-between  align-items-center">
@@ -242,7 +232,7 @@ function MarketPrice(props) {
               <CardBody>
                 <div className="table-rep-plugin" style={props.orderBooks.docs[0]?.bids?.length > 0 ? {
                   height: "600px",
-                  overflow: "auto" 
+                  overflow: "auto"
                 } : {}}>
                   <div
                     className="table-responsive mb-0"
@@ -265,7 +255,9 @@ function MarketPrice(props) {
                             <Tr key={rowIndex}>
                               {buyOrderColumns.map((column, index) => (
                                 <Td key={`${rowIndex}-${index}`}>
-                                  {row[column.dataField] ? row[column.dataField] : <></>}
+                                  {column.formatter
+                                    ? column.formatter(row, rowIndex)
+                                    : row[column.dataField] ? row[column.dataField] : <></>}
                                 </Td>
                               ))}
                             </Tr>
@@ -277,7 +269,7 @@ function MarketPrice(props) {
               </CardBody>
             </Card>
           </Col>
-          <Col className="col-6">
+          <Col className="col-12 col-md-6">
             <Card>
               <CardHeader className="d-flex flex-column gap-3">
                 <div className="d-flex justify-content-between  align-items-center">
@@ -289,7 +281,7 @@ function MarketPrice(props) {
               <CardBody>
                 <div className="table-rep-plugin" style={props.orderBooks.docs[0]?.asks?.length > 0 ? {
                   height: "600px",
-                  overflow: "auto" 
+                  overflow: "auto"
                 } : {}}>
                   <div
                     className="table-responsive mb-0"
@@ -305,14 +297,16 @@ function MarketPrice(props) {
                           ))}
                         </Tr>
                       </Thead>
-                      <Tbody style={{ maxHeight: "100%" }}>
+                      <Tbody style={{}}>
                         {props.orderBooksLoading && <TableLoader colSpan={12} />}
                         {!props.orderBooksLoading &&
                           props.orderBooks.docs[0]?.asks?.map((row, rowIndex) => (
                             <Tr key={rowIndex}>
                               {sellOrderColumns.map((column, index) => (
                                 <Td key={`${rowIndex}-${index}`}>
-                                  {row[column.dataField] ? row[column.dataField] : <></>}
+                                  {column.formatter
+                                    ? column.formatter(row, rowIndex)
+                                    : row[column.dataField] ? row[column.dataField] : <></>}
                                 </Td>
                               ))}
                             </Tr>
