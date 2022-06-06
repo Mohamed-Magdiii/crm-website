@@ -28,8 +28,7 @@ function OrderList(props) {
   const [deleteModal, setDeleteOrderModal] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState();
   const [clientId, setClientId] = useState(props?.clientId);
-
-  console.log(props?.clientId);
+ 
   const {
     loading,
     docs,
@@ -64,19 +63,7 @@ function OrderList(props) {
     // roles: state.ordersReducer.rolesData,
     clearingCounter: state.ordersReducer.clearingCounter,
     // editClearingCounter: state.ordersReducer.editClearingCounter,
-  }));
-  //   {
-  //     "_id": "629ac4765a5660cbb85f9224",
-  //     "symbol": "USDT/USDT",
-  //     "type": "limit ",
-  //     "side": "buy",
-  //     "amount": 1,
-  //     "tp": 1,
-  //     "sl": 8,
-  //     "price": 90,
-  //     "customerId": "62725455a774aa41d4f07d9b",
-  //     "id": "629ac4765a5660cbb85f9224"
-  // }
+  })); 
   const columns = [
     {
       text: "symbol",
@@ -97,20 +84,45 @@ function OrderList(props) {
       text: "amount",
       dataField: "amount",
       sort: true,
+      formatter: (order) => (
+        <> 
+          <Label className="me-1" data-on-label="roleId" data-off-label="">{order?.amount?.$numberDecimal}</Label>
+        </>
+      ),
     },
     {
       text: "tp",
       dataField: "tp",
       sort: true,
+      formatter: (order) => (
+        <> 
+          <Label className="me-1" data-on-label="roleId" data-off-label="">{order?.paramsData?.tp}</Label>
+        </>
+      ),
     },
     {
       text: "sl",
       dataField: "sl",
       sort: true,
+      formatter: (order) => (
+        <> 
+          <Label className="me-1" data-on-label="roleId" data-off-label="">{order?.paramsData?.sl}</Label>
+        </>
+      ),
     },
     {
       text: "price",
       dataField: "price",
+      sort: true,
+      formatter: (order) => (
+        <> 
+          <Label className="me-1" data-on-label="roleId" data-off-label="">{order?.price?.$numberDecimal}</Label>
+        </>
+      ),
+    },
+    {
+      text: "status",
+      dataField: "status",
       sort: true,
     },
     {
@@ -176,7 +188,7 @@ function OrderList(props) {
 
   return (
     <React.Fragment>
-      <div className="container-fluid"> 
+      <div className="container-fluid">
         <Row>
           <Col className="col-12">
             <Card>

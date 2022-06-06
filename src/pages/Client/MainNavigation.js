@@ -55,6 +55,17 @@ function MainNavigation(props){
                 {props.t("Wallets")}
               </NavLink>
             </li>
+            
+            <li className="nav-item">
+              <NavLink 
+                to={"/clients/" + clientId + "/orders"}
+                className={isActive =>
+                  "nav-link" + (!isActive ? " unselected" : "")
+                }
+              >
+                {props.t("Orders")}
+              </NavLink>
+            </li>
           </ul>
         </div>
       </div>
