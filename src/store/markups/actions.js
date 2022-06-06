@@ -10,7 +10,8 @@ import {
   ADD_MARKUP_SUCCESS,
   MARKUP_API_ERROR,
   ADD_MARKUP_CLEAR,
-  DELETE_MARKUP_CLEAR
+  DELETE_MARKUP_CLEAR,
+  FETCH_MARKUP_DETAILS_START
 } from "./actionTypes";
 
 export const fetchMarkupsStart = (params) => {
@@ -86,9 +87,15 @@ export const addMarkupModalClear = (data) => {
     payload: data
   };
 };
-export const deletModalClear = (data)=>{
+export const deletModalClear = (data) => {
   return {
     type: DELETE_MARKUP_CLEAR,
+    payload: data
+  };
+};
+export const fetchMarkupDetailsStart = (data) => {
+  return {
+    type:FETCH_MARKUP_DETAILS_START,
     payload:data
   };
 };
