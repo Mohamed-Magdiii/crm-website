@@ -69,6 +69,11 @@ function OrderList(props) {
       text: "symbol",
       dataField: "symbol",
       sort: true,
+      formatter: (order) => (
+        <a className=" " href={"/page/price/" + order?.symbol}>
+          <Label className="me-1" data-on-label="roleId" data-off-label="">{order?.symbol}</Label>
+        </a>
+      ),
     },
     {
       text: "type",
@@ -143,7 +148,7 @@ function OrderList(props) {
         </div>
       ),
     },
-  ]; 
+  ];
   const [sizePerPage, setSizePerPage] = useState(10);
   const [SearchInputValue, setSearchInputValue] = useState("");
   const [currentPage, setcurrentPagePage] = useState(1);
