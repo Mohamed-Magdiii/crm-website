@@ -35,9 +35,9 @@ function ClientDetails(props) {
     <React.Fragment>
       <div className="page-content">
         <div className="container-fluid">
-          <div className="d-flex flex-row justify-content-between">
+          <div className="d-flex flex-row justify-content-between align-items-start">
             {/* input fields to the left side */}
-            <Col md="7">
+            <Col md="9">
               <Card>
                 <CardHeader className="d-flex flex-column gap-3">
                   <div className="d-flex justify-content-between align-items-center">
@@ -53,7 +53,7 @@ function ClientDetails(props) {
                     {/* first row */}
                     <Row>
                       <Col md="6">
-                        <div className="mb-6">
+                        <div className="mb-6 col-sm-12">
                           <AvField
                             name="firstName"
                             label={props.t("First name")}
@@ -66,7 +66,7 @@ function ClientDetails(props) {
                         </div>
                       </Col>
                       <Col md="6">
-                        <div className="mb-6">
+                        <div className="mb-6 col-sm-12">
                           <AvField
                             name="lastName"
                             label={props.t("Last name")}
@@ -83,7 +83,7 @@ function ClientDetails(props) {
                     {/* second row */}
                     <Row>
                       <Col md="6">
-                        <div className="mb-6">
+                        <div className="mb-6 col-sm-12">
                           <AvField
                             name="title"
                             label={props.t("Title")}
@@ -94,7 +94,7 @@ function ClientDetails(props) {
                             value={props.clientDetails.title}
                           >
                             {titles.map((title) => (
-                              <option key={title.indexOf(title)} value={title}>
+                              <option key={titles.indexOf(title)} value={title}>
                                 {title}
                               </option>
                             ))}
@@ -102,7 +102,7 @@ function ClientDetails(props) {
                         </div>
                       </Col>
                       <Col md="6">
-                        <div className="mb-6">
+                        <div className="mb-6 col-sm-12">
                           <AvField
                             name="phone"
                             label={props.t("Phone")}
@@ -119,18 +119,28 @@ function ClientDetails(props) {
                     {/* third row */}
                     <Row>
                       <Col md="6">
-                        <CountryDropDown />
+                        <div className="mb-6 col-sm-12">
+                          <AvField
+                            name="callStatus"
+                            label={props.t("Call status")}
+                            placeholder={props.t("Call status")}
+                            type="text"
+                            errorMessage={props.t("Call status is required")}
+                            validate={{ required: { value: true } }}
+                            value={props.clientDetails.callStatus}
+                          />
+                        </div>
                       </Col>
                       <Col md="6">
-                        <div className="mb-6">
+                        <div className="mb-6 col-sm-12">
                           <AvField
-                            name="nationality"
-                            label={props.t("Nationality")}
-                            placeholder={props.t("Nationality")}
+                            name="dob"
+                            label={props.t("Dob")}
+                            placeholder={props.t("Dob")}
                             type="text"
-                            errorMessage={props.t("Nationality is required")}
+                            errorMessage={props.t("Dob is required")}
                             validate={{ required: { value: true } }}
-                            value={props.clientDetails.nationality}
+                            value={props.clientDetails.dob}
                           />
                         </div>
                       </Col>
@@ -139,7 +149,7 @@ function ClientDetails(props) {
                     {/* forth row */}
                     <Row>
                       <Col md="6">
-                        <div className="mb-6">
+                        <div className="mb-6 col-sm-12">
                           <AvField
                             name="city"
                             label={props.t("City")}
@@ -152,7 +162,7 @@ function ClientDetails(props) {
                         </div>
                       </Col>
                       <Col md="6">
-                        <div className="mb-6">
+                        <div className="mb-6 col-sm-12">
                           <AvField
                             name="agent"
                             label={props.t("Agent")}
@@ -169,35 +179,26 @@ function ClientDetails(props) {
                     {/* final row */}
                     <Row>
                       <Col md="6">
-                        <div className="mb-6">
-                          <AvField
-                            name="callStatus"
-                            label={props.t("Call status")}
-                            placeholder={props.t("Call status")}
-                            type="text"
-                            errorMessage={props.t("Call status is required")}
-                            validate={{ required: { value: true } }}
-                            value={props.clientDetails.callStatus}
-                          />
-                        </div>
+                        <CountryDropDown />
                       </Col>
+                      {/* TODO this needs to be a dropdown just like country */}
                       <Col md="6">
-                        <div className="mb-6">
+                        <div className="mb-6 col-sm-12">
                           <AvField
-                            name="dob"
-                            label={props.t("Dob")}
-                            placeholder={props.t("Dob")}
+                            name="nationality"
+                            label={props.t("Nationality")}
+                            placeholder={props.t("Nationality")}
                             type="text"
-                            errorMessage={props.t("Dob is required")}
+                            errorMessage={props.t("Nationality is required")}
                             validate={{ required: { value: true } }}
-                            value={props.clientDetails.dob}
+                            value={props.clientDetails.nationality}
                           />
                         </div>
                       </Col>
                     </Row>
 
-                    <div className="d-flex justify-content-end">
-                      <div className="p-2">
+                    <div className="d-flex justify-content-end ml-auto">
+                      <div className="p-4">
                         <Button 
                           disabled={props.editLoading}  
                           type="submit" 
@@ -206,59 +207,65 @@ function ClientDetails(props) {
                           {props.t("Update")}
                         </Button>
                       </div>
-                    </div> 
+                    </div>
                   </AvForm>
-                </CardBody>
-                <CardBody>
                 </CardBody>
               </Card>
             </Col>
 
             {/* quick actions to the right side */}
-            <Col md="4">
+            <Col md="2">
               <Card>
-                <CardHeader className="d-flex flex-column gap-3" key="0">
+                <CardHeader className="d-flex flex-column gap-3">
                   <div className="d-flex justify-content-between align-items-center">
                     <CardTitle>{props.t("Quick actions")}</CardTitle>
                   </div>
                 </CardHeader>
-                <CardBody key="0">
-                  <CardHeader className="d-flex flex-column gap-3" key="1">
-                    <div className="d-flex justify-content-between align-items-center">
+                <CardBody>
+                  {/* first action space */}
+                  <CardHeader className="d-flex flex-column gap-3">
+                    <div className="d-flex justify-content-center align-items-center">
                       <CardTitle>{props.t("Space 1")}</CardTitle>
                     </div>
                   </CardHeader>
-                  <CardBody key="1">
-                    <div className="d-flex flex-column justify-content-between">
-                      <div className="d-flex flex-row justify-content-between">
-                        <button type="button" className="btn btn-primary waves-effect waves-light w-xm">
-                          Action 1
-                        </button>
-
-                        <button type="button" className="btn btn-primary waves-effect waves-light w-xm">
-                          Action 2
-                        </button>
+                  <CardBody>
+                    <Row>
+                      <div className="d-flex flex-wrap gap-2 justify-content-center">
+                        <div className="mb-6 col-sm-12">
+                          <button type="button" className="btn btn-primary waves-effect waves-light w-xs">
+                            Action 1
+                          </button>
+                        </div>
+                        <div className="mb-6 col-sm-12">
+                          <button type="button" className="btn btn-primary waves-effect waves-light w-xs">
+                            Action 2
+                          </button>
+                        </div>
                       </div>
-                    </div>
+                    </Row>
                   </CardBody>
 
-                  <CardHeader className="d-flex flex-column gap-3" key="2">
-                    <div className="d-flex justify-content-between align-items-center">
+                  {/* second action space */}
+                  <CardHeader className="d-flex flex-column gap-3">
+                    <div className="d-flex justify-content-center align-items-center">
                       <CardTitle>{props.t("Space 2")}</CardTitle>
                     </div>
                   </CardHeader>
-                  <CardBody key="2">
-                    <div className="d-flex flex-column justify-content-between">
-                      <div className="d-flex flex-row justify-content-between">
-                        <button type="button" className="btn btn-primary waves-effect waves-light w-xm">
-                          Action 3
-                        </button>
-
-                        <button type="button" className="btn btn-primary waves-effect waves-light w-xm">
-                          Action 4
-                        </button>
+                  <CardBody>
+                    <Row>
+                      <div className="d-flex flex-wrap gap-2 align-items-center">
+                        <div className="mb-6 col-sm-12">
+                          <button type="button" className="btn btn-primary waves-effect waves-light w-xs">
+                            Action 3
+                          </button>
+                        </div>
+                        <div className="mb-6 col-sm-12">
+                          <button type="button" className="btn btn-primary waves-effect waves-light w-xs">
+                            Action 4
+                          </button>
+                        </div>
                       </div>
-                    </div>
+                    </Row>
                   </CardBody>
                 </CardBody>
               </Card>

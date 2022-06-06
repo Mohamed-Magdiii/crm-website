@@ -10,24 +10,32 @@ import { AvForm, AvField } from "availity-reactstrap-validation";
 
 // i18n
 import { withTranslation } from "react-i18next";
-import {  addSystemEmail } from "store/systemEmail/actions";
+import { fetchAssetsStart } from "store/assests/actions";
 
 function ClientAddWallet(props){
+  const [sizePerPage, setSizePerPage] = useState(10);
   const [addModal, setAddModal] = useState(false);
+  const assets = props.assets;
   const dispatch = useDispatch();
-  const handleAddSystemEmail = (e, values) => {
-    dispatch(addSystemEmail(values));
+  const fetchAssetsHandler = (page, limit) => {
+    dispatch(fetchAssetsStart({
+      limit,
+      page
+    })) ;
   };
   const toggleAddModal = () => {
     setAddModal(!addModal);
   };
+  useEffect(()=>{
+    fetchAssetsHandler(1, sizePerPage);
+  }, [sizePerPage, 1]);
   useEffect(()=>{
     if (props.clearingCounter > 0 && addModal) {
       props.switchComponents();
       setAddModal(false);
     }
   }, [props.clearingCounter]);
-  
+
   return (
     <React.Fragment >
       <Link to="#" className="btn btn-light" onClick={toggleAddModal}>
@@ -40,23 +48,25 @@ function ClientAddWallet(props){
         <ModalBody >
           <AvForm
             className='p-4'
-            onValidSubmit={(e, v) => {
-              handleAddSystemEmail(e, v);
-            }}
+            onValidSubmit={() => {}}
           >
             <div className="mb-3">
               <AvField
                 name="assetId"
                 label={props.t("Asset")}
                 placeholder={props.t("Asset")}
-                type="text"
+                type="select"
                 errorMessage={props.t("Asset is required")}
                 validate={{ required: { value: true } }}
-              />
+              >
+                {assets.map((asset) => (
+                  <option key={assets.indexOf(asset)} value={asset.id}>
+                    {asset.name}
+                  </option>
+                ))}
+              </AvField>
             </div>
             <div className='text-center pt-3 p-2'>
-              {/* on clicking this button it switches from the list component to the edit component if 
-                  submission is valid but it adds the new system email to the db onValidSubmit above */}
               <Button disabled={props.addLoading} type="submit" color="primary">
                 {props.t("Add")}
               </Button>
@@ -78,12 +88,15 @@ function ClientAddWallet(props){
 }
 
 const mapStateToProps = (state) => ({
-  addLoading: state.systemEmailsReducer.addLoading,
-  addErrorDetails: state.systemEmailsReducer.addErrorDetails,
-  addSuccess: state.systemEmailsReducer.addSuccess,
-  addError: state.systemEmailsReducer.addError,  
-  clearingCounter: state.systemEmailsReducer.clearingCounter,
-  activeComponentProp: state.systemEmailsReducer.activeComponentProp
+  addLoading: state.walletReducer.addLoading,
+  addErrorDetails: state.walletReducer.addErrorDetails,
+  addSuccess: state.walletReducer.addSuccess,
+  addError: state.walletReducer.addError,  
+  clearingCounter: state.walletReducer.clearingCounter,
+  activeComponentProp: state.walletReducer.activeComponentProp,
+  limit: state.assetReducer.limit,
+  page: state.assetReducer.page || 1,
+  assets: state.assetReducer.assets || []
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(ClientAddWallet));
