@@ -94,19 +94,19 @@ function MarketPrice(props) {
 
   const buyOrderColumns = [
     {
-      dataField: "price",
+      dataField: 0,
       text: props.t("Price"),
     },
     {
-      dataField: "amount",
+      dataField: 1,
       text: props.t("Amount"),
     },
     {
-      dataField: "total",
+      dataField: 2,
       text: props.t("Total"),
     },
     {
-      dataField: "sum",
+      dataField: 3,
       text: props.t("Sum"),
     },
   ];
@@ -263,7 +263,7 @@ function MarketPrice(props) {
                         {!props.orderBooksLoading &&
                           props.orderBooks.docs[0]?.bids?.map((row, rowIndex) => (
                             <Tr key={rowIndex}>
-                              {sellOrderColumns.map((column, index) => (
+                              {buyOrderColumns.map((column, index) => (
                                 <Td key={`${rowIndex}-${index}`}>
                                   {row[column.dataField] ? row[column.dataField] : <></>}
                                 </Td>
