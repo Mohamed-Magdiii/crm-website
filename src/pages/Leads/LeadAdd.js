@@ -22,7 +22,7 @@ function LeadForm(props) {
   const [addModal, setAddUserModal] = useState(false);
 
   const dispatch = useDispatch();
-  
+  const { create } = props.leadsPermissions;
   const handleAddLead = (event, values)=>{
     event.preventDefault();
     dispatch(addNewLead(values));
@@ -32,7 +32,7 @@ function LeadForm(props) {
   const toggleAddModal = () => {
     setAddUserModal(!addModal);
   };
-
+  
   useEffect(()=>{
     if (!props.showAddSuccessMessage  && addModal) {
     
@@ -42,7 +42,7 @@ function LeadForm(props) {
 
   return (
     <React.Fragment >
-      <Link to="#" className="btn btn-primary" onClick={toggleAddModal}>
+      <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}>
         <i className="bx bx-plus me-1"/> 
         {props.t("Add New Lead")}
       </Link>
@@ -170,7 +170,8 @@ function LeadForm(props) {
 const mapStateToProps = (state) => ({
   error: state.leadReducer.error,
   showAddSuccessMessage :state.leadReducer.showAddSuccessMessage,
-  disableAddButton : state.leadReducer.disableAddButton
+  disableAddButton : state.leadReducer.disableAddButton,
+  leadsPermissions : state.Profile.leadsPermissions || {}
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(LeadForm));
