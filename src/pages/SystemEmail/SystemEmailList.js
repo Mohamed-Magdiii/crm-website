@@ -50,7 +50,7 @@ function SystemEmailsList(props){
   const switchSelectedSystemEmailStatusHandler = (selectedItem) => {
     selectedItem.isActive = !selectedItem.isActive;
   };
-  const {update, delete: deletePermission} = props.systemEmailsPermissions;
+  const { update, delete: deletePermission } = props.systemEmailsPermissions;
   const columns = [
     {
       dataField: "createdAt",
