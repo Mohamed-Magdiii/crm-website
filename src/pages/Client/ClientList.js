@@ -18,7 +18,6 @@ import "./ClientList.styles.scss";
 import SearchBar from "components/Common/SearchBar";
 import { Link } from "react-router-dom";
 import { withTranslation } from "react-i18next";
-import { getUserProfile } from "store/auth/profile/actions";
 import { captilazeFirstLetter, displaySubString } from "common/utils/manipulateString";
 import { checkAllBoxes } from "common/utils/checkAllBoxes";
 function ClientsList(props) {
@@ -147,7 +146,6 @@ function ClientsList(props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getUserProfile());
     loadClients(1, sizePerPage);
   }, [sizePerPage, 1, searchInputText]);
 

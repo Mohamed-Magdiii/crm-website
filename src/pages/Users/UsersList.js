@@ -21,7 +21,6 @@ import TableLoader from "components/Common/TableLoader";
 import DeleteModal from "components/Common/DeleteModal";
 import UsersAddModal from "./UsersAddModal";
 import UsersEditModal from "./UsersEditModal";
-import { getUserProfile } from "store/auth/profile/actions";
 function UsersList() {
 
   const [editModal, setEditUserModal] = useState(false);
@@ -150,7 +149,6 @@ function UsersList() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getUserProfile());
     loadUsers(currentPage, sizePerPage);
     loadRoles(1, 100);
   }, [sizePerPage, 1, clearingCounter]);

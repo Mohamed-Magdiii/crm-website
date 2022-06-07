@@ -19,7 +19,6 @@ import TableLoader from "components/Common/TableLoader";
 import DeleteModal from "components/Common/DeleteModal";
 import RolesAdd from "./RolesAdd";
 import RolesEdit from "./RolesEdit";
-import { getUserProfile } from "store/auth/profile/actions";
 function RolesList(props){
   
   const [editModal, setEditUserModal] = useState(false);
@@ -80,7 +79,6 @@ function RolesList(props){
   const dispatch = useDispatch();
   
   useEffect(()=>{
-    dispatch(getUserProfile());
     loadRoles(1, sizePerPage);
   }, [sizePerPage, 1]);
 
