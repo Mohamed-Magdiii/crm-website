@@ -44,21 +44,21 @@ function ClientWallets(props) {
       dataField: "amount",
       text: props.t("Amount"),
       formatter: (item) => (
-        item.amount != " " ? "N/A" : item.amount
+        item.amount === " " ? "N/A" : parseFloat(item.amount)
       )
     }, 
     {
       dataField: "isCrypto",
       text: props.t("Crypto"),
       formatter: (item) => (
-        item.isCrypto ? "Crypto wallet" : "Traditional wallet"
+        item.isCrypto ? props.t("Crypto wallet") : props.t("Traditional wallet")
       )
     },
     {
       dataField: "freezeAmount",
       text: props.t("Freeze amount"),
       formatter: (item) => (
-        item.freezeAmount != " " ? "N/A" : item.freezeAmount 
+        item.freezeAmount === " " ? "N/A" : parseFloat(item.freezeAmount) 
       )
     },
     {
@@ -93,14 +93,14 @@ function ClientWallets(props) {
             <i
               className="mdi mdi-pencil font-size-18"
               id="edittooltip"
-              onClick={() => {setWalletEditModal(true)}}
+              onClick={() => {}}
             ></i>
           </Link>
           <Link className="text-danger" to="#">
             <i
               className="mdi mdi-delete font-size-18"
               id="deletetooltip"
-              onClick={() => {setDeleteModal(true)}}
+              onClick={() => {}}
             ></i>
           </Link>
         </div>

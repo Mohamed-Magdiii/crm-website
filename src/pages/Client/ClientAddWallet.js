@@ -79,7 +79,7 @@ function ClientAddWallet(props){
           </UncontrolledAlert>}
           {props.addSuccess && <UncontrolledAlert color="success">
             <i className="mdi mdi-check-all me-2"></i>
-            {props.t("Wallet adde successfully")} !!!
+            {props.t("Wallet added successfully")} !!!
           </UncontrolledAlert>}
         </ModalBody>
       </Modal>

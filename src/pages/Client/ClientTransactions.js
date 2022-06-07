@@ -92,7 +92,10 @@ function ClientTransactions(props) {
     },
     {
       dataField: "amount",
-      text: props.t("Amount")
+      text: props.t("Amount"),
+      formatter: (item) => (
+        item.amount === " " ? "N/A" : parseFloat(item.amount)
+      )
     },
     {
       dataField: "comments",
