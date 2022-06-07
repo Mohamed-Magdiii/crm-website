@@ -11,6 +11,7 @@ import { AvForm, AvField } from "availity-reactstrap-validation";
 // i18n
 import { withTranslation } from "react-i18next";
 import { fetchAssetsStart } from "store/assests/actions";
+import { addWallet } from "store/wallet/action";
 
 function ClientAddWallet(props){
   const [sizePerPage, setSizePerPage] = useState(10);
@@ -26,15 +27,17 @@ function ClientAddWallet(props){
   const toggleAddModal = () => {
     setAddModal(!addModal);
   };
+  const addNewWalletHandler = (e, v) => {
+    dispatch(addWallet(v));
+  };
   useEffect(()=>{
     fetchAssetsHandler(1, sizePerPage);
   }, [sizePerPage, 1]);
   useEffect(()=>{
-    if (props.clearingCounter > 0 && addModal) {
-      props.switchComponents();
+    if (props.addClearingCounter > 0 && addModal) {
       setAddModal(false);
     }
-  }, [props.clearingCounter]);
+  }, [props.addClearingCounter]);
 
   return (
     <React.Fragment >
@@ -48,11 +51,14 @@ function ClientAddWallet(props){
         <ModalBody >
           <AvForm
             className='p-4'
-            onValidSubmit={() => {}}
+            onValidSubmit={(e, v) => {
+              v.belongsTo = props.clientId;
+              addNewWalletHandler(e, v);
+            }}
           >
             <div className="mb-3">
               <AvField
-                name="assetId"
+                name="symbol"
                 label={props.t("Asset")}
                 placeholder={props.t("Asset")}
                 type="select"
@@ -72,10 +78,10 @@ function ClientAddWallet(props){
               </Button>
             </div>
           </AvForm>
-          {props.addError && <UncontrolledAlert color="danger">
+          {props.addFail && <UncontrolledAlert color="danger">
             <i className="mdi mdi-block-helper me-2"></i>
             {/* TODO this needs to be handled in translation */}
-            {props.t(JSON.stringify(props.addErrorDetails))}
+            {props.t(JSON.stringify(props.addFailDetails))}
           </UncontrolledAlert>}
           {props.addSuccess && <UncontrolledAlert color="success">
             <i className="mdi mdi-check-all me-2"></i>
@@ -89,10 +95,10 @@ function ClientAddWallet(props){
 
 const mapStateToProps = (state) => ({
   addLoading: state.walletReducer.addLoading,
-  addErrorDetails: state.walletReducer.addErrorDetails,
+  addFailDetails: state.walletReducer.addFailDetails,
   addSuccess: state.walletReducer.addSuccess,
-  addError: state.walletReducer.addError,  
-  clearingCounter: state.walletReducer.clearingCounter,
+  addFail: state.walletReducer.addFail,  
+  addClearingCounter: state.walletReducer.addClearingCounter,
   activeComponentProp: state.walletReducer.activeComponentProp,
   limit: state.assetReducer.limit,
   page: state.assetReducer.page || 1,

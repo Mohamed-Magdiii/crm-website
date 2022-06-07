@@ -15,3 +15,12 @@ export const getClientWalletDetails = async ({ payload }) => {
 
   return data;
 };
+
+export const addNewWallet = async ({ payload }) => {
+  const data = await axiosHelper.post("/wallets", payload);
+  if (data.isError){
+    throw new Error(data.isError);
+  }
+
+  return data;
+};

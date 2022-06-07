@@ -11,7 +11,7 @@ import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 
 // i18n 
 import { withTranslation } from "react-i18next";
-import { fetchClientWallet } from "store/wallet/action";
+import { fetchClientWallets } from "store/wallet/action";
 import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
 import ClientAddWallet from "./ClientAddWallet";
@@ -25,7 +25,7 @@ function ClientWallets(props) {
   const [walletEditModal, setWalletEditModal] = useState(false);
   const dispatch = useDispatch();
   const loadClientWalletDetails = () => {
-    dispatch(fetchClientWallet(clientId));
+    dispatch(fetchClientWallets(clientId));
   };
   useEffect(() => {
     loadClientWalletDetails();
@@ -36,6 +36,13 @@ function ClientWallets(props) {
   };
   
   const columns = [
+    {
+      dataField: "belongsTo",
+      text: props.t("Belongs to"),
+      formatter: (item) => (
+        item.belongsTo.firstName + " " + item.belongsTo.lastName
+      )
+    },
     {
       dataField: "asset",
       text: props.t("Asset")
@@ -63,7 +70,7 @@ function ClientWallets(props) {
     },
     {
       dataField: "active",
-      text: props.t("Active"),
+      text: props.t("Status"),
       formatter: (item) => (
         <div className="d-flex gap-3">
           <Input 
@@ -119,7 +126,7 @@ function ClientWallets(props) {
                   <CardTitle>
                     {props.t("Client wallets list")} ({props.totalWalletDocs})
                   </CardTitle>
-                  <ClientAddWallet />
+                  <ClientAddWallet clientId={clientId} />
                 </CardHeader>
                 <CardBody>
                   <div className="table-rep-plugin">

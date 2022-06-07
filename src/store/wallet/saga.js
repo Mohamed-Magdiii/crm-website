@@ -1,15 +1,19 @@
 import {
-  call, put, takeEvery
+  call, put, takeEvery, delay
 } from "redux-saga/effects";
 import { 
   FETCH_WALLET_START,
-  FETCH_CLIENT_WALLET_REQUESTED
+  FETCH_CLIENT_WALLETS_REQUESTED,
+  ADD_CLIENT_WALLET_REQUESTED
 } from "./actionTypes";
 import { 
   fetchWalletSuccess,
 
-  fetchClientWalletSuccess,
-  fetchClientWalletFail,
+  fetchClientWalletsSuccess,
+  fetchClientWalletsFail,
+  addWalletSuccess,
+  addWalletFail,
+  addWalletClear
 } from "./action";
 import * as walletApi from "apis/wallet";
 
@@ -21,15 +25,27 @@ function * fetchWallet(params){
 function * fetchClientWallet(params){
   try {
     const data = yield call(walletApi.getClientWalletDetails, params);
-    yield put(fetchClientWalletSuccess(data));
+    yield put(fetchClientWalletsSuccess(data));
   } catch (error){
-    yield put(fetchClientWalletFail({ error: error.message }));
+    yield put(fetchClientWalletsFail({ error: error.message }));
+  }
+}
+
+function * addClientWallet(params){
+  try {
+    const data = yield call(walletApi.addNewWallet, params);
+    yield put(addWalletSuccess(data));
+    yield delay(2000);
+    yield put(addWalletClear());
+  } catch (error){
+    yield put(addWalletFail({ error: error.message }));
   }
 }
 
 function * walletSaga(){
   yield takeEvery(FETCH_WALLET_START, fetchWallet);
-  yield takeEvery(FETCH_CLIENT_WALLET_REQUESTED, fetchClientWallet);
+  yield takeEvery(FETCH_CLIENT_WALLETS_REQUESTED, fetchClientWallet);
+  yield takeEvery(ADD_CLIENT_WALLET_REQUESTED, addClientWallet);
 }
 
 export default walletSaga;
