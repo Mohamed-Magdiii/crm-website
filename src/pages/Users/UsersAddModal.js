@@ -18,7 +18,7 @@ function UsersAddModal(props) {
   const [addModal, setAddUserModal] = useState(false);
   const dispatch = useDispatch();
   const { usersRoles } = props;
-  const {create} = props.userPermissions;
+  const { create } = props.userPermissions;
   const toggleAddModal = () => {
     setAddUserModal(!addModal);
   };

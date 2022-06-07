@@ -1,4 +1,3 @@
-import ActionsAdd from "pages/Dictionary.js/Actions.js/ActionsAdd";
 import {
   PROFILE_ERROR, PROFILE_SUCCESS, EDIT_PROFILE, RESET_PROFILE_FLAG 
 } from "./actionTypes";
@@ -39,7 +38,17 @@ const profile = (state = initialState, action) => {
         ...state,
         rolesPermissions:{ ...action.payload.roles },
         userPermissions:{ ...action.payload.users },
-        clientPermissions : { ...action.payload.clients }
+        clientPermissions : { ...action.payload.clients },
+        leadsPermissions : { ...action.payload.leads },
+        teamsPermissions : { ...action.payload.teams },
+        depositsPermissions : { ...action.payload.deposits },
+        withdrawalsPermissions : { ...action.payload.withdrawals },
+        feeGroupsPermissions : { ...action.payload.feeGroups },
+        dictionariesPermissions : { ...action.payload.dictionaries },
+        systemEmailsPermissions : { ...action.payload.systemEmails },
+        symbolsPermissions : { ...action.payload.symbols },
+        currencyPairsPermissions : { ...action.payload.currencyPairs },
+        markupsPermissions : { ...action.payload.markups }
       };
       break;
     default:

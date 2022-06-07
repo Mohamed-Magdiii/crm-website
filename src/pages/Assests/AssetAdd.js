@@ -19,7 +19,7 @@ function AssestForm(props){
   const [addModal, setAddUserModal] = useState(false);
 
   const dispatch = useDispatch();
-  const { create} = props.symbolsPermissions;
+  const { create } = props.symbolsPermissions;
   const handleAddLead = (event, values) => {
     event.preventDefault();
     dispatch(addNewSymbol(values));

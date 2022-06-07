@@ -62,7 +62,6 @@ const App = props => {
     return layoutCls;
   }
   const userArray = userRoutes();
-  console.log(userArray);
   const Layout = getLayout(); // layout = layoutCls 
   return (
     <React.Fragment>

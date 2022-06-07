@@ -21,7 +21,7 @@ function AssestsList(props){
   const [selectedSymbol, setSelectedSymbol] = useState();
   const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
-  const {update, delete:deletePermission} = props.symbolsPermissions;
+  const { update, delete:deletePermission } = props.symbolsPermissions;
   const columns = [
     {
       dataField:"checkbox",

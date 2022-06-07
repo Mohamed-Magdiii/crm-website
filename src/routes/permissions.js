@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { getUserProfile } from "store/auth/profile/actions";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 function usePermissions(){
   const dispatch = useDispatch();
   const { 
