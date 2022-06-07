@@ -50,7 +50,7 @@ function SystemEmailsList(props){
   const switchSelectedSystemEmailStatusHandler = (selectedItem) => {
     selectedItem.isActive = !selectedItem.isActive;
   };
-  
+  const {update, delete: deletePermission} = props.systemEmailsPermissions;
   const columns = [
     {
       dataField: "createdAt",
@@ -106,14 +106,14 @@ function SystemEmailsList(props){
       text: props.t("Actions"), 
       formatter: (item) => (
         <div className="d-flex gap-3">
-          <Link className="text-success" to="#">
+          <Link className={`text-success ${!update ? "d-none" : ""}`} to="#">
             <i
               className="mdi mdi-pencil font-size-18"
               id="edittooltip"
               onClick={() => {setSelectedSystemEmail(item); setEditModal(true)}}
             ></i>
           </Link>
-          <Link className="text-danger" to="#">
+          <Link className={`text-danger ${!deletePermission ? "d-none" : "" }`} to="#">
             <i
               className="mdi mdi-delete font-size-18"
               id="deletetooltip"
@@ -243,7 +243,8 @@ const mapStateToProps = (state) => ({
   deleteClearingCounter: state.systemEmailsReducer.deleteClearingCounter,
   clearingCounter: state.systemEmailsReducer.clearingCounter,
   activeComponentProp: state.systemEmailsReducer.activeComponentProp,
-  systemEmail: state.systemEmailsReducer.systemEmail
+  systemEmail: state.systemEmailsReducer.systemEmail,
+  systemEmailsPermissions : state.Profile.systemEmailsPermissions || {}
 });
 
 SystemEmailsList.propTypes = {
