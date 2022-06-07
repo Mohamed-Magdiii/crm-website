@@ -13,7 +13,6 @@ import Authmiddleware from "./routes/middleware/Authmiddleware";
 import VerticalLayout from "./components/VerticalLayout/";
 import HorizontalLayout from "./components/HorizontalLayout/";
 import NonAuthLayout from "./components/NonAuthLayout";
-
 // Import scss
 import "./assets/scss/preloader.scss";
 // import { default as themeRight } from "./assets/scss/theme-rtl.scss";
@@ -50,7 +49,6 @@ fakeBackend();
 // initFirebaseBackend(firebaseConfig)
 
 const App = props => {
-
   function getLayout() {
     let layoutCls = VerticalLayout;
     switch (props.layout.layoutType) {
@@ -63,17 +61,19 @@ const App = props => {
     }
     return layoutCls;
   }
-
+  const userArray = userRoutes();
+  console.log(userArray);
   const Layout = getLayout(); // layout = layoutCls 
   return (
     <React.Fragment>
       <Router>
         <Switch>
-          {userRoutes.map((route, idx) => (
+          {userArray.map((route, idx) => (
             <Authmiddleware
               path={route.path}
               layout={Layout}
               component={route.component}
+              get={route.get}
               key={idx}
               isAuthProtected={true}
               exact
