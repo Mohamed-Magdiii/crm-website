@@ -66,7 +66,7 @@ function UsersList() {
     userPermissions :state.Profile.userPermissions || {}
   }));
   
-  const { get, delete: deleteUserPermission } = userPermissions;
+  const { delete: deleteUserPermission, update } = userPermissions;
   const columns = [
     {
       text: "createdAt",
@@ -128,14 +128,14 @@ function UsersList() {
         <div className="d-flex gap-3">
           <Link className="text-success" to="#">
             <i
-              className="mdi mdi-pencil font-size-18"
+              className={`mdi mdi-pencil font-size-18 ${!update ? "d-none" : ""}`}
               id="edittooltip"
               onClick={() => { setSelectedUser(user); setEditUserModal(true) }}
             ></i>
           </Link>
           <Link className="text-danger" to="#">
             <i
-              className="mdi mdi-delete font-size-18"
+              className={`mdi mdi-delete font-size-18 ${!deleteUserPermission ? "d-none" : ""}`}
               id="deletetooltip"
               onClick={() => { setSelectedUser(user); setDeleteUserModal(true) }}
             ></i>
@@ -245,8 +245,8 @@ function UsersList() {
                           </Tr>
                         </Thead>
                         <Tbody>
-                          {get && loading && <TableLoader colSpan={6} />}
-                          {get && !loading && docs.map((row, rowIndex) =>
+                          {loading && <TableLoader colSpan={6} />}
+                          {!loading && docs.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
                               {/* {console.log(rowIndex)} */}
                               {columns.map((column, index) =>
@@ -280,7 +280,7 @@ function UsersList() {
             </Col>
           </Row>
           {<UsersEditModal open={editModal} user={selectedUser} usersRoles={roles} onClose={() => { setEditUserModal(false) }} />}
-          {<DeleteModal loading={deleteLoading} onDeleteClick={deleteUser} show={deleteModal && deleteUserPermission} onCloseClick={() => { setDeleteUserModal(false) }} />}
+          {<DeleteModal loading={deleteLoading} onDeleteClick={deleteUser} show={deleteModal} onCloseClick={() => { setDeleteUserModal(false) }} />}
         </div>
       </div>
     </React.Fragment>
