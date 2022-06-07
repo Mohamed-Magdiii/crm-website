@@ -33,10 +33,10 @@ function UsersAddModal(props) {
       }, 1000);
     }
   }, [props.addSuccess]);
- 
+  
   return (
     <React.Fragment >
-      <Link to="#" className={`btn btn-primary ${!create ? "disabled" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> Add New</Link>
+      <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> Add New</Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
           Add New User
