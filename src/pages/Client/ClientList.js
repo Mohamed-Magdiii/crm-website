@@ -24,8 +24,7 @@ import { checkAllBoxes } from "common/utils/checkAllBoxes";
 function ClientsList(props) {
   const [addModal, setAddReminderToClientModal] = useState(false);
   const [selectedClient, setSelectedClient] = useState({});
-  const { get } = props.clientPermissions;
-  
+
   const columns = [
     {
       dataField: "checkbox",
@@ -203,8 +202,8 @@ function ClientsList(props) {
                           </Tr>
                         </Thead>
                         <Tbody className="text-center" style={{fontSize: "13px"}}>
-                          {get && props.loading && <TableLoader colSpan={4} />}
-                          {get && !props.loading && props.clients.map((row, rowIndex) =>
+                          {props.loading && <TableLoader colSpan={4} />}
+                          {!props.loading && props.clients.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`}>
