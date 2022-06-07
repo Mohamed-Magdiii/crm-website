@@ -7,8 +7,6 @@ import {
   CardHeader,
   CardTitle,
   Col,
-  Input,
-  Label,
   Row,
   UncontrolledAlert,
 } from "reactstrap";
@@ -31,6 +29,7 @@ function MarkUpsList(props) {
   const [sizePerPage, setSizePerPage] = useState(10);
   const [selectedMarkup, setSelectedMarkup] = useState();
   const t = props.t;
+  const { update, delete:deletePermission} = props.markupsPermissions;
   const dispatch = useDispatch();
 
   const switchSelectedMarketHandler = (selectedItem, event) => {
@@ -93,7 +92,7 @@ function MarkUpsList(props) {
       text: props.t("Action"),
       formatter: (item) => (
         <div className="d-flex gap-3">
-          <Link className="text-success" to="#">
+          <Link className={`text-success ${!update ? "d-none" : ""}`} to="#">
             <i
               className="mdi mdi-pencil font-size-18"
               id="edittooltip"
@@ -103,7 +102,7 @@ function MarkUpsList(props) {
               }}
             ></i>
           </Link>
-          <Link className="text-danger" to="#">
+          <Link className={`text-danger ${!deletePermission ? "d-none" : ""}`} to="#">
             <i
               className="mdi mdi-delete font-size-18"
               id="deletetooltip"
@@ -245,6 +244,7 @@ const mapStateToProps = (state) => ({
   deleteModalClear: state.markupsReducer.deleteModalClear,
   error: state.markupsReducer.error,
   addMarkupSuccess: state.markupsReducer.addMarkupSuccess,
+  markupsPermissions : state.Profile.markupsPermissions || {}
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(MarkUpsList));
