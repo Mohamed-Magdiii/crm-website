@@ -18,7 +18,7 @@ function MarketAdd(props) {
   const [addModal, setAddUserModal] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const dispatch = useDispatch();
-
+  const { create } = props.currencyPairsPermissions;
   const toggleAddModal = () => {
     setAddUserModal(!addModal);
   };
@@ -41,7 +41,7 @@ function MarketAdd(props) {
   };
   return (
     <React.Fragment>
-      <Link to="#" className="btn btn-light" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i>{props.t("Add New Market")}</Link>
+      <Link to="#" className={`btn btn-light ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i>{props.t("Add New Market")}</Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
           {props.t("Add New Market")}
@@ -149,5 +149,6 @@ function MarketAdd(props) {
 const mapStateToProps = (state) => ({
   error: state.marketsReducer.error,
   addMarketSuccessMessage: state.marketsReducer.addMarketSuccessMessage,
+  currencyPairsPermissions : state.Profile.currencyPairsPermissions || {}
 });
 export default  connect(mapStateToProps, null)(withTranslation()(MarketAdd));

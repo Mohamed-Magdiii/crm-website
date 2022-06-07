@@ -29,7 +29,7 @@ function MarkUpsList(props) {
   const [sizePerPage, setSizePerPage] = useState(10);
   const [selectedMarkup, setSelectedMarkup] = useState();
   const t = props.t;
-  const { update, delete:deletePermission} = props.markupsPermissions;
+  const { update, delete:deletePermission } = props.markupsPermissions;
   const dispatch = useDispatch();
 
   const switchSelectedMarketHandler = (selectedItem, event) => {
