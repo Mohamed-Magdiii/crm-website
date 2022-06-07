@@ -25,7 +25,7 @@ function RolesList(props){
   const [editModal, setEditUserModal] = useState(false);
   const [deleteModal, setDeleteUserModal] = useState(false);
   const [selectedRole, setSelectedRole] = useState();
-  const { get, delete:deleteRolePermission }  = props.rolesPermissions;
+  const { update, delete:deleteRolePermission }  = props.rolesPermissions;
   const columns = [
     {
       dataField: "createdAt",
@@ -60,14 +60,14 @@ function RolesList(props){
         <div className="d-flex gap-3">
           <Link className="text-success" to="#">
             <i
-              className="mdi mdi-pencil font-size-18"
+              className={`mdi mdi-pencil font-size-18 ${!update ? "d-none" : ""}`}
               id="edittooltip"
               onClick={() => {setSelectedRole(item); setEditUserModal(true)}}
             ></i>
           </Link>
           <Link className="text-danger" to="#">
             <i
-              className="mdi mdi-delete font-size-18"
+              className={`mdi mdi-delete font-size-18 ${!deleteRolePermission ? "d-none" : ""}`}
               id="deletetooltip"
               onClick={() => { setSelectedRole(item); setDeleteUserModal(true)}}
             ></i>
@@ -131,8 +131,8 @@ function RolesList(props){
                           </Tr>
                         </Thead>
                         <Tbody>
-                          {get && props.loading && <TableLoader colSpan={4} />}
-                          {get && !props.loading && props.docs.map((row, rowIndex) =>
+                          {props.loading && <TableLoader colSpan={4} />}
+                          {!props.loading && props.docs.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`}>
@@ -158,7 +158,7 @@ function RolesList(props){
             </Col>
           </Row>
           {<RolesEdit open={editModal}  role={selectedRole} onClose={()=>{setEditUserModal(false)}} />}
-          {<DeleteModal loading={props.deleteLoading} onDeleteClick={deleteRole} show={deleteModal & deleteRolePermission} onCloseClick={()=>{setDeleteUserModal(false)}} />}
+          {<DeleteModal loading={props.deleteLoading} onDeleteClick={deleteRole} show={deleteModal } onCloseClick={()=>{setDeleteUserModal(false)}} />}
         </div>
       </div>
     </React.Fragment>
