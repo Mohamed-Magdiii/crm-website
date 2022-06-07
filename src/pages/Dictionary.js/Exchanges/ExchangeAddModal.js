@@ -14,6 +14,7 @@ import { addNewItem } from "store/dictionary/actions";
 function ExchangeAddModal(props){
   const [addModal, setAddModal] = useState(false);
   const dispatch = useDispatch();
+  const { create} = props.dictionariesPermissions;
   const toggleAddModal = ()=>{
     setAddModal(preValue => !preValue);
   };
@@ -24,7 +25,7 @@ function ExchangeAddModal(props){
   }, [props.showAddSuccessMessage]);
   return (
     <React.Fragment >
-      <Link to="#" className="btn btn-primary" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i>{props.t("Add New Exchange")}</Link>
+      <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i>{props.t("Add New Exchange")}</Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
           {props.t("Add New Exchange")}
@@ -75,6 +76,7 @@ const mapStateToProps = (state)=>({
   dictionary: state.dictionaryReducer.dictionary || [],
   error : state.dictionaryReducer.error,
   id :state.dictionaryReducer.id,
-  showAddSuccessMessage:state.dictionaryReducer.showAddSuccessMessage
+  showAddSuccessMessage:state.dictionaryReducer.showAddSuccessMessage,
+  dictionariesPermissions : state.Profile.dictionariesPermissions || {}
 });
 export default connect(mapStateToProps, null)(withTranslation()(ExchangeAddModal));
