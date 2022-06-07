@@ -181,7 +181,7 @@ const mapStateToProps = (state)=>({
   nextPage: state.withdrawalReducer.nextPage,
   pagingCounter: state.withdrawalReducer.pagingCounter,
   prevPage: state.withdrawalReducer.prevPage,
- 
+  withdrawalPermissions: state.Profile.withdrawalPermissions || {}
 }
 );
 export default connect(mapStateToProps, null)(withTranslation()(Withdrawal));

@@ -31,7 +31,7 @@ function DepositForm(props){
   const [selectedClient, setSelectedClient] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
-  
+  const { create } = props.depositsPermissions;
   const [searchInput, setSearchInput]  = useState("");
   const handleAddDeposit = (event, values) => {
     event.preventDefault();
@@ -76,7 +76,7 @@ function DepositForm(props){
   
   return (
     <React.Fragment >
-      <Link to="#" className="btn btn-light" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> {props.t("Add Deposit")}</Link>
+      <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> {props.t("Add Deposit")}</Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
           {props.t("Add Deposit")}
@@ -190,5 +190,6 @@ const mapStateToProps = (state) => ({
   depositResponseMessage:state.depositReducer.depositResponseMessage,
   clients:state.clientReducer.clients || [],
   wallets:state.walletReducer.wallets || [],
+  depositsPermissions : state.Profile.depositsPermissions || {}
 });
 export default connect(mapStateToProps, null)(withTranslation()(DepositForm));

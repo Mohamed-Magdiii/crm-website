@@ -30,7 +30,7 @@ function WithdrawForm(props){
   const [searchInput, setSearchInput] = useState("");
   const [selectedClient, setSelectedClient] = useState("");
   const dispatch = useDispatch();
-  
+  const {create} = props.withdrawalPermissions;
   
   const handleWithdraw = (event, values) => {
     event.preventDefault();
@@ -74,7 +74,7 @@ function WithdrawForm(props){
   
   return (
     <React.Fragment >
-      <Link to="#" className="btn btn-light" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> {props.t("Withdraw")}</Link>
+      <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> {props.t("Withdraw")}</Link>
       <Modal isOpen={open} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
           {props.t("Withdraw")}
@@ -190,7 +190,7 @@ const mapStateToProps = (state) => ({
   withdrawResponseMessage:state.withdrawalReducer.withdrawResponseMessage,
   modalClear:state.withdrawalReducer.modalClear,
   clients:state.clientReducer.clients || [],
-  wallets:state.walletReducer.wallets || []
-
+  wallets:state.walletReducer.wallets || [],
+  withdrawalPermissions: state.Profile.withdrawalPermissions || {}
 });
 export default connect(mapStateToProps, null)(withTranslation()(WithdrawForm));
