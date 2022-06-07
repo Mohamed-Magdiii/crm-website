@@ -25,6 +25,7 @@ function feeGroupAdd(props) {
 
   const [addModal, setAddUserModal] = useState(false);
   const [isPercentage, setIsPercentage] = useState(false);
+  const { create } = props.feeGroupsPermissions;
   const dispatch = useDispatch();
   
   const handleAddFeesGroup = (event, values)=>{
@@ -46,7 +47,7 @@ function feeGroupAdd(props) {
 
   return (
     <React.Fragment >
-      <Link to="#" className="btn btn-primary" onClick={toggleAddModal}>
+      <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}>
         <i className="bx bx-plus me-1"/> 
         {props.t("Add New Fees Group")}
       </Link>
@@ -155,7 +156,8 @@ function feeGroupAdd(props) {
 const mapStateToProps = (state) => ({
   error: state.feeGroupReducer.error,
   showAddSuccessMessage: state.feeGroupReducer.showAddSuccessMessage,
-  addButtonDisabled: state.feeGroupReducer.addButtonDisabled
+  addButtonDisabled: state.feeGroupReducer.addButtonDisabled,
+  feeGroupsPermissions: state.Profile.feeGroupsPermissions || {}
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(feeGroupAdd));

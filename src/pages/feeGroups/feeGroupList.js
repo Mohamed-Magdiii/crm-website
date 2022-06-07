@@ -23,7 +23,7 @@ function FeeGroupsList(props) {
   const [deletedItem, setDeletedItem] = useState();
   const [selectedItem, setSelectedItem] = useState();
   const [editModal, setEditModal ] = useState(false);
-  
+  const { update, delete:deletePermission } = props.feeGroupsPermissions;
   const columns = [
     {
       dataField:"checkbox",
@@ -64,14 +64,14 @@ function FeeGroupsList(props) {
       text: "Action",
       formatter: (item) => (
         <div className="d-flex gap-3">
-          <Link className="text-success" to="#">
+          <Link className={`text-success ${!update ? "d-none" : ""}`} to="#">
             <i
               className="mdi mdi-pencil font-size-18"
               id="edittooltip"
               onClick={() => {setEditModal(!editModal); setSelectedItem(item)}}
             ></i>
           </Link>
-          <Link className="text-danger" to="#">
+          <Link className={`text-danger ${!deletePermission ? "d-none" : ""}`} to="#">
             <i
               className="mdi mdi-delete font-size-18"
               id="deletetooltip"
@@ -195,7 +195,8 @@ const mapStateToProps = (state) => ({
   showEditSuccessMessage:state.feeGroupReducer.showEditSuccessMessage,
   showDeleteModal:state.feeGroupReducer.showDeleteModal,
   deleteLoading :state.feeGroupReducer.deleteLoading,
-  editButtonDisabled: state.feeGroupReducer.editButtonDisabled
+  editButtonDisabled: state.feeGroupReducer.editButtonDisabled,
+  feeGroupsPermissions : state.Profile.feeGroupsPermissions || {}
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(FeeGroupsList));
