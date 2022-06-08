@@ -1,49 +1,46 @@
 import { FormGroup } from "reactstrap";
 import { AvField } from "availity-reactstrap-validation";
-import React from "react";
-function CountryDropDown(){ 
+import React, { useEffect, useState} from "react";
+import { fetchDictionaryStart } from "store/dictionary/actions";
+import { useDispatch, connect } from "react-redux";
+import Select from "react-select";
+function CountryDropDown(props){ 
+  const [selectedGroupe, setSelectedGroup] = useState();
+  const dispatch = useDispatch();
+  useEffect(()=>{
+    dispatch(fetchDictionaryStart());
+  }, []);
+  
+  const optionGroup = props.countries.map(country=>{
+    return {
+      label: country.ar, 
+      value: country.ar
+    };
+  });
+  const handleSelectGroup = (selectedOption)=>{
+    setSelectedGroup(selectedOption);
+  };
+  console.log(selectedGroupe);
   return (
     <React.Fragment>
     
-      <FormGroup className="mb-3">
-
-        <AvField type="select"
-          name="country" 
-          label="Country" 
-          validate={{ required: { value: true } }} 
-          errorMessage="Country is required">
-          <option hidden={true}>Enter Your Country</option>
-          <option>Algeria</option>
-          <option>Afghanistan</option>
-          <option> Albania</option>     
-          <option> Algeria</option>      
-          <option> Andorra</option>      
-          <option>Argentina</option>       
-          <option>Armenia</option>
-          <option> Australia</option>      
-          <option>Austria</option>     
-          <option>Bahrain</option>      
-          <option> Bangladesh</option>   
-          <option>USA</option> 
-          <option> Baden</option> 
-          <option>Bahrain</option> 
-          <option> Bahrain</option>      
-          <option> Bangladesh</option> 
-          <option>Belarus</option>       
-          <option> Belgium</option>        
-          <option> East Germany (German Democratic Republic)*</option>
-          <option> Ecuador</option> 
-          <option> Egypt</option>     
-          <option> El Salvador</option>  
-          <option> Equatorial Guinea</option>     
-          <option>Eritrea</option>        
-          <option> Estonia</option>       
-          <option> Eswatini</option>       
-          <option>Ethiopia</option>        
-         
-        </AvField>      
-      </FormGroup>
+  
+      <div className="mb-3">
+        <label htmlFor="choices-single-default" className="form-label font-size-13 text-muted">Country</label>
+        <Select
+          value={selectedGroupe}
+          onChange={() => {
+            handleSelectGroup();
+          }}
+          options={optionGroup}
+          classNamePrefix="select2-selection"
+        />
+      </div>
+        
     </React.Fragment>);
 
 }
-export default CountryDropDown;
+const mapStateToProps = (state)=>({
+  countries: state.dictionaryReducer.countries || []
+});
+export default connect(mapStateToProps, null)(CountryDropDown);
