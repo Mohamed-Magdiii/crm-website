@@ -66,7 +66,7 @@ function OrderList(props) {
   }));
   const columns = [
     {
-      text: "symbol",
+      text: "Symbol",
       dataField: "symbol",
       sort: true,
       formatter: (order) => (
@@ -76,17 +76,17 @@ function OrderList(props) {
       ),
     },
     {
-      text: "type",
+      text: "Type",
       dataField: "type",
       sort: true,
     },
     {
-      text: "side",
+      text: "Side",
       dataField: "side",
       sort: true,
     },
     {
-      text: "amount",
+      text: "Amount",
       dataField: "amount",
       sort: true,
       formatter: (order) => (
@@ -96,7 +96,7 @@ function OrderList(props) {
       ),
     },
     {
-      text: "tp",
+      text: "Tp",
       dataField: "tp",
       sort: true,
       formatter: (order) => (
@@ -106,7 +106,7 @@ function OrderList(props) {
       ),
     },
     {
-      text: "sl",
+      text: "Sl",
       dataField: "sl",
       sort: true,
       formatter: (order) => (
@@ -116,7 +116,7 @@ function OrderList(props) {
       ),
     },
     {
-      text: "price",
+      text: "Price",
       dataField: "price",
       sort: true,
       formatter: (order) => (
@@ -126,7 +126,7 @@ function OrderList(props) {
       ),
     },
     {
-      text: "status",
+      text: "Status",
       dataField: "status",
       sort: true,
     },
