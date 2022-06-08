@@ -6,6 +6,16 @@ const initialState = {
   rolesPermissions:{},
   userPermissions:{},
   clientPermissions:{},
+  leadsPermissions : {},
+  teamsPermissions : { },
+  depositsPermissions : {},
+  withdrawalsPermissions : {},
+  feeGroupsPermissions : {},
+  dictionariesPermissions : {},
+  systemEmailsPermissions : { },
+  symbolsPermissions : { },
+  currencyPairsPermissions : { },
+  markupsPermissions : {},
   error: "",
   success: "",
 };
@@ -49,6 +59,24 @@ const profile = (state = initialState, action) => {
         symbolsPermissions : { ...action.payload.symbols },
         currencyPairsPermissions : { ...action.payload.currencyPairs },
         markupsPermissions : { ...action.payload.markups }
+      };
+      break;
+    case "CLEAR_PROFILE":
+      state = {
+        ...state,
+        rolesPermissions:{},
+        userPermissions:{},
+        clientPermissions:{},
+        leadsPermissions : {},
+        teamsPermissions : {},
+        depositsPermissions : {},
+        withdrawalsPermissions : {},
+        feeGroupsPermissions : {},
+        dictionariesPermissions : {},
+        systemEmailsPermissions : { },
+        symbolsPermissions : { },
+        currencyPairsPermissions : { },
+        markupsPermissions : {},
       };
       break;
     default:

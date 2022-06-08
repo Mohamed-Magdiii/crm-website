@@ -4,7 +4,8 @@ import {
   EDIT_PROFILE, 
   RESET_PROFILE_FLAG, 
   GET_PROFILE,
-  GET_PROFILE_SUCCESS
+  GET_PROFILE_SUCCESS,
+  CLEAR_PROFILE
 } from "./actionTypes";
 
 export const editProfile = user => {
@@ -43,5 +44,10 @@ export const getProfileSuccess = (data)=>{
   return {
     type:GET_PROFILE_SUCCESS,
     payload:data
+  };
+};
+export const clearProfile = ()=>{
+  return {
+    type:CLEAR_PROFILE
   };
 };
