@@ -7,7 +7,11 @@ import {
   MODAL_CLEAR,
   WITHDRAW_APPROVE,
   WITHDRAW_REJECT,
-  WITHDRAW_STATUS_CHANGE_SUCCESS
+  WITHDRAW_STATUS_CHANGE_SUCCESS,
+
+  FETCH_CLIENT_WITHDRAWALS_REQUESTED,
+  FETCH_CLIENT_WITHDRAWALS_SUCCESS,
+  FETCH_CLIENT_WITHDRAWALS_FAIL,
 } from "./actionTypes";
 export const fetchWithdrawalsStart = (params)=>{
   return {
@@ -62,5 +66,25 @@ export const withdrawStatusChangeSuccess = (data)=>{
   return {
     type:WITHDRAW_STATUS_CHANGE_SUCCESS,
     payload:data
+  };
+};
+
+// fetch client withdrawals 
+export const fetchClientWithdrawals = (params = {}) => {
+  return {
+    type: FETCH_CLIENT_WITHDRAWALS_REQUESTED,  
+    payload: params
+  };
+};
+export const fetchClientWithdrawalsSuccess = (data) => {
+  return {
+    type: FETCH_CLIENT_WITHDRAWALS_SUCCESS,
+    payload: data
+  };
+};
+export const fetchClientWithdrawalsFail = (error) => {
+  return {
+    type: FETCH_CLIENT_WITHDRAWALS_FAIL,
+    payload: { error }
   };
 };

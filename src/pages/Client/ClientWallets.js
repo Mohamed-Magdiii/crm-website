@@ -11,16 +11,21 @@ import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 
 // i18n 
 import { withTranslation } from "react-i18next";
-import { fetchClientWallet } from "store/client/actions";
+import { fetchClientWallets } from "store/wallet/action";
 import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
+import ClientAddWallet from "./ClientAddWallet";
+import DeleteModal from "components/Common/DeleteModal";
+import WalletEditModal from "./WalletEditModal";
 
 function ClientWallets(props) {
   const clientId = props.clientId;
   const [sizePerPage, setSizePerPage] = useState(5);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [walletEditModal, setWalletEditModal] = useState(false);
   const dispatch = useDispatch();
   const loadClientWalletDetails = () => {
-    dispatch(fetchClientWallet(clientId));
+    dispatch(fetchClientWallets(clientId));
   };
   useEffect(() => {
     loadClientWalletDetails();
@@ -32,6 +37,13 @@ function ClientWallets(props) {
   
   const columns = [
     {
+      dataField: "belongsTo",
+      text: props.t("Belongs to"),
+      formatter: (item) => (
+        item.belongsTo.firstName + " " + item.belongsTo.lastName
+      )
+    },
+    {
       dataField: "asset",
       text: props.t("Asset")
     },
@@ -39,19 +51,26 @@ function ClientWallets(props) {
       dataField: "amount",
       text: props.t("Amount"),
       formatter: (item) => (
-        item.amount != " " ? "N/A" : item.amount
+        item.amount === " " ? "N/A" : parseFloat(item.amount)
       )
     }, 
     {
       dataField: "isCrypto",
       text: props.t("Crypto"),
       formatter: (item) => (
-        item.isCrypto ? "Crypto wallet" : "Traditional wallet"
+        item.isCrypto ? props.t("Crypto wallet") : props.t("Traditional wallet")
+      )
+    },
+    {
+      dataField: "freezeAmount",
+      text: props.t("Freeze amount"),
+      formatter: (item) => (
+        item.freezeAmount === " " ? "N/A" : parseFloat(item.freezeAmount) 
       )
     },
     {
       dataField: "active",
-      text: props.t("Active"),
+      text: props.t("Status"),
       formatter: (item) => (
         <div className="d-flex gap-3">
           <Input 
@@ -61,7 +80,12 @@ function ClientWallets(props) {
             defaultChecked={item.active} 
             onClick={() => { switchSelectedWalletStatus(item) }} 
           />
-          <Label className="me-1" htmlFor={item.id} data-on-label={props.t("Active")} data-off-label=""></Label>
+          <Label 
+            className="me-1" 
+            htmlFor={item.id} 
+            data-on-label={props.t("Active")} 
+            data-off-label=""
+          />
         </div>
       ),
     },
@@ -91,7 +115,6 @@ function ClientWallets(props) {
     }
   ];
 
-
   return (
     <React.Fragment>
       <div className="page-content">
@@ -101,8 +124,9 @@ function ClientWallets(props) {
               <Card>
                 <CardHeader className="d-flex justify-content-between  align-items-center">
                   <CardTitle>
-                    {props.t("Transactions list")} ({props.totalWalletDocs})
+                    {props.t("Client wallets list")} ({props.totalWalletDocs})
                   </CardTitle>
+                  <ClientAddWallet clientId={clientId} />
                 </CardHeader>
                 <CardBody>
                   <div className="table-rep-plugin">
@@ -146,6 +170,18 @@ function ClientWallets(props) {
               </Card>
             </Col>
           </Row>
+          {<DeleteModal 
+            loading={props.deleteLoading} 
+            // onDeleteClick={deleteBankAccountFunction} 
+            show={deleteModal} 
+            onCloseClick={()=>{setDeleteModal(false)}} 
+          />}
+          {<WalletEditModal 
+            open={walletEditModal}  
+            // selectedBankAccount={selectedBankAccount} 
+            onClose={()=>{setWalletEditModal(false)}} 
+            // bankAccountUpdateHandler={bankAccountUpdateHanlder} 
+          />}
         </div>
       </div>
     </React.Fragment>
@@ -153,12 +189,12 @@ function ClientWallets(props) {
 }
 
 const mapStateToProps = (state) => ({
-  loading: state.clientReducer.loading,
-  error: state.clientReducer.error,
-  errorDetails: state.clientReducer.errorDetails,
-  success: state.clientReducer.success,
-  clientWalletDetails: state.clientReducer.clientWalletDetails,
-  totalWalletDocs: state.clientReducer.totalWalletDocs
+  loading: state.walletReducer.loading,
+  error: state.walletReducer.error,
+  errorDetails: state.walletReducer.errorDetails,
+  success: state.walletReducer.success,
+  clientWalletDetails: state.walletReducer.clientWalletDetails,
+  totalWalletDocs: state.walletReducer.totalWalletDocs
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(ClientWallets));

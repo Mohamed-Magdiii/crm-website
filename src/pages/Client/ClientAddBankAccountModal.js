@@ -8,7 +8,7 @@ import {
 } from "reactstrap";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 
-import { addBankAccount } from "store/client/actions";
+import { addBankAccount } from "store/bankAccount/actions";
 // i18n
 import { withTranslation } from "react-i18next";
 
@@ -46,10 +46,10 @@ function ClientAddBankAccountModal(props){
             <div className="mb-3">
               <AvField
                 name="accountHolderName"
-                label={props.t("Account holder name")}
-                placeholder={props.t("Account holder name")}
+                label={props.t("Account owner name")}
+                placeholder={props.t("Account owner name")}
                 type="text"
-                errorMessage={props.t("Holder name is required")}
+                errorMessage={props.t("Owner name is required")}
                 validate={{ required: { value: true } }}
               />
             </div>
@@ -60,7 +60,7 @@ function ClientAddBankAccountModal(props){
                 label={props.t("Bank name")}
                 placeholder={props.t("Bank name")}
                 type="text"
-                errorMessage={props.t("Beneficiary bank name is required")}
+                errorMessage={props.t("Bank name is required")}
                 validate={{ required: { value: true } }}
               />
             </div>
@@ -154,11 +154,11 @@ function ClientAddBankAccountModal(props){
 }
 
 const mapStateToProps = (state) => ({
-  addLoading: state.clientReducer.addLoading,
-  addErrorDetails: state.clientReducer.addErrorDetails,
-  addSuccess: state.clientReducer.addSuccess,
-  addError: state.clientReducer.addError,  
-  addClearingCounter: state.clientReducer.addClearingCounter
+  addLoading: state.bankAccountReducer.addLoading,
+  addErrorDetails: state.bankAccountReducer.addErrorDetails,
+  addSuccess: state.bankAccountReducer.addSuccess,
+  addError: state.bankAccountReducer.addError,  
+  addClearingCounter: state.bankAccountReducer.addClearingCounter
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(ClientAddBankAccountModal));

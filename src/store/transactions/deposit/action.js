@@ -7,7 +7,11 @@ import {
   MODAL_CLEAR,
   DEPOSIT_APPROVE,
   DEPOSIT_REJECT,
-  DEPOSIT_STATUS_CHANGE_SUCCESS
+  DEPOSIT_STATUS_CHANGE_SUCCESS,
+
+  FETCH_CLIENT_DEPOSITS_REQUESTED,
+  FETCH_CLIENT_DEPOSITS_SUCCESS,
+  FETCH_CLIENT_DEPOSITS_FAIL,
 } from "./actionTypes";
 export const fetchDepositsStart = (params = {})=>{
   return {
@@ -62,5 +66,25 @@ export const transactionStateChange = (data)=>{
   return {
     type:DEPOSIT_STATUS_CHANGE_SUCCESS,
     payload: data
+  };
+};
+
+// fetch client deposits
+export const fetchClientDeposits = (params = {}) => {
+  return {
+    type: FETCH_CLIENT_DEPOSITS_REQUESTED,  
+    payload: params
+  };
+};
+export const fetchClientDepositsSuccess = (data) => {
+  return {
+    type: FETCH_CLIENT_DEPOSITS_SUCCESS,
+    payload: data
+  };
+};
+export const fetchClientDepositsFail = (error) => {
+  return {
+    type: FETCH_CLIENT_DEPOSITS_FAIL,
+    payload: { error }
   };
 };
