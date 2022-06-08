@@ -32,7 +32,6 @@ const SidebarContent = (props) => {
   const { get:getDictionaries } = props.dictionariesPermissions;
   const { get : getFeeGroup } = props.feeGroupsPermissions;
   const { get: getSystemEmail } = props.systemEmailsPermissions;
-  console.log(getSystemEmail);
   const { get: getTeams } = props.teamsPermissions;
   const { get: getSymbols } = props.symbolsPermissions;
   const { get :getCurrencyPair } = props.currencyPairsPermissions;
