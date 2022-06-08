@@ -30,8 +30,7 @@ function WithdrawForm(props){
   const [searchInput, setSearchInput] = useState("");
   const [selectedClient, setSelectedClient] = useState("");
   const dispatch = useDispatch();
-  const { create } = props.withdrawalPermissions;
-  
+  const { create } = props.withdrawalsPermissions;
   const handleWithdraw = (event, values) => {
     event.preventDefault();
     dispatch(makeWithdrawalStart({
@@ -191,6 +190,6 @@ const mapStateToProps = (state) => ({
   modalClear:state.withdrawalReducer.modalClear,
   clients:state.clientReducer.clients || [],
   wallets:state.walletReducer.wallets || [],
-  withdrawalPermissions: state.Profile.withdrawalPermissions || {}
+  withdrawalsPermissions: state.Profile.withdrawalsPermissions || {}
 });
 export default connect(mapStateToProps, null)(withTranslation()(WithdrawForm));
