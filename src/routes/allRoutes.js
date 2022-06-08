@@ -40,7 +40,7 @@ function userRoutes(){
     depositsPermissions,
     leadsPermissions,
     symbolsPermissions,
-    systemEmailPermissions,
+    systemEmailsPermissions,
     dictionariesPermissions,
     feeGroupsPermissions,
     currencyPairsPermissions,
@@ -97,7 +97,7 @@ function userRoutes(){
     {
       path: "/system-emails",
       component: SystemEmailsList,
-      get :systemEmailPermissions.get
+      get :systemEmailsPermissions.get
     },
     {
       path: "/assets",
