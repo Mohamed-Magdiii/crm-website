@@ -27,7 +27,7 @@ import OrdersAddModal from "./OrdersAddModal";
 function OrderList(props) {
   const [deleteModal, setDeleteOrderModal] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState();
-  const [clientId, setClientId] = useState(props?.clientId);
+  const [clientId] = useState(props?.clientId);
 
   const {
     loading,

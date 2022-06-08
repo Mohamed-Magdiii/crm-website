@@ -6,7 +6,7 @@ import {
   Button,
   ModalHeader,
   ModalBody,
-  UncontrolledAlert, Col, FormGroup
+  UncontrolledAlert,  
 } from "reactstrap";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 // import { addOrder } from "store/Orders/actions";
@@ -21,7 +21,7 @@ import { getPricing } from "./../../../apis/orders";
 function OrdersAddModal(props) {
   const [addModal, setAddOrderModal] = useState(false);
   const [symbolValue, setSymbolValue] = useState(null);
-  const [clientId, setClientId] = useState(props?.clientId);
+  const [clientId] = useState(props?.clientId);
   const [type, setType] = useState(null);
   const [side, setSide] = useState(null);
   const [priceFlag, setPriceFlag] = useState(true);
@@ -108,8 +108,7 @@ function OrdersAddModal(props) {
       setPriceFlag(false);
     } else {
       setPriceFlag(true);
-    }
-    console.log(val);
+    } 
     setType(val?.value);
   };
   const sidehandler = (val) => {
