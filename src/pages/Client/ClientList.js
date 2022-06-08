@@ -199,7 +199,7 @@ function ClientsList(props) {
                             )}
                           </Tr>
                         </Thead>
-                        <Tbody className="text-center" style={{fontSize: "13px"}}>
+                        <Tbody className="text-center" style={{ fontSize: "13px" }}>
                           {props.loading && <TableLoader colSpan={4} />}
                           {!props.loading && props.clients.map((row, rowIndex) =>
                             <Tr key={rowIndex}>

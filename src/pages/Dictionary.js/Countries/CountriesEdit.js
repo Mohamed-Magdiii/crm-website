@@ -11,9 +11,9 @@ import React from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { updateCountryStart } from "store/dictionary/actions";
 function CountriesEdit(props){
-  const {open, onClose, country = {} } = props;
+  const { open, onClose, country = {} } = props;
   const dispatch = useDispatch();
-  const {alpha2, alpha3, ar, en, callingCode } = country;
+  const { alpha2, alpha3, ar, en, callingCode } = country;
   return (
     <React.Fragment >
       

@@ -12,16 +12,15 @@ import {
   Row,
 } from "reactstrap";
 import {
-  Table, Thead, Tbody, Tr, Th, Td 
+  Table, Thead, Tbody, Tr, Th, Td
 } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 import TableLoader from "components/Common/TableLoader";
 import CustomPagination from "components/Common/CustomPagination";
 import { fetchMarketsStart } from "store/markets/actions";
 import MarketForm from "./MarketAdd";
-import { Link } from "react-router-dom";
-import DeleteModal from "components/Common/DeleteModal";
 import MarketEdit from "./MarketEdit";
+import { Link, useHistory } from "react-router-dom";
 
 function CurrencyPairsList(props) {
   const [selectedMarket, setSelectedMarket] = useState();
@@ -29,6 +28,7 @@ function CurrencyPairsList(props) {
   const [deleteModal, setDeleteModal] = useState(false);
   const [sizePerPage, setSizePerPage] = useState(10);
   const dispatch = useDispatch();
+  const history = useHistory();
   const t = props.t;
 
   useEffect(() => {
@@ -47,9 +47,7 @@ function CurrencyPairsList(props) {
   const switchSelectedMarketStatusHandler = (selectedItem) => {
     selectedItem.active = !selectedItem.active;
   };
-  const deleteMarket = () => {
-    // dispatch(deleteSymbolStart(selectedMarket._id));
-  };
+
   useEffect(() => {
     if (props.deleteModalClear && deleteModal) {
       setDeleteModal(false);
@@ -68,6 +66,16 @@ function CurrencyPairsList(props) {
     {
       dataField: "pairName",
       text: "Pair Name",
+      formatter: (item) => {
+        return <Link
+          to={{
+            pathname: `/price/${item.baseAsset}_${item.quoteAsset}`,
+            state: item
+          }}
+        >
+          {item.pairName}
+        </Link >;
+      }
     },
     {
       dataField: "fee",

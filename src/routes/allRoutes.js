@@ -26,6 +26,7 @@ import Deposit from "pages/Transactions/Deposit";
 import Withdrawal from "pages/Transactions/Withdrawal";
 import Reminder from "../pages/Reminder/Reminder";
 import DictionaryList from "pages/Dictionary.js/DictionaryList";
+import MarketPrice from "pages/MarketPrice/MarketPrice";
 import feeGroupList from "pages/feeGroups/feeGroupList";
 import usePermissions from "./permissions";
 
@@ -108,6 +109,10 @@ function userRoutes(){
       path: "/currency-pairs",
       component: CurrencyPairsList,
       get : currencyPairsPermissions.get
+    },
+    {
+      path: "/price/:pairName",
+      component: MarketPrice,
     },
     {
       path: "/markups",
