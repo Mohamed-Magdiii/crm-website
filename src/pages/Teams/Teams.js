@@ -135,7 +135,7 @@ function Teams() {
               }}
             ></i>
           </Link>
-          <Link className="text-success" to="#">
+          <Link className={`text-success ${!update ? "d-none" : ""}`} to="#">
             <i
               className="mdi mdi-plus-box font-size-18"
               id="deletetoo"
