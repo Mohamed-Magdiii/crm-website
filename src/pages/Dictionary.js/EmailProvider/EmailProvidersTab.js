@@ -22,6 +22,7 @@ function EmailProvidersTab(props){
   const [ deleteModal, setDeleteModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const dispatch = useDispatch();
+  const { update, delete:deletePermission } = props.dictionariesPermissions;
   useEffect(()=>{
     if (!props.editSuccess && editModal){
       setEditModal(false);
@@ -45,14 +46,14 @@ function EmailProvidersTab(props){
       formatter: (item) => {
         return (
           <div className="d-flex gap-3">
-            <Link className="text-success" to="#">
+            <Link className={`text-success ${!update ? "d-none" : ""}`} to="#">
               <i
                 className="mdi mdi-pencil font-size-18"
                 id="edittooltip"
                 onClick={() => {setSelectedEmailProvider(item); setEditModal(true)}}
               ></i>
             </Link>
-            <Link className="text-danger" to="#">
+            <Link className={`text-danger ${!deletePermission ? "d-none" : ""}`} to="#">
               <i
                 className="mdi mdi-delete font-size-18"
                 id="deletetooltip"
@@ -131,7 +132,8 @@ const mapStateToProps = (state)=>({
   id:state.dictionaryReducer.id,
   deleteLoading : state.dictionaryReducer.deletingLoading || false,
   editSuccess : state.dictionaryReducer.editSuccess,
-  clearDeleteModal :state.dictionaryReducer.clearDeleteModal
+  clearDeleteModal :state.dictionaryReducer.clearDeleteModal,
+  dictionariesPermissions : state.Profile.dictionariesPermissions || {}
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(EmailProvidersTab));

@@ -51,6 +51,7 @@ function Teams() {
     // roles,
     clearingCounter,
     // editClearingCounter,
+    teamsPermissions
   } = useSelector((state) => ({
     loading: state.teamsReducer.loading || false,
     docs: state.teamsReducer.docs || [],
@@ -68,8 +69,9 @@ function Teams() {
     // roles: state.teamsReducer.rolesData,
     clearingCounter: state.teamsReducer.clearingCounter,
     // editClearingCounter: state.teamsReducer.editClearingCounter,
+    teamsPermissions : state.Profile.teamsPermissions || {}
   }));
-
+  const { update, delete : deletePermission } = teamsPermissions;
   const columns = [
     {
       text: "Title",
@@ -119,7 +121,7 @@ function Teams() {
       text: "Action",
       formatter: (team) => (
         <div className="d-flex gap-3">
-          <Link className="text-success" to="#">
+          <Link className={`text-success ${!update ? "d-none" : ""}`} to="#">
             <i
               className="mdi mdi-pencil font-size-18"
               id="edittooltip"
@@ -133,7 +135,7 @@ function Teams() {
               }}
             ></i>
           </Link>
-          <Link className="text-success" to="#">
+          <Link className={`text-success ${!update ? "d-none" : ""}`} to="#">
             <i
               className="mdi mdi-plus-box font-size-18"
               id="deletetoo"
@@ -146,7 +148,7 @@ function Teams() {
               }
             ></i>
           </Link>
-          <Link className="text-danger" to="#">
+          <Link className={`text-danger ${!deletePermission ? "d-none" : ""}`} to="#">
             <i
               className="mdi mdi-delete font-size-18"
               id="deletetooltip"

@@ -18,31 +18,16 @@ import "./ClientList.styles.scss";
 import SearchBar from "components/Common/SearchBar";
 import { Link } from "react-router-dom";
 import { withTranslation } from "react-i18next";
+import { captilazeFirstLetter, displaySubString } from "common/utils/manipulateString";
+import { checkAllBoxes } from "common/utils/checkAllBoxes";
 function ClientsList(props) {
   const [addModal, setAddReminderToClientModal] = useState(false);
   const [selectedClient, setSelectedClient] = useState({});
-  const [checkAll, setCheckAll] = useState(false);
-  const checkAllBoxes = ()=>{
-    setCheckAll(!checkAll);
-  };
-  function captilazeFirstLetter(word){
-    
-    const firstLetterCaptilaziedWord = word.charAt(0).toUpperCase() + word.slice(1);
-    return firstLetterCaptilaziedWord;
-  }
-  function displaySubString(word){
-    let subString = "";
-    for (let i = 0; i < 4; i++){
-      subString += word[i];
-    }
-    return subString;
-  }
-  
-  
+
   const columns = [
     {
       dataField: "checkbox",
-      text: <input type="checkbox" onChange={()=>checkAllBoxes()} />
+      text: <input type="checkbox" id="select-all-clients" onChange={()=>checkAllBoxes("select-all-clients", ".client-checkbox")}className = "select-all-check-box" />
     },
     {
       dataField: "createdAt",
@@ -220,7 +205,7 @@ function ClientsList(props) {
                             <Tr key={rowIndex}>
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`}>
-                                  {column.dataField === "checkbox" ? <input checked={checkAll}  type="checkbox" /> : ""}
+                                  {column.dataField === "checkbox" ? <input className="client-checkbox" type="checkbox" /> : ""}
                                   {column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
                                 </Td>
                               )}
@@ -261,6 +246,6 @@ const mapStateToProps = (state) => ({
   nextPage: state.clientReducer.nextPage,
   pagingCounter: state.clientReducer.pagingCounter,
   prevPage: state.clientReducer.prevPage,
-
+  clientPermissions: state.Profile.clientPermissions || {}
 });
 export default connect(mapStateToProps, null)(withTranslation()(ClientsList));

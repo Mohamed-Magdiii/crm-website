@@ -14,22 +14,18 @@ import React, { useState, useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 
 import { 
-  addNewClient, addNewClientSuccess, apiError
+  addNewClient
 } from "../../store/client/actions";
 import CountryDropDown from "../../components/Common/CountryDropDown";
 function ClientForm(props){
 
   const [addModal, setAddUserModal] = useState(false);
-
+  const { create } = props.clientPermissions;
   const dispatch = useDispatch();
 
   const handleAddLead = (event, values) => {
     event.preventDefault();
     dispatch(addNewClient(values));
-    setTimeout(()=>{
-      dispatch(addNewClientSuccess(""));
-      dispatch(apiError(""));
-    }, 2000);
   }; 
 
   const toggleAddModal = () => {
@@ -37,16 +33,14 @@ function ClientForm(props){
   };
 
   useEffect(() => {
-    if (props.successMessage  && addModal) {
-      setTimeout(()=>{
-        setAddUserModal(false);
-      }, 2000);
+    if (!props.showAddSuccessMessage  && addModal) {
+      setAddUserModal(false);
     }
-  }, [props.successMessage]);
+  }, [props.showAddSuccessMessage]);
 
   return (
     <React.Fragment >
-      <Link to="#" className="btn btn-primary" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> {props.t("Add New Client")}</Link>
+      <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`}  onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> {props.t("Add New Client")}</Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
           {props.t("Add New Client")}
@@ -64,7 +58,7 @@ function ClientForm(props){
                   <AvField
                     name="firstName"
                     label={props.t("First Name")}
-                    placeholder={props.t("First Name")}
+                    placeholder={props.t("Enter First Name")}
                     type="text"
                     errorMessage={props.t("Enter First Name")}
                     validate={{ required: { value: true } }}
@@ -76,7 +70,7 @@ function ClientForm(props){
                   <AvField
                     name="lastName"
                     label={props.t("Last Name")}
-                    placeholder={props.t("Last Name")}
+                    placeholder={props.t("Enter Last Name")}
                     type="text"
                     errorMessage={props.t("Enter Last Name")}
                     validate={{ required: { value: true } }}
@@ -90,9 +84,9 @@ function ClientForm(props){
                   <AvField
                     name="email"
                     label={props.t("Email")}
-                    placeholder={props.t("Email")}
+                    placeholder={props.t("Enter Email")}
                     type="email"
-                    errorMessage={props.t("Enter Email")}
+                    errorMessage={props.t("Enter Your Email")}
                     validate={{ required: { value: true } }}
                   />
                 </div>
@@ -102,10 +96,19 @@ function ClientForm(props){
                   <AvField
                     name="phone"
                     label={props.t("Phone")}
-                    placeholder={props.t("Phone")}
+                    placeholder={props.t("Enter Your Phone")}
                     type="text"
-                    errorMessage={props.t("Enter valid phone")}
-                    validate={{ required: { value: true } }}
+                   
+                    validate={
+                      { 
+                        required: { value: true },
+                        pattern :{
+                          // eslint-disable-next-line no-useless-escape
+                          value:"/^[\+][(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im",
+                          errorMessage:"Phone number must be digits only with country key"
+                        }
+                      }
+                    }
                   />
                 </div>
               </Col>
@@ -114,18 +117,28 @@ function ClientForm(props){
               <AvField
                 name="password"
                 label={props.t("Password")}
-                placeholder={props.t("Password")}
+                placeholder={props.t("Enter Your Password")}
                 type="password"
-                errorMessage={props.t("Enter valid password")}
-                validate={{ required: { value: true } }}
+                validate= {{
+                  required: { value : true },
+                  pattern :{ 
+                    // eslint-disable-next-line no-useless-escape
+                    value:"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$",
+                    errorMessage :"Must contain at least eight characters, at least one number and both lower and uppercase letters and special characters"
+                  }
+                  
+                }
+                }
+                
+                
               />
             </div>
             <div className="mb-3">
               <CountryDropDown/>
             </div>
             <div className='text-center pt-3 p-2'>
-              <Button  type="submit" color="primary" className="">
-                {props.t("Add new Client")}
+              <Button disabled={props.disableAddButton} type="submit" color="primary" className="">
+                {props.t("Add")}
               </Button>
             </div>
           </AvForm>
@@ -133,7 +146,7 @@ function ClientForm(props){
             <i className="mdi mdi-block-helper me-2"></i>
             {props.t(props.error)}
           </UncontrolledAlert>}
-          {props.successMessage && <UncontrolledAlert color="success">
+          {props.showAddSuccessMessage && <UncontrolledAlert color="success">
             <i className="mdi mdi-check-all me-2"></i>
             {props.t("Client Added successfully !!!")}
           </UncontrolledAlert>}
@@ -144,6 +157,9 @@ function ClientForm(props){
 }
 const mapStateToProps = (state) => ({
   error: state.clientReducer.error,
-  successMessage: state.clientReducer.successMessage,
+  clientPermissions: state.Profile.clientPermissions,
+  showAddSuccessMessage: state.clientReducer.showAddSuccessMessage,
+  disableAddButton: state.clientReducer.disableAddButton
+
 });
 export default connect(mapStateToProps, null)(withTranslation()(ClientForm));

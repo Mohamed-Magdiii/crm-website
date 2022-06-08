@@ -1,5 +1,11 @@
 import {
-  PROFILE_ERROR, PROFILE_SUCCESS, EDIT_PROFILE, RESET_PROFILE_FLAG 
+  PROFILE_ERROR,
+  PROFILE_SUCCESS,
+  EDIT_PROFILE, 
+  RESET_PROFILE_FLAG, 
+  GET_PROFILE,
+  GET_PROFILE_SUCCESS,
+  CLEAR_PROFILE
 } from "./actionTypes";
 
 export const editProfile = user => {
@@ -27,5 +33,21 @@ export const resetProfileFlag = error => {
   return {
     type: RESET_PROFILE_FLAG,
     payload: error,
+  };
+};
+export const getUserProfile = ()=>{
+  return {
+    type:GET_PROFILE
+  };
+};
+export const getProfileSuccess = (data)=>{
+  return {
+    type:GET_PROFILE_SUCCESS,
+    payload:data
+  };
+};
+export const clearProfile = ()=>{
+  return {
+    type:CLEAR_PROFILE
   };
 };

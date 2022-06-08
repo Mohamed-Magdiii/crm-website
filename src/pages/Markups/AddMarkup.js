@@ -20,7 +20,7 @@ function AddMarkup(props) {
 
   const [addModal, setAddMarkupModal] = useState(false);
   const dispatch = useDispatch();
-
+  const { create } = props.markupsPermissions ;
   const toggleAddModal = () => {
     setAddMarkupModal(!addModal);
   };
@@ -38,7 +38,7 @@ function AddMarkup(props) {
 
   return (
     <React.Fragment >
-      <Link to="#" className="btn btn-light" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i>{props.t("Add New Markup")}</Link>
+      <Link to="#" className={`btn btn-light ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i>{props.t("Add New Markup")}</Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
           {props.t("Add Markup")}
@@ -102,5 +102,6 @@ function AddMarkup(props) {
 const mapStateToProps = (state) => ({
   error: state.markupsReducer.error,
   addMarkupSuccessMessage: state.markupsReducer.addMarkupSuccessMessage,
+  markupsPermissions : state.Profile.markupsPermissions || {}
 });
 export default connect(mapStateToProps, null)(withTranslation()(AddMarkup));

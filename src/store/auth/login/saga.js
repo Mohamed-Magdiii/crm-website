@@ -12,6 +12,7 @@ import {
 //Include Both Helper File with needed methods
 import { getFirebaseBackend } from "../../../helpers/firebase_helper";
 import * as authApi from "../../../apis/auth";
+import { getUserProfile, clearProfile } from "../profile/actions";
 import {
   // postFakeLogin,
   // postJwtLogin,
@@ -57,6 +58,7 @@ function* logoutUser({ payload: { history } }) {
     if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
       const response = yield call(fireBaseBackend.logout);
       yield put(logoutUserSuccess(response));
+      yield put(clearProfile());
     }
     history.push("/login");
   } catch (error) {
@@ -95,6 +97,7 @@ function * loginWithAPI({ payload: { values, history } }){
     const { message, result } = data;
     if (message === "Login successfull"){
       localStorage.setItem("authUser", JSON.stringify(result));
+      yield put(getUserProfile());
       history.push("/dashboard");
     }
     else {

@@ -142,7 +142,7 @@ function Withdrawal(props){
                                 <Td key={`${rowIndex}-${index}`}>
                                   { column.dataField === "checkbox" ? <input type="checkbox"/> : ""}
                                   { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
-                                  {column.dataField === "dropdown" ? <CustomDropdown  id={row._id} status={row.status} approve={withdrawApprove} reject={withdrawReject}/> : ""}
+                                  {column.dataField === "dropdown" ? <CustomDropdown permission={props.withdrawalPermissions.actions ? true : false} id={row._id} status={row.status} approve={withdrawApprove} reject={withdrawReject}/> : ""}
                                 </Td>
                               )}
                             </Tr>
@@ -181,7 +181,7 @@ const mapStateToProps = (state)=>({
   nextPage: state.withdrawalReducer.nextPage,
   pagingCounter: state.withdrawalReducer.pagingCounter,
   prevPage: state.withdrawalReducer.prevPage,
- 
+  withdrawalPermissions: state.Profile.withdrawalPermissions || {}
 }
 );
 export default connect(mapStateToProps, null)(withTranslation()(Withdrawal));

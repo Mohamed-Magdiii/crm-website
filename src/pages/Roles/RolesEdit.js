@@ -16,6 +16,7 @@ import { editRole } from "store/roles/actions";
 
 function RolesAdd (props) {
   const { open, role = {}, onClose } = props;
+  const { update } = props.rolesPermissions;
   const dispatch = useDispatch();
 
   const handleAddRole = (e, values) => {
@@ -92,5 +93,6 @@ const mapStateToProps = (state) => ({
   editResult: state.rolesReducer.editResult,
   editError: state.rolesReducer.editError,
   editClearingCounter: state.rolesReducer.editClearingCounter,  
+  rolesPermissions : state.Profile.rolesPermissions
 });
 export default connect(mapStateToProps, null)(RolesAdd);

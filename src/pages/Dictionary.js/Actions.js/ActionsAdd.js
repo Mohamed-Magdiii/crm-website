@@ -17,6 +17,7 @@ function ActionsAdd(props){
   const toggleAddModal = ()=>{
     setAddModal(preValue => !preValue);
   };
+  const {create} = props.dictionariesPermissions;
   useEffect(()=>{
     if (!props.showAddSuccessMessage && addModal){
       setAddModal(false);
@@ -24,7 +25,7 @@ function ActionsAdd(props){
   }, [props.showAddSuccessMessage]);
   return (
     <React.Fragment >
-      <Link to="#" className="btn btn-primary" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i>{props.t("Add New Action")}</Link>
+      <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i>{props.t("Add New Action")}</Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
           {props.t("Add New Action")}
@@ -71,6 +72,7 @@ function ActionsAdd(props){
 const mapStateToProps = (state)=>({
   id :state.dictionaryReducer.id,
   error:state.dictionaryReducer.error,
-  showAddSuccessMessage: state.dictionaryReducer.showAddSuccessMessage
+  showAddSuccessMessage: state.dictionaryReducer.showAddSuccessMessage,
+  dictionariesPermissions : state.Profile.dictionariesPermissions || {}
 });
 export default connect(mapStateToProps, null)(withTranslation()(ActionsAdd));

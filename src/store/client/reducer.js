@@ -41,7 +41,6 @@ export const clientReducer = (state = initalState, action)=>{
       state = {
         ...state,
         loading: false,
-        successMessage:action.payload.message,
         totalDocs:action.payload.newClient ? state.totalDocs + 1 : state.totalDocs,
         clients: action.payload.newClient ? [{ 
           createdAt:new Date().toLocaleDateString(), 
@@ -53,7 +52,17 @@ export const clientReducer = (state = initalState, action)=>{
           },
           ...action.payload.newClient
         },
-        ...state.clients] : [...state.clients]
+        ...state.clients] : [...state.clients],
+        showAddSuccessMessage:true,
+        disableAddButton:true
+      };
+      break;
+    case "ADD_MODAL_CLEAR":
+      console.log("add-clear-modal");
+      state = {
+        ...state,
+        showAddSuccessMessage:false,
+        disableAddButton:false
       };
       break;
     case "API_ERROR":

@@ -16,7 +16,7 @@ import { addRole } from "store/roles/actions";
 function RolesAdd (props) {
   const [addModal, setAddUserModal] = useState(false);
   const dispatch = useDispatch();
-
+  const { create } = props.rolesPermissions;
   const toggleAddModal = () => {
     setAddUserModal(!addModal);
   };
@@ -31,7 +31,7 @@ function RolesAdd (props) {
 
   return (
     <React.Fragment >
-      <Link to="#" className="btn btn-light" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> Add New</Link>
+      <Link to="#"  className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> Add New</Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
             Add New Role
@@ -80,5 +80,6 @@ const mapStateToProps = (state) => ({
   addSuccess: state.rolesReducer.addSuccess,
   addError: state.rolesReducer.addError,  
   clearingCounter: state.rolesReducer.clearingCounter,  
+  rolesPermissions: state.Profile.rolesPermissions
 });
 export default connect(mapStateToProps, null)(RolesAdd);

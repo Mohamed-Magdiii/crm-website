@@ -15,6 +15,7 @@ import { addNewItem } from "store/dictionary/actions";
 function EmailProviderAdd(props){
   const [addModal, setAddModal] = useState(false);
   const dispatch = useDispatch();
+  const { create } = props.dictionariesPermissions;
   const toggleAddModal = ()=>{
     setAddModal(preValue => !preValue);
   };
@@ -25,7 +26,7 @@ function EmailProviderAdd(props){
   }, [props.showAddSuccessMessage]); 
   return (
     <React.Fragment >
-      <Link to="#" className="btn btn-primary" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i>{props.t("Add New Email Provider")}</Link>
+      <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i>{props.t("Add New Email Provider")}</Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
           Add New Email Provider
@@ -75,6 +76,7 @@ const mapStateToProps = (state)=>({
   dictionary: state.dictionaryReducer.dictionary || [],
   error : state.dictionaryReducer.error,
   id :state.dictionaryReducer.id,
-  showAddSuccessMessage:state.dictionaryReducer.showAddSuccessMessage
+  showAddSuccessMessage:state.dictionaryReducer.showAddSuccessMessage,
+  dictionariesPermissions : state.Profile.dictionariesPermissions || {}
 });
 export default connect(mapStateToProps, null)(withTranslation()(EmailProviderAdd));

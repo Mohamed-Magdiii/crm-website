@@ -1,5 +1,6 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 //Dashboard
 import Dashboard from "../pages/Dashboard/index";
@@ -27,90 +28,127 @@ import Reminder from "../pages/Reminder/Reminder";
 import DictionaryList from "pages/Dictionary.js/DictionaryList";
 import MarketPrice from "pages/MarketPrice/MarketPrice";
 import feeGroupList from "pages/feeGroups/feeGroupList";
-const userRoutes = [
-  //dashboard
-  {
-    path: "/dashboard",
-    component: Dashboard,
-  },
+import usePermissions from "./permissions";
 
-  //profile
-  {
-    path: "/profile",
-    component: UserProfile,
-  },
-  {
-    path: "/clients",
-    component: ClientList,
-  },
-  {
-    path: "/leads",
-    component: LeadsList,
-  },
-  //users
-  {
-    path: "/users",
-    component: UsersList,
-  },
-  //teams
-  {
-    path: "/teams",
-    component: Teams,
-  },
-  //calender
-  {
-    path: "/calendar/reminders",
-    component: Reminder,
-  },
-  {
-    path: "/roles",
-    component: RolesList,
-  },
-  // system emails
-  {
-    path: "/system-emails",
-    component: SystemEmailsList,
-  },
-  {
-    path: "/assets",
-    component: AssetsList,
-  },
-  {
-    path: "/currency-pairs",
-    component: CurrencyPairsList,
-  },
-  {
-    path: "/price/:pairName",
-    component: MarketPrice,
-  },
-  {
-    path: "/markups",
-    component: MarkUpsList,
-  },
-  {
-    path: "/transactions/deposit",
-    component: Deposit,
-  },
-  {
-    path: "/transactions/withdrawals",
-    component: Withdrawal,
-  },
-  {
-    path:"/dictionaries",
-    component:DictionaryList
-  },
-  {
-    path:"/fee-groups",
-    component:feeGroupList
-  },
-  {
-    path: "/",
-    exact: true,
-    component: () => <Redirect to="/dashboard" />,
-  },
+function userRoutes(){
+  const object = usePermissions();
+  const { 
+    userPermissions, 
+    clientPermissions, 
+    rolesPermissions,
+    teamsPermissions,
+    withdrawalsPermissions,
+    depositsPermissions,
+    leadsPermissions,
+    symbolsPermissions,
+    systemEmailsPermissions,
+    dictionariesPermissions,
+    feeGroupsPermissions,
+    currencyPairsPermissions,
+    markupsPermissions
+  } = object;
+  
+  return [
+    //dashboard
+    {
+      path: "/dashboard",
+      component: Dashboard,
+      
+    },
+  
+    //profile
+    {
+      path: "/profile",
+      component: UserProfile,
+  
+    },
+    {
+      path: "/clients",
+      component: ClientList,
+      get: clientPermissions.get
+    },
+    {
+      path: "/leads",
+      component: LeadsList,
+      get : leadsPermissions.get
+    },
+    //users
+    {
+      path: "/users",
+      component: UsersList,
+      get: userPermissions.get
+    },
+    //teams
+    {
+      path: "/teams",
+      component: Teams,
+      get: teamsPermissions.get
+    },
+    //calender
+    {
+      path: "/calendar/reminders",
+      component: Reminder,
+    },
+    {
+      path: "/roles",
+      component: RolesList,
+      get: rolesPermissions.get
+    },
+    // system emails
+    {
+      path: "/system-emails",
+      component: SystemEmailsList,
+      get :systemEmailsPermissions.get
+    },
+    {
+      path: "/assets",
+      component: AssetsList,
+      get: symbolsPermissions.get
+    },
+    {
+      path: "/currency-pairs",
+      component: CurrencyPairsList,
+      get : currencyPairsPermissions.get
+    },
+    {
+      path: "/price/:pairName",
+      component: MarketPrice,
+    },
+    {
+      path: "/markups",
+      component: MarkUpsList,
+      get: markupsPermissions.get
+    },
+    {
+      path: "/transactions/deposit",
+      component: Deposit,
+      get : depositsPermissions.get
+    },
+    {
+      path: "/transactions/withdrawals",
+      component: Withdrawal,
+      get : withdrawalsPermissions.get
+    },
+    {
+      path:"/dictionaries",
+      component:DictionaryList,
+      get : dictionariesPermissions.get
+    },
+    {
+      path:"/fee-groups",
+      component:feeGroupList,
+      get : feeGroupsPermissions.get
+    },
+    {
+      path: "/",
+      exact: true,
+      component: () => <Redirect to="/dashboard" />,
+    },
+  
+    // this route should be at the end of all other routes
+  ];
+}
 
-  // this route should be at the end of all other routes
-];
 
 const authRoutes = [
   //authencation page

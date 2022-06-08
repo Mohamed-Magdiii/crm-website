@@ -3,6 +3,7 @@ import qs from "qs";
 export const addNewLead = async(values) => {
 
   const data = await axiosHelper.post("/leads", { ...values });
+  console.log(data);
   if (data.code === 500){
     throw new Error(data.message);
   }
@@ -10,7 +11,6 @@ export const addNewLead = async(values) => {
   return data;
 };
 export const fetchLeadsFromAPI = async ( { payload })=>{
-  // console.log(payload);
   const result = await  axiosHelper.get(`/leads?${qs.stringify(payload)}`);
   
   return result;

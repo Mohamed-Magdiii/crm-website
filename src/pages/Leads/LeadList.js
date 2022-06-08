@@ -16,12 +16,14 @@ import { fetchLeadsStart } from "../../store/leads/actions";
 import LeadForm from "pages/Leads/LeadAdd";
 import SearchBar from "components/Common/SearchBar";
 import { withTranslation } from "react-i18next";
+import { captilazeFirstLetter } from "common/utils/manipulateString";
+import { checkAllBoxes } from "common/utils/checkAllBoxes";
 function LeadsList(props) {
 
   const columns = [
     {
       dataField:"checkbox",
-      text: <input type="checkbox"/>
+      text: <input type="checkbox" id="select-all-leads-checkbox" onChange={()=>{checkAllBoxes("select-all-leads-checkbox", ".leads-checkbox")}}/>
     },
     {
       dataField: "createdAt",
@@ -31,12 +33,12 @@ function LeadsList(props) {
     {
       dataField: "name",
       text: props.t("Name"),
-      formatter: (val) => (`${val.firstName} ${val.lastName}`),
+      formatter: (val) => (captilazeFirstLetter(`${val.firstName} ${val.lastName}`)),
     },
     {
       dataField: "email",
       text:props.t("Email"),
-    
+      formatter:(val)=>(captilazeFirstLetter(val.email))
     },
     {
       dataField: "phone",
@@ -45,16 +47,18 @@ function LeadsList(props) {
     {
       dataField: "language",
       text:props.t("Language"),
+      formatter : (val) => (captilazeFirstLetter(val.language))
     },
     {
       dataField: "callStatus",
       text:props.t("Status"),
+      
     
     },
     {
       dataField: "country",
       text: props.t("Country"),
-  
+      formatter : (val)=>(captilazeFirstLetter(val.country))
     }, 
     {
       dataField: "agent",
@@ -121,20 +125,20 @@ function LeadsList(props) {
                         id="tech-companies-1"
                         className="table "
                       >
-                        <Thead>
+                        <Thead className="text-center">
                           <Tr>
                             {columns.map((column, index) =>
                               <Th data-priority={index} key={index}>{column.text}</Th>
                             )}
                           </Tr>
                         </Thead>
-                        <Tbody>
+                        <Tbody className="text-center" style={{ fontSize : "13px" }}>
                           {props.loading && <TableLoader colSpan={4} />}
                           {!props.loading && props.leads.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`}>
-                                  { column.dataField === "checkbox" ? <input type="checkbox"/> : ""}
+                                  { column.dataField === "checkbox" ? <input className="leads-checkbox" type="checkbox"/> : ""}
                                   {column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
                                 </Td>
                               )}

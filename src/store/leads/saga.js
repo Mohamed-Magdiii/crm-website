@@ -1,10 +1,13 @@
 
 import {
-  call, put, takeEvery
+  call, put, takeEvery, delay
 } from "redux-saga/effects";
 import { addNewLead, fetchLeadsFromAPI } from "../../apis/lead-api";
 import { 
-  apiError, addNewLeadSuccess, fetchLeadsSuccess 
+  apiError, 
+  addNewLeadSuccess,
+  fetchLeadsSuccess,
+  addModalClear
 } from "./actions";
 import { ADD_NEW_LEAD, FETCH_LEADS_START } from "./actionsType";
 
@@ -22,7 +25,9 @@ function *addNewLeadSaga({ payload:{ newLead } }){
     const data = yield call(addNewLead, newLead);
     const { status } = data;
     if (status){
-      yield put (addNewLeadSuccess("Lead is added successfully", newLead));
+      yield put (addNewLeadSuccess(newLead));
+      yield delay(2000);
+      yield put(addModalClear());
     }        
   }
   catch (error){
