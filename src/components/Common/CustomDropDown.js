@@ -23,7 +23,7 @@ function CustomDropdown({ id, status, approve, reject, permission, ...props }){
         <Dropdown  disabled={isDisabled()}
           isOpen={isOpen}
           toggle={() => setIsOpen(!isOpen)}
-          className={`chat-noti-dropdown ${!permission ? "d-none" : ""}`} 
+          className={`"chat-noti-dropdown" ${!permission ? "d-none" : ""}`} 
         >
           <DropdownToggle tag="i" className="text-muted">
             <i className="mdi mdi-dots-horizontal font-size-18" style={{ color: isDisabled() ? "lightgray" : "rgb(66, 65, 65)" }}></i>
