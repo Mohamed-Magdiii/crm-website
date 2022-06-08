@@ -26,8 +26,11 @@ const LanguageDropdown = () => {
     //set language as i18n
     i18n.changeLanguage(lang);
     localStorage.setItem("I18N_LANGUAGE", lang);
+    const shouldReload = lang === "ar" || selectedLang === "ar" || false;
     setSelectedLang(lang);
-    window.location.reload();
+    if (shouldReload) {
+      window.location.reload();
+    }
   };
 
   const toggle = () => {
