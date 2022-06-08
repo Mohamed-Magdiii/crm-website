@@ -31,10 +31,11 @@ const SidebarContent = (props) => {
   const { get:getRoles } = props.rolesPermissions;
   const { get:getDictionaries } = props.dictionariesPermissions;
   const { get : getFeeGroup } = props.feeGroupsPermissions;
-  const { get: getSystemEmail } = props.systemEmailPermissions;
+  const { get: getSystemEmail } = props.systemEmailsPermissions;
+  console.log(getSystemEmail);
   const { get: getTeams } = props.teamsPermissions;
   const { get: getSymbols } = props.symbolsPermissions;
-  const { get :getCurrencyPair} = props.currencyPairsPermissions;
+  const { get :getCurrencyPair } = props.currencyPairsPermissions;
   const activateParentDropdown = useCallback(item => {
     item.classList.add("active");
     const parent = item.parentElement;
@@ -256,7 +257,7 @@ const mapStateToProps = (state) => ({
   withdrawalsPermissions : state.Profile.withdrawalsPermissions || {},
   depositsPermissions : state.Profile.depositsPermissions || {},
   feeGroupsPermissions : state.Profile.feeGroupsPermissions || {},
-  systemEmailPermissions : state.Profile.systemEmailPermissions || {},
+  systemEmailsPermissions : state.Profile.systemEmailsPermissions || {},
   symbolsPermissions : state.Profile.symbolsPermissions || {},
   dictionariesPermissions : state.Profile.dictionariesPermissions || {},
   currencyPairsPermissions : state.Profile.currencyPairsPermissions || {},
