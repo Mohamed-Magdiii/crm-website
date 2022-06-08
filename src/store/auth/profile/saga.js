@@ -3,7 +3,7 @@ import {
 } from "redux-saga/effects";
 
 // Login Redux States
-import { EDIT_PROFILE, GET_PROFILE} from "./actionTypes";
+import { EDIT_PROFILE, GET_PROFILE } from "./actionTypes";
 import { 
   profileSuccess,
   profileError,  

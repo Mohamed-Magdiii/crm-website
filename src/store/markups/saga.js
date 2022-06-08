@@ -84,8 +84,8 @@ function* addMarkup({ payload: newMarkup }) {
 }
 function* fetchSingleMarkup({ payload }) {
   try {
-    const data = yield call(fetchSingleMarkupAPI, payload);
-    console.log(data);
+    yield call(fetchSingleMarkupAPI, payload);
+    // console.log(data);
   } catch (error) {
     yield(showErrorNotification(error.message));
   }

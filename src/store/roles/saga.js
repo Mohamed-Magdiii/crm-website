@@ -50,10 +50,10 @@ function * addRole(params){
 
 function * editRole(params){
   try {
-    const data = yield call(rolesApi.editRole, params);
+    yield call(rolesApi.editRole, params);
     
     
-    const { result } = data;
+    // const { result } = data;
     yield put(editRoleDone({
       result: params.payload.values,
       id: params.payload.id  

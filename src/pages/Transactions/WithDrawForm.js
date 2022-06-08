@@ -30,7 +30,7 @@ function WithdrawForm(props){
   const [searchInput, setSearchInput] = useState("");
   const [selectedClient, setSelectedClient] = useState("");
   const dispatch = useDispatch();
-  const {create} = props.withdrawalPermissions;
+  const { create } = props.withdrawalPermissions;
   
   const handleWithdraw = (event, values) => {
     event.preventDefault();

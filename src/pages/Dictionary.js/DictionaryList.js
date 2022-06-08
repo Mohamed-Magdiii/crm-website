@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { 
   useDispatch, connect 
 } from "react-redux";
@@ -7,8 +7,6 @@ import { fetchDictionaryStart } from "store/dictionary/actions";
 import {
   Card,
   CardBody,
-  CardHeader,
-  CardTitle,
   Col,
   Nav,
   NavItem,

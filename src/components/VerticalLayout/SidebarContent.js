@@ -2,10 +2,9 @@ import PropTypes from "prop-types";
 import React, {
   useEffect, useRef, useCallback 
 } from "react";
-import { useDispatch, connect } from "react-redux";
+import { connect } from "react-redux";
 //Import Icons
 import FeatherIcon from "feather-icons-react";
-import { getUserProfile } from "store/auth/profile/actions";
 // //Import Scrollbar
 import SimpleBar from "simplebar-react";
 
@@ -25,14 +24,13 @@ const SidebarContent = (props) => {
   const { get:getUser } = props.userPermissions;
   const { get:getClient } = props.clientPermissions;
   const { get:getLeads } = props.leadsPermissions;
-  const { get:getDeposits} = props.depositsPermissions;
+  const { get:getDeposits } = props.depositsPermissions;
   const { get:getWithdrawals } = props.withdrawalsPermissions;
   const { get:getMarkups } = props.markupsPermissions;
   const { get:getRoles } = props.rolesPermissions;
   const { get:getDictionaries } = props.dictionariesPermissions;
   const { get : getFeeGroup } = props.feeGroupsPermissions;
   const { get: getSystemEmail } = props.systemEmailsPermissions;
-  console.log(getSystemEmail);
   const { get: getTeams } = props.teamsPermissions;
   const { get: getSymbols } = props.symbolsPermissions;
   const { get :getCurrencyPair } = props.currencyPairsPermissions;

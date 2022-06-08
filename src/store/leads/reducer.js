@@ -64,7 +64,6 @@ const leadReducer = (state = initialState, action)=>{
       };
       break;
     case "ADD_MODAL_CLEAR":
-      console.log("add modal clear");
       state = {
         ...state,
         showAddSuccessMessage:false,

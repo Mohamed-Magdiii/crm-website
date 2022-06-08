@@ -32,9 +32,6 @@ function MarkUpsList(props) {
   const { update, delete:deletePermission } = props.markupsPermissions;
   const dispatch = useDispatch();
 
-  const switchSelectedMarketHandler = (selectedItem, event) => {
-    selectedItem[event.target.name] = !selectedItem[event.target.name];
-  };
 
   const columns = [
     {

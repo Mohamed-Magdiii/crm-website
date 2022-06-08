@@ -21,7 +21,7 @@ import logo from "../../assets/images/logo-sm.svg";
 import { withTranslation } from "react-i18next";
 function Withdrawal(props){
   const dispatch = useDispatch();
-  const [searchInput, setSearchInput] = useState("");
+  const [, setSearchInput] = useState("");
   const [sizePerPage, setSizePerPage] = useState(10);
   const [showNotication, setShowNotifaction] = useState(false);
   

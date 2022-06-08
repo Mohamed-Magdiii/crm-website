@@ -2,7 +2,7 @@ import {
   FETCH_MARKET_PRICING_START, FETCH_ORDER_BOOK_START
 } from "./actionTypes";
 import {
-  call, put, takeEvery, delay
+  call, put, takeEvery
 } from "redux-saga/effects";
 import {
   getMarketPrices, getOrderBook
@@ -10,7 +10,7 @@ import {
 import {
   fetchMarketPriceSuccess, fetchOrderBookSuccess
 } from "./actions";
-import { showErrorNotification, showSuccessNotification } from "store/notifications/actions";
+import { showErrorNotification } from "store/notifications/actions";
 
 function* fetchMarketPricing(params) {
   try {

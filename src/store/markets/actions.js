@@ -40,7 +40,7 @@ export const addNewMarketError = (error)=>{
     payload: error 
   };
 };
-export const apiError = (error)=>{
+export const apiError = ()=>{
   return {
     // type:ADD_MARKET_ERROR,
     // payload:{ error }

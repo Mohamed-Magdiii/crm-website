@@ -19,7 +19,7 @@ function ActionsTab(props){
   const [deletedItem, setDeletedItem] = useState();
   const [editModal, setEditModal] = useState(false);
   const [selectedAction, setSelectedAction] = useState();
-  const { update, delete:deletePermission} = props.dictionariesPermissions;
+  const { update, delete:deletePermission } = props.dictionariesPermissions;
   const dispatch = useDispatch();
   useEffect(()=>{
     if (!props.editSuccess && editModal){
