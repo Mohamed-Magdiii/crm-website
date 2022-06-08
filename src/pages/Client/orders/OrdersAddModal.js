@@ -6,38 +6,68 @@ import {
   Button,
   ModalHeader,
   ModalBody,
-  UncontrolledAlert,
+  UncontrolledAlert, Col, FormGroup
 } from "reactstrap";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 // import { addOrder } from "store/Orders/actions";
 import { addOrder } from "store/orders/actions";
+import Select from "react-select";
 
 import { AsyncPaginate } from "react-select-async-paginate";
 
 import loadOptions from "./loadOptions";
+import { getPricing } from "./../../../apis/orders";
 
 function OrdersAddModal(props) {
   const [addModal, setAddOrderModal] = useState(false);
   const [symbolValue, setSymbolValue] = useState(null);
   const [clientId, setClientId] = useState(props?.clientId);
+  const [type, setType] = useState(null);
+  const [side, setSide] = useState(null);
   const [priceFlag, setPriceFlag] = useState(true);
+  const [sympolAle, setsympolAle] = useState(false);
+  const [typeAle, settypeAle] = useState(false);
+  const [sideAle, setsideAle] = useState(false);
+  const [pricing, setPricing] = useState("");
+  const [showPricing, setShowPricing] = useState(false);
 
   const dispatch = useDispatch();
-  // const { usersRoles } = props;
-  // const [SearchInputValue, setSearchInputValue] = useState("hi");
-
   const toggleAddModal = () => {
     setAddOrderModal(!addModal);
   };
   const handleAddOrder = (e, values) => {
     values.symbol = symbolValue?.value;
+    values.type = type;
+    values.side = side;
     values.customerId = clientId;
-    // console.log(managerValue);
-    // console.log(values);
-    dispatch(addOrder(values));
-    setSymbolValue(null);
+    Object.keys(values).forEach(key => {
+      if (values[key] === "" || values[key] === null) {
+        delete values[key];
+      }
+    });
+    showAlert(symbolValue, type, side);
+    // console.log("symbolValue, type, side");
+    // console.log(symbolValue + "kk" + type + "kk" + side);
+    // console.log("!symbolValue && !type && !side");
+    // console.log(!symbolValue + "kk" + !type + "kk" + !side);
+    if (symbolValue && type && side) {
+      dispatch(addOrder(values));
+      setSymbolValue(null);
+      setShowPricing(false);
+    }
   };
-
+  const getPricingHandel = (pair) => {
+    getPricing({
+      pairName: pair
+    })
+      .then(response => {
+        setShowPricing(true);
+        setPricing("Current Price " + pair + ": " + (response.docs[0]?.marketPrice || "Not known"));
+      }
+      )
+      .catch(() => {
+      });
+  };
   useEffect(() => {
     if (props.clearingCounter > 0 && addModal) {
       setTimeout(() => {
@@ -46,18 +76,8 @@ function OrdersAddModal(props) {
     }
   }, [props.addSuccess]);
 
-  // const [selectedGroup, setselectedGroup] = useState(null);
-
   const defaultAdditional = {
     page: 1,
-  };
-  const price = (val) => {
-    if (val?.target?.value == "market") {
-      setPriceFlag(false);
-    } else {
-      setPriceFlag(true);
-    }
-    console.log(val.target.value);
   };
   const loadPageOptions = async (q, prevOptions, { page }) => {
     const { options, hasMore } = await loadOptions(q, page);
@@ -70,6 +90,46 @@ function OrdersAddModal(props) {
         page: page + 1,
       },
     };
+  };
+
+  const sympolhandler = (val) => {
+    getPricingHandel(val?.value);
+    setSymbolValue(val);
+  };
+  const typehandler = (val) => {
+    // console.log(val);
+
+    // Object.keys(val).forEach(key => {
+    //   if (val[key] === "") {
+    //     delete val[key];
+    //   }
+    // });
+    if (val?.value == "market") {
+      setPriceFlag(false);
+    } else {
+      setPriceFlag(true);
+    }
+    console.log(val);
+    setType(val?.value);
+  };
+  const sidehandler = (val) => {
+    setSide(val?.value);
+  };
+  const showAlert = (symopl, type, side) => {
+    if (!symopl) {
+      setsympolAle(true);
+    }
+    if (!type) {
+      settypeAle(true);
+    }
+    if (!side) {
+      setsideAle(true);
+    }
+    setTimeout(() => {
+      setsideAle(false);
+      settypeAle(false);
+      setsympolAle(false);
+    }, 3000);
   };
 
   return (
@@ -88,57 +148,74 @@ function OrdersAddModal(props) {
               handleAddOrder(e, v);
             }}
           >
-
-
+            {(showPricing) ?
+              <label className="form-label font-size-18 ">{pricing}</label>
+              : ""}
             <div className="mb-3">
-              <label>symbol</label>
+              <label>Symbol</label>
               <AsyncPaginate
                 additional={defaultAdditional}
                 value={symbolValue}
                 loadOptions={loadPageOptions}
-                onChange={setSymbolValue}
+                onChange={sympolhandler}
                 errorMessage="please select Order symbol"
                 validate={{ required: { value: true } }}
               />
+              {sympolAle && (
+                <label className="form-label font-size-13 text-danger">please select Order symbol</label>
+              )}
+            </div>
+
+            <div className="mb-3">
+              <label htmlFor="choices-single-default" className="form-label font-size-13 text-muted">Type</label>
+              <Select
+                // value={selectedGroup}
+                onChange={(val) => {
+                  typehandler(val);
+                }}
+                options={[
+                  {
+                    label: "limit",
+                    value: "limit"
+                  },
+                  {
+                    label: "market",
+                    value: "market"
+                  }
+                ]}
+                classNamePrefix="select2-selection"
+              />
+              {typeAle && (
+                <label className="form-label font-size-13 text-danger">please select Order Type</label>
+              )}
             </div>
             <div className="mb-3">
-              <AvField
-                label="type"
-                type="select"
-                name="type"
-                onChange={price}
-                // value={status}
-                validate={{
-                  required: { value: true },
+              <label htmlFor="choices-single-default" className="form-label font-size-13 text-muted">Side</label>
+              <Select
+                // value={selectedGroup}
+                onChange={(val) => {
+                  sidehandler(val);
                 }}
-              >
-                <option value="">select</option>
-                <option>limit</option>
-                <option>market</option>
-
-              </AvField>
-            </div>
-            <div className="mb-3">
-              <AvField
-                label="side"
-                type="select"
-                name="side"
-                // value={status}
-                validate={{
-                  required: { value: true },
-                }}
-              >
-                <option value="">select</option>
-                <option>buy</option>
-                <option>sell</option>
-
-              </AvField>
+                options={[
+                  {
+                    label: "buy",
+                    value: "buy"
+                  },
+                  {
+                    label: "sell",
+                    value: "sell"
+                  }
+                ]} classNamePrefix="select2-selection"
+              />
+              {sideAle && (
+                <label className="form-label font-size-13 text-danger">please select Order Side</label>
+              )}
             </div>
             <div className="mb-3">
               <AvField
                 name="amount"
-                label="amount"
-                placeholder="amount"
+                label="Amount"
+                placeholder="Amount"
                 type="number"
                 errorMessage="Enter amount"
                 validate={{ required: { value: true } }}
@@ -166,8 +243,8 @@ function OrdersAddModal(props) {
               <div className="mb-3">
                 <AvField
                   name="price"
-                  label="price"
-                  placeholder="price"
+                  label="Price"
+                  placeholder="Price"
                   type="number"
                   errorMessage="Enter price"
                   validate={{ required: { value: true } }}
