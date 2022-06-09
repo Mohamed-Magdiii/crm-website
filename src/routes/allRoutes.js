@@ -27,6 +27,7 @@ import AssetsList from "../pages/Assests/AssetsList";
 import Deposit from "pages/Transactions/Deposit";
 import Withdrawal from "pages/Transactions/Withdrawal";
 import Reminder from "../pages/Reminder/Reminder";
+import OrderList from "pages/Client/orders/OrdersList";
 
 const userRoutes = [
 
@@ -70,6 +71,10 @@ const userRoutes = [
   {
     path: "/clients/:id/wallets",
     component: ClientWallets
+  },
+  {
+    path: "/clients/:id/orders",
+    component: OrderList
   },
   {
     path:"/leads",
