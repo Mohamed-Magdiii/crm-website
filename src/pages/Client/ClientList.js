@@ -49,7 +49,7 @@ function ClientsList(props) {
         <div className="d-flex gap-3">
           <Link 
             to={{
-              pathname: "clients/main-page",
+              pathname: "/clients/" + user.id + "/profile",
               state: { clientId: user.id }
             }}
           >
