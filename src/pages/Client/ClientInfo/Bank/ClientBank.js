@@ -19,7 +19,7 @@ import {
 } from "store/bankAccount/actions";
 import ClientAddBankAccountModal from "./ClientAddBankAccountModal";
 import BankAccountEditModal from "./EditBankAccountModal";
-import DeleteModal from "../../components/Common/DeleteModal";
+import DeleteModal from "../../../../components/Common/DeleteModal";
 
 function ClientBank(props) {
   const clientId = props.clientId;

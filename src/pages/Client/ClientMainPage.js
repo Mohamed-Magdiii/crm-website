@@ -4,10 +4,10 @@ import {
 } from "react-router-dom";
 
 import Layout from "./Layout";
-import ClientBank from "./ClientBank";
-import ClientDetails from "./ClientDetails";
-import ClientTransactions from "./ClientTransactions";
-import ClientWallets from "./ClientWallets";
+import ClientBank from "./ClientInfo/Bank/ClientBank";
+import ClientDetails from "./ClientInfo/Details/ClientDetails";
+import ClientTransactions from "./ClientInfo/Transactions/ClientTransactions";
+import ClientWallets from "./ClientInfo/Wallets/ClientWallets";
 
 function ClientMainPage() {
   const location = useLocation();
