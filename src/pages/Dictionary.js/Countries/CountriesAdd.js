@@ -14,7 +14,7 @@ import { addNewItem } from "store/dictionary/actions";
 function CountriesAdd(props){
   const [addModal, setAddModal] = useState(false);
   const dispatch = useDispatch();
-  const {create} = props.dictionariesPermissions;
+  const { create } = props.dictionariesPermissions;
   const toggleAddModal = ()=>{
     setAddModal(preValue => !preValue);
   };

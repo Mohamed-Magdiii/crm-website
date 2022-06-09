@@ -19,15 +19,14 @@ import TableLoader from "components/Common/TableLoader";
 import { withTranslation } from "react-i18next";
 import { connect, useDispatch } from "react-redux";
 import {
-  fetchMarkupsStart, fetchMarkupDetailsStart
+  fetchMarkupsStart
 } from "store/markups/actions";
-import CustomPagination from "components/Common/CustomPagination";
 import { fetchPricingStart, fetchOrderBook } from "../../store/marketPricing/actions";
 
 function MarketPrice(props) {
   const dispatch = useDispatch();
-  const [selectedMarket, setSelectedMarket] = useState(props.location.state);
-  const [sizePerPage, setSizePerPage] = useState(10);
+  const [selectedMarket, ] = useState(props.location.state);
+  const [sizePerPage, ] = useState(10);
   const [menu, setMenu] = useState(false);
   const [markup, setMarkup] = useState();
   const t = props.t;
@@ -64,27 +63,6 @@ function MarketPrice(props) {
   const handleChooseMarkup = (item) => {
     setMarkup(item);
   };
-
-  const columns = [
-    {
-      dataField: "createdAt",
-      text: props.t("Date"),
-      formatter: (val) => new Date(val.createdAt).toLocaleDateString(),
-    },
-    {
-      dataField: "marketPrice",
-      text: props.t("Market Price"),
-      formatter: (val) => `${val.marketPrice} ${val.pairName.split("/")[1]}`,
-    },
-    {
-      dataField: "pairName",
-      text: props.t("Pair Name")
-    },
-    {
-      dataField: "exchange",
-      text: props.t("Exchange")
-    }
-  ];
 
   const buyOrderColumns = [
     {

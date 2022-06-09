@@ -2,12 +2,12 @@ import {
   call, put, takeEvery, delay
 } from "redux-saga/effects";
 import {
-  fetchMarketsStart, fetchMarketsSuccess, addNewMarketSuccess, addMarketModalClear, editMarketSuccess, marketEditModalClear
+  fetchMarketsSuccess, addNewMarketSuccess, addMarketModalClear, editMarketSuccess, marketEditModalClear
 } from "./actions";
 import { 
   getMarkets, addNewMarketAPI, updateMarket
 } from "apis/markets";
-import { addNewMarketError, apiError } from "../markets/actions";
+import { addNewMarketError } from "../markets/actions";
 import {
   ADD_NEW_MARKET, EDIT_MARKET_START, FETCH_MARKETS_START 
 } from "./actionTypes";

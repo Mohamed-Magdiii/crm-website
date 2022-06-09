@@ -21,7 +21,7 @@ import logo from "../../assets/images/logo-sm.svg";
 import { withTranslation } from "react-i18next";
 function Withdrawal(props){
   const dispatch = useDispatch();
-  const [searchInput, setSearchInput] = useState("");
+  const [, setSearchInput] = useState("");
   const [sizePerPage, setSizePerPage] = useState(10);
   const [showNotication, setShowNotifaction] = useState(false);
   
@@ -142,7 +142,7 @@ function Withdrawal(props){
                                 <Td key={`${rowIndex}-${index}`}>
                                   { column.dataField === "checkbox" ? <input type="checkbox"/> : ""}
                                   { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
-                                  {column.dataField === "dropdown" ? <CustomDropdown permission={props.withdrawalPermissions.actions ? true : false} id={row._id} status={row.status} approve={withdrawApprove} reject={withdrawReject}/> : ""}
+                                  {column.dataField === "dropdown" ? <CustomDropdown permission={props.withdrawalsPermissions.actions ? true : false} id={row._id} status={row.status} approve={withdrawApprove} reject={withdrawReject}/> : ""}
                                 </Td>
                               )}
                             </Tr>
@@ -181,7 +181,7 @@ const mapStateToProps = (state)=>({
   nextPage: state.withdrawalReducer.nextPage,
   pagingCounter: state.withdrawalReducer.pagingCounter,
   prevPage: state.withdrawalReducer.prevPage,
-  withdrawalPermissions: state.Profile.withdrawalPermissions || {}
+  withdrawalsPermissions: state.Profile.withdrawalsPermissions || {}
 }
 );
 export default connect(mapStateToProps, null)(withTranslation()(Withdrawal));

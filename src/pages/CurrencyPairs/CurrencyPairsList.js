@@ -20,15 +20,14 @@ import CustomPagination from "components/Common/CustomPagination";
 import { fetchMarketsStart } from "store/markets/actions";
 import MarketForm from "./MarketAdd";
 import MarketEdit from "./MarketEdit";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function CurrencyPairsList(props) {
-  const [selectedMarket, setSelectedMarket] = useState();
+  const [selectedMarket, ] = useState();
   const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [sizePerPage, setSizePerPage] = useState(10);
   const dispatch = useDispatch();
-  const history = useHistory();
   const t = props.t;
 
   useEffect(() => {

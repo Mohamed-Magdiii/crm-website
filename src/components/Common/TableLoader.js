@@ -1,8 +1,6 @@
 
 import React from "react";
-import {
-  Row, Col, Card, CardBody, CardTitle, CardHeader
-} from "reactstrap";
+
 import Loader from "./Loader";
 
 import {

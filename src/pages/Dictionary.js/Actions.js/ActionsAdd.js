@@ -17,7 +17,7 @@ function ActionsAdd(props){
   const toggleAddModal = ()=>{
     setAddModal(preValue => !preValue);
   };
-  const {create} = props.dictionariesPermissions;
+  const { create } = props.dictionariesPermissions;
   useEffect(()=>{
     if (!props.showAddSuccessMessage && addModal){
       setAddModal(false);

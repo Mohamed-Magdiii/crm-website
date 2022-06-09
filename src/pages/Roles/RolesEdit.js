@@ -16,7 +16,6 @@ import { editRole } from "store/roles/actions";
 
 function RolesAdd (props) {
   const { open, role = {}, onClose } = props;
-  const { update } = props.rolesPermissions;
   const dispatch = useDispatch();
 
   const handleAddRole = (e, values) => {

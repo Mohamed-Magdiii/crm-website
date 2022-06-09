@@ -4,19 +4,16 @@ import { withTranslation } from "react-i18next";
 import {
   Button,
   Col,
-  Input,
-  Label,
   Modal, ModalBody, ModalHeader, Row, UncontrolledAlert 
 } from "reactstrap";
 import {
-  AvForm, AvField, AvInput, AvGroup 
+  AvForm, AvField, AvInput,
 } from "availity-reactstrap-validation";
 import { connect, useDispatch } from "react-redux";
 import { addNewMarket } from "store/markets/actions";
 
 function MarketAdd(props) {
   const [addModal, setAddUserModal] = useState(false);
-  const [isActive, setIsActive] = useState(false);
   const dispatch = useDispatch();
   const { create } = props.currencyPairsPermissions;
   const toggleAddModal = () => {

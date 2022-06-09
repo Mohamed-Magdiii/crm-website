@@ -7,32 +7,6 @@ class DemoComponent extends React.Component {
   render() {
     const { notifications } = this.props;
     //Optional styling
-    const style = {
-      NotificationItem: {
-        // Override the notification item
-        DefaultStyle: {
-          // Applied to every notification, regardless of the notification level
-          margin: "10px 5px 2px 1px",
-          background: "#4caf50",
-          color: "#fff",
-          borderColor: "#fff",
-          title: {
-            color: "blue"
-          },
-          NotificationTitle: {
-            color: "blue"
-          }
-        },
-
-        success: {
-          // Applied only to the success notification item
-          //   color: 'red'
-        }
-      },
-      NotificationTitle: {
-        color: "blue"
-      }
-    };
 
     var defaultWidth = 320;
     var defaultColors = {

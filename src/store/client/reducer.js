@@ -58,7 +58,6 @@ export const clientReducer = (state = initalState, action)=>{
       };
       break;
     case "ADD_MODAL_CLEAR":
-      console.log("add-clear-modal");
       state = {
         ...state,
         showAddSuccessMessage:false,

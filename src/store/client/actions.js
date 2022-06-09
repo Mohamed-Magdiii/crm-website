@@ -27,7 +27,6 @@ export const apiError = (error)=>{
 };
    
 export const addNewClient = (newClient)=>{
-  console.log("add new client");
   return {
     type:ADD_NEW_CLIENT,
     payload:{ newClient }
