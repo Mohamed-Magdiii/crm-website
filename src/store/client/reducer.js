@@ -16,7 +16,8 @@ const initalState = {
   clients:[],
   successMessage:"",
   clientDetails: {},
-  editSuccess: false
+  editSuccess: false,
+  updatedClientDetails: ""
 };
 
 export const clientReducer = (state = initalState, action)=>{

@@ -44,6 +44,6 @@ export default function* rootSaga() {
     fork(gatewaySaga),
     fork(depositSaga),
     fork(withdrawalSaga),
-    fork(bankAccountSaga)
+    fork(bankAccountSaga),
   ]);
 }

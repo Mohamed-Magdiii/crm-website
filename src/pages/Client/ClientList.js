@@ -34,6 +34,10 @@ function ClientsList(props) {
       formatter: (val) => (new Date(val.createdAt).toLocaleDateString())
     },
     {
+      dataField: "title",
+      text: props.t("Title")
+    },
+    {
       dataField: "name",
       text: props.t("Name"),
       formatter: (user) => (

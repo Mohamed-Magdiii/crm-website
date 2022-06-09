@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, connect } from "react-redux";
 import {
   Row, Col, Button, UncontrolledAlert, CardBody, CardHeader, CardTitle, Card
@@ -6,20 +6,43 @@ import {
 import {
   AvForm, AvField
 } from "availity-reactstrap-validation";
+import Select from "react-select";
 
 // i18n 
 import { withTranslation } from "react-i18next";
-import { fetchClientDetails, editClientDetails } from "store/client/actions"; 
+import { fetchClientDetails, editClientDetails } from "store/client/actions";
 import CountryDropDown from "components/Common/CountryDropDown";
 import NationalityDropDown from "components/Common/NationalityDropDown";
 
 function ClientDetails(props) {
   const clientId = props.clientId;
-  const titles = ["Mr", "Mrs", "Miss", "Ms", "Dr"];
   const dispatch = useDispatch();
   const loadClientDetails = () => {
     dispatch(fetchClientDetails(clientId)); 
   };
+
+  const [selectedTitle, setSelectedTitle] = useState();
+  const titles = ["Mr", "Mrs", "Miss", "Ms", "Dr"];
+  const titleOptions = titles.map((title) => {
+    return (
+      { 
+        value: title, 
+        label: title 
+      }
+    );
+  });
+  // as props.clientDetails is initially undefined then this useEffect just loads an 
+  // initial value to it when ever it's loaded 
+  useEffect(() => {
+    let titleOptionObj = titleOptions.filter((titleOption) => (
+      titleOption.value === props.clientDetails.title
+    ));
+    setSelectedTitle(titleOptionObj[0]);
+  }, [props.clientDetails]);
+  const titleChangeHandler = (selectedTitle) => {
+    setSelectedTitle(selectedTitle.value);
+  };
+  
   const loadUpdatedClientDetailsHandler = (e, values) => {
     dispatch(editClientDetails({
       values,
@@ -29,9 +52,8 @@ function ClientDetails(props) {
   
   useEffect(() => {
     loadClientDetails();
-
   }, [props.updatedClientDetails]);
-  
+
   return (
     <React.Fragment>
       <div className="page-content">
@@ -49,6 +71,7 @@ function ClientDetails(props) {
                   <CardBody>
                     <AvForm
                       onValidSubmit={(e, v) => {
+                        v.title = selectedTitle;
                         loadUpdatedClientDetailsHandler(e, v);
                       }}
                     >
@@ -87,21 +110,23 @@ function ClientDetails(props) {
                         <Row>
                           <Col md="6">
                             <div className="mb-6">
-                              <AvField
-                                name="title"
-                                label={props.t("Title")}
-                                placeholder={props.t("Title")}
-                                type="select"
-                                errorMessage={props.t("Title is required")}
-                                validate={{ required: { value: true } }}
-                                value={props.clientDetails.title}
-                              >
-                                {titles.map((title) => (
-                                  <option key={titles.indexOf(title)} value={title}>
-                                    {title}
-                                  </option>
-                                ))}
-                              </AvField>
+                              <label htmlFor="selectTitle">{props.t("Title")}</label>
+                              {/* if selected title not loaded yet 
+                                  then it will render a select component with empty obj
+                                  when it's loaded it will be replaced with a select component
+                                  with selected title as its default value */}
+                              {!selectedTitle && <Select
+                                defaultValue={{}}
+                                options={titleOptions} 
+                                onChange={titleChangeHandler}
+                              />}
+                              {selectedTitle && 
+                                <Select
+                                  defaultValue={selectedTitle}
+                                  options={titleOptions} 
+                                  onChange={titleChangeHandler}
+                                />
+                              }
                             </div>
                           </Col>
                           <Col md="6">
@@ -141,7 +166,7 @@ function ClientDetails(props) {
                                 label={props.t("Date of birth")}
                                 placeholder={props.t("Date of birth")}
                                 type="date"
-                                errorMessage={props.t("Dob is required")}
+                                errorMessage={props.t("Date of birth is required")}
                                 validate={{ required: { value: true } }}
                                 value={props.clientDetails.dob}
                               />

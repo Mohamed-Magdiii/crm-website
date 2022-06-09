@@ -4,9 +4,10 @@ import {
 } from "react-router-dom";
 import { useDispatch, connect } from "react-redux";
 import {
-  Modal, Button, ModalHeader, ModalBody, UncontrolledAlert 
+  Modal, Button, ModalHeader, ModalBody, UncontrolledAlert
 } from "reactstrap";
-import { AvForm, AvField } from "availity-reactstrap-validation";
+import { AvField, AvForm } from "availity-reactstrap-validation";
+import Select from "react-select";
 
 // i18n
 import { withTranslation } from "react-i18next";
@@ -14,15 +15,10 @@ import { fetchAssetsStart } from "store/assests/actions";
 import { addWallet } from "store/wallet/action";
 
 function ClientAddWallet(props){
-  const [sizePerPage, setSizePerPage] = useState(10);
   const [addModal, setAddModal] = useState(false);
-  const assets = props.assets;
   const dispatch = useDispatch();
-  const fetchAssetsHandler = (page, limit) => {
-    dispatch(fetchAssetsStart({
-      limit,
-      page
-    })) ;
+  const fetchAssetsHandler = () => {
+    dispatch(fetchAssetsStart()) ;
   };
   const toggleAddModal = () => {
     setAddModal(!addModal);
@@ -31,13 +27,26 @@ function ClientAddWallet(props){
     dispatch(addWallet(v));
   };
   useEffect(()=>{
-    fetchAssetsHandler(1, sizePerPage);
-  }, [sizePerPage, 1]);
+    fetchAssetsHandler();
+  }, []);
   useEffect(()=>{
     if (props.addClearingCounter > 0 && addModal) {
       setAddModal(false);
     }
   }, [props.addClearingCounter]);
+
+  const [selectedAsset, setSelectedAsset] = useState();
+  const assetOptions = props.assets.map((asset) => {
+    // value is Id which is sent to the server 
+    // label is the asset's name which the user can see
+    return ({
+      value: asset._id,
+      label: asset.name
+    });
+  });
+  const assetChangeHandler = (selectedAsset) => {
+    setSelectedAsset(selectedAsset);
+  };
 
   return (
     <React.Fragment >
@@ -53,24 +62,28 @@ function ClientAddWallet(props){
             className='p-4'
             onValidSubmit={(e, v) => {
               v.belongsTo = props.clientId;
+              v.symbol = selectedAsset.value;
               addNewWalletHandler(e, v);
             }}
           >
             <div className="mb-3">
-              <AvField
+              <Select
+                value={selectedAsset}
+                options={assetOptions}
+                onChange={assetChangeHandler} 
+              />
+              <AvField 
                 name="symbol"
-                label={props.t("Asset")}
-                placeholder={props.t("Asset")}
-                type="select"
+                placeholder={props.t("First name")}
+                type="text"
                 errorMessage={props.t("Asset is required")}
                 validate={{ required: { value: true } }}
-              >
-                {assets.map((asset) => (
-                  <option key={assets.indexOf(asset)} value={asset.id}>
-                    {asset.name}
-                  </option>
-                ))}
-              </AvField>
+                value={selectedAsset}
+                style={{
+                  opacity: 0,
+                  height: 0 
+                }}
+              />
             </div>
             <div className='text-center pt-3 p-2'>
               <Button disabled={props.addLoading} type="submit" color="primary">
