@@ -19,7 +19,7 @@ function MainNavigation(props){
                   "nav-link" + (!isActive ? " unselected" : "")
                 }
               >
-                {props.t("Details")}
+                {props.t("Profile")}
               </NavLink>
             </li>
 
