@@ -56,14 +56,9 @@ const rootReducer = combineReducers({
   walletReducer,
   gatewayReducer,
   depositReducer,
-<<<<<<< HEAD
-  withdrawalReducer,
-  bankAccountReducer,
-=======
   withdrawalReducer, 
   ordersReducer, 
   bankAccountReducer 
->>>>>>> 039b7f0b4563b3a93441c32979a01b42b79df1c7
 });
 
 export default rootReducer;
