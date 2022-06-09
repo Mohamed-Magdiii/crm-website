@@ -28,7 +28,7 @@ const initalState = {
   bankAccountEditClearingCounter: 0
 };
   
-export const clientReducer = (state = initalState, action)=>{
+export const bankAccountReducer = (state = initalState, action)=>{
   switch (action.type){  
     // fetch client bank details
     case FETCH_CLIENT_BANK_ACCOUNT_REQUESTED:
@@ -45,7 +45,7 @@ export const clientReducer = (state = initalState, action)=>{
         loading: false,
         clientBankAccounts: [...action.payload.result.docs],
         totalDocs: action.payload.result.totalDocs,
-        docs: action.payload.result.totalDocs,
+        docs: action.payload.result.docs,
         hasNextPage: action.payload.result.hasNextPage,
         hasPrevPage: action.payload.result.hasPrevPage,
         limit: action.payload.result.limit,
@@ -169,4 +169,4 @@ export const clientReducer = (state = initalState, action)=>{
   }
   return state;
 };
-export default clientReducer;
+export default bankAccountReducer;
