@@ -1,14 +1,13 @@
-import { FormGroup } from "reactstrap";
-import { AvField } from "availity-reactstrap-validation";
-import React, { useEffect, useState} from "react";
+import React, { useEffect} from "react";
 import { fetchDictionaryStart } from "store/dictionary/actions";
 import { useDispatch, connect } from "react-redux";
 import Select from "react-select";
-function CountryDropDown(props){ 
-  const [selectedGroupe, setSelectedGroup] = useState();
+function CountryDropDown({ selectCountry, ...props }){ 
+  
   const dispatch = useDispatch();
   useEffect(()=>{
     dispatch(fetchDictionaryStart());
+    
   }, []);
   
   const optionGroup = props.countries.map(country=>{
@@ -17,21 +16,19 @@ function CountryDropDown(props){
       value: country.ar
     };
   });
-  const handleSelectGroup = (selectedOption)=>{
-    setSelectedGroup(selectedOption);
-  };
-  console.log(selectedGroupe);
+  
+  
   return (
     <React.Fragment>
     
   
       <div className="mb-3">
         <label htmlFor="choices-single-default" className="form-label font-size-13 text-muted">Country</label>
-        <Select
-          value={selectedGroupe}
-          onChange={() => {
-            handleSelectGroup();
+        <Select 
+          onChange={(e) => {
+            selectCountry(e.value);
           }}
+          
           options={optionGroup}
           classNamePrefix="select2-selection"
         />

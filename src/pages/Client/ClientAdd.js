@@ -22,10 +22,13 @@ function ClientForm(props){
   const [addModal, setAddUserModal] = useState(false);
   const { create } = props.clientPermissions;
   const dispatch = useDispatch();
-
+  const [ selectedCountry, setCountry] = useState("");
   const handleAddLead = (event, values) => {
     event.preventDefault();
-    dispatch(addNewClient(values));
+    dispatch(addNewClient({
+      ...values,
+      country:selectedCountry
+    }));
   }; 
 
   const toggleAddModal = () => {
@@ -134,7 +137,7 @@ function ClientForm(props){
               />
             </div>
             <div className="mb-3">
-              <CountryDropDown/>
+              <CountryDropDown selectCountry = {setCountry} />
             </div>
             <div className='text-center pt-3 p-2'>
               <Button disabled={props.disableAddButton} type="submit" color="primary" className="">
