@@ -8,6 +8,7 @@ import ClientBank from "./ClientBank";
 import ClientDetails from "./ClientDetails";
 import ClientTransactions from "./ClientTransactions";
 import ClientWallets from "./ClientWallets";
+import OrderList from "./orders/OrdersList";
 
 function ClientMainPage() {
   const location = useLocation();
@@ -40,6 +41,11 @@ function ClientMainPage() {
                 {/* client wallets */}
                 <Route exact path="/clients/:id/wallets">
                   <ClientWallets clientId={clientId} />
+                </Route>
+
+                {/* client orders */}
+                <Route exact path="/clients/:id/orders">
+                  <OrderList clientId={clientId} />
                 </Route>
 
                 {/* default route to details right on loading */}
