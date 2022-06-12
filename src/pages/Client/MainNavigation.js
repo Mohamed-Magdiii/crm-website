@@ -9,8 +9,8 @@ function MainNavigation(props){
   
   return (
     <React.Fragment>
-      <div className="navbar-header" /*className="" to make it all the way to the left*/>
-        <div className="d-flex justify-content-between">
+      <div className="navbar-header">
+        <div className="container-fluid">
           <ul className="nav-tabs-custom nav-justified nav nav-tabs">
             <li className="nav-item">
               <NavLink 
@@ -30,7 +30,7 @@ function MainNavigation(props){
                   "nav-link" + (!isActive ? " unselected" : "")
                 }
               >
-                {props.t("Bank accounts")}
+                {props.t("Bank Accounts")}
               </NavLink>
             </li>
             

@@ -209,7 +209,6 @@ function ClientDetails(props) {
                           <Col md="6">
                             <CountryDropDown />
                           </Col>
-                          {/* TODO this needs to be a dropdown just like country */}
                           <Col md="6">
                             <NationalityDropDown />
                           </Col>
@@ -233,7 +232,7 @@ function ClientDetails(props) {
               </Col>
 
               {/* quick actions to the right side */}
-              <Col md="2" sm="12" xs="12" className="offset-0 offset-md-1">
+              <Col md="3" sm="12" xs="12">
                 <Card>
                   <CardHeader className="d-flex flex-column gap-3">
                     <div className="d-flex justify-content-between align-items-center">

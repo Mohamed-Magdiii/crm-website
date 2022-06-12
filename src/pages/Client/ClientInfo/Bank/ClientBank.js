@@ -113,7 +113,7 @@ function ClientBank(props) {
               <Card>
                 <CardHeader className="d-flex justify-content-between  align-items-center">
                   <CardTitle>{props.t("Bank accounts list")} ({props.totalDocs})</CardTitle>
-                  <ClientAddBankAccountModal /> 
+                  <ClientAddBankAccountModal clientId={props.clientId} /> 
                 </CardHeader>
                 <CardBody>
                   <div className="table-rep-plugin">
@@ -132,18 +132,40 @@ function ClientBank(props) {
                             )}
                           </Tr>
                         </Thead>
-                        <Tbody>
-                          {props.loading && <TableLoader colSpan={4} />}
-                          {!props.loading && props.clientBankAccounts.map((row, rowIndex) =>
-                            <Tr key={rowIndex}>
-                              {columns.map((column, index) =>
-                                <Td key={`${rowIndex}-${index}`}>
-                                  { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
-                                </Td>
-                              )}
-                            </Tr>
-                          )}
-                        </Tbody>
+                        {/* if no data then show a table with a message no records
+                            otherwise show data
+                       */}
+                        { props.totalDocs != 0 
+                          ? 
+                          <Tbody>
+                            <h1 className="fw-bolder text-center">No records</h1>
+                            {props.loading && <TableLoader colSpan={4} />}
+                            
+                            {!props.loading && /*props.totalDocs === 0 && */
+                              <>
+                                <h3 className="fw-bolder text-center">No records</h3>
+                                <Tr>
+                                  <Td className="fw-bolder text-center">
+                                    now what
+                                  </Td>
+                                </Tr>
+                              </>
+                            }
+                          </Tbody>
+                          :
+                          <Tbody>
+                            {props.loading && <TableLoader colSpan={4} />}
+                            {!props.loading && props.clientBankAccounts.map((row, rowIndex) =>
+                              <Tr key={rowIndex}>
+                                {columns.map((column, index) =>
+                                  <Td key={`${rowIndex}-${index}`}>
+                                    { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
+                                  </Td>
+                                )}
+                              </Tr>
+                            )}
+                          </Tbody>
+                        }
                       </Table>
                       <CustomPagination
                         {...props}

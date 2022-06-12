@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
-  Link
+  Link, useParams
 } from "react-router-dom";
 import { useDispatch, connect } from "react-redux";
 import {
@@ -13,6 +13,7 @@ import { addBankAccount } from "store/bankAccount/actions";
 import { withTranslation } from "react-i18next";
 
 function ClientAddBankAccountModal(props){
+  const { id } = useParams();
   const [addModal, setAddModal] = useState(false);
   const dispatch = useDispatch();
   const addBankAccountHandler = (e, values) => {
@@ -40,6 +41,7 @@ function ClientAddBankAccountModal(props){
           <AvForm
             className='p-4' 
             onValidSubmit={(e, v) => {
+              v.customerId = id;
               addBankAccountHandler(e, v);
             }}
           >
@@ -116,17 +118,6 @@ function ClientAddBankAccountModal(props){
                 placeholder={props.t("Currency")}
                 type="text"
                 errorMessage={props.t("Currency is required")}
-                validate={{ required: { value: true } }}
-              />
-            </div>
-
-            <div className="mb-3">
-              <AvField
-                name="customerId"
-                label={props.t("Customer Id")}
-                placeholder={props.t("Customer Id")}
-                type="text"
-                errorMessage={props.t("Customer Id is required")}
                 validate={{ required: { value: true } }}
               />
             </div>
