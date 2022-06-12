@@ -1,19 +1,19 @@
+/* eslint-disable no-debugger */
 import React from "react";
 import { 
-  BrowserRouter as Router, Redirect, Route, Switch, useLocation 
+  BrowserRouter as Router, Redirect, Route, Switch, useLocation, useParams
 } from "react-router-dom";
 
 import Layout from "./Layout";
-import ClientBank from "./ClientInfo/Bank/ClientBank";
-import ClientDetails from "./ClientInfo/Details/ClientDetails";
-import ClientTransactions from "./ClientInfo/Transactions/ClientTransactions";
-import ClientWallets from "./ClientInfo/Wallets/ClientWallets";
+import ClientBank from "./Bank/ClientBank";
+import ClientProfile from "./Profile/ClientProfile";
+import ClientTransactions from "./Transactions/ClientTransactions";
+import ClientWallets from "./Wallets/ClientWallets";
 import OrderList from "./orders/OrdersList";
 
-function ClientMainPage() {
-  const location = useLocation();
-  const { clientId } = location.state;
-
+function ClientMainPage(props) {
+  const pathParams = useParams();
+  const clientId = pathParams.id;
   return (
     <React.Fragment>
       <div className="page-content">
@@ -24,8 +24,8 @@ function ClientMainPage() {
             <Layout clientId={clientId}>
               <Switch>
                 {/* client details */}
-                <Route exact path="/clients/:id/details">
-                  <ClientDetails clientId={clientId} />
+                <Route exact path="/clients/:id/profile">
+                  <ClientProfile clientId={clientId} />
                 </Route>
                 
                 {/*  client bank */}
@@ -49,7 +49,7 @@ function ClientMainPage() {
                 </Route>
 
                 {/* default route to details right on loading */}
-                <Redirect to={"/clients/" + clientId + "/details"} />
+                <Redirect to={"/clients/" + clientId + "/profile"} />
               </Switch>
             </Layout>
           </Router>

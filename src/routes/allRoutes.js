@@ -11,11 +11,6 @@ import Logout from "../pages/Authentication/Logout";
 import Register from "../pages/Authentication/Register";
 import ForgetPwd from "../pages/Authentication/ForgetPassword";
 import ClientList from "../pages/Client/ClientList";
-import ClientMainPage from "../pages/Client/ClientMainPage";
-import ClientDetails from "../pages/Client/ClientInfo/Details/ClientDetails";
-import ClientBank from "../pages/Client/ClientInfo/Bank/ClientBank";
-import ClientTransactions from "../pages/Client/ClientInfo/Transactions/ClientTransactions";
-import ClientWallets from "../pages/Client/ClientInfo/Wallets/ClientWallets";
 import UsersList from "../pages/Users/UsersList";
 import LeadsList from "../pages/Leads/LeadList"; 
 import Teams from "../pages/Teams/Teams"; 
@@ -27,7 +22,8 @@ import AssetsList from "../pages/Assests/AssetsList";
 import Deposit from "pages/Transactions/Deposit";
 import Withdrawal from "pages/Transactions/Withdrawal";
 import Reminder from "../pages/Reminder/Reminder";
-import OrderList from "pages/Client/orders/OrdersList";
+import ClientMainPage from "../pages/ClientDetail/ClientMainPage";
+
 
 const userRoutes = [
 
@@ -43,38 +39,13 @@ const userRoutes = [
     component: UserProfile 
   },
   {
+    path: "/clients/:id",
+    component: ClientMainPage,
+    notExact: true,
+  },
+  {
     path:"/clients",
     component:ClientList
-  },
-  {
-    path: "/clients/main-page",
-    component: ClientMainPage,
-    innerPages: [
-      {
-        path: "/clients/:id/details",
-        component: ClientDetails
-      }
-    ]
-  },
-  {
-    path: "/clients/:id/details",
-    component: ClientDetails
-  },
-  {
-    path: "/clients/:id/bank",
-    component: ClientBank
-  },
-  {
-    path: "/clients/:id/transactions",
-    component: ClientTransactions
-  },
-  {
-    path: "/clients/:id/wallets",
-    component: ClientWallets
-  },
-  {
-    path: "/clients/:id/orders",
-    component: OrderList
   },
   {
     path:"/leads",

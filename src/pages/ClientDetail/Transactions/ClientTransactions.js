@@ -22,7 +22,7 @@ import {
   fetchClientDeposits  
 } from "store/transactions/deposit/action";
 import Notification from "components/Common/Notification";
-import logo from "../../../../assets/images/logo-sm.svg";
+import logo from "assets/images/logo-sm.svg";
 
 function ClientTransactions(props) {
   const [showNotication, setShowNotifaction] = useState(false);

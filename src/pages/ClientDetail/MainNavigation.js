@@ -14,12 +14,12 @@ function MainNavigation(props){
           <ul className="nav-tabs-custom nav-justified nav nav-tabs">
             <li className="nav-item">
               <NavLink 
-                to={"/clients/" + clientId + "/details"}
+                to={"/clients/" + clientId + "/profile"}
                 className={isActive =>
                   "nav-link" + (!isActive ? " unselected" : "")
                 }
               >
-                {props.t("Details")}
+                {props.t("Profile")}
               </NavLink>
             </li>
 
