@@ -8,7 +8,9 @@ import {
   UncontrolledAlert,
   Col,
   Row,
-  Label
+  Label,
+  Card,
+  Collapse
 } from "reactstrap";
 
 import React, { useState, useEffect } from "react";
@@ -19,19 +21,46 @@ import {
 } from "availity-reactstrap-validation";
 import { withTranslation } from "react-i18next";
 import { editFeeGroupStart } from "store/feeGroups/actions";
+import classnames from "classnames";
 function feeGroupAdd(props) {
   
   const { open, selectedItem = {}, onClose, disabled } = props;
   
   
   const [isPercentage, setIsPercentage] = useState();
+  const [col1, setcol1] = useState(true);
+  const t_col1 = () => {
+    setcol1(!col1);
+  };
+  const [value, setValue] = useState(0);
+  const [minAmount, setMinAmount] = useState(0);
+  const [maxAmount, setMaxAmount] = useState(0);
   useEffect(()=>{
     setIsPercentage(selectedItem.isPercentage);
   }, [selectedItem.isPercentage]);
+ 
   const dispatch = useDispatch();
   const updateFeeGroup = (event, values)=>{
+    const { isPercentage, minValue, maxValue, title } = values;
     event.preventDefault();
-    dispatch(editFeeGroupStart(selectedItem._id, values
+    let marketsObject = {};
+    props.markets.forEach((market, i)=>{
+      marketsObject = {
+        ...marketsObject,
+        [`${market.pairName}`]:{
+          value : values[`fee${i}`],
+          min : values[`minAmount${i}`],
+          max :values[`maxAmount${i}`]
+        }
+      };
+    });
+    dispatch(editFeeGroupStart(selectedItem._id, {
+      isPercentage,
+      minValue,
+      maxValue,
+      title,
+      markets:marketsObject
+    }
     ));
   };
   return (
@@ -52,7 +81,8 @@ function feeGroupAdd(props) {
             }}
           >
             <Row>
-              <Col md="6">
+              
+              <Col >
                 <div className="mb-3">
                   <AvField
                     name="title"
@@ -65,7 +95,12 @@ function feeGroupAdd(props) {
                   />
                 </div>
               </Col>
-              <Col md="6">
+           
+              
+            </Row>
+            <Row>
+              <Col className= "d-flex flex-column justify-content-center"><label>Default:</label></Col>
+              <Col >
                 <div className="mb-3">
                   <AvField
                     name="value"
@@ -75,13 +110,11 @@ function feeGroupAdd(props) {
                     value={selectedItem.value}
                     errorMessage={props.t("Enter valid fees group value")}
                     validate={{ required: { value: true } }}
+                    onChange = {(e)=>setValue(e.target.value)}
                   />
                 </div>
               </Col>
-              
-            </Row>
-            <Row>
-              <Col md="6">
+              <Col >
                 <div className="mb-3">
                   <AvField
                     name="maxValue"
@@ -90,11 +123,12 @@ function feeGroupAdd(props) {
                     type="text"
                     value= {selectedItem.maxValue}
                     errorMessage={props.t("Enter Valid max feees group value")}
+                    onChange = {(e)=>setMaxAmount(e.target.value)}
                     validate={{ required: { value: true } }}
                   />
                 </div>
               </Col>
-              <Col md="6"> 
+              <Col > 
                 <div className="mb-3">
                   <AvField
                     name="minValue"
@@ -102,6 +136,7 @@ function feeGroupAdd(props) {
                     placeholder={props.t("min value")}
                     type="text"
                     value={selectedItem.minValue}
+                    onChange = {(e)=>setMinAmount(e.target.value)}
                     errorMessage={props.t("Enter valid min fees group value")}
                     validate={{ required: { value: true } }}
                   />
@@ -120,7 +155,73 @@ function feeGroupAdd(props) {
               <Label check for="isPercentage">Is Percentage</Label>
         
             </div>
-          
+            <Col xl={12}>
+              <Card>
+              
+              
+                <div className="accordion" id="accordion">
+                  <div className="accordion-item">
+                    <h2 className="accordion-header" id="headingOne">
+                      <button
+                        className={classnames(
+                          "accordion-button",
+                          "fw-medium",
+                          { collapsed: !col1 }
+                        )}
+                        type="button"
+                        onClick={t_col1}
+                        style={{ cursor: "pointer" }}
+                      >
+                       Markets
+                      </button>
+                    </h2>
+
+                    <Collapse isOpen={col1} className="accordion-collapse">
+                      <div className="accordion-body">
+                        <div className="text-muted">
+                        
+                          {props.markets.map((market, i)=>{
+                              
+                            const { pairName } = market;
+                              
+                            return (
+                              <Row key={market._id}>
+                                <Col className="d-flex flex-column justify-content-end"><label>{pairName}</label></Col>
+                                <Col>
+                                  <AvField 
+                                    name={`fee${i}`} 
+                                    label="Value" 
+                                    defaultValue={selectedItem.value} 
+                                    value={value}></AvField>
+                                </Col>
+                                <Col>
+                                  <AvField 
+                                    name={`maxAmount${i}`} 
+                                    label="maxAmount" 
+                                    defaultValue={selectedItem.maxValue}
+                                    value={maxAmount}
+                                  ></AvField>
+                                </Col>
+                                <Col>
+                                  <AvField 
+                                    name={`minAmount${i}`} 
+                                    label="minAmount"
+                                    defaultValue = {selectedItem.minValue}
+                                    value={minAmount}></AvField>
+                                </Col>
+                              </Row>
+                            
+                            );
+                          })}   
+                          
+                        </div>
+                      </div>
+                    </Collapse>
+                  </div>
+                </div>
+                
+              </Card>
+            </Col>
             <div className='text-center pt-3 p-2'>
               <Button  disabled={disabled} type="submit" color="primary" className="">
                 {props.t("Update Fee Group")}
@@ -152,6 +253,7 @@ function feeGroupAdd(props) {
 const mapStateToProps = (state) => ({
   error: state.feeGroupReducer.error,
   showEditSuccessMessage: state.feeGroupReducer.showEditSuccessMessage,
+  markets: state.marketsReducer.markets || []
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(feeGroupAdd));

@@ -9,8 +9,10 @@ import {
   Col,
   Row,
   Label,
+  Collapse,
+  Card
 } from "reactstrap";
-
+import classnames from "classnames";
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { 
@@ -21,21 +23,52 @@ import {
 } from "availity-reactstrap-validation";
 import { withTranslation } from "react-i18next";
 import { addFeesGroupStart } from "store/feeGroups/actions";
+
 function feeGroupAdd(props) {
 
   const [addModal, setAddUserModal] = useState(false);
   const [isPercentage, setIsPercentage] = useState(false);
+  const [col1, setcol1] = useState(true);
   const { create } = props.feeGroupsPermissions;
+  const [value, setValue] = useState(0);
+  const [minAmount, setMinAmount ] = useState(0);
+  const [maxAmount, setMaxAmount] = useState(0);
   const dispatch = useDispatch();
   
   const handleAddFeesGroup = (event, values)=>{
     
     event.preventDefault();
-    dispatch(addFeesGroupStart(values));
+    const { isPercentage, maxValue, title, minValue } = values;
+    let marketsObject;
+    props.markets.forEach((market, i )=>{
+      marketsObject =  {
+        ...marketsObject,
+        
+        [`${market.pairName}`]:{
+          min: values[`minAmount${i}`],
+          max : values[`maxAmount${i}`],
+          value : values [`fee${i}`]
+        
+       
+        }
+       
+      };
+    });
+    
+    dispatch(addFeesGroupStart({
+      isPercentage,
+      minValue,
+      maxValue,
+      title,
+      markets: marketsObject
+    }));
   }; 
 
   const toggleAddModal = () => {
     setAddUserModal(!addModal);
+  };
+  const t_col1 = () => {
+    setcol1(!col1);
   };
 
   useEffect(()=>{
@@ -44,7 +77,7 @@ function feeGroupAdd(props) {
       setAddUserModal(false);
     }
   }, [props.showAddSuccessMessage]);
-
+ 
   return (
     <React.Fragment >
       <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}>
@@ -63,7 +96,7 @@ function feeGroupAdd(props) {
             }}
           >
             <Row>
-              <Col md="6">
+              <Col>
                 <div className="mb-3">
                   <AvField
                     name="title"
@@ -75,7 +108,12 @@ function feeGroupAdd(props) {
                   />
                 </div>
               </Col>
-              <Col md="6">
+           
+            </Row>
+            <Row>
+              <Col className="d-flex flex-column justify-content-center"><label>Default:</label></Col>
+              <Col >
+                
                 <div className="mb-3">
                   <AvField
                     name="value"
@@ -84,12 +122,11 @@ function feeGroupAdd(props) {
                     type="text"
                     errorMessage={props.t("Enter valid fees group value")}
                     validate={{ required: { value: true } }}
+                    onChange = { (e)=> setValue(e.target.value)}
                   />
                 </div>
               </Col>
-            </Row>
-            <Row>
-              <Col md="6">
+              <Col>
                 <div className="mb-3">
                   <AvField
                     name="maxValue"
@@ -98,10 +135,11 @@ function feeGroupAdd(props) {
                     type="text"
                     errorMessage={props.t("Enter Valid max feees group value")}
                     validate={{ required: { value: true } }}
+                    onChange = {(e)=>setMaxAmount(e.target.value)}
                   />
                 </div>
               </Col>
-              <Col md="6"> 
+              <Col > 
                 <div className="mb-3">
                   <AvField
                     name="minValue"
@@ -110,6 +148,7 @@ function feeGroupAdd(props) {
                     type="text"
                     errorMessage={props.t("Enter valid min fees group value")}
                     validate={{ required: { value: true } }}
+                    onChange = {(e)=>setMinAmount(e.target.value)}
                   />
                 </div>
               </Col>
@@ -123,7 +162,61 @@ function feeGroupAdd(props) {
                
               </div>
             </Col>
-           
+            <Col xl={12}>
+              <Card>
+                
+                
+                <div className="accordion" id="accordion">
+                  <div className="accordion-item">
+                    <h2 className="accordion-header" id="headingOne">
+                      <button
+                        className={classnames(
+                          "accordion-button",
+                          "fw-medium",
+                          { collapsed: !col1 }
+                        )}
+                        type="button"
+                        onClick={t_col1}
+                        style={{ cursor: "pointer" }}
+                      >
+                         Markets
+                      </button>
+                    </h2>
+
+                    <Collapse isOpen={col1} className="accordion-collapse">
+                      <div className="accordion-body">
+                        <div className="text-muted">
+                        
+                          {props.markets.map((market, i)=>{
+                            const { pairName } = market;
+                            return <div key={market._id}>
+                                
+                              <Row>
+                                <Col className="d-flex flex-column justify-content-end"><label>${pairName} </label></Col>
+                                <Col>
+                                  <AvField name={`fee${i}`} label="value" value={value}></AvField>
+                                </Col>
+                                <Col>
+                                  <AvField name={`maxAmount${i}`} label="maxAmount" value={maxAmount}></AvField>
+                                </Col>
+                                <Col>
+                                  <AvField name={`minAmount${i}`} label="minAmount" value={minAmount}></AvField>
+                                </Col>
+                                
+                              </Row>
+                              
+                            </div> ;
+                            
+                          })}   
+                          
+                        </div>
+                      </div>
+                    </Collapse>
+                  </div>
+                </div>
+                
+              </Card>
+            </Col>
             
             <div className='text-center pt-3 p-2'>
               <Button disabled={props.addButtonDisabled} type="submit" color="primary" className="">
@@ -157,7 +250,8 @@ const mapStateToProps = (state) => ({
   error: state.feeGroupReducer.error,
   showAddSuccessMessage: state.feeGroupReducer.showAddSuccessMessage,
   addButtonDisabled: state.feeGroupReducer.addButtonDisabled,
-  feeGroupsPermissions: state.Profile.feeGroupsPermissions || {}
+  feeGroupsPermissions: state.Profile.feeGroupsPermissions || {},
+  markets: state.marketsReducer.markets || []
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(feeGroupAdd));
