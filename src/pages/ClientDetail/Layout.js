@@ -1,9 +1,9 @@
 import React from "react";
-// import { Button } from "reactstrap";
 
-import MainNavigation  from "./MainNavigation";
 // i18n
 import { withTranslation } from "react-i18next";
+import MainNavigation  from "./MainNavigation";
+import ClientDetailsHeader from "./ClientDetailsHeader";
 // import ClientMainPage from "./ClientMainPage";
 
 function Layout(props){
@@ -15,6 +15,7 @@ function Layout(props){
   
   return (
     <React.Fragment>
+      <ClientDetailsHeader clientId={clientId} />
       <MainNavigation clientId={clientId} />
       <main>  
         {props.children}  

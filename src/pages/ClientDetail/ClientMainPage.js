@@ -1,7 +1,7 @@
 /* eslint-disable no-debugger */
 import React from "react";
 import { 
-  BrowserRouter as Router, Redirect, Route, Switch, useLocation, useParams
+  BrowserRouter as Router, Redirect, Route, Switch, useParams
 } from "react-router-dom";
 
 import Layout from "./Layout";
@@ -11,15 +11,18 @@ import ClientTransactions from "./Transactions/ClientTransactions";
 import ClientWallets from "./Wallets/ClientWallets";
 import OrderList from "./orders/OrdersList";
 
-function ClientMainPage(props) {
+function ClientMainPage() {
   const pathParams = useParams();
   const clientId = pathParams.id;
+
   return (
     <React.Fragment>
       <div className="page-content">
         <div className="container-fluid">
           {/* components to switch from one to the other
-            1-details (default) 2-bank 3-transactions 4-wallets */}
+            1-details (default) 2-bank 3-transactions 4-wallets 
+            and so on 
+          */}
           <Router>
             <Layout clientId={clientId}>
               <Switch>
