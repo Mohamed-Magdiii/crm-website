@@ -41,7 +41,7 @@ function feeGroupAdd(props) {
  
   const dispatch = useDispatch();
   const updateFeeGroup = (event, values)=>{
-    const { isPercentage, minValue, maxValue, title } = values;
+    const { isPercentage, minValue, maxValue, title, value } = values;
     event.preventDefault();
     let marketsObject = {};
     props.markets.forEach((market, i)=>{
@@ -59,6 +59,7 @@ function feeGroupAdd(props) {
       minValue,
       maxValue,
       title,
+      value,
       markets:{ ...marketsObject }
     }
     ));

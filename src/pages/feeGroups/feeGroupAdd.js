@@ -38,7 +38,7 @@ function feeGroupAdd(props) {
   const handleAddFeesGroup = (event, values)=>{
     
     event.preventDefault();
-    const { isPercentage, maxValue, title, minValue } = values;
+    const { isPercentage, maxValue, title, minValue, value } = values;
     let marketsObject;
     props.markets.forEach((market, i )=>{
       marketsObject =  {
@@ -56,7 +56,8 @@ function feeGroupAdd(props) {
       minValue,
       maxValue,
       title,
-      markets: { ...marketsObject }
+      markets: { ...marketsObject },
+      value
     }));
   }; 
 
