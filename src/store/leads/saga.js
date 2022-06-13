@@ -31,7 +31,9 @@ function *addNewLeadSaga({ payload:{ newLead } }){
     }        
   }
   catch (error){
-    yield put(apiError("Please Enter Valid data"));
+    yield put(apiError("Invalid data"));
+    yield delay(2000);
+    yield put(apiError(""));
   } 
       
 }

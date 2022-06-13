@@ -3,7 +3,7 @@ import qs from "qs";
 export const addNewLead = async(values) => {
 
   const data = await axiosHelper.post("/leads", { ...values });
-  if (data.code === 500){
+  if (data.isSuccess === false){
     throw new Error(data.message);
   }
   

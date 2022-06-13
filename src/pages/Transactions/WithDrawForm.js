@@ -7,12 +7,7 @@ import {
   UncontrolledAlert,
   Col,
   Row,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
   Label,
-  Input
 } from "reactstrap";
 
 import { Link } from "react-router-dom";
@@ -23,10 +18,10 @@ import { fetchGatewaysOfWithdrawalsStart } from "store/gateway/action";
 import { fetchWalletStart, clearWallets } from "store/wallet/action";
 import { fetchClientsStart } from "store/client/actions";
 import { withTranslation } from "react-i18next";
+import Select from "react-select";
 function WithdrawForm(props){
 
   const [open, setWithdrawalModal] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [selectedClient, setSelectedClient] = useState("");
   const dispatch = useDispatch();
@@ -90,19 +85,33 @@ function WithdrawForm(props){
             <Row>
               <Col md="6">
                 <Label>{props.t("Client")}</Label>
-        
-                <Dropdown   toggle={() => setIsOpen(!isOpen)} isOpen={isOpen}>
-                  <DropdownToggle className="transparentbar"  >
-                    <Input  onChange={(e) => setSearchInput(e.target.value) } value={searchInput} placeholder={props.t("search for client")} />
-                  </DropdownToggle>
-                  <DropdownMenu  >
-                    {props.clients.map((item) => (
-                      <div key={item._id} onClick={(e)=>setSearchInput(e.target.textContent)}>
-                        <DropdownItem onClick={(e)=>selectClient(e.target.value)} value={item._id}>{props.t(`${item.firstName} ${item.lastName}`)}</DropdownItem>
-                      </div>
+                <div>
+                  <Select 
+                    onChange={(e) => {
+                    
+                      selectClient(e.value.id);
+                    
+                    }}
+                    isSearchable = {true}
+                    options={props.clients.map((item) => (
+                      {
+                        label : `${item.firstName} ${item.lastName}`,
+                        value : {
+                          name: `${item.firstName} ${item.lastName}`,
+                          id: `${item._id}`
+                        }
+                      }
+
                     ))}
-                  </DropdownMenu>
-                </Dropdown>
+                    classNamePrefix="select2-selection"
+                    placeholder = "Select the client"
+                    onInputChange = {(e)=>setSearchInput(e)}
+                    name = "clientId"
+                    
+                    isRequired = {true}
+                  />
+                </div>
+              
               </Col>
               <Col md="6">
                 <AvField name="walletId" 

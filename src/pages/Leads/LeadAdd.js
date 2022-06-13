@@ -19,12 +19,15 @@ import { withTranslation } from "react-i18next";
 function LeadForm(props) {
 
   const [addModal, setAddUserModal] = useState(false);
-
+  const [selectedCountry, setSelectedCountry] = useState("");
   const dispatch = useDispatch();
   const { create } = props.leadsPermissions;
   const handleAddLead = (event, values)=>{
     event.preventDefault();
-    dispatch(addNewLead(values));
+    dispatch(addNewLead({
+      ...values,
+      country: selectedCountry
+    }));
 
   }; 
 
@@ -136,7 +139,7 @@ function LeadForm(props) {
               />
             </div>
             <div className="mb-3">
-              <CountryDropDown/>
+              <CountryDropDown selectCountry= {setSelectedCountry}/>
             </div>
             <div className='text-center pt-3 p-2'>
               <Button disabled= {props.disableAddButton} type="submit" color="primary" className="">

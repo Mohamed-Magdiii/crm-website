@@ -30,6 +30,8 @@ function * addNewClient({ payload:{ newClient } }) {
     }
   } catch (error){
     yield put(apiError("Invalid data"));
+    yield delay(2000);
+    yield put(apiError(""));
   }
 }
 
