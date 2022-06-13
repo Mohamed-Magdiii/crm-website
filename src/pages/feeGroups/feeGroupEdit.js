@@ -49,8 +49,8 @@ function feeGroupAdd(props) {
         ...marketsObject,
         [`${market.pairName}`]:{
           value : values[`fee${i}`],
-          min : values[`minAmount${i}`],
-          max :values[`maxAmount${i}`]
+          minValue : values[`minAmount${i}`],
+          maxValue :values[`maxAmount${i}`]
         }
       };
     });
@@ -59,7 +59,7 @@ function feeGroupAdd(props) {
       minValue,
       maxValue,
       title,
-      markets:marketsObject
+      markets:{ ...marketsObject }
     }
     ));
   };

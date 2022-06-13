@@ -12,7 +12,6 @@ export async function fetchFeeGroups (params){
 
 }
 export async function updateFeeGroup ({ body, id }){
-  
   const result = await axioHelper.patch(`/fee-groups/${id}`, body);
   if (result.code === 422){
     throw new Error(result.message);

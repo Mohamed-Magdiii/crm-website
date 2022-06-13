@@ -43,24 +43,20 @@ function feeGroupAdd(props) {
     props.markets.forEach((market, i )=>{
       marketsObject =  {
         ...marketsObject,
-        
         [`${market.pairName}`]:{
-          min: values[`minAmount${i}`],
-          max : values[`maxAmount${i}`],
-          value : values [`fee${i}`]
-        
-       
+          value : values [`fee${i}`],
+          minValue: values[`minAmount${i}`],
+          maxValue : values[`maxAmount${i}`]
         }
        
       };
     });
-    
     dispatch(addFeesGroupStart({
       isPercentage,
       minValue,
       maxValue,
       title,
-      markets: marketsObject
+      markets: { ...marketsObject }
     }));
   }; 
 
