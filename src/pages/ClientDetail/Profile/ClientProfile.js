@@ -50,7 +50,6 @@ function ClientDetails(props) {
   };
 
   // agent select component handler
-  // const [selectedAgent, setSelectedAgent] = useState({});
   let selectedAgent = null;
   const agentSelectHandler = () => {
     const agentOptions = props.usersDocs.map((user) => {

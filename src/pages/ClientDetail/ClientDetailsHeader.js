@@ -4,7 +4,6 @@ import { useDispatch, connect } from "react-redux";
 // i18n
 import { withTranslation } from "react-i18next";
 import { fetchClientDetails } from "../../store/client/actions";
-import { Col, Row } from "reactstrap";
 
 function ClientDetailsHeader(props){
   const clientId = props.clientId;
@@ -19,85 +18,80 @@ function ClientDetailsHeader(props){
   
   return (
     <React.Fragment>
-      <div className="navbar-header solid">
-        <div className="container-fluid">
-          <div className="border">
-            <Row>
-              <Col md="2" sm="6" xs="6">
-                <div className="card-body border">
-                  <div className="faq-count">
-                    <h6 className="text">
-                      {props.clientDetails.firstName + " " + props.clientDetails.lastName}
-                    </h6>
-                  </div>
+      <div className="row">
+        <div className="col-md-6 col-xl-3">
+          <div className="card-h-50 card">
+            <div className="card-body">
+              <div className="align-items-center">
+                <div className="col-6">
+                  <span className="text-muted mb-3 lh-1 d-block text-truncate">
+                    {props.clientDetails.firstName + " " + props.clientDetails.lastName}
+                  </span>
+                  <h4 className="mb-1">
+                    <span className="counter-value">
+                      {clientId}
+                    </span>
+                  </h4>
                 </div>
-              </Col>
+              </div>
+            </div>
+          </div>
+        </div>
 
-              <Col md="2" sm="6" xs="6">
-                <div className="card-body">
-                  <div className="faq-count">
-                    <h6 className="text">
-                      {(props.clientDetails.createdAt)}
-                    </h6>
-                  </div>
+        <div className="col-md-6 col-xl-3 col-xs-3">
+          <div className="card-h-100 card">
+            <div className="card-body">
+              <div className="align-items-center row">
+                <div className="col-6">
+                  <span className="text-muted mb-3 lh-1 d-block text-truncate">
+                    Created on
+                  </span>
+                  <h4 className="mb-1">
+                    <span className="counter-value">
+                      {props.clientDetails.createdAt ? (props.clientDetails.createdAt).split("T")[0] : " "}
+                    </span>
+                  </h4>
                 </div>
-              </Col>
+              </div>
+            </div>
+          </div>
+        </div>
 
-              <Col md="2" sm="6" xs="6">
-                <div className="card-body">
-                  <div className="faq-count">
-                    <h6 className="text">
-                      {props.clientDetails.category}
-                    </h6>
-                  </div>
-                </div>
-              </Col>
-
-              <Col md="2" sm="6" xs="6">
-                <div className="card-body">
-                  <div className="faq-count">
-                    <h6 className="text">
-                      {props.clientDetails.agent || "N/A"}
-                    </h6>
-                  </div>
-                </div>
-              </Col>
-
-              <Col md="2" sm="6" xs="6">
-                <div className="card-body">
-                  <div className="faq-count">
-                    <h6 className="text">
+        <div className="col-md-6 col-xl-3 col-xs-3">
+          <div className="card-h-100 card">
+            <div className="card-body">
+              <div className="align-items-center row">
+                <div className="col-6">
+                  <span className="text-muted mb-3 lh-1 d-block text-truncate">
+                    Status
+                  </span>
+                  <h4 className="mb-1">
+                    <span className="counter-value">
                       {props.clientDetails.isActive ? "Active" : "Inactive"}
-                    </h6>
-                  </div>
+                    </span>
+                  </h4>
                 </div>
-              </Col>
-            </Row>
- 
-            {/* name and id */}
-            {/* <div className="btn btn-primary">
-              {props.clientDetails.firstName + " " + props.clientDetails.lastName}
-            </div> */}
+              </div>
+            </div>
+          </div>
+        </div>
 
-            {/* created on */}
-            {/* <div className="btn btn-primary">
-              {(props.clientDetails.createdAt)}
-            </div> */}
-
-            {/* category */}
-            {/* <div className="btn btn-primary">
-              {props.clientDetails.category}
-            </div> */}
-
-            {/* agent */}
-            {/* <div className="btn btn-primary">
-              {props.clientDetails.agent || "N/A"}
-            </div> */}
-
-            {/* status */}
-            {/* <div className="btn btn-primary">
-              {props.clientDetails.isActive ? "Active" : "Inactive"}
-            </div> */}
+        <div className="col-md-6 col-xl-3 col-xs-3">
+          <div className="card-h-100 card">
+            <div className="card-body">
+              <div className="align-items-center row">
+                <div className="col-6">
+                  <span className="text-muted mb-3 lh-1 d-block text-truncate">
+                    Category
+                  </span>
+                  <h4 className="mb-1">
+                    <span className="counter-value">
+                      {props.clientDetails.category}
+                    </span>
+                  </h4>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
