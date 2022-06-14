@@ -25,6 +25,8 @@ function DepositForm(props){
   const [addModal, setDepositModal] = useState(false);
   
   const [selectedClient, setSelectedClient] = useState("");
+  const [selectedWalletId, setSelectedWalletId] = useState("");
+  const [gateway, setGateway] = useState("");
   const dispatch = useDispatch();
   const { create } = props.depositsPermissions;
   const [searchInput, setSearchInput]  = useState("");
@@ -32,6 +34,8 @@ function DepositForm(props){
     event.preventDefault();
     dispatch(addDepositStart({
       customerId:selectedClient,
+      walletId: selectedWalletId,
+      gateway,
       ...values
     }));
     setSearchInput("");
@@ -87,7 +91,7 @@ function DepositForm(props){
             <Row>
               <Col md="6">
                 <Label>{props.t("Client")}</Label>
-            
+                
                 
                 <div>
                   <Select 
@@ -113,40 +117,58 @@ function DepositForm(props){
                 </div>
               </Col>
               <Col md="6">
-                <AvField name="walletId" 
-                  type="select" 
-                  label={props.t("Select a wallet")}
-                  id="walletList"
-                  validate = {{ required:{ value:true } }}
-                >
-                  <option hidden></option>
-                  {props.wallets.map(wallet=> (
-                    <option key={wallet._id} value={wallet._id} >
-                      {props.t(`${wallet.asset}-(Balance ${wallet.amount} ${wallet.asset})`)}
-                    </option>
-                  ))}
-     
-                </AvField>
+                <Label>{props.t("Wallet")}</Label>
+                <div>
+                  <Select 
+                    onChange={(e) => {
+                      setSelectedWalletId(e.value.id);
+                      
+                    }}
+                    isSearchable = {true}
+                    options={props.wallets.map((wallet) => (
+                      {
+                        label : `${wallet.asset}-(Balance ${wallet.amount} ${wallet.asset})`,
+                        value : {
+                          id: `${wallet._id}`
+                        }
+                      }
+
+                    ))}
+                    classNamePrefix="select2-selection"
+                    placeholder = "Select the wallet"
+                      
+                  />
+                </div>
+              
               </Col>
           
             </Row>
           
         
             <div className="mb-3">
-              <AvField
-                name="gateway"
-                label={props.t("Gateway")}
-                placeholder={props.t("gateway")}
-                type="select"
-                errorMessage={props.t("Enter valid gateway")}
-                validate={{ required: { value: true } }}
-              >
-                <option hidden></option>
-                {Object.keys(props.gateways).map((key)=>{
-                  return <option key={key}>{props.t(props.gateways[key])}</option>;
-                })}
+              
+              <Label>{props.t("Gateway")}</Label>
+              <div>
+                <Select 
+                  onChange={(e) => {
+                      
+                    setGateway(e.value.gateway);
+                  }}
+                  isSearchable = {true}
+                  options={Object.keys(props.gateways).map((key) => (
+                    {
+                      label : `${props.gateways[key]}`,
+                      value : {
+                        gateway: `${props.gateways[key]}`
+                      }
+                    }
 
-              </AvField>
+                  ))}
+                  classNamePrefix="select2-selection"
+                  placeholder = "Select the gateway"
+                      
+                />
+              </div>
             </div>
               
                
