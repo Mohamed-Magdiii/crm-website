@@ -196,9 +196,8 @@ function TransactionFeeGroupAdd(props) {
                   <Collapse isOpen={col1} className="accordion-collapse">
                     <div className="accordion-body">
                       {props.assets?.map((asset, index) =>
-                        <>
-
-                          <Row key={index}>
+                        <div key={index}>
+                          <Row>
                             <Col md="2" className="d-flex flex-column justify-content-end"><h5 className="text-center"> {asset.symbol}</h5></Col>
                             <Col  >
                               <AvField
@@ -231,7 +230,7 @@ function TransactionFeeGroupAdd(props) {
                           </Row>
                           <br />
                           <br />
-                        </>
+                        </div>
                       )}
                     </div>
                   </Collapse>
