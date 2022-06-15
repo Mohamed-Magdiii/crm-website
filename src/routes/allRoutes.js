@@ -10,7 +10,7 @@ import Login from "../pages/Authentication/Login";
 import Logout from "../pages/Authentication/Logout";
 import Register from "../pages/Authentication/Register";
 import ForgetPwd from "../pages/Authentication/ForgetPassword";
-import ClientList from "../pages/Client/ClientList";
+import ClientList from "../pages/Clients/ClientList";
 import UsersList from "../pages/Users/UsersList";
 import LeadsList from "../pages/Leads/LeadList";
 import Teams from "../pages/Teams/Teams";
@@ -27,6 +27,7 @@ import Reminder from "../pages/Reminder/Reminder";
 import DictionaryList from "pages/Dictionary.js/DictionaryList";
 import MarketPrice from "pages/MarketPrice/MarketPrice";
 import feeGroupList from "pages/feeGroups/feeGroupList";
+import ClientMainPage from "pages/ClientDetail/ClientMainPage";
 import usePermissions from "./permissions";
 
 function userRoutes(){
@@ -65,6 +66,11 @@ function userRoutes(){
       path: "/clients",
       component: ClientList,
       get: clientPermissions.get
+    },
+    {
+      path: "/clients/:id",
+      component: ClientMainPage,
+      notExact: true,
     },
     {
       path: "/leads",

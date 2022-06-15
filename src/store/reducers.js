@@ -32,7 +32,9 @@ import assetReducer from "./assests/reducer";
 import walletReducer from "./wallet/reducer";
 import gatewayReducer from "./gateway/reducer";
 import depositReducer from "./transactions/deposit/reducer";
-import withdrawalReducer from "./transactions/withdrawal/reducer";
+import withdrawalReducer from "./transactions/withdrawal/reducer"; 
+import ordersReducer from "./orders/reducer"; 
+import bankAccountReducer from "./bankAccount/reducer"; 
 import dictionaryReducer from "./dictionary/reducer";
 import marketsReducer from "./markets/reducer";
 import feeGroupReducer from "./feeGroups/reducer";
@@ -61,7 +63,9 @@ const rootReducer = combineReducers({
   walletReducer,
   gatewayReducer,
   depositReducer,
-  withdrawalReducer,
+  withdrawalReducer, 
+  ordersReducer, 
+  bankAccountReducer,
   dictionaryReducer,
   marketsReducer,
   feeGroupReducer,

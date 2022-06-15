@@ -19,3 +19,16 @@ export const rejectWithdrawal = async (id)=>{
   const result = await axiosHelper.patch(`/transactions/withdraw/${id}/reject`);
   return result;
 };
+
+export const getClientWithdrawals = async ({ payload }) => {
+  const id = payload;
+  const withdrawals = await axiosHelper.get(`/transactions/withdraw/${id}/client`);
+  const data = {
+    withdrawals: withdrawals
+  };
+  if (withdrawals.isError){
+    throw new Error(data.isError);
+  }
+
+  return data;
+};
