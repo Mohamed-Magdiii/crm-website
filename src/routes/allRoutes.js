@@ -28,12 +28,13 @@ import DictionaryList from "pages/Dictionary.js/DictionaryList";
 import MarketPrice from "pages/MarketPrice/MarketPrice";
 import feeGroupList from "pages/feeGroups/feeGroupList";
 import usePermissions from "./permissions";
+import TransactionFeeGroupList from "pages/transactionFeeGroups/TransactionFeeGroupList";
 
-function userRoutes(){
+function userRoutes() {
   const object = usePermissions();
-  const { 
-    userPermissions, 
-    clientPermissions, 
+  const {
+    userPermissions,
+    clientPermissions,
     rolesPermissions,
     teamsPermissions,
     withdrawalsPermissions,
@@ -44,22 +45,23 @@ function userRoutes(){
     dictionariesPermissions,
     feeGroupsPermissions,
     currencyPairsPermissions,
-    markupsPermissions
+    markupsPermissions,
+    transactionFeeGroupsPermissions
   } = object;
-  
+
   return [
     //dashboard
     {
       path: "/dashboard",
       component: Dashboard,
-      
+
     },
-  
+
     //profile
     {
       path: "/profile",
       component: UserProfile,
-  
+
     },
     {
       path: "/clients",
@@ -69,7 +71,7 @@ function userRoutes(){
     {
       path: "/leads",
       component: LeadsList,
-      get : leadsPermissions.get
+      get: leadsPermissions.get
     },
     //users
     {
@@ -97,7 +99,7 @@ function userRoutes(){
     {
       path: "/system-emails",
       component: SystemEmailsList,
-      get :systemEmailsPermissions.get
+      get: systemEmailsPermissions.get
     },
     {
       path: "/assets",
@@ -107,7 +109,7 @@ function userRoutes(){
     {
       path: "/currency-pairs",
       component: CurrencyPairsList,
-      get : currencyPairsPermissions.get
+      get: currencyPairsPermissions.get
     },
     {
       path: "/price/:pairName",
@@ -121,29 +123,34 @@ function userRoutes(){
     {
       path: "/transactions/deposit",
       component: Deposit,
-      get : depositsPermissions.get
+      get: depositsPermissions.get
     },
     {
       path: "/transactions/withdrawals",
       component: Withdrawal,
-      get : withdrawalsPermissions.get
+      get: withdrawalsPermissions.get
     },
     {
-      path:"/dictionaries",
-      component:DictionaryList,
-      get : dictionariesPermissions.get
+      path: "/dictionaries",
+      component: DictionaryList,
+      get: dictionariesPermissions.get
     },
     {
-      path:"/fee-groups",
-      component:feeGroupList,
-      get : feeGroupsPermissions.get
+      path: "/fee-groups",
+      component: feeGroupList,
+      get: feeGroupsPermissions.get
+    },
+    {
+      path: "/transaction-fee-groups",
+      component: TransactionFeeGroupList,
+      get : transactionFeeGroupsPermissions.get
     },
     {
       path: "/",
       exact: true,
       component: () => <Redirect to="/dashboard" />,
     },
-  
+
     // this route should be at the end of all other routes
   ];
 }
