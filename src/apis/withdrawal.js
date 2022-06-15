@@ -22,7 +22,7 @@ export const rejectWithdrawal = async (id)=>{
 
 export const getClientWithdrawals = async ({ payload }) => {
   const id = payload;
-  const withdrawals = await axiosHelper.get(`/transactions/withdraw/${id}/client`);
+  const withdrawals = await axiosHelper.get(`/transactions/withdraw/?customerId=${id}`);
   const data = {
     withdrawals: withdrawals
   };

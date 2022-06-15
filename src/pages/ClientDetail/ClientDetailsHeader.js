@@ -11,7 +11,7 @@ function ClientDetailsHeader(props){
     <React.Fragment>
       <div className="row">
         <div className="col-md-6 col-xl-3">
-          <div className="card-h-50 card">
+          <div className="card-h-100 card">
             <div className="card-body">
               <div className="align-items-center">
                 <div className="col-6">
@@ -30,7 +30,7 @@ function ClientDetailsHeader(props){
         </div>
 
         <div className="col-md-6 col-xl-3 col-xs-3">
-          <div className="card-h-50 card">
+          <div className="card-h-100 card">
             <div className="card-body">
               <div className="align-items-center row">
                 <div className="col-6">
@@ -49,7 +49,7 @@ function ClientDetailsHeader(props){
         </div>
 
         <div className="col-md-6 col-xl-3 col-xs-3">
-          <div className="card-h-50 card">
+          <div className="card-h-100 card">
             <div className="card-body">
               <div className="align-items-center row">
                 <div className="col-6">
@@ -68,7 +68,7 @@ function ClientDetailsHeader(props){
         </div>
 
         <div className="col-md-6 col-xl-3 col-xs-3">
-          <div className="card-h-50 card">
+          <div className="card-h-100 card">
             <div className="card-body">
               <div className="align-items-center row">
                 <div className="col-8">

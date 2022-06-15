@@ -14,6 +14,7 @@ import { fetchClientDetails, editClientDetails } from "store/client/actions";
 import { fetchUsers } from "store/users/actions";
 import CountryDropDown from "components/Common/CountryDropDown";
 import NationalityDropDown from "components/Common/NationalityDropDown";
+import Loader from "components/Common/Loader";
 
 function ClientDetails(props) {
   const clientId = props.clientId;
@@ -83,6 +84,11 @@ function ClientDetails(props) {
 
   return (
     <React.Fragment>
+      {!agentOptions && 
+        <div className="d-flex justify-content-center">
+          <Loader />
+        </div>
+      }
       {agentOptions &&
         <div className="">
           <div className="container-fluid">

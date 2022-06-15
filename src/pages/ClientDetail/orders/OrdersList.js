@@ -230,18 +230,38 @@ function OrderList(props) {
                           )}
                         </Tr>
                       </Thead>
-                      <Tbody>
-                        {loading && <TableLoader colSpan={6} />}
-                        {!loading && docs.map((row, rowIndex) =>
-                          <Tr key={rowIndex}>
-                            {columns.map((column, index) =>
-                              <Td key={`${rowIndex}-${index}`}>
-                                {column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
-                              </Td>
+                      {/* if no data then show a table with a message no records
+                            otherwise show data
+                       */}
+                      {
+                        docs && docs.length === 0 
+                          ? 
+                          <Tbody>
+                            {props.loading && <TableLoader colSpan={4} />}                            
+                            {!props.loading && /*docs.length=== 0 && */
+                              <>
+                                <Tr>
+                                  <Td colSpan={"100%"} className="fw-bolder text-center" st="true">
+                                    <h3 className="fw-bolder text-center">No records</h3>
+                                  </Td>
+                                </Tr>
+                              </>
+                            }
+                          </Tbody>
+                          :
+                          <Tbody>
+                            {loading && <TableLoader colSpan={6} />}
+                            {!loading && docs.map((row, rowIndex) =>
+                              <Tr key={rowIndex}>
+                                {columns.map((column, index) =>
+                                  <Td key={`${rowIndex}-${index}`}>
+                                    {column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
+                                  </Td>
+                                )}
+                              </Tr>
                             )}
-                          </Tr>
-                        )}
-                      </Tbody>
+                          </Tbody>
+                      }
                     </Table>
                     <CustomPagination
                       totalPages={totalPages}

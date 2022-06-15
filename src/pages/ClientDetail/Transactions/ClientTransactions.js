@@ -177,43 +177,99 @@ function ClientTransactions(props) {
                             )}
                           </Tr>
                         </Thead>
-                        {/* if deposits is selected then render clientDeposits */}
-                        {(selectedTransactionType === "deposit" && props.clientDeposits) && <Tbody>
-                          {props.loading && <TableLoader colSpan={4} />}
-                          {!props.loading && props.clientDeposits.result.docs.map((row, rowIndex) =>
-                            <Tr key={rowIndex}>
-                              {columns.map((column, index) =>
-                                <Td key={`${rowIndex}-${index}`}>
-                                  { column.dataField === "checkbox" ? <input type="checkbox"/> : ""}
-                                  { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
-                                  {column.dataField === "dropdown" ? <CustomDropdown  id={row._id} status={row.status} approve={depositApprove} reject={depositReject} /> : ""}
-                                </Td>
-                              )}
-                            </Tr>
-                          )}
-                        </Tbody>}
-                        {/* if withdrawals is selected then render clientWithdrawal */}
-                        {(selectedTransactionType === "withdrawal" && props.clientWithdrawal) && <Tbody>
-                          {props.loading && <TableLoader colSpan={4} />}
-                          {!props.loading && props.clientWithdrawal.result.docs.map((row, rowIndex) =>
-                            <Tr key={rowIndex}>
-                              {columns.map((column, index) =>
-                                <Td key={`${rowIndex}-${index}`}>
-                                  { column.dataField === "checkbox" ? <input type="checkbox"/> : ""}
-                                  { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
-                                  {column.dataField === "dropdown" ? <CustomDropdown  id={row._id} status={row.status} approve={depositApprove} reject={depositReject} /> : ""}
-                                </Td>
-                              )}
-                            </Tr>
-                          )}
-                        </Tbody>}
+                        {/* if no records show "No records" otherwise show records */}
+                        {
+                          // if deposits is selected then render clientDeposits
+                          selectedTransactionType === "deposit"
+                            ?
+                            // if deposits is selected but no data to show
+                            props.depositsTotalDocs === 0 
+                              ?
+                              <Tbody>
+                                {props.loading && <TableLoader colSpan={4} />}                            
+                                {!props.loading && /*props.totalDocs === 0 && */
+                                  <>
+                                    <Tr>
+                                      <Td colSpan={"100%"} className="fw-bolder text-center" st="true">
+                                        <h3 className="fw-bolder text-center">No records</h3>
+                                      </Td>
+                                    </Tr>
+                                  </>
+                                }
+                              </Tbody>
+                              :
+                              // if deposits is selected and there is data to show
+                              <Tbody>
+                                {props.loading && <TableLoader colSpan={4} />}
+                                {(!props.loading && props.clientDeposits) && props.clientDeposits.map((row, rowIndex) =>
+                                  <Tr key={rowIndex}>
+                                    {columns.map((column, index) =>
+                                      <Td key={`${rowIndex}-${index}`}>
+                                        { column.dataField === "checkbox" ? <input type="checkbox"/> : ""}
+                                        { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
+                                        {column.dataField === "dropdown" ? <CustomDropdown  id={row._id} status={row.status} approve={depositApprove} reject={depositReject} /> : ""}
+                                      </Td>
+                                    )}
+                                  </Tr>
+                                )}
+                              </Tbody>
+                            :
+                            // if withdrawals is selected 
+                            props.withdrawalsTotalDocs === 0 
+                              ?
+                              // if withdrawals is seleceted but no data to show
+                              <Tbody>
+                                {props.loading && <TableLoader colSpan={4} />}                            
+                                {!props.loading && /*props.totalDocs === 0 && */
+                                  <>
+                                    <Tr>
+                                      <Td colSpan={"100%"} className="fw-bolder text-center" st="true">
+                                        <h3 className="fw-bolder text-center">No records</h3>
+                                      </Td>
+                                    </Tr>
+                                  </>
+                                }
+                              </Tbody>
+                              :
+                              // if withdrawals is selected and there is data to show
+                              <Tbody>
+                                {props.loading && <TableLoader colSpan={4} />}
+                                {(!props.loading && props.clientWithdrawals) && props.clientWithdrawals.map((row, rowIndex) =>
+                                  <Tr key={rowIndex}>
+                                    {columns.map((column, index) =>
+                                      <Td key={`${rowIndex}-${index}`}>
+                                        { column.dataField === "checkbox" ? <input type="checkbox"/> : ""}
+                                        { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
+                                        {column.dataField === "dropdown" ? <CustomDropdown  id={row._id} status={row.status} approve={depositApprove} reject={depositReject} /> : ""}
+                                      </Td>
+                                    )}
+                                  </Tr>
+                                )}
+                              </Tbody>
+                        }
                       </Table>
-                      <CustomPagination
-                        {...props}
-                        setSizePerPage={setSizePerPage}
-                        sizePerPage={sizePerPage}
-                        onChange={loadClientTransactionsdetails}
-                      />
+                      {/* if deposits is selected */}
+                      {
+                        (props.clientDeposits && selectedTransactionType === "deposit") && 
+                        <CustomPagination
+                          {...props}
+                          docs={props.clientDeposits}
+                          setSizePerPage={setSizePerPage}
+                          sizePerPage={sizePerPage}
+                          onChange={loadClientTransactionsdetails}
+                        />
+                      }
+                      {/* if withdrawals is selected */}
+                      {
+                        (props.clientWithdrawals && selectedTransactionType === "withdrawal") && 
+                        <CustomPagination
+                          {...props}
+                          docs={props.clientWithdrawals}
+                          setSizePerPage={setSizePerPage}
+                          sizePerPage={sizePerPage}
+                          onChange={loadClientTransactionsdetails}
+                        />
+                      }
                     </div>
                   </div>
                 </CardBody>
@@ -230,7 +286,7 @@ const mapStateToProps = (state) => ({
   loading: state.clientReducer.loading,
   error: state.clientReducer.error,
   clientDeposits: state.depositReducer.clientDeposits,
-  clientWithdrawal: state.withdrawalReducer.clientWithdrawal,
+  clientWithdrawals: state.withdrawalReducer.clientWithdrawals,
   errorDetails: state.clientReducer.errorDetails,
   depositsTotalDocs: state.depositReducer.depositsTotalDocs,
   withdrawalsTotalDocs: state.withdrawalReducer.withdrawalsTotalDocs

@@ -93,7 +93,7 @@ const depositReducer = (state = { initalState }, action)=>{
     case FETCH_CLIENT_DEPOSITS_SUCCESS:
       state = {
         ...state, 
-        clientDeposits: action.payload.deposits,
+        clientDeposits: action.payload.deposits.result.docs,
         depositsTotalDocs: action.payload.deposits.result.totalDocs,
         error: false,
         success: true,

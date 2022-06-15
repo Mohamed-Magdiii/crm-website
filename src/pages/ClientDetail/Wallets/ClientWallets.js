@@ -114,7 +114,7 @@ function ClientWallets(props) {
       )
     }
   ];
-
+  
   return (
     <React.Fragment>
       <div className="">
@@ -145,9 +145,38 @@ function ClientWallets(props) {
                             )}
                           </Tr>
                         </Thead>
-                        {props.clientWalletDetails && <Tbody>
+                        {
+                          props.totalWalletDocs === 0
+                            ?
+                            <Tbody>
+                              {props.loading && <TableLoader colSpan={4} />}                            
+                              {!props.loading && /*props.totalDocs === 0 && */
+                                <>
+                                  <Tr>
+                                    <Td colSpan={"100%"} className="fw-bolder text-center" st>
+                                      <h3 className="fw-bolder text-center">No records</h3>
+                                    </Td>
+                                  </Tr>
+                                </>
+                              }
+                            </Tbody>
+                            :
+                            <Tbody>
+                              {props.loading && <TableLoader colSpan={4} />}
+                              {(!props.loading && props.docs) && props.docs.map((row, rowIndex) =>
+                                <Tr key={rowIndex}>
+                                  {columns.map((column, index) =>
+                                    <Td key={`${rowIndex}-${index}`}>
+                                      { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
+                                    </Td>
+                                  )}
+                                </Tr>
+                              )}
+                            </Tbody>
+                        }
+                        {/* {props.docs && <Tbody>
                           {props.loading && <TableLoader colSpan={4} />}
-                          {!props.loading && props.clientWalletDetails.docs.map((row, rowIndex) =>
+                          {!props.loading && props.docs.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`}>
@@ -156,7 +185,7 @@ function ClientWallets(props) {
                               )}
                             </Tr>
                           )}
-                        </Tbody>}
+                        </Tbody>} */}
                       </Table>
                       <CustomPagination
                         {...props}
@@ -193,7 +222,7 @@ const mapStateToProps = (state) => ({
   error: state.walletReducer.error,
   errorDetails: state.walletReducer.errorDetails,
   success: state.walletReducer.success,
-  clientWalletDetails: state.walletReducer.clientWalletDetails,
+  docs: state.walletReducer.docs,
   totalWalletDocs: state.walletReducer.totalWalletDocs
 });
 

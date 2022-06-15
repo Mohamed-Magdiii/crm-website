@@ -94,7 +94,7 @@ const withdrawalReducer = (state = { initalState }, action)=>{
     case FETCH_CLIENT_WITHDRAWALS_SUCCESS:
       state = {
         ...state,
-        clientWithdrawal: action.payload.withdrawals,
+        clientWithdrawals: action.payload.withdrawals.result.docs,
         withdrawalsTotalDocs: action.payload.withdrawals.result.totalDocs,
         error: false,
         success: true,
