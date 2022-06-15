@@ -78,7 +78,6 @@ function ClientMainPage(props) {
               1-details (default) 2-bank 3-transactions 4-wallets 
               and so on 
             */}
-            
             <Router>
               {/* 
                 if client exists ie. the Id passed to the URL is correct
