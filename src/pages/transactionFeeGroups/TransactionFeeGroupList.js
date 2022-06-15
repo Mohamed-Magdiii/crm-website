@@ -47,15 +47,18 @@ function TransactionFeeGroupList(props) {
     {
       dataField: "value",
       text: props.t("Value"),
+      formatter: (val) => (val.value?.toString()),
 
     },
     {
       dataField: "maxValue",
       text: props.t("Max Value"),
+      formatter: (val) => (val.maxValue?.toString()),
     },
     {
       dataField: "minValue",
       text: props.t("Min Value"),
+      formatter: (val) => (val.minValue?.toString()),
     },
     {
       dataField: "",
