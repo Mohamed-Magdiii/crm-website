@@ -58,7 +58,8 @@ const profile = (state = initialState, action) => {
         systemEmailsPermissions : { ...action.payload.systemEmails },
         symbolsPermissions : { ...action.payload.symbols },
         currencyPairsPermissions : { ...action.payload.currencyPairs },
-        markupsPermissions : { ...action.payload.markups }
+        markupsPermissions : { ...action.payload.markups },
+        transactionFeeGroupsPermissions : { ...action.payload.transactionFeeGroups },
       };
       break;
     case "CLEAR_PROFILE":
