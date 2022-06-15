@@ -84,7 +84,13 @@ function ClientDetails(props) {
 
   return (
     <React.Fragment>
-      {!agentOptions && <Loader />}
+      {agentOptions && 
+        <div className="page-content">
+          <div className="container-fluid">
+            <Loader />
+          </div>
+        </div>
+      }
       {agentOptions &&
         <div className="page-content">
           <div className="container-fluid">
@@ -355,8 +361,7 @@ const mapStateToProps = (state) => ({
   editErrorDetials: state.clientReducer.editErrorDetails,
   updatedClientDetails: state.clientReducer.updatedClientDetails,
   editSuccess: state.clientReducer.editSuccess,
-  usersDocs: state.usersReducer.docs,
-  fetchUsersClear: state.usersReducer.fetchUsersClear
+  usersDocs: state.usersReducer.docs
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(ClientDetails));

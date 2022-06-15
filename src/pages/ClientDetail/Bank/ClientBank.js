@@ -135,18 +135,15 @@ function ClientBank(props) {
                         {/* if no data then show a table with a message no records
                             otherwise show data
                        */}
-                        { props.totalDocs != 0 
+                        { props.totalDocs === 0 
                           ? 
                           <Tbody>
-                            <h1 className="fw-bolder text-center">No records</h1>
-                            {props.loading && <TableLoader colSpan={4} />}
-                            
+                            {props.loading && <TableLoader colSpan={4} />}                            
                             {!props.loading && /*props.totalDocs === 0 && */
                               <>
-                                <h3 className="fw-bolder text-center">No records</h3>
                                 <Tr>
                                   <Td className="fw-bolder text-center">
-                                    now what
+                                    <h3 className="fw-bolder text-center">No records</h3>
                                   </Td>
                                 </Tr>
                               </>

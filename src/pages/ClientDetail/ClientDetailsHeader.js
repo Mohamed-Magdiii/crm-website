@@ -27,11 +27,11 @@ function ClientDetailsHeader(props){
                   <span className="text-muted mb-3 lh-1 d-block text-truncate">
                     {props.clientDetails.firstName + " " + props.clientDetails.lastName}
                   </span>
-                  <h4 className="mb-1">
+                  <h6 className="mb-1">
                     <span className="counter-value">
                       {clientId}
                     </span>
-                  </h4>
+                  </h6>
                 </div>
               </div>
             </div>
@@ -46,11 +46,11 @@ function ClientDetailsHeader(props){
                   <span className="text-muted mb-3 lh-1 d-block text-truncate">
                     Created on
                   </span>
-                  <h4 className="mb-1">
+                  <h6 className="mb-1">
                     <span className="counter-value">
                       {props.clientDetails.createdAt ? (props.clientDetails.createdAt).split("T")[0] : " "}
                     </span>
-                  </h4>
+                  </h6>
                 </div>
               </div>
             </div>
@@ -65,11 +65,11 @@ function ClientDetailsHeader(props){
                   <span className="text-muted mb-3 lh-1 d-block text-truncate">
                     Status
                   </span>
-                  <h4 className="mb-1">
+                  <h6 className="mb-1">
                     <span className="counter-value">
                       {props.clientDetails.isActive ? "Active" : "Inactive"}
                     </span>
-                  </h4>
+                  </h6>
                 </div>
               </div>
             </div>
@@ -84,11 +84,11 @@ function ClientDetailsHeader(props){
                   <span className="text-muted mb-3 lh-1 d-block text-truncate">
                     Category
                   </span>
-                  <h4 className="mb-1">
+                  <h6 className="mb-1">
                     <span className="counter-value">
                       {props.clientDetails.category}
                     </span>
-                  </h4>
+                  </h6>
                 </div>
               </div>
             </div>
