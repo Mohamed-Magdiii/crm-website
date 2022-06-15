@@ -5,13 +5,29 @@ import {
   delay
 } from "redux-saga/effects";
 import { 
-  ADD_DEPOSIT_START, FETCH_DEPOSITS_START, DEPOSIT_APPROVE, DEPOSIT_REJECT
+  ADD_DEPOSIT_START, 
+  FETCH_DEPOSITS_START, 
+  DEPOSIT_APPROVE, 
+  DEPOSIT_REJECT, 
+
+  FETCH_CLIENT_DEPOSITS_REQUESTED
 } from "./actionTypes";
 import {
-  addDepositSuccess, depositError, fetchDepositsSuccess, modalClear, transactionStateChange
+  addDepositSuccess, 
+  depositError, 
+  fetchDepositsSuccess, 
+  modalClear, 
+  transactionStateChange,
+
+  fetchClientDepositsSuccess,
+  fetchClientDepositsFail,
 } from "./action";
 import {
-  makeDeposit, getDeposits, aprroveDeposit, rejectDeposit
+  makeDeposit, 
+  getDeposits, 
+  aprroveDeposit, 
+  rejectDeposit,
+  getClientDeposits
 } from "apis/deposit";
 function * fetchDeposits(params){
   try {
@@ -58,10 +74,21 @@ function * depositReject({ payload: { id } }){
  
 
 }
+
+function * fetchClientDeposits(params){
+  try {
+    const data = yield call(getClientDeposits, params);
+    yield put(fetchClientDepositsSuccess(data));
+  } catch (error){ 
+    yield put(fetchClientDepositsFail({ error: error.message }));
+  }
+}
+
 function * depositSaga(){
   yield takeEvery(FETCH_DEPOSITS_START, fetchDeposits);
   yield takeEvery(ADD_DEPOSIT_START, addDeposit);
   yield takeEvery(DEPOSIT_REJECT, depositReject);
   yield takeEvery(DEPOSIT_APPROVE, depositApprove);
+  yield takeEvery(FETCH_CLIENT_DEPOSITS_REQUESTED, fetchClientDeposits);
 }
 export default depositSaga;

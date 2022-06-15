@@ -1,3 +1,8 @@
+import {
+  FETCH_CLIENT_DEPOSITS_REQUESTED,
+  FETCH_CLIENT_DEPOSITS_SUCCESS,
+  FETCH_CLIENT_DEPOSITS_FAIL,
+} from "./actionTypes";
 const initalState = {
   deposits:[],
   loading:false,
@@ -77,6 +82,33 @@ const depositReducer = (state = { initalState }, action)=>{
         depositResponseMessage:""
       };
       break;
+
+    // fetch client deposits 
+    case FETCH_CLIENT_DEPOSITS_REQUESTED:
+      state = {
+        ...state,
+        loading: true
+      };
+      break;
+    case FETCH_CLIENT_DEPOSITS_SUCCESS:
+      state = {
+        ...state, 
+        clientDeposits: action.payload.deposits,
+        depositsTotalDocs: action.payload.deposits.result.totalDocs,
+        error: false,
+        success: true,
+        loading: false
+      };
+      break;
+    case FETCH_CLIENT_DEPOSITS_FAIL:
+      state = {
+        ...state,
+        error: true,
+        success: false,
+        errorDetails: action.payload.error
+      };
+      break;
+
     default:
       state = { ...state };
 
