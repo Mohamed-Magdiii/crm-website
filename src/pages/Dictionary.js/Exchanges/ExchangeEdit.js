@@ -48,8 +48,8 @@ function ExchangeEdit(props){
             </div>
           
             <div className='text-center pt-3 p-2'>
-              <Button  type="submit" color="primary" className="">
-                {props.t("Edit Exchange")}
+              <Button disabled = {props.disableEditButton} type="submit" color="primary" className="">
+                {props.t("Edit")}
               </Button>
             </div>
           </AvForm>
@@ -72,6 +72,7 @@ const mapStateToProps = (state)=>({
   error : state.dictionaryReducer.error,
   actions :state.dictionaryReducer.actions || [],
   id :state.dictionaryReducer.id,
-  editSuccess :state.dictionaryReducer.editSuccess
+  editSuccess :state.dictionaryReducer.editSuccess,
+  disableEditButton : state.dictionaryReducer.disableEditButton
 });
 export default connect(mapStateToProps, null)(withTranslation()(ExchangeEdit));
