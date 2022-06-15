@@ -112,7 +112,7 @@ function ClientTransactions(props) {
 
   return (
     <React.Fragment>
-      <div className="page-content">
+      <div className="">
         <div className="container-fluid">
           {/* notification if selected transaction type is deposit */}
           {selectedTransactionType === "deposit" && 

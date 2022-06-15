@@ -9,7 +9,7 @@ function MainNavigation(props){
   
   return (
     <React.Fragment>
-      <div className="navbar-header">
+      <div className="navbar-header mb-3">
         <div className="container-fluid">
           <ul className="nav-tabs-custom nav-justified nav nav-tabs">
             <li className="nav-item">

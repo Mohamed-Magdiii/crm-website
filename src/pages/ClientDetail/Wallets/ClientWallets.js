@@ -117,7 +117,7 @@ function ClientWallets(props) {
 
   return (
     <React.Fragment>
-      <div className="page-content">
+      <div className="">
         <div className="container-fluid">
           <Row>
             <Col className="col-12">

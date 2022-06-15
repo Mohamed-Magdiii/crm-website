@@ -84,15 +84,15 @@ function ClientDetails(props) {
 
   return (
     <React.Fragment>
-      {agentOptions && 
-        <div className="page-content">
+      {/* {agentOptions && 
+        <div className="">
           <div className="container-fluid">
             <Loader />
           </div>
         </div>
-      }
+      } */}
       {agentOptions &&
-        <div className="page-content">
+        <div className="">
           <div className="container-fluid">
             <div className="">
               <Row>

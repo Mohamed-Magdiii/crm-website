@@ -15,7 +15,6 @@ function Layout(props){
   
   return (
     <React.Fragment>
-      <ClientDetailsHeader clientId={clientId} />
       <MainNavigation clientId={clientId} />
       <main>  
         {props.children}  
