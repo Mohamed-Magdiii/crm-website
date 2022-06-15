@@ -16,7 +16,8 @@ function usePermissions(){
     symbolsPermissions,
     dictionariesPermissions,
     currencyPairsPermissions,
-    markupsPermissions
+    markupsPermissions,
+    transactionFeeGroupsPermissions
   } = useSelector((state) => ({
     rolesPermissions: state.Profile.rolesPermissions || {},
     userPermissions :state.Profile.userPermissions || {}, 
@@ -30,13 +31,14 @@ function usePermissions(){
     symbolsPermissions : state.Profile.symbolsPermissions || {},
     dictionariesPermissions : state.Profile.dictionariesPermissions || {},
     currencyPairsPermissions : state.Profile.currencyPairsPermissions || {},
-    markupsPermissions : state.Profile.markupsPermissions || {}
+    markupsPermissions : state.Profile.markupsPermissions || {},
+    transactionFeeGroupsPermissions : state.Profile.transactionFeeGroupsPermissions || {}
   }));
   useEffect(()=>{
     if (localStorage.getItem("authUser")){
       dispatch(getUserProfile());
     }
-    
+     
   }, []);
   return { 
     clientPermissions,
@@ -51,7 +53,8 @@ function usePermissions(){
     symbolsPermissions,
     dictionariesPermissions,
     currencyPairsPermissions,
-    markupsPermissions
+    markupsPermissions,
+    transactionFeeGroupsPermissions
   };
 }
 export default usePermissions; 
