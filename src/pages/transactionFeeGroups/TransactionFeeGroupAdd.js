@@ -132,11 +132,9 @@ function TransactionFeeGroupAdd(props) {
 
               <Row>
 
-                <Col md="2">
-                  <label className="form-check-label"></label>
-                  <h6>Defaults:</h6>
-                </Col>
-                <Col md="4">
+
+                <Col md="2" className="d-flex flex-column justify-content-end"><h6 className="text-center">Defaults:</h6></Col>
+                <Col >
                   <AvField
                     name="value"
                     label={props.t("Value")}
@@ -147,7 +145,7 @@ function TransactionFeeGroupAdd(props) {
                     onChange={(e) => setValue(e.target.value)}
                   />
                 </Col>
-                <Col md="3">
+                <Col >
                   <AvField
                     name="minValue"
                     label={props.t("Min value")}
@@ -158,7 +156,7 @@ function TransactionFeeGroupAdd(props) {
                     onChange={(e) => setMinAmount(e.target.value)}
                   />
                 </Col>
-                <Col md="3">
+                <Col >
                   <AvField
                     name="maxValue"
                     label={props.t("Max Value")}
@@ -194,49 +192,42 @@ function TransactionFeeGroupAdd(props) {
                   <Collapse isOpen={col1} className="accordion-collapse">
                     <div className="accordion-body">
                       {props.assets?.map((asset, index) =>
-                        <Row key={index}>
-                          <Col md="2">
-                            <label className="form-check-label"></label>
-                            <h5> {asset.symbol}</h5>
-                          </Col>
-                          {/* <div className="mb-3">
-                            <Label htmlFor="example-text-input" className="form-Label">{props.t("Value")}</Label>
-                            <Input className="form-control" type="text" defaultValue="Artisanal kale" id="example-text-input" />
-                          </div> */}
-                          <Col md="3">
-                            <AvField
-                              name={`value${index}`}
-                              label={props.t("Value")}
-                              value={value}
-                              placeholder={props.t("Value")}
-                              type="number"
-                              errorMessage={props.t("Enter valid min fees group value")}
-                              validate={{ required: { value: true } }}
-                            />
-                          </Col>
-                          <Col md="3">
-                            <AvField
-                              name={`minValue${index}`}
-                              value={minAmount}
-                              label={props.t("Min value")}
-                              placeholder={props.t("min value")}
-                              type="number"
-                              errorMessage={props.t("Enter valid min fees group value")}
-                              validate={{ required: { value: true } }}
-                            />
-                          </Col>
-                          <Col md="3">
-                            <AvField
-                              name={`maxValue${index}`}
-                              value={maxAmount}
-                              label={props.t("Max value")}
-                              placeholder={props.t("Max value")}
-                              type="number"
-                              errorMessage={props.t("Enter valid min fees group value")}
-                              validate={{ required: { value: true } }}
-                            />
-                          </Col>
-                        </Row>
+                        <>
+
+                          <Row key={index}>
+                            <Col md="2" className="d-flex flex-column justify-content-end"><h5 className="text-center"> {asset.symbol}</h5></Col>
+                            <Col  >
+                              <AvField
+                                name={`value${index}`}
+                                label={props.t("Value")}
+                                value={value}
+                                placeholder={props.t("Value")}
+                                type="number"
+                              />
+                            </Col>
+                            <Col  >
+                              <AvField
+                                name={`minValue${index}`}
+                                value={minAmount}
+                                label={props.t("Min value")}
+                                placeholder={props.t("min value")}
+                                type="number"
+                              />
+                            </Col>
+                            <Col >
+                              <AvField
+                                name={`maxValue${index}`}
+                                value={maxAmount}
+                                label={props.t("Max value")}
+                                placeholder={props.t("Max value")}
+                                type="number"
+                              />
+                            </Col>
+
+                          </Row>
+                          <br />
+                          <br />
+                        </>
                       )}
                     </div>
                   </Collapse>
