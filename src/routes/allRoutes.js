@@ -27,6 +27,7 @@ import Reminder from "../pages/Reminder/Reminder";
 import DictionaryList from "pages/Dictionary.js/DictionaryList";
 import MarketPrice from "pages/MarketPrice/MarketPrice";
 import feeGroupList from "pages/feeGroups/feeGroupList";
+import ClientMainPage from "pages/ClientDetail/ClientMainPage";
 import usePermissions from "./permissions";
 
 function userRoutes(){
@@ -65,6 +66,11 @@ function userRoutes(){
       path: "/clients",
       component: ClientList,
       get: clientPermissions.get
+    },
+    {
+      path: "/clients/:id",
+      component: ClientMainPage,
+      notExact: true,
     },
     {
       path: "/leads",

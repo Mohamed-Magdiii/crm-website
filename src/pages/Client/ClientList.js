@@ -35,9 +35,29 @@ function ClientsList(props) {
       formatter: (val) => (new Date(val.createdAt).toLocaleDateString())
     },
     {
+      dataField: "title",
+      text: props.t("Title")
+    },
+    {
       dataField: "name",
       text: props.t("Name"),
-      formatter: (val) => (captilazeFirstLetter(`${val.firstName} ${val.lastName}`)),
+      formatter: (user) => (
+        // this link will lead the user to client main page then automatically 
+        // lead the user to client details pages which contains two parts 
+        // 1- a navbar which is used in details, bank, transactions and wallets on top
+        // 2- the user details on bottom
+        // and it will send the selected client's Id to the details page
+        <div className="d-flex gap-3">
+          <Link 
+            to={{
+              pathname: "/clients/" + user.id + "/profile",
+              state: { clientId: user.id }
+            }}
+          >
+            <i>{user.firstName + " " + user.lastName}</i>
+          </Link>
+        </div>
+      )
     },
     {
       dataField: "category",
@@ -148,7 +168,7 @@ function ClientsList(props) {
   useEffect(() => {
     loadClients(1, sizePerPage);
   }, [sizePerPage, 1, searchInputText]);
-
+  
   const loadClients = (page, limit) => {
     if (searchInputText !== "" && searchInputText.length >= 3) {
       dispatch(fetchClientsStart({
@@ -170,8 +190,11 @@ function ClientsList(props) {
       <div className="page-content">
         <div className="container-fluid">
           <h2>{props.t("Clients")}</h2>
-          {<AddReminderToClientModal openAdd={addModal} selectedClient={selectedClient} onClose={() => { setAddReminderToClientModal(false) }} />}
-
+          { <AddReminderToClientModal 
+            openAdd={addModal} 
+            selectedClient={selectedClient} 
+            onClose={() => { setAddReminderToClientModal(false) }} />
+          }
           <Row>
             <Col className="col-12">
               <Card>

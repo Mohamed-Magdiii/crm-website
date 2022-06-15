@@ -54,10 +54,11 @@ const App = props => {
               path={route.path}
               layout={Layout}
               component={route.component}
+              innerPages={route.innerPages}
               get={route.get}
               key={idx}
               isAuthProtected={true}
-              exact
+              {...(route.notExact ? {} : { exact: true })}
             />
           ))}
           {authRoutes.map((route, idx) => (

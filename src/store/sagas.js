@@ -18,7 +18,9 @@ import assetSaga from "./assests/saga";
 import walletSaga from "./wallet/saga";
 import gatewaySaga from "./gateway/saga";
 import depositSaga from "./transactions/deposit/saga";
-import withdrawalSaga from "./transactions/withdrawal/saga";
+import withdrawalSaga from "./transactions/withdrawal/saga"; 
+import ordersSaga from "./orders/saga"; 
+import bankAccountSaga from "./bankAccount/saga"; 
 import dictionarySaga from "./dictionary/saga";
 import marketSaga from "./markets/saga";
 import feeGroupSaga from "./feeGroups/saga";
@@ -47,7 +49,9 @@ export default function* rootSaga() {
     fork(walletSaga),
     fork(gatewaySaga),
     fork(depositSaga),
-    fork(withdrawalSaga),
+    fork(withdrawalSaga), 
+    fork(ordersSaga), 
+    fork(bankAccountSaga),
     fork(marketSaga),
     fork(markupSaga),
     fork(dictionarySaga),
