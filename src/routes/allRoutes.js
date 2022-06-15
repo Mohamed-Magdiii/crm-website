@@ -10,7 +10,7 @@ import Login from "../pages/Authentication/Login";
 import Logout from "../pages/Authentication/Logout";
 import Register from "../pages/Authentication/Register";
 import ForgetPwd from "../pages/Authentication/ForgetPassword";
-import ClientList from "../pages/Client/ClientList";
+import ClientList from "../pages/Clients/ClientList";
 import UsersList from "../pages/Users/UsersList";
 import LeadsList from "../pages/Leads/LeadList";
 import Teams from "../pages/Teams/Teams";
