@@ -3,8 +3,12 @@ import {
 } from "redux-saga/effects";
 
 // Login Redux States
-import { EDIT_PROFILE } from "./actionTypes";
-import { profileSuccess, profileError } from "./actions";
+import { EDIT_PROFILE, GET_PROFILE } from "./actionTypes";
+import { 
+  profileSuccess,
+  profileError,  
+  getProfileSuccess
+} from "./actions";
 
 //Include Both Helper File with needed methods
 import { getFirebaseBackend } from "../../../helpers/firebase_helper";
@@ -12,7 +16,7 @@ import {
   postFakeProfile,
   postJwtProfile,
 } from "../../../helpers/fakebackend_helper";
-
+import { getProfile } from "apis/profile";
 const fireBaseBackend = getFirebaseBackend();
 
 function* editProfile({ payload: { user } }) {
@@ -44,9 +48,21 @@ function* editProfile({ payload: { user } }) {
 export function* watchProfile() {
   yield takeEvery(EDIT_PROFILE, editProfile);
 }
+export function * getUserProfileData(){
+  try {
+    const data =  yield call(getProfile);
+    const { roleId :{ permissions } } = data.result;
+    yield put(getProfileSuccess(permissions));
+    
+  } catch (error){
+     
+  }
+
+}
 
 function* ProfileSaga() {
   yield all([fork(watchProfile)]);
+  yield takeEvery(GET_PROFILE, getUserProfileData);
 }
 
 export default ProfileSaga;

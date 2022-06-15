@@ -21,7 +21,6 @@ import TableLoader from "components/Common/TableLoader";
 import DeleteModal from "components/Common/DeleteModal";
 import UsersAddModal from "./UsersAddModal";
 import UsersEditModal from "./UsersEditModal";
-
 function UsersList() {
 
   const [editModal, setEditUserModal] = useState(false);
@@ -44,6 +43,7 @@ function UsersList() {
     deleteClearingCounter,
     roles,
     clearingCounter,
+    userPermissions
     // editClearingCounter,
   } = useSelector((state) => ({
     loading: state.usersReducer.loading || false,
@@ -62,8 +62,10 @@ function UsersList() {
     roles: state.usersReducer.rolesData,
     clearingCounter: state.usersReducer.clearingCounter,
     // editClearingCounter: state.usersReducer.editClearingCounter,
+    userPermissions :state.Profile.userPermissions || {}
   }));
-
+  
+  const { delete: deleteUserPermission, update } = userPermissions;
   const columns = [
     {
       text: "createdAt",
@@ -125,14 +127,14 @@ function UsersList() {
         <div className="d-flex gap-3">
           <Link className="text-success" to="#">
             <i
-              className="mdi mdi-pencil font-size-18"
+              className={`mdi mdi-pencil font-size-18 ${!update ? "d-none" : ""}`}
               id="edittooltip"
               onClick={() => { setSelectedUser(user); setEditUserModal(true) }}
             ></i>
           </Link>
           <Link className="text-danger" to="#">
             <i
-              className="mdi mdi-delete font-size-18"
+              className={`mdi mdi-delete font-size-18 ${!deleteUserPermission ? "d-none" : ""}`}
               id="deletetooltip"
               onClick={() => { setSelectedUser(user); setDeleteUserModal(true) }}
             ></i>

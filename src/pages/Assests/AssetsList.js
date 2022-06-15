@@ -21,6 +21,7 @@ function AssestsList(props){
   const [selectedSymbol, setSelectedSymbol] = useState();
   const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
+  const { update, delete:deletePermission } = props.symbolsPermissions;
   const columns = [
     {
       dataField:"checkbox",
@@ -75,7 +76,7 @@ function AssestsList(props){
         <div className="d-flex gap-3">
           <Link className="text-success" to="#">
             <i
-              className="mdi mdi-pencil font-size-18"
+              className={`mdi mdi-pencil font-size-18 ${!update ? "d-none" : ""}`}
               id="edittooltip"
               onClick={()=>{
                 setSelectedSymbol(item) ;
@@ -85,7 +86,7 @@ function AssestsList(props){
           </Link>
           <Link className="text-danger" to="#">
             <i
-              className="mdi mdi-delete font-size-18"
+              className={`mdi mdi-delete font-size-18 ${!deletePermission ? "d-none" : ""}`}
               id="deletetooltip"
               onClick={()=>{
                 setSelectedSymbol(item);
@@ -203,6 +204,7 @@ const mapStateToProps = (state) => ({
   pagingCounter: state.assetReducer.pagingCounter,
   prevPage: state.assetReducer.prevPage,
   deleteLoading:state.assetReducer.deleteLoading,
-  deleteModalClear:state.assetReducer.deleteModalClear
+  deleteModalClear:state.assetReducer.deleteModalClear,
+  symbolsPermissions : state.Profile.symbolsPermissions || {}
 });
 export default connect(mapStateToProps, null)(withTranslation()(AssestsList));

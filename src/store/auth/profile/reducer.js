@@ -3,6 +3,19 @@ import {
 } from "./actionTypes";
 
 const initialState = {
+  rolesPermissions:{},
+  userPermissions:{},
+  clientPermissions:{},
+  leadsPermissions : {},
+  teamsPermissions : { },
+  depositsPermissions : {},
+  withdrawalsPermissions : {},
+  feeGroupsPermissions : {},
+  dictionariesPermissions : {},
+  systemEmailsPermissions : { },
+  symbolsPermissions : { },
+  currencyPairsPermissions : { },
+  markupsPermissions : {},
   error: "",
   success: "",
 };
@@ -28,6 +41,42 @@ const profile = (state = initialState, action) => {
       state = {
         ...state,
         success: null 
+      };
+      break;
+    case "GET_PROFILE_SUCCESS":
+      state = {
+        ...state,
+        rolesPermissions:{ ...action.payload.roles },
+        userPermissions:{ ...action.payload.users },
+        clientPermissions : { ...action.payload.clients },
+        leadsPermissions : { ...action.payload.leads },
+        teamsPermissions : { ...action.payload.teams },
+        depositsPermissions : { ...action.payload.deposits },
+        withdrawalsPermissions : { ...action.payload.withdrawals },
+        feeGroupsPermissions : { ...action.payload.feeGroups },
+        dictionariesPermissions : { ...action.payload.dictionaries },
+        systemEmailsPermissions : { ...action.payload.systemEmails },
+        symbolsPermissions : { ...action.payload.symbols },
+        currencyPairsPermissions : { ...action.payload.currencyPairs },
+        markupsPermissions : { ...action.payload.markups }
+      };
+      break;
+    case "CLEAR_PROFILE":
+      state = {
+        ...state,
+        rolesPermissions:{},
+        userPermissions:{},
+        clientPermissions:{},
+        leadsPermissions : {},
+        teamsPermissions : {},
+        depositsPermissions : {},
+        withdrawalsPermissions : {},
+        feeGroupsPermissions : {},
+        dictionariesPermissions : {},
+        systemEmailsPermissions : { },
+        symbolsPermissions : { },
+        currencyPairsPermissions : { },
+        markupsPermissions : {},
       };
       break;
     default:

@@ -42,12 +42,12 @@ const apiErrorHandler = (errObj) => {
 };
 
 export async function get(url, config = {}) {
-  const path = config.crypto ? `/crypto${url}` : `/crm${url}`;
+  const path = config.crypto ? `/crm${url}` : `/crm${url}`;
   return await axiosApi.get(path, { ...config }).then(response => response.data).catch(err => apiErrorHandler(err));
 }
 
 export async function post(url, data, config = {}) {
-  const path = config.crypto ? `/crypto${url}` : `/crm${url}`;
+  const path = config.crypto ? `/crm${url}` : `/crm${url}`;
   return axiosApi
     .post(path, { ...data }, { ...config })
     .then(response => {
@@ -56,7 +56,7 @@ export async function post(url, data, config = {}) {
 }
 
 export async function patch(url, data, config = {}) {
-  const path = config.crypto ? `/crypto${url}` : `/crm${url}`;
+  const path = config.crypto ? `/crm${url}` : `/crm${url}`;
   return axiosApi
     .patch(path, { ...data }, { ...config })
     .then(response => {
@@ -65,14 +65,14 @@ export async function patch(url, data, config = {}) {
 }
 
 export async function put(url, data, config = {}) {
-  const path = config.crypto ? `/crypto${url}` : `/crm${url}`;
+  const path = config.crypto ? `/crm${url}` : `/crm${url}`;
   return axiosApi
     .put(path, { ...data }, { ...config })
     .then(response => response.data).catch(err => apiErrorHandler(err));
 }
 
 export async function del(url, config = {}) {
-  const path = config.crypto ? `/crypto${url}` : `/crm${url}`;
+  const path = config.crypto ? `/crm${url}` : `/crm${url}`;
   return await axiosApi
     .delete(path, { ...config })
     .then(response => response.data).catch(err => apiErrorHandler(err));

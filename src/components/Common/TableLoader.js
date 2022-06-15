@@ -8,9 +8,9 @@ import {
 } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 
-function TableLoader({ colSpan = 1 }){
+function TableLoader(){
   return (<Tr>
-    <Td colSpan={colSpan} className="text-center">
+    <Td colSpan={"100%"} className="text-center">
       <Loader />
     </Td>
   </Tr>);

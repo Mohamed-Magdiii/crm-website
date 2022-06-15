@@ -2,10 +2,9 @@ import PropTypes from "prop-types";
 import React, {
   useEffect, useRef, useCallback 
 } from "react";
-
+import { connect } from "react-redux";
 //Import Icons
 import FeatherIcon from "feather-icons-react";
-
 // //Import Scrollbar
 import SimpleBar from "simplebar-react";
 
@@ -21,7 +20,20 @@ import { withRouter, Link } from "react-router-dom";
 
 const SidebarContent = (props) => {
   const ref = useRef();
-
+  
+  const { get:getUser } = props.userPermissions;
+  const { get:getClient } = props.clientPermissions;
+  const { get:getLeads } = props.leadsPermissions;
+  const { get:getDeposits } = props.depositsPermissions;
+  const { get:getWithdrawals } = props.withdrawalsPermissions;
+  const { get:getMarkups } = props.markupsPermissions;
+  const { get:getRoles } = props.rolesPermissions;
+  const { get:getDictionaries } = props.dictionariesPermissions;
+  const { get : getFeeGroup } = props.feeGroupsPermissions;
+  const { get: getSystemEmail } = props.systemEmailsPermissions;
+  const { get: getTeams } = props.teamsPermissions;
+  const { get: getSymbols } = props.symbolsPermissions;
+  const { get :getCurrencyPair } = props.currencyPairsPermissions;
   const activateParentDropdown = useCallback(item => {
     item.classList.add("active");
     const parent = item.parentElement;
@@ -85,7 +97,6 @@ const SidebarContent = (props) => {
   useEffect(() => {
     ref.current.recalculate();
   });
-
   function scrollElement(item) {
     if (item) {
       const currentPosition = item.offsetTop;
@@ -109,13 +120,13 @@ const SidebarContent = (props) => {
           
 
             <li>
-              <Link to='/clients' className="">
+              <Link to='/clients' className={`${!getClient ? "d-none"  : ""}`}>
                 <FeatherIcon icon="users"/>
                 <span>{props.t("Clients")}</span> 
               </Link> 
             </li>
             <li>
-              <Link to='/leads' className="">
+              <Link to='/leads' className={`${!getLeads ? "d-none" : ""}`}>
                 <FeatherIcon icon="monitor"/>
                 <span>{props.t("Leads")}</span> 
               </Link> 
@@ -133,10 +144,10 @@ const SidebarContent = (props) => {
               </Link>
               <ul className="sub-menu">
                 <li>
-                  <Link to="/transactions/deposit">{props.t("Deposit")}</Link>
+                  <Link to="/transactions/deposit" className= {`${!getDeposits ? "d-none" : ""}`}>{props.t("Deposit")}</Link>
                 </li>
                 <li>
-                  <Link to="/transactions/withdrawals">{props.t("Withdrawals")}</Link>
+                  <Link to="/transactions/withdrawals" className = {`${!getWithdrawals ? "d-none" : ""}`}>{props.t("Withdrawals")}</Link>
                 </li>   
               </ul>
             </li>
@@ -188,29 +199,38 @@ const SidebarContent = (props) => {
               </Link>
               <ul className="sub-menu">
                 <li>
-                  <Link to="/users">{props.t("Users")}</Link>
+                  <Link to="/dictionaries" className= {`${!getDictionaries ? "d-none" : ""}`}>{props.t("Dictionaries")}</Link>
                 </li>
                 <li>
-                  <Link to="/roles">{props.t("Roles")}</Link>
+                  <Link to="/users" className={`${!getUser ? "d-none" : ""}`}>{props.t("Users")}</Link>
+                </li>
+                <li>
+                  <Link to="/roles" className={`${!getRoles ? "d-none" : ""}`}>{props.t("Roles")}</Link>
                 </li>   
                 <li>
-                  <Link to="/system-emails">{props.t("System Emails")}</Link>
+                  <Link to="/system-emails" className={`${!getSystemEmail ? "d-none" : ""}`}>{props.t("System Emails")}</Link>
                 </li>
                 <li>
                   <Link to="/user-logs">{props.t("User Logs")}</Link>
                 </li>   
                 <li>
-                  <Link to="/teams">{props.t("Teams")}</Link>
+                  <Link to="/teams" className={`${!getTeams ? "d-none" : ""}`} >{props.t("Teams")}</Link>
                 </li>
                 <li>
                   <Link to="/banners">{props.t("Banners")}</Link>
                 </li>   
                 <li>
-                  <Link to="/assets">{props.t("Symbols")}</Link>
+                  <Link to="/assets" className={`${!getSymbols ? "d-none" : ""}`}>{props.t("Symbols")}</Link>
                 </li>
                 <li>
-                  <Link to="/currency-pairs">{props.t("Currency Pairs")}</Link>
+                  <Link to="/currency-pairs" className={`${!getCurrencyPair ? "d-none" : ""}`}>{props.t("Currency Pairs")}</Link>
                 </li>   
+                <li>
+                  <Link to="/fee-groups" className={`${!getFeeGroup ? "d-none" : ""}`}>{props.t("Fee Groups")}</Link>
+                </li>
+                <li>
+                  <Link to="/markups" className={`${!getMarkups ? "d-none" : ""}`}>{props.t("Markups")}</Link>
+                </li>      
               </ul>
             </li> 
 
@@ -226,5 +246,20 @@ SidebarContent.propTypes = {
   location: PropTypes.object,
   t: PropTypes.any,
 };
+const mapStateToProps = (state) => ({
+  rolesPermissions: state.Profile.rolesPermissions || {},
+  userPermissions :state.Profile.userPermissions || {}, 
+  clientPermissions :state.Profile.clientPermissions || {},
+  teamsPermissions : state.Profile.teamsPermissions || {},
+  leadsPermissions : state.Profile.leadsPermissions || {},
+  withdrawalsPermissions : state.Profile.withdrawalsPermissions || {},
+  depositsPermissions : state.Profile.depositsPermissions || {},
+  feeGroupsPermissions : state.Profile.feeGroupsPermissions || {},
+  systemEmailsPermissions : state.Profile.systemEmailsPermissions || {},
+  symbolsPermissions : state.Profile.symbolsPermissions || {},
+  dictionariesPermissions : state.Profile.dictionariesPermissions || {},
+  currencyPairsPermissions : state.Profile.currencyPairsPermissions || {},
+  markupsPermissions : state.Profile.markupsPermissions || {}
 
-export default withTranslation()(withRouter(SidebarContent));
+});
+export default withTranslation()(withRouter(connect(mapStateToProps, null) (SidebarContent)));

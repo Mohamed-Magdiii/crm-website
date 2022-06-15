@@ -19,12 +19,12 @@ import TableLoader from "components/Common/TableLoader";
 import DeleteModal from "components/Common/DeleteModal";
 import RolesAdd from "./RolesAdd";
 import RolesEdit from "./RolesEdit";
-
 function RolesList(props){
- 
+  
   const [editModal, setEditUserModal] = useState(false);
   const [deleteModal, setDeleteUserModal] = useState(false);
   const [selectedRole, setSelectedRole] = useState();
+  const { update, delete:deleteRolePermission }  = props.rolesPermissions;
   const columns = [
     {
       dataField: "createdAt",
@@ -59,14 +59,14 @@ function RolesList(props){
         <div className="d-flex gap-3">
           <Link className="text-success" to="#">
             <i
-              className="mdi mdi-pencil font-size-18"
+              className={`mdi mdi-pencil font-size-18 ${!update ? "d-none" : ""}`}
               id="edittooltip"
               onClick={() => {setSelectedRole(item); setEditUserModal(true)}}
             ></i>
           </Link>
           <Link className="text-danger" to="#">
             <i
-              className="mdi mdi-delete font-size-18"
+              className={`mdi mdi-delete font-size-18 ${!deleteRolePermission ? "d-none" : ""}`}
               id="deletetooltip"
               onClick={() => { setSelectedRole(item); setDeleteUserModal(true)}}
             ></i>
@@ -156,7 +156,7 @@ function RolesList(props){
             </Col>
           </Row>
           {<RolesEdit open={editModal}  role={selectedRole} onClose={()=>{setEditUserModal(false)}} />}
-          {<DeleteModal loading={props.deleteLoading} onDeleteClick={deleteRole} show={deleteModal} onCloseClick={()=>{setDeleteUserModal(false)}} />}
+          {<DeleteModal loading={props.deleteLoading} onDeleteClick={deleteRole} show={deleteModal } onCloseClick={()=>{setDeleteUserModal(false)}} />}
         </div>
       </div>
     </React.Fragment>
@@ -177,9 +177,9 @@ const mapStateToProps = (state) => ({
   nextPage: state.rolesReducer.nextPage,
   pagingCounter: state.rolesReducer.pagingCounter,
   prevPage: state.rolesReducer.prevPage,
-
   deleteLoading: state.rolesReducer.deleteLoading,
   deleteClearingCounter: state.rolesReducer.deleteClearingCounter,
+  rolesPermissions: state.Profile.rolesPermissions || {}
 
 });
 export default connect(mapStateToProps, null)(RolesList);

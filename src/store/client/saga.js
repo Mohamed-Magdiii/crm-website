@@ -13,7 +13,8 @@ import {
 
   editClientDetailsSuccess,
   editClientDetailsFail,
-  editClientDetailsClear
+  editClientDetailsClear,
+  addModalClear
 } from "./actions";
 import { 
   ADD_NEW_CLIENT, 
@@ -38,10 +39,14 @@ function * addNewClient({ payload:{ newClient } }) {
     const data = yield call(clientApi.addClient, newClient);
     const { status } = data;
     if (status){
-      yield put(addNewClientSuccess("Client is added successfully", newClient));
+      yield put(addNewClientSuccess(newClient));
+      yield delay(2000);
+      yield put(addModalClear());
     }
   } catch (error){
     yield put(apiError("Invalid data"));
+    yield delay(2000);
+    yield put(apiError(""));
   }
 }
 

@@ -50,7 +50,6 @@ const leadReducer = (state = initialState, action)=>{
         ...state,
         error:"",
         loading:false,
-        successMessage:action.payload.message,
         totalDocs:action.payload.newLead ? state.totalDocs + 1 : state.totalDocs,
         leads: action.payload.newLead ? [{ 
           createdAt:new Date().toLocaleDateString(), 
@@ -59,11 +58,18 @@ const leadReducer = (state = initialState, action)=>{
           ...action.payload.newLead 
         },
         ...state.leads] : [...state.leads],
-        
+        showAddSuccessMessage :true,
+        disableAddButton :true
       
       };
       break;
-  
+    case "ADD_MODAL_CLEAR":
+      state = {
+        ...state,
+        showAddSuccessMessage:false,
+        disableAddButton: false
+      };
+      break;
     default:
       state = { ...state };
 

@@ -7,13 +7,17 @@ const Authmiddleware = ({
   component: Component,
   layout: Layout,
   isAuthProtected,
+  get = true,
   ...rest
 }) => (
+  
   <Route
     {...rest}
     render={props => {
-      // if user is not signed in 
+      
+      //if user is not signed in 
       if (isAuthProtected && !localStorage.getItem("authUser")) {
+        
         return (
           <Redirect
             to={{
@@ -23,12 +27,22 @@ const Authmiddleware = ({
           />
         );
       }
-
-      return (
-        <Layout>
-          <Component {...props} />
-        </Layout>
-      );
+      else if (get === false){
+        return (
+          <Redirect
+            to={{
+              pathname: "*",
+              state: { from: props.location } 
+            }}
+          />
+        );
+      }
+      else 
+        return (
+          <Layout>
+            <Component {...props} />
+          </Layout>
+        );
     }}
   />
 );

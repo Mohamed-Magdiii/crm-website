@@ -25,6 +25,7 @@ function Deposit(props){
   const [searchInput, setSearchInput] = useState("");
   const [showNotication, setShowNotifaction] = useState(false);
   
+  
   const [sizePerPage, setSizePerPage] = useState(10);
   const columns = [
     {
@@ -152,7 +153,7 @@ function Deposit(props){
                                 <Td key={`${rowIndex}-${index}`}>
                                   { column.dataField === "checkbox" ? <input type="checkbox"/> : ""}
                                   { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
-                                  {column.dataField === "dropdown" ? <CustomDropdown  id={row._id} status={row.status} approve={depositApprove} reject={depositReject} /> : ""}
+                                  {column.dataField === "dropdown" ? <CustomDropdown  permission={props.depositsPermissions.actions ? true : false} id={row._id} status={row.status} approve={depositApprove} reject={depositReject} /> : ""}
                                 </Td>
                               )}
                             </Tr>
@@ -192,6 +193,6 @@ const mapStateToProps = (state) => ({
   nextPage: state.depositReducer.nextPage,
   pagingCounter: state.depositReducer.pagingCounter,
   prevPage: state.depositReducer.prevPage,
- 
+  depositsPermissions : state.Profile.depositsPermissions || {}
 });
 export default connect(mapStateToProps, null)(withTranslation()(Deposit));

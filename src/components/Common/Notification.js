@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "../../assets/images/logo-sm.svg";
 import "./NotifactionStyles.scss";
 function Notification({ show = false, body, header, time, onClose, logo }){
   return (

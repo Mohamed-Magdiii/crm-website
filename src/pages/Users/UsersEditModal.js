@@ -17,7 +17,6 @@ import { editUser } from "store/users/actions";
 function UsersEditModal(props) {
   const { open, user = {}, onClose, usersRoles } = props;
   const { _id, title } = user.roleId || "";
-
   const dispatch = useDispatch();
   // console.log(usersRoles);
   const handleEditUser = (e, values) => {
@@ -128,5 +127,6 @@ const mapStateToProps = (state) => ({
   editError: state.usersReducer.editError,
   editSuccess: state.usersReducer.editSuccess,
   editClearingCounter: state.usersReducer.editClearingCounter,
+  
 });
 export default connect(mapStateToProps, null)(UsersEditModal);

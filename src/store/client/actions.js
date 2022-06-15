@@ -13,7 +13,8 @@ import {
   EDIT_CLIENT_DETAILS_REQUESTED,
   EDIT_CLIENT_DETAILS_SUCCESS,
   EDIT_CLIENT_DETAILS_FAIL,
-  EDIT_CLIENT_DETAILS_CLEAR
+  EDIT_CLIENT_DETAILS_CLEAR,
+  ADD_MODAL_CLEAR
 } from "./actionsType";
 
 export const fetchClientsStart = (params = {})=>{
@@ -34,30 +35,17 @@ export const apiError = (error)=>{
     payload:{ error }
   };
 };
-
-export const fetchClientsFromAPI = (dispatch, setTotalDocs, sizePerPage, currentPage)=>{
-    
-  fetch(`http://localhost:3001/api/v1/crm/clients?limit=${sizePerPage}&page=${currentPage}`)
-    .then(result=>result.json())
-    .then(data=>{
-      dispatch(fetchClientsStart(data.result.docs)); 
-      setTotalDocs(data.result.totalDocs);
-      dispatch(fetchClientsSuccess(false));
-    }).catch(error=>{
-      dispatch(error);
-    });
-};
+   
 export const addNewClient = (newClient)=>{
   return {
     type:ADD_NEW_CLIENT,
     payload:{ newClient }
   };
 };
-export const addNewClientSuccess = (message, newClient)=>{
+export const addNewClientSuccess = (newClient)=>{
   return {
     type:ADD_NEW_CLIENT_SUCCESS,
     payload:{
-      message,
       newClient
     }
   };
@@ -112,5 +100,10 @@ export const editClientDetailsClear = (data) => {
   return {
     type: EDIT_CLIENT_DETAILS_CLEAR,
     payload: data
+  };
+};
+export const addModalClear = ()=>{
+  return {
+    type:ADD_MODAL_CLEAR
   };
 };

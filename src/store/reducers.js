@@ -35,6 +35,13 @@ import depositReducer from "./transactions/deposit/reducer";
 import withdrawalReducer from "./transactions/withdrawal/reducer"; 
 import ordersReducer from "./orders/reducer"; 
 import bankAccountReducer from "./bankAccount/reducer"; 
+import dictionaryReducer from "./dictionary/reducer";
+import marketsReducer from "./markets/reducer";
+import feeGroupReducer from "./feeGroups/reducer";
+import markupsReducer from "./markups/reducer";
+import MarketPricing from "./marketPricing/reducer";
+import { reducer as notifications } from "react-notification-system-redux";
+
 const rootReducer = combineReducers({
   // public
   Layout,
@@ -58,7 +65,13 @@ const rootReducer = combineReducers({
   depositReducer,
   withdrawalReducer, 
   ordersReducer, 
-  bankAccountReducer 
+  bankAccountReducer,
+  dictionaryReducer,
+  marketsReducer,
+  feeGroupReducer,
+  markupsReducer,
+  notifications,
+  MarketPricing,
 });
 
 export default rootReducer;

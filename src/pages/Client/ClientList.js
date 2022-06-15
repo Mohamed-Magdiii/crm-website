@@ -18,7 +18,8 @@ import "./ClientList.styles.scss";
 import SearchBar from "components/Common/SearchBar";
 import { Link } from "react-router-dom";
 import { withTranslation } from "react-i18next";
-
+import { captilazeFirstLetter, displaySubString } from "common/utils/manipulateString";
+import { checkAllBoxes } from "common/utils/checkAllBoxes";
 function ClientsList(props) {
   const [addModal, setAddReminderToClientModal] = useState(false);
   const [selectedClient, setSelectedClient] = useState({});
@@ -26,7 +27,7 @@ function ClientsList(props) {
   const columns = [
     {
       dataField: "checkbox",
-      text: <input type="checkbox" />
+      text: <input type="checkbox" id="select-all-clients" onChange={()=>checkAllBoxes("select-all-clients", ".client-checkbox")}className = "select-all-check-box" />
     },
     {
       dataField: "createdAt",
@@ -60,11 +61,14 @@ function ClientsList(props) {
     },
     {
       dataField: "category",
-      text: props.t("Type")
+      text:props.t("Type"),
+      formatter: (val) => (displaySubString(val.category)),
+
     },
     {
       dataField: "email",
       text:props.t("Email"),
+      formatter : (val)=>(captilazeFirstLetter(`${val.email}`))
 
     },
     {
@@ -75,17 +79,20 @@ function ClientsList(props) {
     {
       dataField: "country",
       text: props.t("Country"),
+      formatter: (val) => (captilazeFirstLetter(`${val.country}`)),
 
     },
 
     {
       dataField: "agent",
       text:props.t("Agent"),
-      formatter: (val) => (val.agent ? val.agent._id : "-"),
+      formatter: (val) => (val.agent ? <select defaultValue={true}><option>{val.agent.firstName} {val.agent.lastName}</option></select> : 
+        <select disabled></select>),
     },
     {
       dataField: "source",
-      text:props.t("Source")
+      text:props.t("Source"),
+      formatter :(val)=> (val.source === "REGISTER_DEMO" ? "Register Demo" : val.source)
     },
     {
       dataField: "stages",
@@ -94,13 +101,39 @@ function ClientsList(props) {
         if (val.stages) {
           const { kycApproved, kycRejected } = val.stages;
           if (kycApproved) {
-            return "Approved";
+            return (<div className="d-flex gap-3">
+              <Link className="text-success" to="#">
+                <i
+                  className="mdi mdi-check-circle font-size-20"
+                  id="approve-icon"
+              
+                ></i>
+              </Link>
+            </div>);
           }
           if (kycRejected) {
-            return "Rejected";
+            return (
+              <div className="d-flex gap-3">
+                <Link className="text-danger" to="#">
+                  <i
+                    className="mdi mdi-close-thick font-size-20"
+                    id="reject-icon"
+                
+                  ></i>
+                </Link>
+              </div>);
+            
           }
           else {
-            return "Pending";
+            return (<div className="d-flex gap-3">
+              <Link className="text-warning" to="#">
+                <i
+                  className="mdi mdi-alert-decagram-outline font-size-20"
+                  id="pending-icon"
+                
+                ></i>
+              </Link>
+            </div>);
           }
         }
         else {
@@ -182,20 +215,20 @@ function ClientsList(props) {
                         id="tech-companies-1"
                         className="table "
                       >
-                        <Thead>
+                        <Thead className="text-center" >
                           <Tr>
                             {columns.map((column, index) =>
                               <Th data-priority={index} key={index}>{column.text}</Th>
                             )}
                           </Tr>
                         </Thead>
-                        <Tbody>
+                        <Tbody className="text-center" style={{ fontSize: "13px" }}>
                           {props.loading && <TableLoader colSpan={4} />}
                           {!props.loading && props.clients.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`}>
-                                  {column.dataField === "checkbox" ? <input type="checkbox" /> : ""}
+                                  {column.dataField === "checkbox" ? <input className="client-checkbox" type="checkbox" /> : ""}
                                   {column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
                                 </Td>
                               )}
@@ -235,6 +268,7 @@ const mapStateToProps = (state) => ({
   limit: state.clientReducer.limit,
   nextPage: state.clientReducer.nextPage,
   pagingCounter: state.clientReducer.pagingCounter,
-  prevPage: state.clientReducer.prevPage
+  prevPage: state.clientReducer.prevPage,
+  clientPermissions: state.Profile.clientPermissions || {}
 });
 export default connect(mapStateToProps, null)(withTranslation()(ClientsList));

@@ -19,7 +19,7 @@ function AssestForm(props){
   const [addModal, setAddUserModal] = useState(false);
 
   const dispatch = useDispatch();
-
+  const { create } = props.symbolsPermissions;
   const handleAddLead = (event, values) => {
     event.preventDefault();
     dispatch(addNewSymbol(values));
@@ -40,7 +40,7 @@ function AssestForm(props){
 
   return (
     <React.Fragment >
-      <Link to="#" className="btn btn-light" onClick={toggleAddModal}><i className="bx bx-plus me-1"></i>{props.t("Add New Symbol")}</Link>
+      <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i>{props.t("Add New Symbol")}</Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
           {props.t("Add New Symbol")}
@@ -189,5 +189,6 @@ function AssestForm(props){
 const mapStateToProps = (state) => ({
   error: state.assetReducer.error,
   addSymbolSuccessMessage: state.assetReducer.addSymbolSuccessMessage,
+  symbolsPermissions: state.Profile.symbolsPermissions || {}
 });
 export default connect(mapStateToProps, null)(withTranslation()(AssestForm));

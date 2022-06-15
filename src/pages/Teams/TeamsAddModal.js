@@ -20,9 +20,10 @@ function TeamsAddModal(props) {
   const [managerValue, setManagerValue] = useState(null);
 
   const dispatch = useDispatch();
+ 
   // const { usersRoles } = props;
   // const [SearchInputValue, setSearchInputValue] = useState("hi");
-
+  const { create } = props.teamsPermissions;
   const toggleAddModal = () => {
     setAddTeamModal(!addModal);
   };
@@ -63,7 +64,7 @@ function TeamsAddModal(props) {
 
   return (
     <React.Fragment>
-      <Link to="#" className="btn btn-light" onClick={toggleAddModal}>
+      <Link to="#" className={`btn btn-light ${!create ? "d-none" : ""}`} onClick={toggleAddModal}>
         <i className="bx bx-plus me-1"></i> Add New
       </Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
@@ -132,5 +133,6 @@ const mapStateToProps = (state) => ({
   addError: state.teamsReducer.addError,
   // managersData: state.teamsReducer.managersData,
   clearingCounter: state.teamsReducer.clearingCounter,
+  teamsPermissions : state.Profile.teamsPermissions || {}
 });
 export default connect(mapStateToProps, null)(TeamsAddModal);

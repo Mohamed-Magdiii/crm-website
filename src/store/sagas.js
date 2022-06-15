@@ -21,6 +21,11 @@ import depositSaga from "./transactions/deposit/saga";
 import withdrawalSaga from "./transactions/withdrawal/saga"; 
 import ordersSaga from "./orders/saga"; 
 import bankAccountSaga from "./bankAccount/saga"; 
+import dictionarySaga from "./dictionary/saga";
+import marketSaga from "./markets/saga";
+import feeGroupSaga from "./feeGroups/saga";
+import markupSaga from "./markups/saga";
+import marketPricingSaga from "./marketPricing/saga";
 
 export default function* rootSaga() {
   yield all([
@@ -46,6 +51,12 @@ export default function* rootSaga() {
     fork(depositSaga),
     fork(withdrawalSaga), 
     fork(ordersSaga), 
-    fork(bankAccountSaga) 
+    fork(bankAccountSaga),
+    fork(marketSaga),
+    fork(markupSaga),
+    fork(dictionarySaga),
+    fork(marketPricingSaga),
+    fork(marketSaga),
+    fork(feeGroupSaga)
   ]);
 }

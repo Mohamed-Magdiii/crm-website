@@ -16,6 +16,8 @@ import NonAuthLayout from "./components/NonAuthLayout";
 
 // Import scss
 import "./assets/scss/preloader.scss";
+import "./assets/scss/theme.scss";
+
 // import { default as themeRight } from "./assets/scss/theme-rtl.scss";
 // import { default as themeLeft } from "./assets/scss/theme.scss";
 
@@ -23,34 +25,12 @@ import "./assets/scss/preloader.scss";
 const lang = localStorage.getItem("I18N_LANGUAGE");
 if (lang === "ar") {
   import ("./assets/scss/theme-rtl.scss");
-} else {
-  import ("./assets/scss/theme.scss");
 }
 
 // Import Firebase Configuration file
 // import { initFirebaseBackend } from "./helpers/firebase_helper"
 
-import fakeBackend from "./helpers/AuthType/fakeBackend";
-
-// Activating fake backend
-fakeBackend();
-
-// const firebaseConfig = {
-//   apiKey: process.env.REACT_APP_APIKEY,
-//   authDomain: process.env.REACT_APP_AUTHDOMAIN,
-//   databaseURL: process.env.REACT_APP_DATABASEURL,
-//   projectId: process.env.REACT_APP_PROJECTID,
-//   storageBucket: process.env.REACT_APP_STORAGEBUCKET,
-//   messagingSenderId: process.env.REACT_APP_MESSAGINGSENDERID,
-//   appId: process.env.REACT_APP_APPID,
-//   measurementId: process.env.REACT_APP_MEASUREMENTID,
-// }
-
-// init firebase backend
-// initFirebaseBackend(firebaseConfig)
-
 const App = props => {
-
   function getLayout() {
     let layoutCls = VerticalLayout;
     switch (props.layout.layoutType) {
@@ -63,18 +43,19 @@ const App = props => {
     }
     return layoutCls;
   }
-
+  const userArray = userRoutes();
   const Layout = getLayout(); // layout = layoutCls 
   return (
     <React.Fragment>
       <Router>
         <Switch>
-          {userRoutes.map((route, idx) => (
+          {userArray.map((route, idx) => (
             <Authmiddleware
               path={route.path}
               layout={Layout}
               component={route.component}
               innerPages={route.innerPages}
+              get={route.get}
               key={idx}
               isAuthProtected={true}
               {...(route.notExact ? {} : { exact: true })}

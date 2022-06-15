@@ -10,10 +10,10 @@ export const getClients = async ({ payload }) => {
   return data;
 };
 
-export const addClient = async (values) => {
+export const addClient = async (values) => {  
   const data = await axiosHelper.post("/clients", { ...values });
-  if (data.code === 500) {
-    throw new Error("");
+  if (data.isSuccess === false){
+    throw new Error("Invalid data");
   }
   return data;
 };

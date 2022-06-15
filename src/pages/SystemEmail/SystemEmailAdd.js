@@ -15,6 +15,7 @@ import { withTranslation } from "react-i18next";
 function SystemEmailAdd(props){
   const [addModal, setAddModal] = useState(false);
   const dispatch = useDispatch();
+  const { create } = props.systemEmailsPermissions;
   const handleAddSystemEmail = (e, values) => {
     dispatch(addSystemEmail(values));
   };
@@ -30,7 +31,7 @@ function SystemEmailAdd(props){
   
   return (
     <React.Fragment >
-      <Link to="#" className="btn btn-light" onClick={toggleAddModal}>
+      <Link to="#" className={`btn btn-light ${!create ? "d-none" : ""}`} onClick={toggleAddModal}>
         <i className="bx bx-plus me-1"></i> {props.t("Add new")} 
       </Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
@@ -93,7 +94,8 @@ const mapStateToProps = (state) => ({
   addSuccess: state.systemEmailsReducer.addSuccess,
   addError: state.systemEmailsReducer.addError,  
   clearingCounter: state.systemEmailsReducer.clearingCounter,
-  activeComponentProp: state.systemEmailsReducer.activeComponentProp
+  activeComponentProp: state.systemEmailsReducer.activeComponentProp,
+  systemEmailsPermissions: state.Profile.systemEmailsPermissions || {}
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(SystemEmailAdd));
