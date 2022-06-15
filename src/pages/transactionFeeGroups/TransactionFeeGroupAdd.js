@@ -69,6 +69,10 @@ function TransactionFeeGroupAdd(props) {
       assets: { ...assetsOpj },
       value
     }));
+    setMaxAmount(0);
+    setMinAmount(0);
+    setValue(0);
+    setcol1(false);
   };
   const toggleAddModal = () => {
     setAddUserModal(!addModal);
