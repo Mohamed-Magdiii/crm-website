@@ -142,7 +142,7 @@ function ClientBank(props) {
                             {!props.loading && /*props.totalDocs === 0 && */
                               <>
                                 <Tr>
-                                  <Td className="fw-bolder text-center">
+                                  <Td colSpan={"100%"} className="fw-bolder text-center" st>
                                     <h3 className="fw-bolder text-center">No records</h3>
                                   </Td>
                                 </Tr>

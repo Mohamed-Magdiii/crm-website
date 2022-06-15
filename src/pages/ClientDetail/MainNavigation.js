@@ -66,6 +66,26 @@ function MainNavigation(props){
                 {props.t("Orders")}
               </NavLink>
             </li>
+            <li className="nav-item">
+              <NavLink 
+                to={"/clients/" + clientId + "/logs"}
+                className={isActive =>
+                  "nav-link" + (!isActive ? " unselected" : "")
+                }
+              >
+                {props.t("Logs")}
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink 
+                to={"/clients/" + clientId + "/security"}
+                className={isActive =>
+                  "nav-link" + (!isActive ? " unselected" : "")
+                }
+              >
+                {props.t("Security")}
+              </NavLink>
+            </li>
           </ul>
         </div>
       </div>
