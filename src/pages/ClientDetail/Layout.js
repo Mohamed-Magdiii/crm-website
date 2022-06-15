@@ -3,7 +3,6 @@ import React from "react";
 // i18n
 import { withTranslation } from "react-i18next";
 import MainNavigation  from "./MainNavigation";
-import ClientDetailsHeader from "./ClientDetailsHeader";
 // import ClientMainPage from "./ClientMainPage";
 
 function Layout(props){

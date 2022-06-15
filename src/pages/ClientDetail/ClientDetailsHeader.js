@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { withTranslation } from "react-i18next";
 
 function ClientDetailsHeader(props){
-  const { clientId, clientDetails = {} } = props;
+  const { clientDetails = {} } = props;
 
   return (
     <React.Fragment>
