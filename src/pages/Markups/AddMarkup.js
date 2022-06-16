@@ -8,28 +8,68 @@ import {
   ModalHeader,
   ModalBody,
   UncontrolledAlert,
+  Collapse,
+  Label,
 } from "reactstrap";
 import {
-  AvForm, AvField, AvInput,
+  AvForm, AvField, AvInput, AvGroup
 } from "availity-reactstrap-validation";
 import { Link } from "react-router-dom";
 import { withTranslation } from "react-i18next";
 import { addMarkupStart } from "../../store/markups/actions";
+import classnames from "classnames";
+import { fetchMarketsStart } from "store/markets/actions";
 
 function AddMarkup(props) {
 
   const [addModal, setAddMarkupModal] = useState(false);
+  const [isPercentage, setIsPercentage] = useState(false);
+  const [col1, setcol1] = useState(false);
+  const [value, setValue] = useState(0);
+  const [minAmount, setMinAmount] = useState(0);
+  const [maxAmount, setMaxAmount] = useState(0);
   const dispatch = useDispatch();
-  const { create } = props.markupsPermissions ;
+  const { create } = props.markupsPermissions;
   const toggleAddModal = () => {
     setAddMarkupModal(!addModal);
   };
+  const handleAddMarkup = (event, values) => {
 
-  const handleAddMarkup = (e, v) => {   
-    e.preventDefault();  
-    dispatch(addMarkupStart(v));
+    event.preventDefault();
+    const { isPercentage, title, value } = values;
+    let marketsObject;
+    props.markets?.forEach((market, i) => {
+      marketsObject = {
+        ...marketsObject,
+        [`${market.pairName}`]: {
+          value: values[`value${i}`],
+        }
+
+      };
+    });
+    dispatch(addMarkupStart({
+      isPercentage,
+      title,
+      markets: { ...marketsObject },
+      value
+    }));
+  };
+  useEffect(() => {
+    if (addModal) {
+      loadMarkets(1, 100);
+    }
+  }, [addModal]);
+
+  const loadMarkets = (page, limit) => {
+    dispatch(fetchMarketsStart({
+      limit,
+      page
+    }));
   };
 
+  const t_col1 = () => {
+    setcol1(!col1);
+  };
   useEffect(() => {
     if (!props.addMarkupSuccessMessage && addModal) {
       setAddMarkupModal(false);
@@ -39,7 +79,12 @@ function AddMarkup(props) {
   return (
     <React.Fragment >
       <Link to="#" className={`btn btn-light ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i>{props.t("Add New Markup")}</Link>
-      <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
+      <Modal size="lg"
+        style={{
+          maxWidth: "800px",
+          width: "100%"
+        }}
+        isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
           {props.t("Add Markup")}
         </ModalHeader>
@@ -51,50 +96,115 @@ function AddMarkup(props) {
             }}
           >
             <Row>
-              <Col md="6">
-                <div className="mb-3">
+              <Row>
+                <Col  >
                   <AvField
                     name="title"
                     label={props.t("Title")}
                     placeholder={props.t("Title")}
                     type="text"
-                    errorMessage={props.t("Enter title of the markup")}
+                    errorMessage={props.t("Enter Valid title")}
                     validate={{ required: { value: true } }}
                   />
+                </Col>
+              </Row>
+
+              <Col>
+                <br />
+                <div className="mb-3">
+                  <AvGroup check>
+                    <AvInput type="checkbox" name="isPercentage" onClick={() => setIsPercentage(preValue => !preValue)} value={isPercentage ? "true" : "false"} />
+                    <Label check for="checkItOut">Is Percentage</Label>
+                  </AvGroup>
                 </div>
               </Col>
-              <Col md="6">
-                <div className="mb-3">
+              {/* </Row> */}
+
+              <Row>
+
+
+                <Col md="2" className="d-flex flex-column justify-content-end"><h6 className="text-center">Defaults:</h6></Col>
+                <Col >
                   <AvField
                     name="value"
                     label={props.t("Value")}
-                    placeholder={props.t("Value")}
-                    type="text"
-                    errorMessage={props.t("Enter Value")}
+                    placeholder={props.t("value")}
+                    type="number"
+                    errorMessage={props.t("Enter valid fees group value")}
                     validate={{ required: { value: true } }}
+                    onChange={(e) => setValue(e.target.value)}
                   />
+                </Col>
+              </Row>
+            </Row>
+            <br />
+            <br />
+            <Col >
+              <div className="accordion" id="accordion">
+                <div className="accordion-item">
+                  <h2 className="accordion-header" id="headingOne">
+                    <button
+                      className={classnames(
+                        "accordion-button",
+                        "fw-medium",
+                        { collapsed: !col1 }
+                      )}
+                      type="button"
+                      onClick={t_col1}
+                      style={{ cursor: "pointer" }}
+                    >
+                      Markets
+                    </button>
+                  </h2>
+
+                  <Collapse isOpen={col1} className="accordion-collapse">
+                    <div className="accordion-body">
+                      {props.markets?.map((market, index) =>
+                        <div key={index}>
+                          <Row>
+                            <Col md="2" className="d-flex flex-column justify-content-end"><h5 className="text-center"> {market.pairName}</h5></Col>
+                            <Col  >
+                              <AvField
+                                name={`value${index}`}
+                                label={props.t("Value")}
+                                value={value}
+                                placeholder={props.t("Value")}
+                                type="number"
+                              />
+                            </Col>
+
+                          </Row>
+                          <br />
+                          <br />
+                        </div>
+                      )}
+                    </div>
+                  </Collapse>
                 </div>
-              </Col>
-            </Row>
-            <Row>
-              <Col md="6">
-                <AvInput type="checkbox" name="isPercentage" validate={{ required: { value: false } }} /> is it precentage?
-              </Col>
-            </Row>
+              </div>
+            </Col>
             <div className='text-center pt-3 p-2'>
-              <Button disabled={props.addLoading} type="submit" color="primary" className="">
-                {props.t("Add Markup")}
+              <Button disabled={props.addButtonDisabled} type="submit" color="primary" className="">
+                {props.t("Add New Transaction Fees Group")}
               </Button>
             </div>
           </AvForm>
-          {props.error && <UncontrolledAlert color="danger">
-            <i className="mdi mdi-block-helper me-2"></i>
-            {props.t(props.error)}
-          </UncontrolledAlert>}
-          {props.addMarkupSuccessMessage && props.addMarkupSuccessMessage.length > 0 && <UncontrolledAlert color="success">
-            <i className="mdi mdi-check-all me-2"></i>
-            {props.t(props.addMarkupSuccessMessage)}
-          </UncontrolledAlert>}
+          {
+            props.error && (
+              <UncontrolledAlert color="danger">
+                <i className="mdi mdi-block-helper me-2" />
+                {props.t(props.error)}
+              </UncontrolledAlert>
+            )
+          }
+          {
+            props.showAddSuccessMessage && (
+              <UncontrolledAlert color="success">
+                <i className="mdi mdi-check-all me-2" />
+                {props.t("Transaction New Fees Group is added successfully !!!")}
+              </UncontrolledAlert>
+            )
+          }
         </ModalBody>
       </Modal>
     </React.Fragment>);
@@ -102,6 +212,7 @@ function AddMarkup(props) {
 const mapStateToProps = (state) => ({
   error: state.markupsReducer.error,
   addMarkupSuccessMessage: state.markupsReducer.addMarkupSuccessMessage,
-  markupsPermissions : state.Profile.markupsPermissions || {}
+  markupsPermissions: state.Profile.markupsPermissions || {},
+  markets: state.marketsReducer.markets || []
 });
 export default connect(mapStateToProps, null)(withTranslation()(AddMarkup));
