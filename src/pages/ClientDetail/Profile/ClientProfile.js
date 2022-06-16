@@ -68,7 +68,19 @@ function ClientDetails(props) {
   const agentOptions = props.usersDocs && agentSelectHandler();
   const agentChangeHandler = (selectedAgentVar) => {
     selectedAgent = selectedAgentVar;
-  };  
+  };
+  
+  // nationality select component handler
+  let selectedNationality = null;
+  const nationalityChangeHandler = (selectedNationalityVar) => {
+    selectedNationality = selectedNationalityVar;
+  }; 
+
+  // country select component hendler
+  let selectedCountry = null;
+  const countryChangeHandler = (selectedCountryVar) => {
+    selectedCountry = selectedCountryVar;
+  };
   
   const loadUpdatedClientDetailsHandler = (e, values) => {
     dispatch(editClientDetails({
@@ -107,6 +119,8 @@ function ClientDetails(props) {
                         onValidSubmit={(e, v) => {
                           v.title = selectedTitle.value;
                           v.agent = selectedAgent.value;
+                          v.nationality = selectedNationality.value;
+                          v.country = selectedCountry.value;
                           loadUpdatedClientDetailsHandler(e, v);
                         }}
                       >
@@ -241,10 +255,16 @@ function ClientDetails(props) {
                           {/* final row */}
                           <Row>
                             <Col md="6">
-                              <CountryDropDown />
+                              <CountryDropDown 
+                                countryChangeHandler={countryChangeHandler}
+                                defaultValue={props.clientDetails.country}
+                              />
                             </Col>
                             <Col md="6">
-                              <NationalityDropDown />
+                              <NationalityDropDown 
+                                nationalityChangeHandler={nationalityChangeHandler}
+                                defaultValue={props.clientDetails.nationality}
+                              />
                             </Col>
                           </Row>
                         </div>

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { fetchDictionaryStart } from "store/dictionary/actions";
 import { useDispatch, connect } from "react-redux";
 import Select from "react-select";
-function CountryDropDown({ selectCountry, ...props }){ 
+function CountryDropDown({ ...props }){ 
   
   const dispatch = useDispatch();
   useEffect(()=>{
@@ -16,23 +16,27 @@ function CountryDropDown({ selectCountry, ...props }){
       value: country.en
     };
   });
-  
+
+  const selectedCountryObj = props.countries && optionGroup.find((country) => (
+    country.value === props.defaultValue
+  )); 
   
   return (
     <React.Fragment>
-
       <div className="mb-3">
         <label htmlFor="choices-single-default" className="form-label font-size-14">Country</label>
-        <Select 
-          onChange={(e) => {
-            selectCountry(e.value);
-          }}
-          
-          options={optionGroup}
-          classNamePrefix="select2-selection"
-          placeholder = "Select Your Country"
-          
-        />
+        {
+          selectedCountryObj &&
+          <Select 
+            onChange={(e) => {
+              props.countryChangeHandler(e);
+            }}
+            defaultValue={selectedCountryObj}
+            options={optionGroup}
+            classNamePrefix="select2-selection"
+            placeholder = "Select Your Country"
+          />
+        }
       </div>
     </React.Fragment>);
 
