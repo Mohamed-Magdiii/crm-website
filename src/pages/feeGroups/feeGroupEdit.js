@@ -71,7 +71,7 @@ function feeGroupAdd(props) {
         <ModalHeader toggle={onClose} tag="h4">
           {props.t("Update Fee Group")}
         </ModalHeader>
-        <ModalBody >
+        <ModalBody  style={{ padding : "0rem" }} >
           <AvForm
             className='p-4'
             onValidSubmit={(e, v) => {
@@ -109,8 +109,13 @@ function feeGroupAdd(props) {
                     placeholder={props.t("value")}
                     type="text"
                     value={selectedItem.value}
-                    errorMessage={props.t("Enter valid fees group value")}
-                    validate={{ required: { value: true } }}
+                    validate = {{
+                      required :{ value:true },
+                      pattern : {
+                        value :"/^[0-9]+$/",
+                        errorMessage : "Value must be a number"
+                      }
+                    }} 
                     onChange = {(e)=>setValue(e.target.value)}
                   />
                 </div>
@@ -123,9 +128,14 @@ function feeGroupAdd(props) {
                     placeholder={props.t("Max Value")}
                     type="text"
                     value= {selectedItem.maxValue}
-                    errorMessage={props.t("Enter Valid max feees group value")}
                     onChange = {(e)=>setMaxAmount(e.target.value)}
-                    validate={{ required: { value: true } }}
+                    validate = {{
+                      required :{ value:true },
+                      pattern : {
+                        value :"/^[0-9]+$/",
+                        errorMessage : "Max Value must be a number"
+                      }
+                    }} 
                   />
                 </div>
               </Col>
@@ -133,13 +143,18 @@ function feeGroupAdd(props) {
                 <div className="mb-3">
                   <AvField
                     name="minValue"
-                    label={props.t("Min value")}
+                    label={props.t("Min Value")}
                     placeholder={props.t("min value")}
                     type="text"
                     value={selectedItem.minValue}
                     onChange = {(e)=>setMinAmount(e.target.value)}
-                    errorMessage={props.t("Enter valid min fees group value")}
-                    validate={{ required: { value: true } }}
+                    validate = {{
+                      required :{ value:true },
+                      pattern : {
+                        value :"/^[0-9]+$/",
+                        errorMessage : "Min Value must be a number"
+                      }
+                    }} 
                   />
                 </div>
               </Col>
@@ -187,28 +202,50 @@ function feeGroupAdd(props) {
                               
                             return (
                               <Row key={market._id}>
-                                <Col className="d-flex flex-column justify-content-end"><label>{pairName}</label></Col>
+                                <Col className="d-flex flex-column justify-content-center"><label>{pairName}</label></Col>
                                 <Col>
                                   <AvField 
                                     name={`fee${i}`} 
                                     label="Value" 
                                     defaultValue={selectedItem.value} 
+                                    validate = {{
+                                      required :{ value:true },
+                                      pattern : {
+                                        value :"/^[0-9]+$/",
+                                        errorMessage : "Value must be a number"
+                                      }
+                                    }} 
                                     value={value}></AvField>
                                 </Col>
                                 <Col>
                                   <AvField 
                                     name={`maxAmount${i}`} 
-                                    label="maxAmount" 
+                                    label="Max Value" 
                                     defaultValue={selectedItem.maxValue}
                                     value={maxAmount}
+                                    validate = {{
+                                      required :{ value:true },
+                                      pattern : {
+                                        value :"/^[0-9]+$/",
+                                        errorMessage : "Max value must be a number"
+                                      }
+                                    }} 
                                   ></AvField>
                                 </Col>
                                 <Col>
                                   <AvField 
                                     name={`minAmount${i}`} 
-                                    label="minAmount"
+                                    label="Min Value"
                                     defaultValue = {selectedItem.minValue}
+                                    validate = {{
+                                      required :{ value:true },
+                                      pattern : {
+                                        value :"/^[0-9]+$/",
+                                        errorMessage : "Min Value must be a number"
+                                      }
+                                    }} 
                                     value={minAmount}></AvField>
+                                 
                                 </Col>
                               </Row>
                             
