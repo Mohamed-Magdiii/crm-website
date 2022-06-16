@@ -183,7 +183,7 @@ function AddMarkup(props) {
             </Col>
             <div className='text-center pt-3 p-2'>
               <Button disabled={props.addButtonDisabled} type="submit" color="primary" className="">
-                {props.t("Add New Transaction Fees Group")}
+                {props.t("Add Markup")}
               </Button>
             </div>
           </AvForm>
