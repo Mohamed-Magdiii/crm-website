@@ -21,12 +21,23 @@ function NationalityDropDown({ ...props }){
 
   const selectedNationalityObj = props.countries && optionGroup.find((nationality) => (
     nationality.value === props.defaultValue
-  )); 
+  ));
   
   return (
     <React.Fragment>
       <div className="mb-3">
         <label htmlFor="choices-single-default" className="form-label font-size-14">{props.t("Nationality")}</label>
+        {
+          !selectedNationalityObj &&
+          <Select 
+            onChange={(e) => {
+              props.nationalityChangeHandler(e);
+            }}
+            options={optionGroup}
+            classNamePrefix="select2-selection"
+            placeholder={props.t("Select a nationality")}
+          />
+        }
         {
           selectedNationalityObj &&
           <Select 
@@ -40,9 +51,10 @@ function NationalityDropDown({ ...props }){
         }
       </div>
     </React.Fragment>);
-
 }
+
 const mapStateToProps = (state)=>({
   countries: state.dictionaryReducer.countries || []
 });
+
 export default connect(mapStateToProps, null)(withTranslation()(NationalityDropDown));
