@@ -103,6 +103,14 @@ function ClientDetails(props) {
     loadUsers();
   }, [props.updatedClientDetails]);
 
+  // useEffect is used to set initial value for agent, nationality and country 
+  // right after loading the page so if the user clicks update without changing 
+  // any of them it will load it's previous value and update all updated fields
+  useEffect(() => {
+    props.clientDetails.agent && setAgent(props.clientDetails.agent);
+    props.clientDetails.nationality && setNationality(props.clientDetails.nationality);
+    props.clientDetails.country && setCountry(props.clientDetails.country);
+  }, [props.clientDetails]);
   return (
     <React.Fragment>
       {!agentOptions && 
@@ -270,7 +278,7 @@ function ClientDetails(props) {
                                   type="text"
                                   errorMessage={props.t("Agent is required")}
                                   validate={{ required: { value: true } }}
-                                  value={agent && agent.value}
+                                  value={agent && agent.value || agent}
                                   style={{
                                     opacity: 0,
                                     height: 0,
@@ -293,7 +301,7 @@ function ClientDetails(props) {
                                 type="text"
                                 errorMessage={props.t("Country is required")}
                                 validate={{ required: { value: true } }}
-                                value={country && country.value}
+                                value={country && country.value || country}
                                 style={{
                                   opacity: 0,
                                   height: 0,
@@ -311,7 +319,7 @@ function ClientDetails(props) {
                                 type="text"
                                 errorMessage={props.t("Nationality is required")}
                                 validate={{ required: { value: true } }}
-                                value={nationality && nationality.value}
+                                value={nationality && nationality.value || nationality}
                                 style={{
                                   opacity: 0,
                                   height: 0,
