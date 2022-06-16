@@ -25,9 +25,7 @@ function AddMarkup(props) {
   const [addModal, setAddMarkupModal] = useState(false);
   const [isPercentage, setIsPercentage] = useState(false);
   const [col1, setcol1] = useState(false);
-  const [value, setValue] = useState(0);
-  const [minAmount, setMinAmount] = useState(0);
-  const [maxAmount, setMaxAmount] = useState(0);
+  const [value, setValue] = useState(0); 
   const dispatch = useDispatch();
   const { create } = props.markupsPermissions;
   const toggleAddModal = () => {
