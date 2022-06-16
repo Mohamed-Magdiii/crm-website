@@ -17,6 +17,7 @@ import { editMarkupStart } from "store/markups/actions";
 
 function MarkupEdit(props) {
   const { open, markup = {}, onClose } = props;
+  // console.log(markup);
 
   const dispatch = useDispatch();
 
@@ -36,7 +37,7 @@ function MarkupEdit(props) {
   return (
     <React.Fragment >
       {/* <Link to="#" className="btn btn-light" onClick={onClose}><i className="bx bx-plus me-1"></i> Add New</Link> */}
-      <Modal isOpen={open} toggle={onClose} centered={true}>
+      <Modal size="lg"  isOpen={open} toggle={onClose} centered={true}>
         <ModalHeader toggle={onClose} tag="h4">
           {props.t("Edit Markup")}
         </ModalHeader>
@@ -69,7 +70,8 @@ function MarkupEdit(props) {
                     placeholder={props.t("Value")}
                     type="text"
                     errorMessage={props.t("Enter Value")}
-                    value={markup.value}
+                    value={markup.value?.$numberDecimal}
+                    // markup.value && markup.value["$numberDecimal"] ? markup.value["$numberDecimal"] : ""}
                     validate={{ required: { value: true } }}
                   />
                 </div>
@@ -104,7 +106,7 @@ function MarkupEdit(props) {
 const mapStateToProps = (state) => ({
   editLoading: state.markupsReducer.editLoading,
   editDone: state.markupsReducer.editDone,
-  editClear: state.markupsReducer.editClear,  
-  error:state.markupsReducer.error
+  editClear: state.markupsReducer.editClear,
+  error: state.markupsReducer.error
 });
 export default connect(mapStateToProps, null)(withTranslation()(MarkupEdit));
