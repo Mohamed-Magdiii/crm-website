@@ -74,7 +74,7 @@ function TransactionFeeGroupEdit(props) {
                     label={props.t("Value")}
                     placeholder={props.t("value")}
                     type="text"
-                    value={selectedItem.value}
+                    value={selectedItem.value["$numberDecimal"]}
                     errorMessage={props.t("Enter valid fees group value")}
                     validate={{ required: { value: true } }}
                   />
@@ -88,7 +88,7 @@ function TransactionFeeGroupEdit(props) {
                     label={props.t("Max Value")}
                     placeholder={props.t("Max Value")}
                     type="text"
-                    value= {selectedItem.maxValue}
+                    value= {selectedItem.maxValue["$numberDecimal"]}
                     errorMessage={props.t("Enter Valid max feees group value")}
                     validate={{ required: { value: true } }}
                   />
@@ -101,7 +101,7 @@ function TransactionFeeGroupEdit(props) {
                     label={props.t("Min value")}
                     placeholder={props.t("min value")}
                     type="text"
-                    value={selectedItem.minValue}
+                    value={selectedItem.minValue["$numberDecimal"]}
                     errorMessage={props.t("Enter valid min fees group value")}
                     validate={{ required: { value: true } }}
                   />
