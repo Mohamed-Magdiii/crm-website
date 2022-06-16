@@ -51,6 +51,7 @@ function MarkUpsList(props) {
     {
       dataField: "value",
       text: props.t("Value"),
+      formatter: (val) => (val?.value?.$numberDecimal || ""),
     },
     {
       dataField: "isActive",
@@ -155,7 +156,7 @@ function MarkUpsList(props) {
                     <CardTitle>
                       {props.t("Markups List")} ({props.totalDocs})
                     </CardTitle>
-                    <AddMarkup></AddMarkup>
+                    <AddMarkup/>
                   </div>
                 </CardHeader>
                 <CardBody>
