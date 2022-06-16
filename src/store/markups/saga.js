@@ -33,7 +33,7 @@ function* fetchMarkups(params) {
   }
 }
 function* editMarket(params) {
-  const { payload } = params;
+  const { payload } = params; 
   const { id, values } = payload;
   try {
     yield call(updateMarkup, params);
@@ -87,7 +87,7 @@ function* fetchSingleMarkup({ payload }) {
     yield call(fetchSingleMarkupAPI, payload);
     // console.log(data);
   } catch (error) {
-    yield(showErrorNotification(error.message));
+    yield (showErrorNotification(error.message));
   }
 }
 function* markupSaga() {

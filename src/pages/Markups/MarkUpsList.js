@@ -117,7 +117,7 @@ function MarkUpsList(props) {
 
   useEffect(() => {
     loadMarkups(1, sizePerPage);
-  }, [sizePerPage, 1, props.addMarkupSuccess]);
+  }, [sizePerPage, 1, props.addMarkupSuccess, props.editR]);
 
   const loadMarkups = (page, limit) => {
     dispatch(
@@ -242,6 +242,7 @@ const mapStateToProps = (state) => ({
   deleteModalClear: state.markupsReducer.deleteModalClear,
   error: state.markupsReducer.error,
   addMarkupSuccess: state.markupsReducer.addMarkupSuccess,
+  editR: state.markupsReducer.editR,
   markupsPermissions : state.Profile.markupsPermissions || {}
 });
 
