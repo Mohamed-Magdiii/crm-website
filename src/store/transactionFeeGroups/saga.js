@@ -53,7 +53,7 @@ function * addNewFeesGroup ({ payload }){
 }
 function * editFeeGroup({ payload }){
   try {
-    yield call(updateFeeGroup, payload);
+    yield call(updateFeeGroup, payload); 
     const { body, id } = payload;
     yield put(editTransactionFeeGroupSuccess({
       _id:id, 

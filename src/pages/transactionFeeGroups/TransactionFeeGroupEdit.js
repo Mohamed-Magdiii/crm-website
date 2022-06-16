@@ -8,8 +8,10 @@ import {
   UncontrolledAlert,
   Col,
   Row,
+  Collapse,
   Label
 } from "reactstrap";
+import classnames from "classnames";
 
 import React, { useState, useEffect } from "react";
 import {
@@ -23,16 +25,56 @@ function TransactionFeeGroupEdit(props) {
 
   const { open, selectedItem = {}, onClose, disabled } = props;
 
+  const [assets, setAssets] = useState([]);
+  const [col1, setcol1] = useState(false);
 
   const [isPercentage, setIsPercentage] = useState();
   useEffect(() => {
     setIsPercentage(selectedItem.isPercentage);
   }, [selectedItem.isPercentage]);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const assetsArrayOfObj = Object.entries(selectedItem?.assets || {}).map((e) => ({ [e[0]]: e[1] }));
+    setAssets(assetsArrayOfObj); 
+  }, [open]);
+
   const updateFeeGroup = (event, values) => {
+    // console.log(values);
     event.preventDefault();
-    dispatch(editTransactionFeeGroupStart(selectedItem._id, values
+    const { isPercentage, maxValue, title, minValue, value } = values;
+    let assetsObject = {};
+    let val = {};
+    assets?.forEach((asset, i) => {
+      assetsObject = {
+        ...assetsObject,
+        [`${Object.keys(asset)[0]}`]: {
+          value: values[`value${i}`],
+          minValue: values[`minValue${i}`],
+          maxValue: values[`maxValue${i}`]
+        }
+      };
+    }); 
+    val = {
+      isPercentage,
+      minValue,
+      maxValue,
+      title,
+      assets: { ...assetsObject },
+      value
+    };
+    dispatch(editTransactionFeeGroupStart(
+      selectedItem._id,
+      val
     ));
+  };
+  // const updateFeeGroup = (event, values) => {
+  //   event.preventDefault();
+  //   dispatch(editTransactionFeeGroupStart(selectedItem._id, values
+  //   ));
+  // };
+  const t_col1 = () => {
+    setcol1(!col1);
   };
   return (
     <React.Fragment >
@@ -84,12 +126,12 @@ function TransactionFeeGroupEdit(props) {
               <Col md="4">
                 <div className="mb-3">
                   <AvField
-                    name="maxValue"
-                    label={props.t("Max Value")}
-                    placeholder={props.t("Max Value")}
+                    name="minValue"
+                    label={props.t("Min value")}
+                    placeholder={props.t("min value")}
                     type="text"
-                    value={selectedItem.maxValue?.$numberDecimal}
-                    errorMessage={props.t("Enter Valid max feees group value")}
+                    value={selectedItem.minValue?.$numberDecimal}
+                    errorMessage={props.t("Enter valid min fees group value")}
                     validate={{ required: { value: true } }}
                   />
                 </div>
@@ -97,12 +139,12 @@ function TransactionFeeGroupEdit(props) {
               <Col md="4">
                 <div className="mb-3">
                   <AvField
-                    name="minValue"
-                    label={props.t("Min value")}
-                    placeholder={props.t("min value")}
+                    name="maxValue"
+                    label={props.t("Max Value")}
+                    placeholder={props.t("Max Value")}
                     type="text"
-                    value={selectedItem.minValue?.$numberDecimal}
-                    errorMessage={props.t("Enter valid min fees group value")}
+                    value={selectedItem.maxValue?.$numberDecimal}
+                    errorMessage={props.t("Enter Valid max feees group value")}
                     validate={{ required: { value: true } }}
                   />
                 </div>
@@ -121,6 +163,73 @@ function TransactionFeeGroupEdit(props) {
 
             </div>
 
+            <Row>
+              <Col >
+                <div className="accordion" id="accordion">
+                  <div className="accordion-item">
+                    <h2 className="accordion-header" id="headingOne">
+                      <button
+                        className={classnames(
+                          "accordion-button",
+                          "fw-medium",
+                          { collapsed: !col1 }
+                        )}
+                        type="button"
+                        onClick={t_col1}
+                        style={{ cursor: "pointer" }}
+                      >
+                        assets
+                      </button>
+                    </h2>
+
+                    <Collapse isOpen={col1} className="accordion-collapse">
+                      <div className="accordion-body">
+                        {assets?.map((market, index) => {
+                          let [key, value] = Object.entries(market)[0];
+                          return (
+                            <div key={index}>
+                              <Row>
+                                <Col md="2" className="d-flex flex-column justify-content-end"><h5 className="text-center"> {key}</h5></Col>
+                                <Col >
+                                  <AvField
+                                    name={`value${index}`}
+                                    label={props.t("Value")}
+                                    value={value?.value}
+                                    placeholder={props.t("Value")}
+                                    type="number"
+                                  />
+                                </Col>
+                                <Col >
+                                  <AvField
+                                    name={`minValue${index}`}
+                                    label={props.t("Min Value")}
+                                    value={value?.minValue}
+                                    placeholder={props.t("Min Value")}
+                                    type="number"
+                                  />
+                                </Col>
+                                <Col >
+                                  <AvField
+                                    name={`maxValue${index}`}
+                                    label={props.t("Max Value")}
+                                    value={value?.maxValue}
+                                    placeholder={props.t("Max Value")}
+                                    type="number"
+                                  />
+                                </Col>
+                              </Row>
+                              <br />
+                              <br />
+                            </div>
+                          );
+                        }
+                        )}
+                      </div>
+                    </Collapse>
+                  </div>
+                </div>
+              </Col>
+            </Row>
             <div className='text-center pt-3 p-2'>
               <Button disabled={disabled} type="submit" color="primary" className="">
                 {props.t("Update Transaction Fee Group")}

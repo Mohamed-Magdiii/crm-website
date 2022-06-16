@@ -81,8 +81,7 @@ function TransactionFeeGroupAdd(props) {
     setcol1(!col1);
   };
   useEffect(() => {
-    if (!props.showAddSuccessMessage && addModal) {
-
+    if (!props.showAddSuccessMessage && addModal) { 
       setAddUserModal(false);
     }
   }, [props.showAddSuccessMessage]);
