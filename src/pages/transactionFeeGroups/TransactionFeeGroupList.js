@@ -47,18 +47,18 @@ function TransactionFeeGroupList(props) {
     {
       dataField: "value",
       text: props.t("Value"),
-      formatter: (val) => (val.value["$numberDecimal"]),
+      formatter: (val) => (val?.value?.$numberDecimal || ""),
 
     },
     {
       dataField: "maxValue",
       text: props.t("Max Value"),
-      formatter: (val) => (val.maxValue["$numberDecimal"]),
+      formatter: (val) => (val?.maxValue?.$numberDecimal || ""),
     },
     {
       dataField: "minValue",
       text: props.t("Min Value"),
-      formatter: (val) => (val.minValue["$numberDecimal"]),
+      formatter: (val) => (val?.minValue?.$numberDecimal || ""),
     },
     {
       dataField: "",
