@@ -178,7 +178,7 @@ function TransactionFeeGroupEdit(props) {
                         onClick={t_col1}
                         style={{ cursor: "pointer" }}
                       >
-                        assets
+                        Individual Asset fees
                       </button>
                     </h2>
 
