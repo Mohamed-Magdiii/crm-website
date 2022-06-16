@@ -47,15 +47,18 @@ function FeeGroupsList(props) {
     {
       dataField: "value",
       text:props.t("Value"),
-    
+      formatter: (val) => (val.value.$numberDecimal ? Object.values(val.value.$numberDecimal)[0] : val.value)
     },
     {
       dataField: "maxValue",
       text:props.t("Max Value"),
+      formatter: (val) => (val.minValue.$numberDecimal ? Object.values(val.minValue.$numberDecimal)[0] : val.minValue)
+     
     },
     {
       dataField: "minValue",
       text:props.t("Min Value"),
+      formatter: (val) => (val.minValue.$numberDecimal ? Object.values(val.minValue.$numberDecimal)[0] : val.maxValue)
     },
     {
       dataField: "",
