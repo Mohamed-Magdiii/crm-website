@@ -13,11 +13,13 @@ import {
   Collapse
 } from "reactstrap";
 
-import React, { useState, useEffect } from "react";
+import React, { 
+  useState, 
+  useEffect, 
+} from "react";
 import { 
   AvForm, 
   AvField,
-  
 } from "availity-reactstrap-validation";
 import { withTranslation } from "react-i18next";
 import { editFeeGroupStart } from "store/feeGroups/actions";
@@ -26,7 +28,7 @@ function feeGroupAdd(props) {
   
   const { open, selectedItem = {}, onClose, disabled } = props;
   
-  
+  const { maxValue, value: v, minValue } = selectedItem;
   const [isPercentage, setIsPercentage] = useState();
   const [col1, setcol1] = useState(true);
   const t_col1 = () => {
@@ -71,7 +73,7 @@ function feeGroupAdd(props) {
         <ModalHeader toggle={onClose} tag="h4">
           {props.t("Update Fee Group")}
         </ModalHeader>
-        <ModalBody  style={{ padding : "0rem" }} >
+        <ModalBody  >
           <AvForm
             className='p-4'
             onValidSubmit={(e, v) => {
@@ -108,7 +110,7 @@ function feeGroupAdd(props) {
                     label={props.t("Value")}
                     placeholder={props.t("value")}
                     type="text"
-                    value={selectedItem.value}
+                    value={v ? v.$numberDecimal : ""}
                     validate = {{
                       required :{ value:true },
                       pattern : {
@@ -127,7 +129,7 @@ function feeGroupAdd(props) {
                     label={props.t("Max Value")}
                     placeholder={props.t("Max Value")}
                     type="text"
-                    value= {selectedItem.maxValue}
+                    value= {maxValue ? maxValue.$numberDecimal : ""}
                     onChange = {(e)=>setMaxAmount(e.target.value)}
                     validate = {{
                       required :{ value:true },
@@ -146,7 +148,7 @@ function feeGroupAdd(props) {
                     label={props.t("Min Value")}
                     placeholder={props.t("min value")}
                     type="text"
-                    value={selectedItem.minValue}
+                    value={ minValue ? minValue.$numberDecimal : ""}
                     onChange = {(e)=>setMinAmount(e.target.value)}
                     validate = {{
                       required :{ value:true },
@@ -207,7 +209,7 @@ function feeGroupAdd(props) {
                                   <AvField 
                                     name={`fee${i}`} 
                                     label="Value" 
-                                    defaultValue={selectedItem.value} 
+                                    defaultValue={ v ? v.$numberDecimal : ""} 
                                     validate = {{
                                       required :{ value:true },
                                       pattern : {
@@ -221,7 +223,7 @@ function feeGroupAdd(props) {
                                   <AvField 
                                     name={`maxAmount${i}`} 
                                     label="Max Value" 
-                                    defaultValue={selectedItem.maxValue}
+                                    defaultValue={ maxValue ? maxValue.$numberDecimal : "" }
                                     value={maxAmount}
                                     validate = {{
                                       required :{ value:true },
@@ -236,7 +238,7 @@ function feeGroupAdd(props) {
                                   <AvField 
                                     name={`minAmount${i}`} 
                                     label="Min Value"
-                                    defaultValue = {selectedItem.minValue}
+                                    defaultValue = { minValue ? minValue.$numberDecimal : ""}
                                     validate = {{
                                       required :{ value:true },
                                       pattern : {

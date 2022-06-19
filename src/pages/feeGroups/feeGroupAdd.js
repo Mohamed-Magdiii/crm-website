@@ -85,7 +85,7 @@ function feeGroupAdd(props) {
         <ModalHeader toggle={toggleAddModal} tag="h4">
           {props.t("Add New Fees Group")}
         </ModalHeader>
-        <ModalBody style={{ padding : "0rem" }}  >
+        <ModalBody   >
           <AvForm
             className='p-4'
             onValidSubmit={(e, v) => {
