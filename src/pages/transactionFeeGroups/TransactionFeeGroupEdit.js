@@ -66,7 +66,8 @@ function TransactionFeeGroupEdit(props) {
     dispatch(editTransactionFeeGroupStart(
       selectedItem._id,
       val
-    ));
+    )); 
+    setcol1(false);
   };
   // const updateFeeGroup = (event, values) => {
   //   event.preventDefault();
