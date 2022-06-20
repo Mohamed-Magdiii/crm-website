@@ -30,7 +30,7 @@ const SidebarContent = (props) => {
   const { get:getRoles } = props.rolesPermissions;
   const { get:getDictionaries } = props.dictionariesPermissions;
   const { get : getFeeGroup } = props.feeGroupsPermissions;
-  const { get : getTransactionFeeGroup } = props.transactionFeeGroupsPermissions;
+  // const { get : getTransactionFeeGroup } = props.transactionFeeGroupsPermissions;
   const { get: getSystemEmail } = props.systemEmailsPermissions;
   const { get: getTeams } = props.teamsPermissions;
   const { get: getSymbols } = props.symbolsPermissions;

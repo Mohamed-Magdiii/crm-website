@@ -32,3 +32,11 @@ export const deleteRole = async({ payload }) => {
   } 
   return data;
 };
+
+export const changeStatusRole = async({ payload }) => {
+  const data = await axiosHelper.post(`/roles/${payload.id}/${payload.status}`);
+  if (data.isError) {
+    throw new Error(data.message);
+  } 
+  return data;
+};
