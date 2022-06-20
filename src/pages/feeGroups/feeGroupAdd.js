@@ -209,7 +209,7 @@ function feeGroupAdd(props) {
                             const { pairName } = market;
                             return <div key={market._id}>
                                 
-                              <Row>
+                              <Row className="mb-3">
                                 <Col className="d-flex flex-column justify-content-center"><label>${pairName} </label></Col>
                                 <Col>
                                   <AvField 

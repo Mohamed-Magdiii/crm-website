@@ -227,7 +227,7 @@ const SidebarContent = (props) => {
                   <Link to="/currency-pairs" className={`${!getCurrencyPair ? "d-none" : ""}`}>{props.t("Currency Pairs")}</Link>
                 </li>   
                 <li>
-                  <Link to="/fee-groups" className={`${!getFeeGroup ? "d-none" : ""}`}>{props.t("Fee Groups")}</Link>
+                  <Link to="/fee-groups" className={`${!getFeeGroup ? "d-none" : ""}`}>{props.t("Trading Fee Groups")}</Link>
                 </li>
                 <li>
                   <Link to="/markups" className={`${!getMarkups ? "d-none" : ""}`}>{props.t("Markups")}</Link>

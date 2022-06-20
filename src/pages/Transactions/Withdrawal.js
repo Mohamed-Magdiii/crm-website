@@ -66,7 +66,7 @@ function Withdrawal(props){
     {
       dataField:"amount",
       text:props.t("Amount"),
-      
+      formatter: (val) => (val?.amount?.$numberDecimal || ""),
     },
     
     

@@ -86,7 +86,7 @@ function WithdrawForm(props){
             }}
           >
             
-            <Row>
+            <Row className="mb-3">
               <Col md="6">
                 <Label>{props.t("Client")}</Label>
                 <div>
