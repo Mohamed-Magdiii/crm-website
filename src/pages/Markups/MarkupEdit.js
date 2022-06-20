@@ -78,7 +78,7 @@ function MarkupEdit(props) {
   return (
     <React.Fragment >
       {/* <Link to="#" className="btn btn-light" onClick={onClose}><i className="bx bx-plus me-1"></i> Add New</Link> */}
-      <Modal size="lg" isOpen={open} toggle={onClose} centered={true}>
+      <Modal  isOpen={open} toggle={onClose} centered={true}>
         <ModalHeader toggle={onClose} tag="h4">
           {props.t("Edit Markup")}
         </ModalHeader>
@@ -151,7 +151,7 @@ function MarkupEdit(props) {
                           return (
                             <div key={index}>
                               <Row>
-                                <Col md="2" className="d-flex flex-column justify-content-end"><h5 className="text-center"> {key}</h5></Col>
+                                <Col className="d-flex flex-column justify-content-end"><h5 className="text-center"> {key}</h5></Col>
                                 <Col >
                                   <AvField
                                     name={`value${index}`}

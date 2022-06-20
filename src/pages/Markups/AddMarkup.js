@@ -79,11 +79,7 @@ function AddMarkup(props) {
   return (
     <React.Fragment >
       <Link to="#" className={`btn btn-light ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i>{props.t("Add New Markup")}</Link>
-      <Modal size="lg"
-        style={{
-          maxWidth: "800px",
-          width: "100%"
-        }}
+      <Modal  
         isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
           {props.t("Add Markup")}
@@ -162,8 +158,8 @@ function AddMarkup(props) {
                       {props.markets?.map((market, index) =>
                         <div key={index}>
                           <Row>
-                            <Col md="2" className="d-flex flex-column justify-content-end"><h5 className="text-center"> {market.pairName}</h5></Col>
-                            <Col  >
+                            <Col className="d-flex flex-column justify-content-end"><h5 className="text-center"> {market.pairName}</h5></Col>
+                            <Col >
                               <AvField
                                 name={`value${index}`}
                                 label={props.t("Value")}
