@@ -19,7 +19,8 @@ const initialState = {
   markups: [],
   error: "",
   addMarkupSuccess: false,
-  addMarkupSuccessMessage: ""
+  addMarkupSuccessMessage: "",
+  editR: 0
 };
 
 const markupsReducer = (state = initialState, action) => {
