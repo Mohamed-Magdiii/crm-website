@@ -14,6 +14,7 @@ import { fetchClientDetails, editClientDetails } from "store/client/actions";
 import { fetchUsers } from "store/users/actions";
 import CountryDropDown from "components/Common/CountryDropDown";
 import NationalityDropDown from "components/Common/NationalityDropDown";
+import Loader from "components/Common/Loader";
 
 function ClientDetails(props) {
   const clientId = props.clientId;
@@ -26,8 +27,8 @@ function ClientDetails(props) {
   };
 
   // title select component hanlder 
-  const [selectedTitle, setSelectedTitle] = useState();
   const titles = ["Mr", "Mrs", "Miss", "Ms", "Dr"];
+  const [selectedTitle, setSelectedTitle] = useState();
   const titleOptions = titles.map((title) => {
     return (
       { 
@@ -49,7 +50,9 @@ function ClientDetails(props) {
   };
 
   // agent select component handler
+  // useState is only used to enable AvForm builtin validation
   let selectedAgent = null;
+  const [agent, setAgent] = useState();
   const agentSelectHandler = () => {
     const agentOptions = props.usersDocs.map((user) => {
       return ({
@@ -67,7 +70,26 @@ function ClientDetails(props) {
   const agentOptions = props.usersDocs && agentSelectHandler();
   const agentChangeHandler = (selectedAgentVar) => {
     selectedAgent = selectedAgentVar;
-  };  
+    setAgent(selectedAgent);
+  };
+  
+  // nationality select component handler
+  // useState is only used to enable AvForm builtin validation
+  const [nationality, setNationality] = useState(props.clientDetails.nationality);
+  let selectedNationality = null;
+  const nationalityChangeHandler = (selectedNationalityVar) => {
+    selectedNationality = selectedNationalityVar;
+    setNationality(selectedNationality);
+  };
+
+  // country select component handler
+  // useState is only used to enable AvForm builtin validation
+  const [country, setCountry] = useState(props.clientDetails.country);
+  let selectedCountry = null;
+  const countryChangeHandler = (selectedCountryVar) => {
+    selectedCountry = selectedCountryVar;
+    setCountry(selectedCountry);
+  };
   
   const loadUpdatedClientDetailsHandler = (e, values) => {
     dispatch(editClientDetails({
@@ -81,8 +103,21 @@ function ClientDetails(props) {
     loadUsers();
   }, [props.updatedClientDetails]);
 
+  // useEffect is used to set initial value for agent, nationality and country 
+  // right after loading the page so if the user clicks update without changing 
+  // any of them it will load it's previous value and update all updated fields
+  useEffect(() => {
+    props.clientDetails.agent && setAgent(props.clientDetails.agent);
+    props.clientDetails.nationality && setNationality(props.clientDetails.nationality);
+    props.clientDetails.country && setCountry(props.clientDetails.country);
+  }, [props.clientDetails]);
   return (
     <React.Fragment>
+      {!agentOptions && 
+        <div className="d-flex justify-content-center">
+          <Loader />
+        </div>
+      }
       {agentOptions &&
         <div className="">
           <div className="container-fluid">
@@ -99,8 +134,6 @@ function ClientDetails(props) {
                     <CardBody>
                       <AvForm
                         onValidSubmit={(e, v) => {
-                          v.title = selectedTitle.value;
-                          v.agent = selectedAgent.value;
                           loadUpdatedClientDetailsHandler(e, v);
                         }}
                       >
@@ -158,6 +191,18 @@ function ClientDetails(props) {
                                     onChange={titleChangeHandler}
                                   />
                                 }
+                                <AvField 
+                                  name="title"
+                                  type="text"
+                                  errorMessage={props.t("Title is required")}
+                                  validate={{ required: { value: true } }}
+                                  value={selectedTitle && selectedTitle.value}
+                                  style={{
+                                    opacity: 0,
+                                    height: 0,
+                                    margin: -10 
+                                  }}
+                                />
                               </div>
                             </Col>
                             <Col md="6">
@@ -228,6 +273,18 @@ function ClientDetails(props) {
                                   options={agentOptions} 
                                   onChange={agentChangeHandler}
                                 />
+                                <AvField 
+                                  name="agent"
+                                  type="text"
+                                  errorMessage={props.t("Agent is required")}
+                                  validate={{ required: { value: true } }}
+                                  value={agent && agent.value || agent}
+                                  style={{
+                                    opacity: 0,
+                                    height: 0,
+                                    margin: -10 
+                                  }}
+                                />
                               </div>
                             </Col>
                           </Row>
@@ -235,10 +292,40 @@ function ClientDetails(props) {
                           {/* final row */}
                           <Row>
                             <Col md="6">
-                              <CountryDropDown />
+                              <CountryDropDown 
+                                countryChangeHandler={countryChangeHandler}
+                                defaultValue={props.clientDetails.country}
+                              />
+                              <AvField 
+                                name="country"
+                                type="text"
+                                errorMessage={props.t("Country is required")}
+                                validate={{ required: { value: true } }}
+                                value={country && country.value || country}
+                                style={{
+                                  opacity: 0,
+                                  height: 0,
+                                  margin: -10 
+                                }}
+                              />
                             </Col>
                             <Col md="6">
-                              <NationalityDropDown />
+                              <NationalityDropDown 
+                                nationalityChangeHandler={nationalityChangeHandler}
+                                defaultValue={props.clientDetails.nationality}
+                              />
+                              <AvField 
+                                name="nationality"
+                                type="text"
+                                errorMessage={props.t("Nationality is required")}
+                                validate={{ required: { value: true } }}
+                                value={nationality && nationality.value || nationality}
+                                style={{
+                                  opacity: 0,
+                                  height: 0,
+                                  margin: -10 
+                                }}
+                              />
                             </Col>
                           </Row>
                         </div>

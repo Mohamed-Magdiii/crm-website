@@ -1,49 +1,60 @@
-import React from "react";
-import { FormGroup } from "reactstrap";
-import { AvField } from "availity-reactstrap-validation";
+import React, { useEffect } from "react";
+import { fetchDictionaryStart } from "store/dictionary/actions";
+import { useDispatch, connect } from "react-redux";
+import Select from "react-select";
 
-function NationalityDropDown(){ 
+import { withTranslation } from "react-i18next";
+
+function NationalityDropDown({ ...props }){ 
+  const dispatch = useDispatch();
+  useEffect(()=>{
+    dispatch(fetchDictionaryStart());
+    
+  }, []);
+  
+  const optionGroup = props.countries.map((country)=>{
+    return ({
+      label: `${country.en} ${country.ar}`, 
+      value: country.en
+    });
+  });
+
+  const selectedNationalityObj = props.countries && optionGroup.find((nationality) => (
+    nationality.value === props.defaultValue
+  ));
+  
   return (
     <React.Fragment>
-    
-      <FormGroup className="mb-3">
-
-        <AvField type="select"
-          name="nationality" 
-          label="Nationality" 
-          validate={{ required: { value: true } }} 
-          errorMessage="Nationality is required">
-          <option>Algeria</option>
-          <option>Afghanistan</option>
-          <option> Albania</option>     
-          <option> Algeria</option>      
-          <option> Andorra</option>      
-          <option>Argentina</option>       
-          <option>Armenia</option>
-          <option> Australia</option>      
-          <option>Austria</option>     
-          <option>Bahrain</option>      
-          <option> Bangladesh</option>   
-          <option>USA</option> 
-          <option> Baden</option> 
-          <option>Bahrain</option> 
-          <option> Bahrain</option>      
-          <option> Bangladesh</option> 
-          <option>Belarus</option>       
-          <option> Belgium</option>        
-          <option> East Germany (German Democratic Republic)*</option>
-          <option> Ecuador</option> 
-          <option> Egypt</option>     
-          <option> El Salvador</option>  
-          <option> Equatorial Guinea</option>     
-          <option>Eritrea</option>        
-          <option> Estonia</option>       
-          <option> Eswatini</option>       
-          <option>Ethiopia</option>        
-         
-        </AvField>      
-      </FormGroup>
+      <div className="mb-3">
+        <label htmlFor="choices-single-default" className="form-label font-size-14">{props.t("Nationality")}</label>
+        {
+          !selectedNationalityObj &&
+          <Select 
+            onChange={(e) => {
+              props.nationalityChangeHandler(e);
+            }}
+            options={optionGroup}
+            classNamePrefix="select2-selection"
+            placeholder={props.t("Select a nationality")}
+          />
+        }
+        {
+          selectedNationalityObj &&
+          <Select 
+            onChange={(e) => {
+              props.nationalityChangeHandler(e);
+            }}
+            defaultValue={selectedNationalityObj}
+            options={optionGroup}
+            classNamePrefix="select2-selection"
+          />
+        }
+      </div>
     </React.Fragment>);
-
 }
-export default NationalityDropDown;
+
+const mapStateToProps = (state)=>({
+  countries: state.dictionaryReducer.countries || []
+});
+
+export default connect(mapStateToProps, null)(withTranslation()(NationalityDropDown));

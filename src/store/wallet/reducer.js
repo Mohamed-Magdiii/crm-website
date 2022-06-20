@@ -50,7 +50,7 @@ const walletReducer = (state = initState, action)=>{
         ...state,
         error: false,
         success: true,
-        clientWalletDetails: action.payload.result,
+        docs: action.payload.result.docs,
         totalWalletDocs: action.payload.result.totalDocs,
         loading: false
       };

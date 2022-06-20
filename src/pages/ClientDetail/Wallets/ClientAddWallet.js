@@ -81,7 +81,8 @@ function ClientAddWallet(props){
                 value={selectedAsset}
                 style={{
                   opacity: 0,
-                  height: 0 
+                  height: 0,
+                  margin: -10
                 }}
               />
             </div>

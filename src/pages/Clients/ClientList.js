@@ -80,7 +80,6 @@ function ClientsList(props) {
       dataField: "country",
       text: props.t("Country"),
       formatter: (val) => (captilazeFirstLetter(`${val.country}`)),
-
     },
 
     {
@@ -184,7 +183,7 @@ function ClientsList(props) {
       }));
     }
   };
-
+  
   return (
     <React.Fragment>
       <div className="page-content">

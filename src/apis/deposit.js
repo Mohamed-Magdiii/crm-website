@@ -24,7 +24,7 @@ export const rejectDeposit = async (id)=>{
 
 export const getClientDeposits = async ({ payload }) => {
   const id = payload;
-  const deposits = await axiosHelper.get(`/transactions/deposit/${id}/client`);
+  const deposits = await axiosHelper.get(`/transactions/deposit/?customerId=${id}`);
   const data = { 
     deposits: deposits
   };
