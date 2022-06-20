@@ -49,10 +49,14 @@ const feeGroupReducer = (state = initalState, action)=>{
       state = {
         ...state,
         feeGroups :state.feeGroups.map(feeGroup=>{
+          
           if (feeGroup._id === action.payload._id){
             return {
               ...feeGroup,
-              ...action.payload
+              ...action.payload,
+              value:{ $numberDecimal : action.payload.value },
+              minValue:{ $numberDecimal : action.payload.minValue },
+              maxValue:{ $numberDecimal : action.payload.maxValue }
             };
           }
           else {

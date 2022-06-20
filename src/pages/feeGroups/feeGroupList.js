@@ -17,7 +17,7 @@ import { fetchFeeGroupStart, deleteFeeGroupStart } from "store/feeGroups/actions
 import DeleteModal from "components/Common/DeleteModal";
 import FeeGroupAdd from "./feeGroupAdd";
 import FeeGroupEdit from "./feeGroupEdit";
-
+import { fetchMarketsStart } from "store/markets/actions";
 function FeeGroupsList(props) {
   const [deleteModal, setDeleteModal] = useState(false);
   const [deletedItem, setDeletedItem] = useState();
@@ -47,15 +47,18 @@ function FeeGroupsList(props) {
     {
       dataField: "value",
       text:props.t("Value"),
-    
+      formatter: (val) => (val.value ? val.value.$numberDecimal : "")
     },
     {
       dataField: "maxValue",
       text:props.t("Max Value"),
+      formatter: (val) => (val.minValue ? val.maxValue.$numberDecimal : "")
+     
     },
     {
       dataField: "minValue",
       text:props.t("Min Value"),
+      formatter: (val) => (val.minValue ? val.minValue.$numberDecimal : "")
     },
     {
       dataField: "",
@@ -92,6 +95,12 @@ function FeeGroupsList(props) {
     loadFeeGroups(1, sizePerPage);
   }, [sizePerPage, 1]);
   useEffect(()=>{
+    dispatch(fetchMarketsStart({
+      limit:1000,
+      page:1
+    }));
+  }, []);
+  useEffect(()=>{
     if (!props.showEditSuccessMessage && editModal) {
       setEditModal(false);
       
@@ -118,7 +127,7 @@ function FeeGroupsList(props) {
     <React.Fragment>
       <div className="page-content"> 
         <div className="container-fluid">
-          <h2>{props.t("Fee Groups")}</h2>
+          <h2>{props.t("Trading Fee Group")}</h2>
           <Row>
             <Col className="col-12">
               <Card>
@@ -196,7 +205,7 @@ const mapStateToProps = (state) => ({
   showDeleteModal:state.feeGroupReducer.showDeleteModal,
   deleteLoading :state.feeGroupReducer.deleteLoading,
   editButtonDisabled: state.feeGroupReducer.editButtonDisabled,
-  feeGroupsPermissions : state.Profile.feeGroupsPermissions || {}
+  feeGroupsPermissions : state.Profile.feeGroupsPermissions || {},
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(FeeGroupsList));
