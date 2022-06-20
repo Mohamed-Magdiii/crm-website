@@ -6,6 +6,7 @@ export const updateMarkup = async ({ payload }) => {
     title: values.title,
     isPercentage: values.isPercentage,
     value: values.value,
+    markets: values.markets,
   }, { crypto: false });
 
   if (data.isError) {
