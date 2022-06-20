@@ -69,6 +69,7 @@ function MarkupEdit(props) {
   useEffect(() => {
     if (props.editClear) {
       onClose();
+      setcol1(false);
     }
   }, [props.editClear]);
   const t_col1 = () => {

@@ -51,6 +51,8 @@ function AddMarkup(props) {
       markets: { ...marketsObject },
       value
     }));
+    setValue(0);
+    setcol1(false);
   };
   useEffect(() => {
     if (addModal) {
@@ -196,7 +198,7 @@ function AddMarkup(props) {
             )
           }
           {
-            props.showAddSuccessMessage && (
+            props.addMarkupSuccessMessage && (
               <UncontrolledAlert color="success">
                 <i className="mdi mdi-check-all me-2" />
                 {props.t("Transaction New Fees Group is added successfully !!!")}

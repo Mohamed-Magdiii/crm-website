@@ -73,7 +73,7 @@ function* addMarkup({ payload: newMarkup }) {
     const data = yield call(addMarkupAPI, newMarkup);
     if (data.status) {
       yield put(addNewMarkupSuccess(data.result));
-      yield delay(2000);
+      yield delay(2000);  
       yield put(addMarkupModalClear());
     }
   } catch (error) {

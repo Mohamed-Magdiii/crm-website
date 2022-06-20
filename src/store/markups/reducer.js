@@ -31,6 +31,7 @@ const markupsReducer = (state = initialState, action) => {
       };
     case FETCH_MARKUPS_SUCCESS:
       return {
+        ...state,
         markups: [...action.payload.result.docs],
         totalDocs: action.payload.result.totalDocs,
         hasNextPage: action.payload.result.hasNextPage,
