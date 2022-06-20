@@ -26,10 +26,14 @@ function LeadForm(props) {
     event.preventDefault();
     dispatch(addNewLead({
       ...values,
-      country: selectedCountry
+      country: selectedCountry.value
     }));
 
   }; 
+
+  const countryChangeHandler = (selectedCountryVar) => {
+    setSelectedCountry(selectedCountryVar);
+  };
 
   const toggleAddModal = () => {
     setAddUserModal(!addModal);
@@ -139,7 +143,10 @@ function LeadForm(props) {
               />
             </div>
             <div className="mb-3">
-              <CountryDropDown selectCountry= {setSelectedCountry}/>
+              <CountryDropDown 
+                selectCountry={setSelectedCountry}
+                countryChangeHandler={countryChangeHandler}
+              />
             </div>
             <div className='text-center pt-3 p-2'>
               <Button disabled= {props.disableAddButton} type="submit" color="primary" className="">
