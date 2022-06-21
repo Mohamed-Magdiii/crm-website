@@ -8,7 +8,8 @@ import {
   ADD_SYSTEM_EMAIL_REQUESTED,
   DELETE_SYSTEM_EMAIL_REQUESTED,
   EDIT_SYSTEM_EMAIL_REQUESTED,
-  EDIT_SYSTEM_EMAIL_CONTENT_REQUESTED
+  EDIT_SYSTEM_EMAIL_CONTENT_REQUESTED,
+  FETCH_SYSTEM_EMAIL_HTML_REQUESTED
 } from "./actionTypes";
 // import all actions except the login oncs (started or requested)
 import {
@@ -32,7 +33,10 @@ import {
 
   editSystemEmailContentSuccess,
   editSystemEmailContentFail,
-  editSystemEmailContentClear
+  editSystemEmailContentClear,
+
+  fetchSystemEmailHTMLSuccess,
+  fetchSystemEmailHTMLFail
 } from "./actions";
 import * as systemEmailApi from "../../apis/systemEmails";
 
@@ -113,6 +117,15 @@ function * deleteSystemEmail(params){
   }
 }
 
+function * fetchSystemEmailHTML(params){
+  try {
+    const data = yield call(systemEmailApi.fetchSystemEmailHTML, params);
+    yield put(fetchSystemEmailHTMLSuccess(data));
+  } catch (error){
+    yield put(fetchSystemEmailHTMLFail({ error: error.message }));
+  }
+}
+
 function * authSaga(){
   yield takeEvery(FETCH_SYSTEM_EMAILS_REQUESTED, fetchSystemEmails);
   yield takeEvery(FETCH_SYSTEM_EMAIL_BY_ID_REQUESTED, fetchSystemEmailById);
@@ -120,6 +133,7 @@ function * authSaga(){
   yield takeEvery(EDIT_SYSTEM_EMAIL_REQUESTED, editSystemEmail);
   yield takeEvery(EDIT_SYSTEM_EMAIL_CONTENT_REQUESTED, editSystemEmailContent);
   yield takeEvery(DELETE_SYSTEM_EMAIL_REQUESTED, deleteSystemEmail);
+  yield takeEvery(FETCH_SYSTEM_EMAIL_HTML_REQUESTED, fetchSystemEmailHTML);
 }
 
 export default authSaga;

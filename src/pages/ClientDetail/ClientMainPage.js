@@ -17,7 +17,6 @@ import ClientDetailsHeader from "./ClientDetailsHeader";
 function ClientMainPage(props) {
   const pathParams = useParams();
   const history = useHistory();
-
   const clientId = pathParams.id;
   const [clientProfile, setClientProfile] = useState({
     loading: false,
@@ -65,6 +64,7 @@ function ClientMainPage(props) {
         <>
           <div className="page-content">
             <div className="container-fluid">
+              {/* TODO make this loader centered */}
               <Loader />
             </div>
           </div>
@@ -113,9 +113,6 @@ function ClientMainPage(props) {
                       <Route exact path="/clients/:id/orders">
                         <OrderList clientId={clientId} />
                       </Route>
-
-                      {/* default route to details right on loading */}
-                      <Redirect to={"/clients/" + clientId + "/profile"} />
                     </Layout>
                     :
                     <Redirect to={"/dashboard"} />

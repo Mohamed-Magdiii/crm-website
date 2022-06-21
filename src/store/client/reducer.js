@@ -157,7 +157,7 @@ export const clientReducer = (state = initalState, action)=>{
       state = {
         ...state,
         editSuccess: false,
-        error: false
+        editError: false
       };
       break;
     

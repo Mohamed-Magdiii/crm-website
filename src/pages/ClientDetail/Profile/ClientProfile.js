@@ -60,8 +60,8 @@ function ClientDetails(props) {
         label: user.firstName + " " + user.lastName
       });
     });
-    const agentOptionObj = agentOptions.find((agentOption) => (
-      agentOption.value === props.clientDetails.agent
+    const agentOptionObj = props.clientDetails && agentOptions.find((agentOption) => (
+      agentOption.value === props.clientDetails.agent._id
     ));  
     selectedAgent = agentOptionObj;
 
@@ -103,8 +103,8 @@ function ClientDetails(props) {
     loadUsers();
   }, [props.updatedClientDetails]);
 
-  // useEffect is used to set initial value for agent, nationality and country 
-  // right after loading the page so if the user clicks update without changing 
+  // useEffect is used to set initial value once client details is loaded 
+  // for agent, nationality and country so if the user clicks update without changing 
   // any of them it will load it's previous value and update all updated fields
   useEffect(() => {
     props.clientDetails.agent && setAgent(props.clientDetails.agent);

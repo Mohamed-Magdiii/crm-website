@@ -25,7 +25,11 @@ import {
   EDIT_SYSTEM_EMAIL_CONTENT_REQUESTED,
   EDIT_SYSTEM_EMAIL_CONTENT_SUCCESS,
   EDIT_SYSTEM_EMAIL_CONTENT_FAIL,
-  EDIT_SYSTEM_EMAIL_CONTENT_CLEAR
+  EDIT_SYSTEM_EMAIL_CONTENT_CLEAR,
+
+  FETCH_SYSTEM_EMAIL_HTML_REQUESTED,
+  FETCH_SYSTEM_EMAIL_HTML_SUCCESS,
+  FETCH_SYSTEM_EMAIL_HTML_FAIL
 } from "./actionTypes";
 
 const initialState = {
@@ -254,6 +258,32 @@ const systemEmailsReducer = (state = initialState, action) => {
         editContentError: null,
         editContentClearingCounter: state.editContentClearingCounter + 1,
         isBackButtonActive: true
+      };
+      break;
+    
+    // fetch system email html
+    case FETCH_SYSTEM_EMAIL_HTML_REQUESTED:
+      state = {
+        ...state,
+        htmlLoading: true
+      };
+      break;
+    case FETCH_SYSTEM_EMAIL_HTML_SUCCESS:
+      state = {
+        ...state,
+        htmlLoading: false,
+        htmlSuccess: true,
+        htmlFail: false,
+        systemEmailHtml: action.payload
+      };
+      break;
+    case FETCH_SYSTEM_EMAIL_HTML_FAIL:
+      state = {
+        ...state,
+        htmlLoading: false,
+        htmlSuccess: false,
+        htmlFail: true,
+        htmlFailDetails: action.payload
       };
       break;
     

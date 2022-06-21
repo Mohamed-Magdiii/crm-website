@@ -11,6 +11,7 @@ import { AvForm, AvField } from "availity-reactstrap-validation";
 import {  addSystemEmail } from "store/systemEmail/actions";
 // i18n
 import { withTranslation } from "react-i18next";
+import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 
 function SystemEmailAdd(props){
   const [addModal, setAddModal] = useState(false);
@@ -24,7 +25,7 @@ function SystemEmailAdd(props){
   };
   useEffect(()=>{
     if (props.clearingCounter > 0 && addModal) {
-      props.switchComponents();
+      // props.switchComponents();
       setAddModal(false);
     }
   }, [props.clearingCounter]);
@@ -66,8 +67,6 @@ function SystemEmailAdd(props){
               />
             </div>
             <div className='text-center pt-3 p-2'>
-              {/* on clicking this button it switches from the list component to the edit component if 
-                  submission is valid but it adds the new system email to the db onValidSubmit above */}
               <Button disabled={props.addLoading} type="submit" color="primary">
                 {props.t("Next")}
               </Button>
@@ -82,6 +81,12 @@ function SystemEmailAdd(props){
             <i className="mdi mdi-check-all me-2"></i>
             {props.t("First step completed successfully")} !!!
           </UncontrolledAlert>}
+          
+          {/* after adding new system email successfully it will 
+              redirect the user to the edit page */}
+          {props.clearingCounter > 0 && 
+            <Redirect to={"/system-emails/" + props.systemEmail._id} />
+          }
         </ModalBody>
       </Modal>
     </React.Fragment>
@@ -95,6 +100,7 @@ const mapStateToProps = (state) => ({
   addError: state.systemEmailsReducer.addError,  
   clearingCounter: state.systemEmailsReducer.clearingCounter,
   activeComponentProp: state.systemEmailsReducer.activeComponentProp,
+  systemEmail: state.systemEmailsReducer.systemEmail,
   systemEmailsPermissions: state.Profile.systemEmailsPermissions || {}
 });
 

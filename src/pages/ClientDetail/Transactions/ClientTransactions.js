@@ -9,6 +9,7 @@ import {
   Table, Thead, Tbody, Tr, Th, Td
 } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
+import { useParams } from "react-router-dom";
 
 // i18n
 import { withTranslation } from "react-i18next";
@@ -25,10 +26,11 @@ import Notification from "components/Common/Notification";
 import logo from "assets/images/logo-sm.svg";
 
 function ClientTransactions(props) {
+  const pathParams = useParams();
+  const clientId = pathParams.id;
   const [showNotication, setShowNotifaction] = useState(false);
   const [btnprimary1, setBtnprimary1] = useState(false);
   const transactionTypes = ["withdrawal", "deposit"];
-  const clientId = props.clientId;
   const [sizePerPage, setSizePerPage] = useState(5);
   const [selectedTransactionType, setSelectedTransactionType] = useState("withdrawal");
   const dispatch = useDispatch();
@@ -58,7 +60,7 @@ function ClientTransactions(props) {
 
   const columns = [
     {
-      dataField: "checkbox",
+      dataField:"checkbox",
       text: <input type="checkbox"/>
     },
     {
@@ -67,21 +69,23 @@ function ClientTransactions(props) {
       formatter: (val) => (new Date(val.createdAt).toLocaleDateString())
     }, 
     {
-      dataField: "customerId",
-      text: props.t("Client"),
+      dataField:"customerId",
+      text:props.t("Client"),
       formatter:(val)=>(val.customerId ? `${val.customerId.firstName} ${val.customerId.lastName}` : "")
     },
     {
-      dataField: "gateway",
-      text: props.t("Gateway")
+      dataField:"gateway",
+      text:props.t("Gateway")
     },
     {
       dataField: "currency",
-      text: props.t("Currency")
+      text: props.t("Currency"),
+    
     },
     {
       dataField: "status",
-      text: props.t("Status")
+      text: props.t("Status"),
+      
     },
     {
       dataField: "reason",
@@ -105,9 +109,9 @@ function ClientTransactions(props) {
       )
     },
     {
-      dataField: "dropdown", 
-      text: props.t("Action")
-    }
+      dataField:"dropdown", 
+      text:props.t("Action")
+    },
   ];
 
   return (
@@ -201,13 +205,13 @@ function ClientTransactions(props) {
                               // if deposits is selected and there is data to show
                               <Tbody>
                                 {props.loading && <TableLoader colSpan={4} />}
-                                {(!props.loading && props.clientDeposits) && props.clientDeposits.map((row, rowIndex) =>
+                                {!props.depositLoading && props.clientDeposits.map((row, rowIndex) =>
                                   <Tr key={rowIndex}>
                                     {columns.map((column, index) =>
                                       <Td key={`${rowIndex}-${index}`}>
                                         { column.dataField === "checkbox" ? <input type="checkbox"/> : ""}
                                         { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
-                                        {column.dataField === "dropdown" ? <CustomDropdown  id={row._id} status={row.status} approve={depositApprove} reject={depositReject} /> : ""}
+                                        {column.dataField === "dropdown" ? <CustomDropdown  permission={props.depositsPermissions.actions ? true : false} id={row._id} status={row.status} approve={depositApprove} reject={depositReject} /> : ""}
                                       </Td>
                                     )}
                                   </Tr>
@@ -219,8 +223,8 @@ function ClientTransactions(props) {
                               ?
                               // if withdrawals is seleceted but no data to show
                               <Tbody>
-                                {props.loading && <TableLoader colSpan={4} />}                            
-                                {!props.loading && /*props.totalDocs === 0 && */
+                                {props.loading && <TableLoader colSpan={4} />}  
+                                {!props.withdrawalLoading &&
                                   <>
                                     <Tr>
                                       <Td colSpan={"100%"} className="fw-bolder text-center" st="true">
@@ -283,7 +287,8 @@ function ClientTransactions(props) {
 }
 
 const mapStateToProps = (state) => ({
-  loading: state.clientReducer.loading,
+  depositLoading: state.depositReducer.loading,
+  withdrawalLoading: state.withdrawalReducer.loading,
   error: state.clientReducer.error,
   clientDeposits: state.depositReducer.clientDeposits,
   clientWithdrawals: state.withdrawalReducer.clientWithdrawals,

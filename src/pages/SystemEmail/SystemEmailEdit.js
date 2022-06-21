@@ -15,26 +15,39 @@ import {
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
+import Select from "react-select";
 
 import { editSystemEmailContent, fetchSystemEmailById } from "store/systemEmail/actions";
 // i18n
 import { withTranslation } from "react-i18next"; 
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 function SystemEmailEdit(props){
   const readableLanguages = {
     "en-gb": "English",
     "ar-ae": "Arabic"
   };
-  // props.systemEmail if it's coming from add modal (systemEmail = new system email)
+  // props.systemEmail if it's coming from add modal (systemEmail = newly added system email)
   // props.role if it's coming from an edit call (pre existing system email)
   let role = props.systemEmail || props.role;
   
   const availableLanguages = Object.keys(role.content);
-  const [selectedLanguage, setSelectedLanguage] = useState("en-gb");
-  
-  const changeLanguageHandler = (e) => {
-    setSelectedLanguage(e.target.value);
+  const availableLanguageSelect = availableLanguages.map((availableLanguage) => {
+    return (
+      {
+        value: availableLanguage,
+        label: readableLanguages[availableLanguage]
+      }
+    );
+  });
+  const languageInitialValue = availableLanguageSelect.find((item) => (
+    item.value === "en-gb"
+  ));
+  const [selectedLanguage, setSelectedLanguage] = useState(languageInitialValue);
+  const languageChangeHanlder = (selectedLanguageVar) => {
+    setSelectedLanguage(selectedLanguageVar);
   };
+  
   const dispatch = useDispatch();
   const handleSystemEmailEdit = (e, values) => {
     dispatch(editSystemEmailContent({
@@ -49,7 +62,7 @@ function SystemEmailEdit(props){
   };
 
   // rich editor handler 
-  const blocksFromHTML = htmlToDraft(role.content[selectedLanguage].body);
+  const blocksFromHTML = htmlToDraft(role.content[selectedLanguage.value].body);
   const { contentBlocks, entityMap } = blocksFromHTML;
   const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
   const [editorState, setEditorState] = useState(EditorState.createWithContent(contentState)); 
@@ -60,7 +73,7 @@ function SystemEmailEdit(props){
     setEditorState(EditorState.createWithContent(contentState));
     
   }, [role, selectedLanguage]);
-  
+
   return (
     <React.Fragment >
       <div className="page-content">
@@ -68,8 +81,6 @@ function SystemEmailEdit(props){
           <h2>{props.t("Advanced edit")}</h2>
           <AvForm
             onValidSubmit={(e, v) => {
-              // storing rich text editor content as HTML to it could be sent as an email
-              v.body = draftToHtml(convertToRaw(editorState.getCurrentContent()));
               handleSystemEmailEdit(e, v);
               // with every update it fetches the updated values of the system email 
               // to keep fields up to date with database
@@ -77,23 +88,25 @@ function SystemEmailEdit(props){
             }}
           >
             <div className="col-sm-8">
+              <label>{props.t("Available languages")}</label>
+              <Select
+                defaultValue={selectedLanguage}
+                options={availableLanguageSelect} 
+                onChange={languageChangeHanlder}
+              />
               <AvField
                 name="language"
                 id="Available languages"
-                label={props.t("Available languages")}
-                placeholder={props.t("Available languages")}
-                type="select"
+                type="text"
                 errorMessage={props.t("Language is required")}
                 validate={{ required: { value: true } }}
-                onChange={changeLanguageHandler}
-                value={props.t(selectedLanguage)}
-              >
-                {availableLanguages.map(availableLanguage => (
-                  <option key={availableLanguages.indexOf(availableLanguage)} value={availableLanguage}>
-                    {props.t(readableLanguages[availableLanguage])}
-                  </option>
-                ))}
-              </AvField>
+                value={selectedLanguage.value}
+                style={{
+                  opacity: 0,
+                  height: 0,
+                  margin: -8 
+                }}
+              />
             </div>
 
             <div className="col-sm-8">
@@ -102,7 +115,7 @@ function SystemEmailEdit(props){
                 label={props.t("Subject")}
                 placeholder={props.t("Subject")}
                 type="text"
-                value={role.content[selectedLanguage].subject}
+                value={role.content[selectedLanguage.value].subject}
                 errorMessage={props.t("Subject is required")}
                 validate={{ required: { value: true } }}
               />
@@ -118,6 +131,19 @@ function SystemEmailEdit(props){
                 editorState={editorState}
                 onEditorStateChange={setEditorState}
                 placeholder={props.t("Content")}
+              />
+              <AvField
+                name="body"
+                id="body"
+                type="text"
+                errorMessage={props.t("Content is required")}
+                validate={{ required: { value: true } }}
+                value={draftToHtml(convertToRaw(editorState.getCurrentContent()))}
+                style={{
+                  opacity: 0,
+                  height: 0,
+                  margin: -8 
+                }}
               />
             </div>
             {role.permissions && Object.keys(role.permissions).map((permKey, permInd) =>
@@ -135,9 +161,7 @@ function SystemEmailEdit(props){
             <div className="d-flex justify-content-end col-sm-8 mt-3">
               {/* submit button */}
               <div className="p-2">
-                <Button 
-                  // the editorState check is added to make sure that the user has entered a content
-                  disabled={props.editLoading || !editorState.getCurrentContent().getPlainText()}  
+                <Button
                   type="submit" 
                   color="primary"
                 >
@@ -147,13 +171,19 @@ function SystemEmailEdit(props){
 
               {/* back button */}
               <div className="p-2">
-                <Button disabled={props.editLoading || !props.isBackButtonActive} 
-                  type="button" 
-                  color="primary" 
-                  onClick={() => {props.switchComponents(); props.systemEmailUpdatedHandler()}}
+                <Link 
+                  to={{
+                    pathname: "/system-emails"
+                  }}
                 >
-                  {props.t("Back")}
-                </Button>
+                  <Button 
+                    disabled={props.editLoading || !props.isBackButtonActive} 
+                    type="button" 
+                    color="primary" 
+                  >
+                    {props.t("Back")}
+                  </Button>
+                </Link>
               </div>
             </div>
             {props.editContentError && <UncontrolledAlert color="danger" className="col-sm-8">

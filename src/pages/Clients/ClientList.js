@@ -41,20 +41,15 @@ function ClientsList(props) {
     {
       dataField: "name",
       text: props.t("Name"),
-      formatter: (user) => (
-        // this link will lead the user to client main page then automatically 
-        // lead the user to client details pages which contains two parts 
-        // 1- a navbar which is used in details, bank, transactions and wallets on top
-        // 2- the user details on bottom
-        // and it will send the selected client's Id to the details page
+      formatter: (client) => (
         <div className="d-flex gap-3">
           <Link 
             to={{
-              pathname: "/clients/" + user.id + "/profile",
-              state: { clientId: user.id }
+              pathname: "/clients/" + client.id + "/profile",
+              state: { clientId: client.id }
             }}
           >
-            <i>{user.firstName + " " + user.lastName}</i>
+            <i>{client.firstName + " " + client.lastName}</i>
           </Link>
         </div>
       )
@@ -183,7 +178,8 @@ function ClientsList(props) {
       }));
     }
   };
-  
+
+  console.log(props.clients.length);
   return (
     <React.Fragment>
       <div className="page-content">

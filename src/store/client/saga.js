@@ -69,6 +69,8 @@ function * editClientDetails(params){
     yield put(editClientDetailsClear());
   } catch (error){
     yield put(editClientDetailsFail({ error: error.message }));
+    yield delay(2000);
+    yield put(editClientDetailsClear());
   }
 }
 
