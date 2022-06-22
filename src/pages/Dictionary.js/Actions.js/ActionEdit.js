@@ -38,7 +38,7 @@ function ActionsEdit(props){
               <AvField
                 name="action"
                 label={props.t("Action")}
-                placeholder={props.t("Enter action")}
+                placeholder={props.t("Enter Action")}
                 type="text"
                 value = {actions}
                 errorMessage={props.t("Enter valid action")}
@@ -47,8 +47,8 @@ function ActionsEdit(props){
             </div>
           
             <div className='text-center pt-3 p-2'>
-              <Button  type="submit" color="primary" className="">
-                {props.t("Edit Action")}
+              <Button disabled = {props.disableEditButton} type="submit" color="primary" className="">
+                {props.t("Edit")}
               </Button>
             </div>
           </AvForm>
@@ -71,6 +71,7 @@ const mapStateToProps = (state)=>({
   error : state.dictionaryReducer.error,
   actions :state.dictionaryReducer.actions || [],
   id :state.dictionaryReducer.id,
-  editSuccess:state.dictionaryReducer.editSuccess
+  editSuccess:state.dictionaryReducer.editSuccess,
+  disableEditButton : state.dictionaryReducer.disableEditButton
 });
 export default connect(mapStateToProps, null)(withTranslation()(ActionsEdit));

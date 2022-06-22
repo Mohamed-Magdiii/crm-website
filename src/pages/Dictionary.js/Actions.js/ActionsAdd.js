@@ -25,7 +25,7 @@ function ActionsAdd(props){
   }, [props.showAddSuccessMessage]);
   return (
     <React.Fragment >
-      <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i>{props.t("Add New Action")}</Link>
+      <Link to="#"  className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i>{props.t("Add New Action")}</Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
           {props.t("Add New Action")}
@@ -42,7 +42,7 @@ function ActionsAdd(props){
               <AvField
                 name="actions"
                 label={props.t("Actions")}
-                placeholder={props.t("Actions")}
+                placeholder={props.t("Enter Action")}
                 type="text"
                 errorMessage={props.t("Enter valid action")}
                 validate={{ required: { value: true } }}
@@ -51,8 +51,8 @@ function ActionsAdd(props){
               
             
             <div className='text-center pt-3 p-2'>
-              <Button  type="submit" color="primary" className="">
-                {props.t("Add new Action")}
+              <Button disabled = {props.disableAddButton} type="submit" color="primary" className="">
+                {props.t("Add")}
               </Button>
             </div>
           </AvForm>
@@ -73,6 +73,7 @@ const mapStateToProps = (state)=>({
   id :state.dictionaryReducer.id,
   error:state.dictionaryReducer.error,
   showAddSuccessMessage: state.dictionaryReducer.showAddSuccessMessage,
-  dictionariesPermissions : state.Profile.dictionariesPermissions || {}
+  dictionariesPermissions : state.Profile.dictionariesPermissions || {},
+  disableAddButton : state.dictionaryReducer.disableAddButton
 });
 export default connect(mapStateToProps, null)(withTranslation()(ActionsAdd));

@@ -47,7 +47,7 @@ function ClientsList(props) {
         // 1- a navbar which is used in details, bank, transactions and wallets on top
         // 2- the user details on bottom
         // and it will send the selected client's Id to the details page
-        <div className="d-flex gap-3">
+        <div>
           <Link 
             to={{
               pathname: "/clients/" + user.id + "/profile",
