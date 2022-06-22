@@ -95,7 +95,18 @@ function UsersAddModal(props) {
                 type="password"
                 placeholder="Password"
                 errorMessage="Enter password"
-                validate={{ required: { value: true } }}
+                validate= {{
+                  required: { value : true },
+                  minLength: {
+                    value: 6,
+                    errorMessage: "Your Password must be more than 6 characters"
+                  },
+                  pattern :{  
+                    value:"^(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])",
+                    errorMessage :"Password Must contain at least one number and Capital and special characters"
+                  }
+                  
+                }}
               />
             </div>
             <div className="mb-3">
