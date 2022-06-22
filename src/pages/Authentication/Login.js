@@ -91,6 +91,7 @@ const Login = props => {
                             type="password"
                             className="form-control"
                             required
+                            errorMessage="Enter Valid Password"
                             placeholder="Enter Password"
                           />
                         </div>
