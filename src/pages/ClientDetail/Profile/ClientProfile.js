@@ -61,7 +61,7 @@ function ClientDetails(props) {
       });
     });
     const agentOptionObj = props.clientDetails && agentOptions.find((agentOption) => (
-      agentOption.value === props.clientDetails.agent._id
+      agentOption.value === props.clientDetails?.agent?._id
     ));  
     selectedAgent = agentOptionObj;
 
@@ -179,7 +179,6 @@ function ClientDetails(props) {
                                     with selected title as its default value */}
                                 {!selectedTitle && 
                                   <Select
-                                    defaultValue={{}}
                                     options={titleOptions} 
                                     onChange={titleChangeHandler}
                                   />
