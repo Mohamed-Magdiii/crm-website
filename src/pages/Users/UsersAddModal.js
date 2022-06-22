@@ -81,7 +81,7 @@ function UsersAddModal(props) {
                 label="Email"
                 placeholder="Enter Valid Email"
                 type="email"
-                errorMessage="Invalid Email"
+                errorMessage="Enter Valid Email"
                 validate={{
                   required: { value: true },
                   email: { value: true },
