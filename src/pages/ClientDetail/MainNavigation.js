@@ -17,8 +17,6 @@ function MainNavigation(props){
     { name: "Orders", url: `/clients/${clientId}/orders` },
     { name: "Logs", url: `/clients/${clientId}/logs` },
     { name: "Security", url: `/clients/${clientId}/security` },
-
-    
   ];
   
   return (
