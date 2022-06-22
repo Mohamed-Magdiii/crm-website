@@ -6,6 +6,7 @@ import {
   Col,
   Row,
 } from "reactstrap"; 
+import FeatherIcon from "feather-icons-react";
 import QRCode from "qrcode.react"; 
 // i18n
 import { withTranslation } from "react-i18next";
@@ -18,9 +19,6 @@ function QrPukModal(props) {
   const CopyPuk = () => { 
     navigator.clipboard.writeText(puk);
     setCopy("Copied");
-    setTimeout(() => {
-      setCopy("Copy Puk");
-    }, 2000);
   };
   return (
     <React.Fragment>
@@ -37,12 +35,14 @@ function QrPukModal(props) {
           <br/>
           <br/>
           <Row>
-            <Col className="md-2 d-flex justify-content-center ">
-              <Link to="#" onClick={CopyPuk}>{Copy}</Link>   
-            </Col> 
-            <Col className="d-flex justify-content-center">
+            <Col>
               {puk} 
             </Col>
+            <Col>
+              <Link to="#" onClick={CopyPuk}>
+                <FeatherIcon icon="copy" onClick={CopyPuk}/>
+              </Link>   
+            </Col> 
           </Row>
         </ModalBody>
       </Modal>
