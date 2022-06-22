@@ -12,10 +12,12 @@ import {
 } from "reactstrap";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { addUser } from "store/users/actions";
+import { sassFalse } from "sass";
 
 
 function UsersAddModal(props) {
   const [addModal, setAddUserModal] = useState(false);
+  const [submitState, setSubmitState] = useState(false);
   const dispatch = useDispatch();
   const { usersRoles } = props;
   const { create } = props.userPermissions;
@@ -23,7 +25,12 @@ function UsersAddModal(props) {
     setAddUserModal(!addModal);
   };
   const handleAddUser = (e, values) => {
+    setSubmitState(true);
     dispatch(addUser(values));
+    setTimeout(() => {
+      setSubmitState(false);
+    }, 2500);
+
   };
 
   useEffect(() => {
@@ -33,7 +40,7 @@ function UsersAddModal(props) {
       }, 1000);
     }
   }, [props.addSuccess]);
-  
+
   return (
     <React.Fragment >
       <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> Add New</Link>
@@ -106,7 +113,7 @@ function UsersAddModal(props) {
               </AvField>
             </div>
             <div className='text-center p-5'>
-              <Button type="submit" color="primary" className="">
+              <Button type="submit" color="primary" className="" disabled={submitState}>
                 Add New User
               </Button>
             </div>
@@ -132,6 +139,6 @@ const mapStateToProps = (state) => ({
   addSuccess: state.usersReducer.addSuccess,
   addError: state.usersReducer.addError,
   clearingCounter: state.usersReducer.clearingCounter,
-  userPermissions : state.Profile.userPermissions
+  userPermissions: state.Profile.userPermissions
 });
 export default connect(mapStateToProps, null)(UsersAddModal);
