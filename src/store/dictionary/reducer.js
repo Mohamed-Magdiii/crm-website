@@ -30,38 +30,45 @@ const dictionaryReducer = (state = initialState, action)=>{
         
       };
       break;
+    case "ADD_NEW_ITEM":
+      state = {
+        ...state,
+        disableAddButton:true
+      };
+      break;
     case "ADD_ITEM_TO_ACTIONS":
       state = {
         ...state,
         showAddSuccessMessage:true,
-        actions:[...state.actions, ...action.payload]
+        actions:[...state.actions, ...action.payload],
       };
       break;
     case "ADD_ITEM_TO_EXCHANGES":
       state = {
         ...state,
         showAddSuccessMessage:true,
-        exchanges:[...state.exchanges, ...action.payload]
+        exchanges:[...state.exchanges, ...action.payload],
+        disableAddButton:true
       };
       break;
     case "ADD_ITEM_TO_EMAIL_PROVIDERS":
       state = {
         ...state,
         showAddSuccessMessage:true,
-        emailProviders:[...state.emailProviders, ...action.payload]
+        emailProviders:[...state.emailProviders, ...action.payload],
       };
       break;
     case "ADD_ITEM_TO_COUNTRIES":
       state = {
         ...state,
         showAddSuccessMessage:true,
-        countries:[...action.payload, ...state.countries]
+        countries:[...action.payload, ...state.countries],
       };
       break;
     case "REMOVE_ITEM":
       state = {
         ...state,
-        deleteLoading :true
+        disableDeleteButton:true
       };
       break;
     case "REMOVE_ITEM_FROM_EMAIL_PROVIDERS":
@@ -91,6 +98,30 @@ const dictionaryReducer = (state = initialState, action)=>{
         ...state,
         clearDeleteModal:false,
         countries : state.countries.filter(country=>country._id !== action.payload[0]._id)
+      };
+      break;
+    case "UPDATE_ACTION_START":
+      state = {
+        ...state,
+        disableEditButton:true
+      };
+      break;
+    case "UPDATE_EXCHANGE_START":
+      state = {
+        ...state,
+        disableEditButton :true
+      };
+      break;
+    case "UPATE_EMAIL_PROVIDER_START":
+      state = {
+        ...state,
+        disableEditButton:true
+      };
+      break;
+    case "UPDATE_COUNTRY_START":
+      state = {
+        ...state,
+        disableEditButton : true
       };
       break;
     case "UPDATE_ACTION_SUCCESS":
@@ -156,19 +187,22 @@ const dictionaryReducer = (state = initialState, action)=>{
        
       state = {
         ...state,
-        editSuccess:false
+        editSuccess:false,
+        disableEditButton:false
       };
       break;
     case "ADD_CLEAR":
       state = {
         ...state,
-        showAddSuccessMessage:false
+        showAddSuccessMessage:false,
+        disableAddButton : false
       };
       break;
     case "CLEAR_DELETE_MODAL":
       state = {
         ...state,
-        clearDeleteModal:true
+        clearDeleteModal:true,
+        disableDeleteButton:false
       };
       break;
     case "API_ERROR":

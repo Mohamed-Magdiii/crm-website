@@ -14,6 +14,7 @@ import {
 import TableLoader from "components/Common/TableLoader";
 import ExchangeEdit from "./ExchangeEdit";
 import { removeItem } from "store/dictionary/actions";
+import { captilazeFirstLetter } from "common/utils/manipulateString";
 function ExchangesTab(props){ 
   const [deleteModal, setDeleteModal] = useState(false);
   const [deletedItem, setDeletedItem] = useState();
@@ -34,7 +35,8 @@ function ExchangesTab(props){
   let columns = [
     {
       dataField:"exchanges",
-      text:props.t("Exchanges")
+      text:props.t("Exchanges"),
+      formatter:(val)=>captilazeFirstLetter(val.exchanges)
     }, 
     {
       dataField: "",
@@ -102,7 +104,7 @@ function ExchangesTab(props){
                     )}
                   </Tr>
                 </Thead>
-                <Tbody>
+                <Tbody  style={{ fontSize: "13px" }} >
                   {props.loading && <TableLoader colSpan={4} />}
                   {!props.loading && customData.map((row, rowIndex) =>
                            
@@ -123,18 +125,19 @@ function ExchangesTab(props){
         </CardBody>
       </Card>
       {<ExchangeEdit open={editModal} selectedExchange={selectedExchange} onClose={()=>setEditModal(false)}/>}
-      {<DeleteModal  show ={deleteModal} onDeleteClick={deleteExchange} onCloseClick={()=>setDeleteModal(false)}/>}
+      {<DeleteModal loading={props.disableDeleteButton} show ={deleteModal} onDeleteClick={deleteExchange} onCloseClick={()=>setDeleteModal(false)}/>}
     </React.Fragment>
   );
 }
 const mapStateToProps = (state)=>({
   dictionary:state.dictionaryReducer.dictionary || [],
   exchanges: state.dictionaryReducer.exchanges  || [],
-  deleteLoading :state.dictionaryReducer.deleteLoading,
+  disableDeleteButton :state.dictionaryReducer.disableDeleteButton,
   id:state.dictionaryReducer.id,
   editSuccess:state.dictionaryReducer.editSuccess,
   clearDeleteModal:state.dictionaryReducer.clearDeleteModal,
-  dictionariesPermissions : state.Profile.dictionaries || {}
+  dictionariesPermissions : state.Profile.dictionariesPermissions || {},
+  
   
 });
 export default connect(mapStateToProps, null)(withTranslation()(ExchangesTab));

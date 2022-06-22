@@ -13,6 +13,7 @@ import DeleteModal from "components/Common/DeleteModal";
 import CountriesEdit from "./CountriesEdit";
 import { removeItem } from "store/dictionary/actions";
 import { withTranslation } from "react-i18next";
+import { captilazeFirstLetter } from "common/utils/manipulateString";
 function CountriesTab(props){
   
   const [deleteModal, setDeleteModal] = useState(false);
@@ -34,23 +35,26 @@ function CountriesTab(props){
   const columns = [
     {
       dataField:"alpha2",
-      text:props.t("Alpha2")
+      text:props.t("Alpha2"),
+      formatter:(val)=>captilazeFirstLetter(val.alpha2)
     }, 
     {
       dataField:"alpha3",
-      text:props.t("Alpha3")
+      text:props.t("Alpha3"),
+      formatter:(val)=>captilazeFirstLetter(val.alpha3)
     },
     {
       dataField:"callingCode",
-      text:props.t("Calling Code")
+      text:props.t("Calling Code"),
+      formatter :(value)=>(`+${value.callingCode}`)
     },
     {
       dataField:"ar",
-      text:props.t("AR")
+      text:props.t("Arabic")
     },
     {
       dataField:"en",
-      text:props.t("EN")
+      text:props.t("English")
     },
     {
       dataField: "",
@@ -104,14 +108,14 @@ function CountriesTab(props){
                 id="tech-companies-1"
                 className="table "
               >
-                <Thead>
+                <Thead className="text-center">
                   <Tr>
                     {columns.map((column, index) =>
                       <Th data-priority={index} key={index}>{column.text}</Th>
                     )}
                   </Tr>
                 </Thead>
-                <Tbody>
+                <Tbody className="text-center" style={{ fontSize:"13px" }}>
                   {props.loading && <TableLoader colSpan={4} />}
                   {!props.loading && props.countries.map((row, rowIndex) =>
                            
@@ -132,7 +136,7 @@ function CountriesTab(props){
         </CardBody>
       </Card>
       {<CountriesEdit open={editModal} country={selectedCountry} onClose={()=>setEditModal(false)}/>}
-      {<DeleteModal show ={deleteModal} onDeleteClick={deleteCountry} onCloseClick={()=>setDeleteModal(false)}/>}
+      {<DeleteModal loading= {props.disableDeleteButton} show ={deleteModal} onDeleteClick={deleteCountry} onCloseClick={()=>setDeleteModal(false)}/>}
     </React.Fragment>
   );
 }
@@ -143,6 +147,7 @@ const mapStateToProps = (state)=>({
   editSuccess:state.dictionaryReducer.editSuccess,
   deleteLoading:state.dictionaryReducer.deleteLoading,
   clearDeleteModal :state.dictionaryReducer.clearDeleteModal,
-  dictionariesPermissions:state.Profile.dictionariesPermissions || {}
+  dictionariesPermissions:state.Profile.dictionariesPermissions || {},
+  disableDeleteButton : state.dictionaryReducer.disableDeleteButton
 });
 export default connect(mapStateToProps, null)(withTranslation()(CountriesTab));
