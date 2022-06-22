@@ -37,7 +37,8 @@ const depositReducer = (state = { initalState }, action)=>{
     case "ADD_DEPOSIT_START":
       state = {
         ...state,
-        modalClear:false
+        disableAddButton: true,
+        modalClear:false,
       };
       break;
     case "ADD_DEPOSIT_SUCCESS":
@@ -46,7 +47,7 @@ const depositReducer = (state = { initalState }, action)=>{
         ...state,
         deposits:[{ ...action.payload.deposit }, ...state.deposits],
         totalDocs:state.totalDocs + 1,
-        depositResponseMessage:action.payload.deposit.status
+        depositResponseMessage:action.payload.deposit.status, 
       }; 
       break;
     case "DEPOSIT_STATUS_CHANGE_SUCCESS":
@@ -79,7 +80,8 @@ const depositReducer = (state = { initalState }, action)=>{
       state = {
         ...state,
         modalClear:true,
-        depositResponseMessage:""
+        depositResponseMessage:"",
+        disableAddButton:false
       };
       break;
 

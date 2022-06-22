@@ -45,7 +45,7 @@ function * addDeposit({ payload:{ deposit } }){
   
     if (status === true){
       yield put(addDepositSuccess(result));
-      yield delay(3000);
+      yield delay(2000);
       yield put(modalClear());
     }
       

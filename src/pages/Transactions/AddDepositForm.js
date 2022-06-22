@@ -111,7 +111,7 @@ function DepositForm(props){
 
                     ))}
                     classNamePrefix="select2-selection"
-                    placeholder = "Select the client"
+                    placeholder = "choose a client name"
                     onInputChange = {(e)=>setSearchInput(e)}
                   />
                 </div>
@@ -135,7 +135,7 @@ function DepositForm(props){
 
                     ))}
                     classNamePrefix="select2-selection"
-                    placeholder = "Select the wallet"
+                    placeholder = "choose your wallet"
                       
                   />
                 </div>
@@ -165,7 +165,7 @@ function DepositForm(props){
 
                   ))}
                   classNamePrefix="select2-selection"
-                  placeholder = "Select the gateway"
+                  placeholder = "choose a gateway"
                       
                 />
               </div>
@@ -176,26 +176,36 @@ function DepositForm(props){
               <AvField
                 name="amount"
                 label={props.t("Amount")}
-                placeholder={props.t("Amount")}
+                placeholder={props.t("enter amount")}
                 type="text"
                 errorMessage={props.t("Enter Valid Amount")}
-                validate={{ required: { value: true } }}
+                validate={{ 
+                  required: { value: true },
+                  pattern : {
+                    // eslint-disable-next-line no-useless-escape
+                    value : "/[+]?[1-9]+[,.]?[0-9]*([\/][0-9]+[,.]?[0-9]*)*/g",
+                    errorMessage :"Amount must be positve number"
+                  }
+                }}
               />
             </div>
             <div className="mb-3">
               <AvField
                 name="note"
                 label={props.t("Note")}
-                placeholder={props.t("Note")}
+                placeholder={props.t("enter note")}
                 type="text"
                 errorMessage={props.t("Enter Valid Note")}
-                validate={{ required: { value: true } }}
+                validate={{ 
+                  required: { value: true },
+                  
+                }}
               />
             </div>
     
             <div className='text-center pt-3 p-2'>
-              <Button  type="submit" color="primary" className="">
-                {props.t("Add Deposit")}
+              <Button disabled = {props.disableAddButton} type="submit" color="primary" className="">
+                {props.t("Add")}
               </Button>
             </div>
           </AvForm>
@@ -218,6 +228,7 @@ const mapStateToProps = (state) => ({
   depositResponseMessage:state.depositReducer.depositResponseMessage,
   clients:state.clientReducer.clients || [],
   wallets:state.walletReducer.wallets || [],
-  depositsPermissions : state.Profile.depositsPermissions || {}
+  depositsPermissions : state.Profile.depositsPermissions || {}, 
+  disableAddButton : state.depositReducer.disableAddButton
 });
 export default connect(mapStateToProps, null)(withTranslation()(DepositForm));
