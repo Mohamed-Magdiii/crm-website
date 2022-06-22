@@ -9,6 +9,9 @@ import {
   Table, Thead, Tbody, Tr, Th, Td
 } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
+
+// i18n
+import { withTranslation } from "react-i18next";
 import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
 import ClientForm from "./ClientAdd";
@@ -17,9 +20,9 @@ import { fetchClientsStart } from "store/client/actions";
 import "./ClientList.styles.scss";
 import SearchBar from "components/Common/SearchBar";
 import { Link } from "react-router-dom";
-import { withTranslation } from "react-i18next";
 import { captilazeFirstLetter, displaySubString } from "common/utils/manipulateString";
 import { checkAllBoxes } from "common/utils/checkAllBoxes";
+
 function ClientsList(props) {
   const [addModal, setAddReminderToClientModal] = useState(false);
   const [selectedClient, setSelectedClient] = useState({});
@@ -179,7 +182,6 @@ function ClientsList(props) {
     }
   };
 
-  console.log(props.clients.length);
   return (
     <React.Fragment>
       <div className="page-content">

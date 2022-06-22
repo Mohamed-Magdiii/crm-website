@@ -67,7 +67,7 @@ function ClientDetails(props) {
 
     return agentOptions;
   };
-  const agentOptions = props.usersDocs && agentSelectHandler();
+  const agentOptions = props.clientDetails && props.usersDocs && agentSelectHandler();
   const agentChangeHandler = (selectedAgentVar) => {
     selectedAgent = selectedAgentVar;
     setAgent(selectedAgent);

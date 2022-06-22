@@ -211,7 +211,7 @@ function ClientTransactions(props) {
                                       <Td key={`${rowIndex}-${index}`}>
                                         { column.dataField === "checkbox" ? <input type="checkbox"/> : ""}
                                         { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
-                                        {column.dataField === "dropdown" ? <CustomDropdown  permission={props.depositsPermissions.actions ? true : false} id={row._id} status={row.status} approve={depositApprove} reject={depositReject} /> : ""}
+                                        {/* {column.dataField === "dropdown" ? <CustomDropdown  permission={props.depositsPermissions.actions ? true : false} id={row._id} status={row.status} approve={depositApprove} reject={depositReject} /> : ""} */}
                                       </Td>
                                     )}
                                   </Tr>

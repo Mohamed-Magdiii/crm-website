@@ -150,7 +150,7 @@ function ClientWallets(props) {
                             ?
                             <Tbody>
                               {props.loading && <TableLoader colSpan={4} />}                            
-                              {!props.loading && /*props.totalDocs === 0 && */
+                              {!props.loading &&
                                 <>
                                   <Tr>
                                     <Td colSpan={"100%"} className="fw-bolder text-center" st>

@@ -98,7 +98,8 @@ function SystemEmailsList(props){
       editable: false,
       text: props.t("Preview"), 
       formatter: (item) => (
-        <div className="d-flex gap-3 justify-content-center">
+        // TODO needs to be centered on sm or xs I'm not sure yet
+        <div className="d-flex justify-content-center">
           <Link className={`text ${!update ? "d-none" : ""}`} to="#">
             <i
               className="mdi mdi-eye font-size-18"

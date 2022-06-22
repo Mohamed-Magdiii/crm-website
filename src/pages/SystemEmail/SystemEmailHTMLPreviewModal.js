@@ -12,6 +12,7 @@ import {
   AvForm, AvField, AvInput
 } from "availity-reactstrap-validation";
 import Select from "react-select";
+import DOMPurify from "dompurify";
 
 // i18n
 import { withTranslation } from "react-i18next";
@@ -96,16 +97,12 @@ function SystemEmailHTMLModal(props){
             </div>
 
             <div className="mb-3">
-              <AvField
-                name="action"
-                label={props.t("Action")}
-                placeholder={props.t("Action")}
-                type="textarea"
-                value={props.systemEmailHtml}
-                errorMessage={props.t("Action is required")}
-                validate={{ required: { value: true } }}
-                rows="8"
-              />
+              <label>System email content preview</label>
+              <div className="block-example border border-black">
+                <div
+                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(role && role.content[selectedLanguage.value].body) }}
+                />
+              </div>
             </div>
             {role.permissions && Object.keys(role.permissions).map((permKey, permInd) =>
               <div className="mb-3" key={permInd}>
@@ -118,7 +115,7 @@ function SystemEmailHTMLModal(props){
                 )}                     
               </div>
             )}
-            {/* submit button */}
+            {/* close button */}
             <div className='text-center pt-3 p-2'>
               <Button 
                 type="submit" 
