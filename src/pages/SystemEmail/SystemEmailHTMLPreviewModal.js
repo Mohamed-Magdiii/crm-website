@@ -1,7 +1,7 @@
 // a modal to only edit title and action
 import React, { useState, useEffect } from "react";
 import {
-  useDispatch, connect
+  connect
 } from "react-redux";
 import {
   Modal, Button,
@@ -16,10 +16,8 @@ import DOMPurify from "dompurify";
 
 // i18n
 import { withTranslation } from "react-i18next";
-import { fetchSystemEmailHTML } from "store/systemEmail/actions";
 
 function SystemEmailHTMLModal(props){
-  const dispatch = useDispatch();
   const { open, role = {}, onClose } = props;
   const readableLanguages = {
     "en-gb": "English",
@@ -45,21 +43,12 @@ function SystemEmailHTMLModal(props){
     setSelectedLanguage(selectedLanguageVar);
   };
   
-  const handlefetchSystemEmailHTML = () => {
-    dispatch(fetchSystemEmailHTML({
-      id: role.id,
-      lang: selectedLanguage.value
-    }));
-  };
+  
   useEffect(()=>{
     if (props.fetchHTMLClearingCounter > 0 && open) {
       onClose();
     }
   }, [props.fetchHTMLClearingCounter]);
-
-  useEffect(() => {
-    handlefetchSystemEmailHTML();
-  }, [selectedLanguage]);
   
   return (
     <React.Fragment >
