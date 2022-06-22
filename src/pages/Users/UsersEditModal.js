@@ -102,7 +102,7 @@ function UsersEditModal(props) {
             </div>
             <div className='text-center  '>
               <Button type="submit" color="primary" className="">
-                Edit User
+                Edit
               </Button>
             </div>
           </AvForm>
