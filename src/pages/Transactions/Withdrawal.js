@@ -19,6 +19,7 @@ import CustomDropdown from "components/Common/CustomDropDown";
 import Notification from "components/Common/Notification";
 import logo from "../../assets/images/logo-sm.svg";
 import { withTranslation } from "react-i18next";
+import { checkAllBoxes } from "common/utils/checkAllBoxes";
 function Withdrawal(props){
   const dispatch = useDispatch();
   const [, setSearchInput] = useState("");
@@ -37,12 +38,17 @@ function Withdrawal(props){
   const columns = [
     {
       dataField:"checkbox",
-      text: <input type="checkbox"/>
+      text: <input type="checkbox" id = "check-all-withdrawals" onChange={()=>checkAllBoxes("check-all-withdrawals", ".withdraw-checkbox")}/>
     },
     {
       dataField: "createdAt",
       text: props.t("Date"),
-      formatter: (val) => (new Date(val.createdAt).toLocaleDateString())
+      formatter: (val) => {
+        let d = new Date(val.createdAt);
+        d = d.getDate()  + "-" + (d.getMonth() + 1) + "-" + d.getFullYear() + " " +
+        d.getHours() + ":" + d.getMinutes();
+        return d;
+      }
     }, 
     {
       dataField:"customerId",
@@ -66,7 +72,7 @@ function Withdrawal(props){
     {
       dataField:"amount",
       text:props.t("Amount"),
-      formatter: (val) => (val?.amount?.$numberDecimal || ""),
+      formatter: (val) => (val.amount || ""),
     },
     
     
@@ -128,19 +134,19 @@ function Withdrawal(props){
                         className="table "
                       >
                         <Thead>
-                          <Tr>
+                          <Tr className = "text-center">
                             {columns.map((column, index) =>
                               <Th data-priority={index} key={index}>{column.text}</Th>
                             )}
                           </Tr>
                         </Thead>
-                        <Tbody>
+                        <Tbody className = "text-center" style = {{ fontSize : "13px" }}>
                           {props.loading && <TableLoader colSpan={4} />}
                           {!props.loading && props.withdrawals.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`}>
-                                  { column.dataField === "checkbox" ? <input type="checkbox"/> : ""}
+                                  { column.dataField === "checkbox" ? <input className= "withdraw-checkbox"  type="checkbox"/> : ""}
                                   { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
                                   {column.dataField === "dropdown" ? <CustomDropdown permission={props.withdrawalsPermissions.actions ? true : false} id={row._id} status={row.status} approve={withdrawApprove} reject={withdrawReject}/> : ""}
                                 </Td>
