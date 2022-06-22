@@ -72,7 +72,8 @@ const Login = props => {
                           value=""
                           className="form-control"
                           placeholder="Enter email"
-                          type="email"
+                          type="email" 
+                          errorMessage="Enter Valid Email"
                           required
                         />
                       </div>
