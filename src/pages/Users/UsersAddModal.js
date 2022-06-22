@@ -59,7 +59,7 @@ function UsersAddModal(props) {
               <AvField
                 name="firstName"
                 label="Frist Name  "
-                placeholder="Frist Name"
+                placeholder="Enter First Name"
                 type="text"
                 errorMessage="Enter Frist Name"
                 validate={{ required: { value: true } }}
@@ -69,7 +69,7 @@ function UsersAddModal(props) {
               <AvField
                 name="lastName"
                 label="Last Name  "
-                placeholder="Last Name"
+                placeholder="Enter Last Name "
                 type="text"
                 errorMessage="Enter Last Name"
                 validate={{ required: { value: true } }}
@@ -79,7 +79,7 @@ function UsersAddModal(props) {
               <AvField
                 name="email"
                 label="Email"
-                placeholder="Enter Valid Email"
+                placeholder="Enter Email"
                 type="email"
                 errorMessage="Enter Valid Email"
                 validate={{
@@ -110,7 +110,7 @@ function UsersAddModal(props) {
               />
             </div>
             <div className="mb-3">
-              <label >Role</label>
+              <label >Select Role </label>
               <AvField
                 type="select"
                 name="roleId"
