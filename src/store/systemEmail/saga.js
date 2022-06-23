@@ -39,6 +39,7 @@ import {
   fetchSystemEmailHTMLFail
 } from "./actions";
 import * as systemEmailApi from "../../apis/systemEmails";
+import { showErrorNotification, showSuccessNotification } from "store/notifications/actions";
 
 function * fetchSystemEmails(params){
   try {
@@ -69,7 +70,8 @@ function * addSystemEmail(params){
     const data = yield call(systemEmailApi.addSystemEmail, params);
     const { result } = data;
     yield put(addSystemEmailSuccess(result));
-    yield delay(2000);
+    yield put(showSuccessNotification("System email added successfully"));
+    // yield delay(2000);
     yield put(addSystemEmailClear());
   } catch (error){
     yield put(addSystemEmailFail(error));

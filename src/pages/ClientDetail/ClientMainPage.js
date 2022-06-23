@@ -100,7 +100,6 @@ function ClientMainPage(props) {
                   !props.fetchClientDetailsError
                     ?
                     <Layout clientId={clientId}>
-<<<<<<< HEAD
                       {/* client details */}
                       <Route exact path="/clients/:id/profile">
                         <ClientProfile clientId={clientId} />
@@ -125,7 +124,6 @@ function ClientMainPage(props) {
                       <Route exact path="/clients/:id/orders">
                         <OrderList clientId={clientId} />
                       </Route>
-=======
 
                       {tabsArr.map((obj, index) =>
                         <Route key={index} exact path={obj.url}>
@@ -134,7 +132,6 @@ function ClientMainPage(props) {
                       )}
                       {/* default route to details right on loading */}
                       <Redirect to={tabsArr[0].url} />
->>>>>>> 2a54a50e375c16fc3018b5fff740a5f09346b9dd
                     </Layout>
                     :
                     <Redirect to={"/dashboard"} />

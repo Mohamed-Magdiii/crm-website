@@ -84,14 +84,10 @@ function SystemEmailAdd(props){
             {/* TODO this needs to be handled in translation */}
             {props.t(JSON.stringify(props.addErrorDetails))}
           </UncontrolledAlert>}
-          {props.addSuccess && <UncontrolledAlert color="success">
-            <i className="mdi mdi-check-all me-2"></i>
-            {props.t("First step completed successfully")} !!!
-          </UncontrolledAlert>}
           
           {/* after adding new system email successfully it will 
               redirect the user to the edit page */}
-          {props.clearingCounter > 0 && 
+          {props.systemEmail && props.clearingCounter > 0 && 
             <Redirect to={"/system-emails/" + props.systemEmail._id} />
           }
         </ModalBody>
