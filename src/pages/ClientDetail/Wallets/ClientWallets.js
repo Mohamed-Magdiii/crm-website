@@ -8,6 +8,7 @@ import {
   Table, Thead, Tbody, Tr, Th, Td
 } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
+import FeatherIcon from "feather-icons-react";
 
 // i18n 
 import { withTranslation } from "react-i18next";
@@ -18,6 +19,7 @@ import ClientAddWallet from "./ClientAddWallet";
 import DeleteModal from "components/Common/DeleteModal";
 import WalletEditModal from "./WalletEditModal";
 import QrPukModal from "./QrPukModal";
+// import { editBankAccount } from "store/bankAccount/actions";
 
 function ClientWallets(props) {
   const clientId = props.clientId;
@@ -36,11 +38,19 @@ function ClientWallets(props) {
   }, []);
 
   const switchSelectedWalletStatus = (item) => {
+    // console.log(item);
+    // const values = {
+    //   "active": !item.active
+    // }; 
+    // dispatch(editBankAccount({
+    //   id: item.id,
+    //   values
+    // }));
     item.active = !item.active;
   };
   const pukHandeler = (puk) => {
     setPuk(puk);
-    setPukEditModal(true); 
+    setPukEditModal(true);
     // console.log(puk);
   };
 
@@ -75,11 +85,11 @@ function ClientWallets(props) {
       text: props.t("Address"),
       formatter: (item) => {
         if (item.isCrypto)
-          return <i
-            className="mdi mdi-eye font-size-22"
-            style={{ color: "green" }}
-            onClick={() => { pukHandeler(item.puk) }}
-          ></i>;
+          return (
+            <Link to="#" onClick={() => { pukHandeler(item.puk) }}>
+              <FeatherIcon icon="eye"/> 
+            </Link>
+          );
         else
           return "";
         // return <i className="mdi mdi-close-circle-outline font-size-22" style={{ color: "red" }}></i>;
@@ -226,7 +236,7 @@ function ClientWallets(props) {
           <QrPukModal
             open={pukModal}
             puk={puk}
-            onClose={() => { setPukEditModal(false)}}
+            onClose={() => { setPukEditModal(false) }}
           />
           {<DeleteModal
             loading={props.deleteLoading}
