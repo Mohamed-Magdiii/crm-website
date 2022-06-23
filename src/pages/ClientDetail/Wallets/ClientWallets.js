@@ -46,14 +46,7 @@ function ClientWallets(props) {
     // console.log(puk);
   };
 
-  const columns = [
-    {
-      dataField: "belongsTo",
-      text: props.t("Belongs to"),
-      formatter: (item) => (
-        item.belongsTo.firstName + " " + item.belongsTo.lastName
-      )
-    },
+  const columns = [ 
     {
       dataField: "asset",
       text: props.t("Asset")
