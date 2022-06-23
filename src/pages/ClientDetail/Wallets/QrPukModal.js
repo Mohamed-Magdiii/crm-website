@@ -1,10 +1,10 @@
 import React from "react";
-import {
-  Modal,
-  ModalHeader,
-  ModalBody,
-  Col,
-  Row,
+import { 
+  Modal, 
+  ModalHeader, 
+  ModalBody, 
+  Col, 
+  Row 
 } from "reactstrap";
 import FeatherIcon from "feather-icons-react";
 import QRCode from "qrcode.react";
@@ -18,8 +18,8 @@ function QrPukModal(props) {
   const { open, puk = "", onClose } = props;
   const dispatch = useDispatch();
 
-  const showNotification = ( message = "" ) => {
-    dispatch(showSuccessNotification( message ));
+  const showNotification = (message = "") => {
+    dispatch(showSuccessNotification(message));
   };
   const CopyPuk = () => {
     navigator.clipboard.writeText(puk);
@@ -32,23 +32,26 @@ function QrPukModal(props) {
           {props.t("Address")}
         </ModalHeader>
         <ModalBody>
-          <Row>
-            <Col className="d-flex justify-content-center">
-              <QRCode size={300} value={puk} renderAs="canvas" />
-            </Col>
-          </Row>
-          <br />
-          <br />
-          <Row>
-            <Col className="d-flex justify-content-center" md="3">
-              <Link to="#" onClick={CopyPuk}>
-                <FeatherIcon icon="copy"/>
-              </Link>
-            </Col>
-            <Col className="d-flex justify-content-center">
-              {puk}
-            </Col>
-          </Row>
+          <div className="container">
+            <Row className=" ">
+              <Col className="d-flex justify-content-center ">
+                <QRCode size={300} value={puk} renderAs="canvas" />
+              </Col>
+            </Row>
+            <br />
+            <br />
+            <Row>
+              <Col md="9" style={{ wordWrap: "break-word" }}  >
+                {puk} 
+              </Col>
+              <Col md="3" className="d-flex justify-content-center ">
+                <Link to="#" onClick={CopyPuk}>
+                  <FeatherIcon icon="copy" />
+                </Link>
+                <br/>
+              </Col>
+            </Row>
+          </div>
         </ModalBody>
       </Modal>
     </React.Fragment>
