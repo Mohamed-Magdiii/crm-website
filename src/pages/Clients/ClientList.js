@@ -35,11 +35,12 @@ function ClientsList(props) {
     {
       dataField: "createdAt",
       text: props.t("Date"),
-      formatter: (val) => (new Date(val.createdAt).toLocaleDateString())
+      formatter: (val) => (val ? new Date(val.createdAt).toLocaleDateString() : "-")
     },
     {
       dataField: "title",
-      text: props.t("Title")
+      text: props.t("Title"),
+      format: (val) => (val ? val : "-")
     },
     {
       dataField: "name",
@@ -52,7 +53,7 @@ function ClientsList(props) {
               state: { clientId: client.id }
             }}
           >
-            <i>{client.firstName + " " + client.lastName}</i>
+            <i className="text-bold">{client.firstName + " " + client.lastName}</i>
           </Link>
         </div>
       )
@@ -60,24 +61,24 @@ function ClientsList(props) {
     {
       dataField: "category",
       text:props.t("Type"),
-      formatter: (val) => (displaySubString(val.category)),
+      formatter: (val) => (val ? displaySubString(val.category) : "-"),
 
     },
     {
       dataField: "email",
       text:props.t("Email"),
-      formatter : (val)=>(captilazeFirstLetter(`${val.email}`))
+      formatter : (val)=>(val ? captilazeFirstLetter(`${val.email}`) : "-")
 
     },
     {
       dataField: "phone",
       text: props.t("Phone"),
-
+      format: (val) => (val || "-")
     },
     {
       dataField: "country",
       text: props.t("Country"),
-      formatter: (val) => (captilazeFirstLetter(`${val.country}`)),
+      formatter: (val) => (val ? captilazeFirstLetter(`${val.country}`) : "-"),
     },
 
     {

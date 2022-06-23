@@ -1,7 +1,6 @@
-// a modal to only edit title and action
 import React, { useState, useEffect } from "react";
 import {
-  connect
+  useDispatch, connect
 } from "react-redux";
 import {
   Modal, Button,
@@ -16,8 +15,10 @@ import DOMPurify from "dompurify";
 
 // i18n
 import { withTranslation } from "react-i18next";
+import { fetchSystemEmailHTML } from "store/systemEmail/actions";
 
 function SystemEmailHTMLModal(props){
+  const dispatch = useDispatch();
   const { open, role = {}, onClose } = props;
   const readableLanguages = {
     "en-gb": "English",
@@ -43,13 +44,22 @@ function SystemEmailHTMLModal(props){
     setSelectedLanguage(selectedLanguageVar);
   };
   
-  
+  const handlefetchSystemEmailHTML = () => {
+    dispatch(fetchSystemEmailHTML({
+      id: role.id,
+      lang: selectedLanguage.value
+    }));
+  };
   useEffect(()=>{
     if (props.fetchHTMLClearingCounter > 0 && open) {
       onClose();
     }
   }, [props.fetchHTMLClearingCounter]);
-  
+
+  useEffect(() => {
+    handlefetchSystemEmailHTML();
+  }, [selectedLanguage]);
+
   return (
     <React.Fragment >
       <Modal isOpen={open} toggle={onClose} centered={true}>
@@ -58,7 +68,7 @@ function SystemEmailHTMLModal(props){
         </ModalHeader>
         <ModalBody >
           <AvForm className='p-4'>
-            <div className="mb-3">
+            {/* <div className="mb-3">
               <label>{props.t("Available languages")}</label>
               {
                 props.role &&
@@ -83,15 +93,12 @@ function SystemEmailHTMLModal(props){
                   />
                 </>
               }
-            </div>
+            </div> */}
 
             <div className="mb-3">
-              <label>System email content preview</label>
-              <div className="block-example border border-black">
-                <div
-                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(role && role.content[selectedLanguage.value].body) }}
-                />
-              </div>
+              <div
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(props.systemEmailHtml && props.systemEmailHtml) }}
+              />  
             </div>
             {role.permissions && Object.keys(role.permissions).map((permKey, permInd) =>
               <div className="mb-3" key={permInd}>

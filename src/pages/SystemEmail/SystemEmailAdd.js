@@ -8,9 +8,9 @@ import {
 } from "reactstrap";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 
-import {  addSystemEmail } from "store/systemEmail/actions";
 // i18n
 import { withTranslation } from "react-i18next";
+import {  addSystemEmail } from "store/systemEmail/actions";
 import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 
 function SystemEmailAdd(props){
@@ -25,15 +25,14 @@ function SystemEmailAdd(props){
   };
   useEffect(()=>{
     if (props.clearingCounter > 0 && addModal) {
-      // props.switchComponents();
       setAddModal(false);
     }
   }, [props.clearingCounter]);
   
   return (
     <React.Fragment >
-      <Link to="#" className={`btn btn-light ${!create ? "d-none" : ""}`} onClick={toggleAddModal}>
-        <i className="bx bx-plus me-1"></i> {props.t("Add new")} 
+      <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}>
+        <i className="bx bx-plus me-1"></i> {props.t("Add New Email")} 
       </Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
@@ -50,9 +49,9 @@ function SystemEmailAdd(props){
               <AvField
                 name="title"
                 label={props.t("Title")}
-                placeholder={props.t("Title")}
+                placeholder={props.t("Enter Title")}
                 type="text"
-                errorMessage={props.t("Title is required")}
+                errorMessage={props.t("Enter Title")}
                 validate={{ required: { value: true } }}
               />
             </div>
@@ -60,15 +59,15 @@ function SystemEmailAdd(props){
               <AvField
                 name="action"
                 label={props.t("Action")}
-                placeholder={props.t("Action")}
+                placeholder={props.t("Enter Action")}
                 type="text"
-                errorMessage={props.t("Action is required")}
+                errorMessage={props.t("Enter Action")}
                 validate={{ required: { value: true } }}
               />
             </div>
             <div className='text-center pt-3 p-2'>
               <Button disabled={props.addLoading} type="submit" color="primary">
-                {props.t("Next")}
+                {props.t("Add")}
               </Button>
             </div>
           </AvForm>

@@ -114,14 +114,18 @@ function ClientDetails(props) {
   return (
     <React.Fragment>
       {!agentOptions && 
-        <div className="d-flex justify-content-center">
-          <Loader />
+        <div className="page-content">
+          <div className="container-fluid">
+            <div className="d-flex justify-content-center">
+              <Loader />
+            </div>
+          </div>
         </div>
       }
       {agentOptions &&
         <div className="">
           <div className="container-fluid">
-            <div className="">
+            <div>
               <Row>
                 {/* input fields to the left side */}
                 <Col md="9" sm="12" xs="12">
@@ -145,9 +149,9 @@ function ClientDetails(props) {
                                 <AvField
                                   name="firstName"
                                   label={props.t("First name")}
-                                  placeholder={props.t("First name")}
+                                  placeholder={props.t("Enter First Name")}
                                   type="text"
-                                  errorMessage={props.t("First name is required")}
+                                  errorMessage={props.t("Enter First Name")}
                                   validate={{ required: { value: true } }}
                                   value={props.clientDetails.firstName}
                                 />
@@ -158,9 +162,9 @@ function ClientDetails(props) {
                                 <AvField
                                   name="lastName"
                                   label={props.t("Last name")}
-                                  placeholder={props.t("Last name")}
+                                  placeholder={props.t("Enter Last Name")}
                                   type="text"
-                                  errorMessage={props.t("Last name is required")}
+                                  errorMessage={props.t("Enter Last Name")}
                                   validate={{ required: { value: true } }}
                                   value={props.clientDetails.lastName}
                                 />
@@ -179,6 +183,10 @@ function ClientDetails(props) {
                                     with selected title as its default value */}
                                 {!selectedTitle && 
                                   <Select
+                                    defaultValue={{
+                                      value: "",
+                                      label: "Select Title"
+                                    }}
                                     options={titleOptions} 
                                     onChange={titleChangeHandler}
                                   />
@@ -193,7 +201,7 @@ function ClientDetails(props) {
                                 <AvField 
                                   name="title"
                                   type="text"
-                                  errorMessage={props.t("Title is required")}
+                                  errorMessage={props.t("Enter Title")}
                                   validate={{ required: { value: true } }}
                                   value={selectedTitle && selectedTitle.value}
                                   style={{
@@ -209,9 +217,9 @@ function ClientDetails(props) {
                                 <AvField
                                   name="phone"
                                   label={props.t("Phone")}
-                                  placeholder={props.t("Phone")}
+                                  placeholder={props.t("Enter Phone")}
                                   type="text"
-                                  errorMessage={props.t("Phone is required")}
+                                  errorMessage={props.t("Enter Phone")}
                                   validate={{ required: { value: true } }}
                                   value={props.clientDetails.phone}
                                 />
@@ -226,9 +234,9 @@ function ClientDetails(props) {
                                 <AvField
                                   name="callStatus"
                                   label={props.t("Call status")}
-                                  placeholder={props.t("Call status")}
+                                  placeholder={props.t("Enter Call Status")}
                                   type="text"
-                                  errorMessage={props.t("Call status is required")}
+                                  errorMessage={props.t("Enter Call status")}
                                   validate={{ required: { value: true } }}
                                   value={props.clientDetails.callStatus}
                                 />
@@ -239,9 +247,9 @@ function ClientDetails(props) {
                                 <AvField
                                   name="dob"
                                   label={props.t("Date of birth")}
-                                  placeholder={props.t("Date of birth")}
+                                  placeholder={props.t("Enter Date of birth")}
                                   type="date"
-                                  errorMessage={props.t("Date of birth is required")}
+                                  errorMessage={props.t("Enter Date of birth")}
                                   validate={{ required: { value: true } }}
                                   value={props.clientDetails.dob}
                                 />
@@ -256,9 +264,9 @@ function ClientDetails(props) {
                                 <AvField
                                   name="city"
                                   label={props.t("City")}
-                                  placeholder={props.t("City")}
+                                  placeholder={props.t("Enter City")}
                                   type="text"
-                                  errorMessage={props.t("City is required")}
+                                  errorMessage={props.t("Enter City")}
                                   validate={{ required: { value: true } }}
                                   value={props.clientDetails.city}
                                 />
@@ -275,7 +283,7 @@ function ClientDetails(props) {
                                 <AvField 
                                   name="agent"
                                   type="text"
-                                  errorMessage={props.t("Agent is required")}
+                                  errorMessage={props.t("Select Agent")}
                                   validate={{ required: { value: true } }}
                                   value={agent && agent.value || agent}
                                   style={{
@@ -298,7 +306,7 @@ function ClientDetails(props) {
                               <AvField 
                                 name="country"
                                 type="text"
-                                errorMessage={props.t("Country is required")}
+                                errorMessage={props.t("Select Country")}
                                 validate={{ required: { value: true } }}
                                 value={country && country.value || country}
                                 style={{
@@ -316,7 +324,7 @@ function ClientDetails(props) {
                               <AvField 
                                 name="nationality"
                                 type="text"
-                                errorMessage={props.t("Nationality is required")}
+                                errorMessage={props.t("Select Nationality")}
                                 validate={{ required: { value: true } }}
                                 value={nationality && nationality.value || nationality}
                                 style={{

@@ -50,8 +50,8 @@ function ClientAddWallet(props){
 
   return (
     <React.Fragment >
-      <Link to="#" className="btn btn-light" onClick={toggleAddModal}>
-        <i className="bx bx-plus me-1"></i> {props.t("Add new")} 
+      <Link to="#" className="btn btn-primary" onClick={toggleAddModal}>
+        <i className="bx bx-plus me-1"></i> {props.t("Add New Wallet")} 
       </Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
@@ -74,9 +74,9 @@ function ClientAddWallet(props){
               />
               <AvField 
                 name="symbol"
-                placeholder={props.t("First name")}
+                placeholder={props.t("Select Asset")}
                 type="text"
-                errorMessage={props.t("Asset is required")}
+                errorMessage={props.t("Select Asset")}
                 validate={{ required: { value: true } }}
                 value={selectedAsset}
                 style={{

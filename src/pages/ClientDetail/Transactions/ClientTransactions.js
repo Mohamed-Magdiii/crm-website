@@ -30,9 +30,9 @@ function ClientTransactions(props) {
   const clientId = pathParams.id;
   const [showNotication, setShowNotifaction] = useState(false);
   const [btnprimary1, setBtnprimary1] = useState(false);
-  const transactionTypes = ["withdrawal", "deposit"];
   const [sizePerPage, setSizePerPage] = useState(5);
-  const [selectedTransactionType, setSelectedTransactionType] = useState("withdrawal");
+  const [selectedTransactionType, setSelectedTransactionType] = useState("Withdrawal");
+  const transactionTypes = ["Withdrawal", "Deposit"];
   const dispatch = useDispatch();
 
   const changeTransactionTypeHandler = (e) => {
@@ -91,21 +91,21 @@ function ClientTransactions(props) {
       dataField: "reason",
       text: props.t("Reason"),
       formatter: (item) => (
-        item.reason ? item.reason : "N/A"
+        item.reason ? item.reason : "-"
       )
     },
     {
       dataField: "amount",
       text: props.t("Amount"),
       formatter: (item) => (
-        item.amount === " " ? "N/A" : parseFloat(item.amount)
+        item.amount === " " ? "-" : parseFloat(item.amount)
       )
     },
     {
       dataField: "comments",
       text: props.t("Comments"),
       formatter: (item) => (
-        item.comments.length === 0 ? "N/A" : item.comments
+        item.comments.length === 0 ? "-" : item.comments
       )
     },
     {
@@ -119,7 +119,7 @@ function ClientTransactions(props) {
       <div className="">
         <div className="container-fluid">
           {/* notification if selected transaction type is deposit */}
-          {selectedTransactionType === "deposit" && 
+          {selectedTransactionType === "Deposit" && 
             <Notification
               onClose={closeNotifaction}
               body={props.t("The deposit has been updated successfully")}
@@ -129,7 +129,7 @@ function ClientTransactions(props) {
             />
           }
           {/* notification if selected transaction type is withdrawal */}
-          {selectedTransactionType === "withdrawal" && 
+          {selectedTransactionType === "Withdrawal" && 
             <Notification onClose={closeNotifaction}
               body={props.t("The update of the withdraw has been made successfully")}
               show={showNotication}
@@ -143,7 +143,7 @@ function ClientTransactions(props) {
               <Card>
                 <CardHeader className="d-flex justify-content-between  align-items-center">
                   <CardTitle>
-                    {props.t("Transactions list")} ({selectedTransactionType === "withdrawal" ? props.withdrawalsTotalDocs : props.depositsTotalDocs})
+                    {props.t("Transactions list")} ({selectedTransactionType === "Withdrawal" ? props.withdrawalsTotalDocs : props.depositsTotalDocs})
                   </CardTitle>
                   <Dropdown
                     isOpen={btnprimary1}
@@ -184,7 +184,7 @@ function ClientTransactions(props) {
                         {/* if no records show "No records" otherwise show records */}
                         {
                           // if deposits is selected then render clientDeposits
-                          selectedTransactionType === "deposit"
+                          selectedTransactionType === "Deposit"
                             ?
                             // if deposits is selected but no data to show
                             props.depositsTotalDocs === 0 
@@ -254,7 +254,7 @@ function ClientTransactions(props) {
                       </Table>
                       {/* if deposits is selected */}
                       {
-                        (props.clientDeposits && selectedTransactionType === "deposit") && 
+                        (props.clientDeposits && selectedTransactionType === "Deposit") && 
                         <CustomPagination
                           {...props}
                           docs={props.clientDeposits}
@@ -265,7 +265,7 @@ function ClientTransactions(props) {
                       }
                       {/* if withdrawals is selected */}
                       {
-                        (props.clientWithdrawals && selectedTransactionType === "withdrawal") && 
+                        (props.clientWithdrawals && selectedTransactionType === "Withdrawal") && 
                         <CustomPagination
                           {...props}
                           docs={props.clientWithdrawals}

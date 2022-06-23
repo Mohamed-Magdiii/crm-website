@@ -38,7 +38,7 @@ function ClientWallets(props) {
   const columns = [
     {
       dataField: "belongsTo",
-      text: props.t("Belongs to"),
+      text: props.t("Belongs To"),
       formatter: (item) => (
         item.belongsTo.firstName + " " + item.belongsTo.lastName
       )
@@ -51,7 +51,7 @@ function ClientWallets(props) {
       dataField: "amount",
       text: props.t("Amount"),
       formatter: (item) => (
-        item.amount === " " ? "N/A" : parseFloat(item.amount)
+        item.amount === " " ? "-" : parseFloat(item.amount)
       )
     }, 
     {
@@ -63,9 +63,9 @@ function ClientWallets(props) {
     },
     {
       dataField: "freezeAmount",
-      text: props.t("Freeze amount"),
+      text: props.t("Freeze Amount"),
       formatter: (item) => (
-        item.freezeAmount === " " ? "N/A" : parseFloat(item.freezeAmount) 
+        item.freezeAmount === " " ? "-" : parseFloat(item.freezeAmount) 
       )
     },
     {
@@ -82,9 +82,7 @@ function ClientWallets(props) {
           />
           <Label 
             className="me-1" 
-            htmlFor={item.id} 
-            data-on-label={props.t("Active")} 
-            data-off-label=""
+            htmlFor={item.id}
           />
         </div>
       ),
@@ -174,18 +172,6 @@ function ClientWallets(props) {
                               )}
                             </Tbody>
                         }
-                        {/* {props.docs && <Tbody>
-                          {props.loading && <TableLoader colSpan={4} />}
-                          {!props.loading && props.docs.map((row, rowIndex) =>
-                            <Tr key={rowIndex}>
-                              {columns.map((column, index) =>
-                                <Td key={`${rowIndex}-${index}`}>
-                                  { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
-                                </Td>
-                              )}
-                            </Tr>
-                          )}
-                        </Tbody>} */}
                       </Table>
                       <CustomPagination
                         {...props}

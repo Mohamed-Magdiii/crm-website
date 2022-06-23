@@ -50,10 +50,10 @@ function SystemEmailEditModal(props){
               <AvField
                 name="title"
                 label={props.t("Title")}
-                placeholder={props.t("Title")}
+                placeholder={props.t("Enter Title")}
                 type="text"
                 value={role.title}
-                errorMessage={props.t("Title is required")}
+                errorMessage={props.t("Enter Title")}
                 validate={{ required: { value: true } }}
               />
             </div>
@@ -62,10 +62,10 @@ function SystemEmailEditModal(props){
               <AvField
                 name="action"
                 label={props.t("Action")}
-                placeholder={props.t("Action")}
+                placeholder={props.t("Enter Action")}
                 type="text"
                 value={role.action}
-                errorMessage={props.t("Action is required")}
+                errorMessage={props.t("Enter Action")}
                 validate={{ required: { value: true } }}
               />
             </div>

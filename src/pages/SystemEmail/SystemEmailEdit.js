@@ -98,7 +98,7 @@ function SystemEmailEdit(props){
                 name="language"
                 id="Available languages"
                 type="text"
-                errorMessage={props.t("Language is required")}
+                errorMessage={props.t("Enter Language")}
                 validate={{ required: { value: true } }}
                 value={selectedLanguage.value}
                 style={{
@@ -113,10 +113,10 @@ function SystemEmailEdit(props){
               <AvField
                 name="subject"
                 label={props.t("Subject")}
-                placeholder={props.t("Subject")}
+                placeholder={props.t("Enter Subject")}
                 type="text"
                 value={role.content[selectedLanguage.value].subject}
-                errorMessage={props.t("Subject is required")}
+                errorMessage={props.t("Enter Subject")}
                 validate={{ required: { value: true } }}
               />
             </div>
@@ -130,13 +130,13 @@ function SystemEmailEdit(props){
                 editorClassName="editorClassName"
                 editorState={editorState}
                 onEditorStateChange={setEditorState}
-                placeholder={props.t("Content")}
+                placeholder={props.t("Enter Content")}
               />
               <AvField
                 name="body"
                 id="body"
                 type="text"
-                errorMessage={props.t("Content is required")}
+                errorMessage={props.t("Enter Content")}
                 validate={{ required: { value: true } }}
                 value={draftToHtml(convertToRaw(editorState.getCurrentContent()))}
                 style={{

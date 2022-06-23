@@ -30,8 +30,8 @@ function ClientAddBankAccountModal(props){
   
   return (
     <React.Fragment >
-      <Link to="#" className="btn btn-light" onClick={toggleAddModal}>
-        <i className="bx bx-plus me-1"></i> {props.t("Add new")} 
+      <Link to="#" className="btn btn-primary" onClick={toggleAddModal}>
+        <i className="bx bx-plus me-1"></i> {props.t("Add New Bank Account")} 
       </Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
@@ -49,9 +49,9 @@ function ClientAddBankAccountModal(props){
               <AvField
                 name="accountHolderName"
                 label={props.t("Account owner name")}
-                placeholder={props.t("Account owner name")}
+                placeholder={props.t("Enter Account Owner Name")}
                 type="text"
-                errorMessage={props.t("Owner name is required")}
+                errorMessage={props.t("Enter Account Owner Name")}
                 validate={{ required: { value: true } }}
               />
             </div>
@@ -60,9 +60,9 @@ function ClientAddBankAccountModal(props){
               <AvField
                 name="bankName"
                 label={props.t("Bank name")}
-                placeholder={props.t("Bank name")}
+                placeholder={props.t("Enter Bank Name")}
                 type="text"
-                errorMessage={props.t("Bank name is required")}
+                errorMessage={props.t("Enter Bank Name")}
                 validate={{ required: { value: true } }}
               />
             </div>
@@ -71,9 +71,9 @@ function ClientAddBankAccountModal(props){
               <AvField
                 name="accountNumber"
                 label={props.t("Account number")}
-                placeholder={props.t("Account number")}
+                placeholder={props.t("Enter Account Number")}
                 type="text"
-                errorMessage={props.t("Account number is required")}
+                errorMessage={props.t("Enter Account Number")}
                 validate={{ required: { value: true } }}
               />
             </div>
@@ -82,9 +82,9 @@ function ClientAddBankAccountModal(props){
               <AvField
                 name="swiftCode"
                 label={props.t("Swift code")}
-                placeholder={props.t("Swift code")}
+                placeholder={props.t("Enter Swift Code")}
                 type="text"
-                errorMessage={props.t("swift code is required")}
+                errorMessage={props.t("Enter Swift Code")}
                 validate={{ required: { value: true } }}
               />
             </div>
@@ -93,9 +93,9 @@ function ClientAddBankAccountModal(props){
               <AvField
                 name="address"
                 label={props.t("Address")}
-                placeholder={props.t("Address")}
+                placeholder={props.t("Enter Address")}
                 type="text"
-                errorMessage={props.t("Address is required")}
+                errorMessage={props.t("enter Address")}
                 validate={{ required: { value: true } }}
               />
             </div>
@@ -104,9 +104,9 @@ function ClientAddBankAccountModal(props){
               <AvField
                 name="iban"
                 label={props.t("IBAN")}
-                placeholder={props.t("IBAN")}
+                placeholder={props.t("Enter IBAN")}
                 type="text"
-                errorMessage={props.t("Iban is required")}
+                errorMessage={props.t("Enter IBAN")}
                 validate={{ required: { value: true } }}
               />
             </div>
@@ -115,9 +115,9 @@ function ClientAddBankAccountModal(props){
               <AvField
                 name="currency"
                 label={props.t("Currency")}
-                placeholder={props.t("Currency")}
+                placeholder={props.t("Enter Currency")}
                 type="text"
-                errorMessage={props.t("Currency is required")}
+                errorMessage={props.t("Enter Currency")}
                 validate={{ required: { value: true } }}
               />
             </div>

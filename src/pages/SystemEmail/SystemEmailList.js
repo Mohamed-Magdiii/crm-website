@@ -44,36 +44,43 @@ function SystemEmailsList(props){
   const columns = [
     {
       dataField: "createdAt",
-      text: props.t("Created date"),
-      formatter: (val) => {return new Date(val.createdAt).toDateString()}
+      text: props.t("Created Date"),
+      formatter: (val) => (val ? new Date(val.createdAt).toLocaleDateString() : "-")
     },
     {
       dataField: "createdBy",
-      text: props.t("Created by"),
-      formatter: (val) => {return (val.createdBy && val.createdBy.firstName) ? `${val.createdBy.firstName} ${val.createdBy.lastName}` : ""},
+      text: props.t("Created By"),
+      formatter: (val) => {return (val.createdBy && val.createdBy.firstName) ? `${val.createdBy.firstName} ${val.createdBy.lastName}` : "-"},
     },
     {
       dataField: "title",
       text: props.t("Title"),
       formatter: (systemEmail) => (
-        <div className="d-flex gap-3">
-          <Link 
-            to={{
-              pathname: "/system-emails/" + systemEmail.id,
-            }}
-          >
-            <i>{systemEmail.title}</i>
-          </Link>
-        </div>
+        systemEmail.title 
+          ?
+          <div className="d-flex gap-3">
+            <Link 
+              to={{
+                pathname: "/system-emails/" + systemEmail.id,
+              }}
+            >
+              <i>{systemEmail.title}</i>
+            </Link>
+          </div>
+          :
+          "-"
       )
     },
     {
       dataField: "action",
-      text: props.t("Action type")
+      text: props.t("Action Type"),
+      formatter: (val) => (
+        val || "-"
+      )
     }, 
     {
       dataField: "content",
-      text: props.t("Default subject"),
+      text: props.t("Default Subject"),
       formatter: (val) => {return val.content["en-gb"] && val.content["en-gb"].subject || " "}
     },
     {
@@ -88,7 +95,7 @@ function SystemEmailsList(props){
             defaultChecked={item.isActive} 
             onClick={() => { switchSelectedSystemEmailStatusHandler(item) }} 
           />
-          <Label className="me-1" htmlFor={item.id} data-on-label={props.t("Active")} data-off-label=""></Label>
+          <Label className="me-1" htmlFor={item.id}></Label>
         </div>
       ),
     },
@@ -99,15 +106,13 @@ function SystemEmailsList(props){
       text: props.t("Preview"), 
       formatter: (item) => (
         // TODO needs to be centered on sm or xs I'm not sure yet
-        <div className="d-flex justify-content-center">
-          <Link className={`text ${!update ? "d-none" : ""}`} to="#">
-            <i
-              className="mdi mdi-eye font-size-18"
-              id="preview"
-              onClick={() => {setSelectedSystemEmail(item); setPreviewModal(true)}}
-            ></i>
-          </Link>
-        </div>
+        <Link className={`text ${!update ? "d-none" : ""}`} to="#">
+          <i
+            className="mdi mdi-eye font-size-18"
+            id="preview"
+            onClick={() => {setSelectedSystemEmail(item); setPreviewModal(true)}}
+          ></i>
+        </Link>
       )
     },
     {
