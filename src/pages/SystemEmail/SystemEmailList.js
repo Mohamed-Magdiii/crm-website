@@ -45,12 +45,12 @@ function SystemEmailsList(props){
     {
       dataField: "createdAt",
       text: props.t("Created Date"),
-      formatter: (val) => (val ? new Date(val.createdAt).toLocaleDateString() : "-")
+      formatter: (val) => (val ? new Date(val.createdAt).toLocaleDateString() : " ")
     },
     {
       dataField: "createdBy",
       text: props.t("Created By"),
-      formatter: (val) => {return (val.createdBy && val.createdBy.firstName) ? `${val.createdBy.firstName} ${val.createdBy.lastName}` : "-"},
+      formatter: (val) => {return (val.createdBy && val.createdBy.firstName) ? `${val.createdBy.firstName} ${val.createdBy.lastName}` : " "},
     },
     {
       dataField: "title",
@@ -73,10 +73,7 @@ function SystemEmailsList(props){
     },
     {
       dataField: "action",
-      text: props.t("Action Type"),
-      formatter: (val) => (
-        val || "-"
-      )
+      text: props.t("Action Type")
     }, 
     {
       dataField: "content",

@@ -28,7 +28,11 @@ function SystemEmailAdd(props){
       setAddModal(false);
     }
   }, [props.clearingCounter]);
-  
+
+  const disableAddButton = () => (
+    props.systemEmail ? true : false
+  );
+
   return (
     <React.Fragment >
       <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}>
@@ -66,7 +70,11 @@ function SystemEmailAdd(props){
               />
             </div>
             <div className='text-center pt-3 p-2'>
-              <Button disabled={props.addLoading} type="submit" color="primary">
+              <Button 
+                disabled={disableAddButton()} 
+                type="submit" 
+                color="primary"
+              >
                 {props.t("Add")}
               </Button>
             </div>
