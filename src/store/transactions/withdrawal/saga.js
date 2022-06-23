@@ -48,7 +48,7 @@ function * makeWithdrawal({ payload:{ withdrawal } }){
     if (status){
       
       yield put(makeWithdrawalSuccess(result));
-      yield delay(3000);
+      yield delay(2000);
       yield put(modalClear());
     }
     

@@ -72,10 +72,10 @@ function WithdrawForm(props){
   
   return (
     <React.Fragment >
-      <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> {props.t("Withdraw")}</Link>
+      <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> {props.t("Make Withdraw")}</Link>
       <Modal isOpen={open} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
-          {props.t("Withdraw")}
+          {props.t("Make Withdraw")}
         </ModalHeader>
         <ModalBody >
 
@@ -108,7 +108,7 @@ function WithdrawForm(props){
 
                     ))}
                     classNamePrefix="select2-selection"
-                    placeholder = "Select the client"
+                    placeholder = "choose client name"
                     onInputChange = {(e)=>setSearchInput(e)}
                     name = "clientId"
                     
@@ -137,7 +137,7 @@ function WithdrawForm(props){
 
                     ))}
                     classNamePrefix="select2-selection"
-                    placeholder = "Select the wallet"
+                    placeholder = "choose your wallet"
 
                   />
                 </div>
@@ -165,7 +165,7 @@ function WithdrawForm(props){
 
                   ))}
                   classNamePrefix="select2-selection"
-                  placeholder = "Select the gateway"
+                  placeholder = "choose a gateway"
                  
                 />
               </div>
@@ -177,10 +177,17 @@ function WithdrawForm(props){
               <AvField
                 name="amount"
                 label={props.t("Amount")}
-                placeholder={props.t("Amount")}
+                placeholder={props.t("enter amount")}
                 type="text"
                 errorMessage={props.t("Enter Valid Amount")}
-                validate={{ required: { value: true } }}
+                validate={{ 
+                  required: { value: true },
+                  pattern : {
+                    // eslint-disable-next-line no-useless-escape
+                    value : "/[+]?[1-9]+[,.]?[0-9]*([\/][0-9]+[,.]?[0-9]*)*/g",
+                    errorMessage :"Amount must be positve number"
+                  }
+                }}
                 
 
               />
@@ -189,7 +196,7 @@ function WithdrawForm(props){
               <AvField
                 name="note"
                 label={props.t("Note")}
-                placeholder={props.t("Note")}
+                placeholder={props.t("enter note")}
                 type="text"
                 errorMessage={props.t("Enter Valid Note")}
                 validate={{ required: { value: true } }}
@@ -197,7 +204,7 @@ function WithdrawForm(props){
             </div>
     
             <div className='text-center pt-3 p-2'>
-              <Button  type="submit" color="primary" className="">
+              <Button disabled = {props.disableWithdrawalButton} type="submit" color="primary" className="">
                 {props.t("Make Withdraw")}
               </Button>
             </div>
@@ -222,6 +229,7 @@ const mapStateToProps = (state) => ({
   modalClear:state.withdrawalReducer.modalClear,
   clients:state.clientReducer.clients || [],
   wallets:state.walletReducer.wallets || [],
-  withdrawalsPermissions: state.Profile.withdrawalsPermissions || {}
+  withdrawalsPermissions: state.Profile.withdrawalsPermissions || {}, 
+  disableWithdrawalButton : state.withdrawalReducer.disableWithdrawalButton
 });
 export default connect(mapStateToProps, null)(withTranslation()(WithdrawForm));

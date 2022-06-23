@@ -27,9 +27,13 @@ function ClientForm(props){
     event.preventDefault();
     dispatch(addNewClient({
       ...values,
-      country:selectedCountry
+      country: selectedCountry.value
     }));
   }; 
+
+  const countryChangeHandler = (selectedCountryVar) => {
+    setCountry(selectedCountryVar);
+  };
 
   const toggleAddModal = () => {
     setAddUserModal(!addModal);
@@ -137,7 +141,10 @@ function ClientForm(props){
               />
             </div>
             <div className="mb-3">
-              <CountryDropDown selectCountry = {setCountry} />
+              <CountryDropDown 
+                selectCountry = {setCountry}
+                countryChangeHandler={countryChangeHandler}
+              />
             </div>
             <div className='text-center pt-3 p-2'>
               <Button disabled={props.disableAddButton} type="submit" color="primary" className="">

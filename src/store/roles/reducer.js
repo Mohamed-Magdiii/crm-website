@@ -11,7 +11,9 @@ import {
   EDIT_ROLES_DONE,
   EDIT_ROLE_CLEAR,
   DELETE_ROLES_START,
-  DELETE_ROLES_DONE
+  DELETE_ROLES_DONE,
+  CHANGE_STATUS_ROLES_START,
+  CHANGE_STATUS_ROLES_END
 } from "./actionTypes";
 
 const initialState = {
@@ -142,6 +144,25 @@ const leadReducer = (state = initialState, action)=>{
         deleteResult: action.payload.result,
         deleteError: action.payload.error,
         deleteClearingCounter: state.deleteClearingCounter + 1,
+      };
+      break;
+    case CHANGE_STATUS_ROLES_START:
+      state = {
+        ...state,
+        changeStatusLoading:true,
+        changeStatusLoadingIndex: action.payload.index,
+      };
+      break;
+    case CHANGE_STATUS_ROLES_END:
+      state = {
+        ...state,
+        docs: state.docs.map((obj, index) => {
+          if (index === action.payload.index && !action.payload.error) {
+            obj.isActive = !obj.isActive;
+          }
+          return obj;
+        }),
+        changeStatusLoading: false,
       };
       break;
     default:

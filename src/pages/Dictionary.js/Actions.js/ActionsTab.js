@@ -13,6 +13,7 @@ import {
   Table, Thead, Tbody, Tr, Th, Td
 } from "react-super-responsive-table";
 import { withTranslation } from "react-i18next";
+import { captilazeFirstLetter } from "common/utils/manipulateString";
 function ActionsTab(props){
   
   const [deleteModal, setDeleteModal] = useState(false);
@@ -35,6 +36,7 @@ function ActionsTab(props){
     {
       dataField:"actions",
       text:props.t("Name"), 
+      formatter:(value)=>captilazeFirstLetter(value.actions)
     }, 
     {
       dataField: "",
@@ -92,14 +94,14 @@ function ActionsTab(props){
                 id="tech-companies-1"
                 className="table "
               >
-                <Thead>
+                <Thead >
                   <Tr>
                     {columns.map((column, index) =>
                       <Th data-priority={index} key={index}>{column.text}</Th>
                     )}
                   </Tr>
                 </Thead>
-                <Tbody>
+                <Tbody  style={{ fontSize: "13px" }}>
                   {props.loading && <TableLoader colSpan={4} />}
                   {!props.loading && customData.map((row, rowIndex) =>
                            
@@ -120,7 +122,7 @@ function ActionsTab(props){
         </CardBody>
       </Card>
       {<ActionEdit open={editModal} selectedAction ={selectedAction} onClose= {()=>setEditModal(false)}/>}
-      {<DeleteModal  show={deleteModal} onDeleteClick={deleteAction} onCloseClick={()=>setDeleteModal(false)}/>}
+      {<DeleteModal loading={props.disableDeleteButton} show={deleteModal} onDeleteClick={deleteAction} onCloseClick={()=>setDeleteModal(false)}/>}
     </React.Fragment>
   );
 }
@@ -133,6 +135,7 @@ const mapStateToProps = (state)=>({
   deleteLoading : state.dictionaryReducer.deleteLoading,
   editSuccess :state.dictionaryReducer.editSuccess,
   clearDeleteModal :state.dictionaryReducer.clearDeleteModal,
-  dictionariesPermissions : state.Profile.dictionariesPermissions || {}
+  dictionariesPermissions : state.Profile.dictionariesPermissions || {},
+  disableDeleteButton : state.dictionaryReducer.disableDeleteButton
 });
 export default connect(mapStateToProps, null)(withTranslation()(ActionsTab));

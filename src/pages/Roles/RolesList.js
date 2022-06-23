@@ -5,7 +5,7 @@ import {
 import { Link } from "react-router-dom";
 
 import {
-  Row, Col, Card, CardBody, CardTitle, CardHeader, Input, Label,
+  Row, Col, Card, CardBody, CardTitle, CardHeader, Input, Label, Spinner,
 } from "reactstrap";
 
 import {
@@ -13,7 +13,9 @@ import {
 } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 
-import { fetchRoles, deleteRoles } from "store/roles/actions";
+import {
+  fetchRoles, deleteRoles, changeStatus,
+} from "store/roles/actions";
 import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
 import DeleteModal from "components/Common/DeleteModal";
@@ -29,7 +31,7 @@ function RolesList(props){
     {
       dataField: "createdAt",
       text: "Created Date",
-      formatter: (val) => {return new Date(val.createdAt).toDateString()}
+      formatter: (val) => (new Date(val.createdAt).toLocaleDateString())
     }, 
     {
       dataField:"title",
@@ -43,10 +45,22 @@ function RolesList(props){
     {
       dataField: "isActive",
       text: "Status",
-      formatter: (item) => (
+      formatter: (item, index) => (
         <div className="d-flex gap-3">
-          <Input type="checkbox" id={item.id} switch="none" defaultChecked={item.isActive} onClick={() => {}} />
-          <Label className="me-1" htmlFor={item.id} data-on-label="Active" data-off-label=""></Label>
+          {(props.changeStatusLoading && props.changeStatusLoadingIndex === index) ? <React.Fragment>
+            <Spinner className="ms-2" color="primary" />  
+          </React.Fragment> : <React.Fragment>
+            <Input
+              checked={item.isActive}
+              type="checkbox"
+              onChange={(e) => {updateStatus(e, item, index)}}
+              id={item.id}
+              switch="none"
+              // defaultChecked={item.isActive}
+              // onClick={() => {}}
+            />
+            <Label className="me-1" htmlFor={item.id} data-on-label="" data-off-label=""></Label>
+          </React.Fragment>}
         </div>
       ),
     },
@@ -93,11 +107,17 @@ function RolesList(props){
     dispatch(deleteRoles(selectedRole._id));
   };
 
+  const updateStatus = (event, item, index) => {
+    dispatch(changeStatus(item._id, !item.isActive ? "activate" : "deactivate", index));
+    event.preventDefault();
+  };
+
   useEffect(()=>{
     if (props.deleteClearingCounter > 0 && deleteModal) {
       setDeleteUserModal(false);
     }
   }, [props.deleteClearingCounter]);
+  
 
   return (
     <React.Fragment>
@@ -168,6 +188,9 @@ function RolesList(props){
 const mapStateToProps = (state) => ({
   loading: state.rolesReducer.loading || false,
   docs: state.rolesReducer.docs || [],
+
+  changeStatusLoading: state.rolesReducer.changeStatusLoading,
+  changeStatusLoadingIndex: state.rolesReducer.changeStatusLoadingIndex,
   page: state.rolesReducer.page || 1,
   totalDocs: state.rolesReducer.totalDocs || 0,
   totalPages: state.rolesReducer.totalPages || 0,

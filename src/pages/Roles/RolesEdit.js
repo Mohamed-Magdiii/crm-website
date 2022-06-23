@@ -48,7 +48,7 @@ function RolesAdd (props) {
               <AvField
                 name="title"
                 label="Role Title"
-                placeholder="Role Title"
+                placeholder="Enter Role Title"
                 type="text"
                 value={role.title}
                 errorMessage="Enter Role Title"
@@ -68,7 +68,7 @@ function RolesAdd (props) {
             )}
             <div className='text-center pt-3 p-2'>
               <Button disabled={props.addLoading} type="submit" color="primary" className="">
-                Update New Role
+                Update
               </Button>
             </div>
           </AvForm>

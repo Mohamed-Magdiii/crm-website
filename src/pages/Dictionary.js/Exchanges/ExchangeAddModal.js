@@ -43,7 +43,7 @@ function ExchangeAddModal(props){
             <div className="mb-3">
               <AvField
                 name="exchanges"
-                label={props.t("Exchanges")}
+                label={props.t("Enter Exchange")}
                 placeholder={props.t("Exchanges")}
                 type="text"
                 errorMessage="Enter valid exchange"
@@ -53,8 +53,8 @@ function ExchangeAddModal(props){
               
             
             <div className='text-center pt-3 p-2'>
-              <Button  type="submit" color="primary" className="">
-                {props.t("Add new Exchange")}
+              <Button disabled = {props.disableAddButton} type="submit" color="primary" className="">
+                {props.t("Add")}
               </Button>
             </div>
           </AvForm>
@@ -77,6 +77,7 @@ const mapStateToProps = (state)=>({
   error : state.dictionaryReducer.error,
   id :state.dictionaryReducer.id,
   showAddSuccessMessage:state.dictionaryReducer.showAddSuccessMessage,
-  dictionariesPermissions : state.Profile.dictionariesPermissions || {}
+  dictionariesPermissions : state.Profile.dictionariesPermissions || {},
+  disableAddButton: state.dictionaryReducer.disableAddButton
 });
 export default connect(mapStateToProps, null)(withTranslation()(ExchangeAddModal));

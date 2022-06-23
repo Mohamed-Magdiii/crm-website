@@ -17,7 +17,8 @@ const withdrawalReducer = (state = { initalState }, action)=>{
       state = {
         ...state,
         loading:true,
-        error:""
+        error:"", 
+        
       };
       break;
     case "FETCH_WITHDRAWALS_SUCCESS":
@@ -38,7 +39,8 @@ const withdrawalReducer = (state = { initalState }, action)=>{
     case "MAKE_WITHDRAWAL_START":
       state = {
         ...state,
-        modalClear:false
+        modalClear:false,
+        disableWithdrawalButton: true
       };
       break;
     case "MAKE_WITHDRWAL_SUCCESS":
@@ -46,7 +48,8 @@ const withdrawalReducer = (state = { initalState }, action)=>{
         ...state,
         withdrawals:[{ ...action.payload.withdrawal }, ...state.withdrawals],
         totalDocs:state.totalDocs + 1,
-        withdrawResponseMessage:action.payload.withdrawal.status
+        withdrawResponseMessage:action.payload.withdrawal.status,
+
       };
       break;
     case "WITHDRAW_STATUS_CHANGE_SUCCESS":
@@ -74,7 +77,8 @@ const withdrawalReducer = (state = { initalState }, action)=>{
       state = {
         ...state,
         modalClear:true,
-        withdrawResponseMessage:""
+        withdrawResponseMessage:"",
+        disableWithdrawalButton: false
       };
       break;
     case "WITHDRAWAL_ERROR": 

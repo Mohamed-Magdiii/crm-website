@@ -45,7 +45,7 @@ function EmailProviderAdd(props){
               <AvField
                 name="emailProviders"
                 label={props.t("Email Providers")}
-                placeholder={props.t("Email Providers")}
+                placeholder={props.t("Enter Email Provider")}
                 type="text"
                 errorMessage={props.t("Enter valid email provider")}
                 validate={{ required: { value: true } }}
@@ -54,8 +54,8 @@ function EmailProviderAdd(props){
               
             
             <div className='text-center pt-3 p-2'>
-              <Button  type="submit" color="primary" className="">
-                {props.t("Add New Email Provider")}
+              <Button disabled={props.disableAddButton} type="submit" color="primary" className="">
+                {props.t("Add")}
               </Button>
             </div>
           </AvForm>
@@ -77,6 +77,7 @@ const mapStateToProps = (state)=>({
   error : state.dictionaryReducer.error,
   id :state.dictionaryReducer.id,
   showAddSuccessMessage:state.dictionaryReducer.showAddSuccessMessage,
-  dictionariesPermissions : state.Profile.dictionariesPermissions || {}
+  dictionariesPermissions : state.Profile.dictionariesPermissions || {},
+  disableAddButton : state.dictionaryReducer.disableAddButton
 });
 export default connect(mapStateToProps, null)(withTranslation()(EmailProviderAdd));

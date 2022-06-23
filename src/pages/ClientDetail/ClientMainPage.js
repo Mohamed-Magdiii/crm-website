@@ -1,3 +1,4 @@
+/* eslint-disable object-property-newline */
 /* eslint-disable no-debugger */
 import React, { useState, useEffect } from "react";
 import { 
@@ -55,6 +56,16 @@ function ClientMainPage(props) {
     }
   };
 
+  const tabsArr = [
+    { component: ClientProfile, url: `/clients/${clientId}/profile` },
+    { component: ClientBank, url: `/clients/${clientId}/bank` },
+    { component: "Documents", url: `/clients/${clientId}/documents` },
+    { component: ClientTransactions, url: `/clients/${clientId}/transactions` },
+    { component: ClientWallets, url: `/clients/${clientId}/wallets` },
+    { component: OrderList, url: `/clients/${clientId}/orders` },
+    { component: "Logs", url: `/clients/${clientId}/logs` },
+    { component: "Security", url: `/clients/${clientId}/security` },
+  ];
   useEffect(()=>{
     getClientDetails(clientId);
   }, []);
@@ -89,33 +100,14 @@ function ClientMainPage(props) {
                   !props.fetchClientDetailsError
                     ?
                     <Layout clientId={clientId}>
-                      {/* client details */}
-                      <Route exact path="/clients/:id/profile">
-                        <ClientProfile clientId={clientId} />
-                      </Route>
 
-                      {/*  client bank */}
-                      <Route exact path="/clients/:id/bank">
-                        <ClientBank clientId={clientId} />
-                      </Route>
-
-                      {/* client transactions */}
-                      <Route exact path="/clients/:id/transactions">
-                        <ClientTransactions clientId={clientId} />
-                      </Route>
-
-                      {/* client wallets */}
-                      <Route exact path="/clients/:id/wallets">
-                        <ClientWallets clientId={clientId} />
-                      </Route>
-
-                      {/* client orders */}
-                      <Route exact path="/clients/:id/orders">
-                        <OrderList clientId={clientId} />
-                      </Route>
-
+                      {tabsArr.map((obj, index) =>
+                        <Route key={index} exact path={obj.url}>
+                          <obj.component clientId={clientId} />
+                        </Route>
+                      )}
                       {/* default route to details right on loading */}
-                      <Redirect to={"/clients/" + clientId + "/profile"} />
+                      <Redirect to={tabsArr[0].url} />
                     </Layout>
                     :
                     <Redirect to={"/dashboard"} />
