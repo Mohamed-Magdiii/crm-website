@@ -31,7 +31,7 @@ function RolesAdd (props) {
 
   return (
     <React.Fragment >
-      <Link to="#"  className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> Add New</Link>
+      <Link to="#"  className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> Add New Role</Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
             Add New Role
@@ -47,7 +47,7 @@ function RolesAdd (props) {
               <AvField
                 name="title"
                 label="Role Title"
-                placeholder="Role Title"
+                placeholder="Enter Role Title"
                 type="text"
                 errorMessage="Enter Role Title"
                 validate={{ required: { value: true } }}
@@ -55,7 +55,7 @@ function RolesAdd (props) {
             </div>
             <div className='text-center pt-3 p-2'>
               <Button disabled={props.addLoading} type="submit" color="primary" className="">
-                Add New Role
+                Add
               </Button>
             </div>
           </AvForm>

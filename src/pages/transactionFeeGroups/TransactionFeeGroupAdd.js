@@ -1,94 +1,111 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, connect } from "react-redux";
 import {
-  useDispatch, connect
-} from "react-redux";
-import {
-  Row, Col,
-  Modal, Button,
+  Button,
+  Modal,
   ModalHeader,
   ModalBody,
   UncontrolledAlert,
+  Col,
+  Row,
   Collapse,
   Label,
 } from "reactstrap";
-import {
-  AvForm, AvField, AvInput, AvGroup
-} from "availity-reactstrap-validation";
-import { Link } from "react-router-dom";
-import { withTranslation } from "react-i18next";
-import { addMarkupStart } from "../../store/markups/actions";
 import classnames from "classnames";
-import { fetchMarketsStart } from "store/markets/actions";
+import { fetchAssetsStart } from "store/assests/actions";
 
-function AddMarkup(props) {
-
-  const [addModal, setAddMarkupModal] = useState(false);
-  const [isPercentage, setIsPercentage] = useState(false);
+import { Link } from "react-router-dom";
+import {
+  AvForm,
+  AvField,
+  AvInput,
+  AvGroup
+} from "availity-reactstrap-validation";
+import { withTranslation } from "react-i18next";
+import { addTransactionFeesGroupStart } from "store/transactionFeeGroups/actions";
+function TransactionFeeGroupAdd(props) {
   const [col1, setcol1] = useState(false);
-  const [value, setValue] = useState(0); 
+  const [value, setValue] = useState(0);
+  const [minAmount, setMinAmount] = useState(0);
+  const [maxAmount, setMaxAmount] = useState(0);
+  const [addModal, setAddUserModal] = useState(false);
+  const [isPercentage, setIsPercentage] = useState(false);
+  const { create } = props.transactionFeeGroupsPermissions;
   const dispatch = useDispatch();
-  const { create } = props.markupsPermissions;
-  const toggleAddModal = () => {
-    setAddMarkupModal(!addModal);
-  };
-  const handleAddMarkup = (event, values) => {
-
-    event.preventDefault();
-    const { isPercentage, title, value } = values;
-    let marketsObject;
-    props.markets?.forEach((market, i) => {
-      marketsObject = {
-        ...marketsObject,
-        [`${market.pairName}`]: {
-          value: values[`value${i}`],
-        }
-
-      };
-    });
-    dispatch(addMarkupStart({
-      isPercentage,
-      title,
-      markets: { ...marketsObject },
-      value
-    }));
-    setValue(0);
-    setcol1(false);
-  };
   useEffect(() => {
-    if (addModal) {
-      loadMarkets(1, 100);
-    }
-  }, [addModal]);
+    // if (col1 == true) {
+    loadAssests(1, 100);
+    // }
+  }, []);
 
-  const loadMarkets = (page, limit) => {
-    dispatch(fetchMarketsStart({
+  const loadAssests = (page, limit) => {
+    dispatch(fetchAssetsStart({
       limit,
       page
     }));
   };
 
+  const handleAddFeesGroup = (event, values) => {
+
+    event.preventDefault();
+    const { isPercentage, maxValue, title, minValue, value } = values;
+    let assetsOpj;
+    props.assets.forEach((asset, i) => {
+      assetsOpj = {
+        ...assetsOpj,
+        [`${asset.symbol}`]: {
+          value: values[`value${i}`],
+          minValue: values[`minValue${i}`],
+          maxValue: values[`maxValue${i}`]
+        }
+
+      };
+    });
+    dispatch(addTransactionFeesGroupStart({
+      isPercentage,
+      minValue,
+      maxValue,
+      title,
+      assets: { ...assetsOpj },
+      value
+    }));
+    setMaxAmount(0);
+    setMinAmount(0);
+    setValue(0);
+    setcol1(false);
+  };
+  const toggleAddModal = () => {
+    setAddUserModal(!addModal);
+  };
   const t_col1 = () => {
     setcol1(!col1);
   };
   useEffect(() => {
-    if (!props.addMarkupSuccessMessage && addModal) {
-      setAddMarkupModal(false);
+    if (!props.showAddSuccessMessage && addModal) { 
+      setAddUserModal(false);
     }
-  }, [props.addMarkupSuccessMessage]);
+  }, [props.showAddSuccessMessage]);
 
   return (
     <React.Fragment >
-      <Link to="#" className={`btn btn-light ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i>{props.t("Add New Markup")}</Link>
-      <Modal  
+      <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}>
+        <i className="bx bx-plus me-1" />
+        {props.t("Add New Transaction Fees Group")}
+      </Link>
+      <Modal size="lg"
+        style={{
+          maxWidth: "800px",
+          width: "100%"
+        }}
         isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
-          {props.t("Add Markup")}
+          {props.t("Add New Transaction Fees Group")}
         </ModalHeader>
         <ModalBody >
           <AvForm
             className='p-4'
             onValidSubmit={(e, v) => {
-              handleAddMarkup(e, v);
+              handleAddFeesGroup(e, v);
             }}
           >
             <Row>
@@ -131,6 +148,28 @@ function AddMarkup(props) {
                     onChange={(e) => setValue(e.target.value)}
                   />
                 </Col>
+                <Col >
+                  <AvField
+                    name="minValue"
+                    label={props.t("Min value")}
+                    placeholder={props.t("min value")}
+                    type="number"
+                    errorMessage={props.t("Enter valid min fees group value")}
+                    validate={{ required: { value: true } }}
+                    onChange={(e) => setMinAmount(e.target.value)}
+                  />
+                </Col>
+                <Col >
+                  <AvField
+                    name="maxValue"
+                    label={props.t("Max Value")}
+                    placeholder={props.t("Max Value")}
+                    type="number"
+                    errorMessage={props.t("Enter Valid max feees group value")}
+                    validate={{ required: { value: true } }}
+                    onChange={(e) => setMaxAmount(e.target.value)}
+                  />
+                </Col>
               </Row>
             </Row>
             <br />
@@ -149,22 +188,40 @@ function AddMarkup(props) {
                       onClick={t_col1}
                       style={{ cursor: "pointer" }}
                     >
-                      Markets
+                      Individual Asset fees
                     </button>
                   </h2>
 
                   <Collapse isOpen={col1} className="accordion-collapse">
                     <div className="accordion-body">
-                      {props.markets?.map((market, index) =>
+                      {props.assets?.map((asset, index) =>
                         <div key={index}>
                           <Row>
-                            <Col className="d-flex flex-column justify-content-end"><h5 className="text-center"> {market.pairName}</h5></Col>
-                            <Col >
+                            <Col md="2" className="d-flex flex-column justify-content-end"><h5 className="text-center"> {asset.symbol}</h5></Col>
+                            <Col  >
                               <AvField
                                 name={`value${index}`}
                                 label={props.t("Value")}
                                 value={value}
                                 placeholder={props.t("Value")}
+                                type="number"
+                              />
+                            </Col>
+                            <Col  >
+                              <AvField
+                                name={`minValue${index}`}
+                                value={minAmount}
+                                label={props.t("Min value")}
+                                placeholder={props.t("min value")}
+                                type="number"
+                              />
+                            </Col>
+                            <Col >
+                              <AvField
+                                name={`maxValue${index}`}
+                                value={maxAmount}
+                                label={props.t("Max value")}
+                                placeholder={props.t("Max value")}
                                 type="number"
                               />
                             </Col>
@@ -181,7 +238,7 @@ function AddMarkup(props) {
             </Col>
             <div className='text-center pt-3 p-2'>
               <Button disabled={props.addButtonDisabled} type="submit" color="primary" className="">
-                {props.t("Add Markup")}
+                {props.t("Add New Transaction Fees Group")}
               </Button>
             </div>
           </AvForm>
@@ -194,7 +251,7 @@ function AddMarkup(props) {
             )
           }
           {
-            props.addMarkupSuccessMessage && (
+            props.showAddSuccessMessage && (
               <UncontrolledAlert color="success">
                 <i className="mdi mdi-check-all me-2" />
                 {props.t("Transaction New Fees Group is added successfully !!!")}
@@ -203,12 +260,16 @@ function AddMarkup(props) {
           }
         </ModalBody>
       </Modal>
-    </React.Fragment>);
+    </React.Fragment>
+  );
 }
+
 const mapStateToProps = (state) => ({
-  error: state.markupsReducer.error,
-  addMarkupSuccessMessage: state.markupsReducer.addMarkupSuccessMessage,
-  markupsPermissions: state.Profile.markupsPermissions || {},
-  markets: state.marketsReducer.markets || []
+  error: state.transactionFeeGroupReducer.error,
+  showAddSuccessMessage: state.transactionFeeGroupReducer.showAddSuccessMessage,
+  addButtonDisabled: state.transactionFeeGroupReducer.addButtonDisabled,
+  assets: state.assetReducer.assets || [],
+  transactionFeeGroupsPermissions: state.Profile.transactionFeeGroupsPermissions || {}
 });
-export default connect(mapStateToProps, null)(withTranslation()(AddMarkup));
+
+export default connect(mapStateToProps, null)(withTranslation()(TransactionFeeGroupAdd));

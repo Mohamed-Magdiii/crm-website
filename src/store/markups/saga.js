@@ -33,7 +33,7 @@ function* fetchMarkups(params) {
   }
 }
 function* editMarket(params) {
-  const { payload } = params;
+  const { payload } = params; 
   const { id, values } = payload;
   try {
     yield call(updateMarkup, params);
@@ -73,7 +73,7 @@ function* addMarkup({ payload: newMarkup }) {
     const data = yield call(addMarkupAPI, newMarkup);
     if (data.status) {
       yield put(addNewMarkupSuccess(data.result));
-      yield delay(2000);
+      yield delay(2000);  
       yield put(addMarkupModalClear());
     }
   } catch (error) {
@@ -87,7 +87,7 @@ function* fetchSingleMarkup({ payload }) {
     yield call(fetchSingleMarkupAPI, payload);
     // console.log(data);
   } catch (error) {
-    yield(showErrorNotification(error.message));
+    yield (showErrorNotification(error.message));
   }
 }
 function* markupSaga() {

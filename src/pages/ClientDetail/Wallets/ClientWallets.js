@@ -17,12 +17,16 @@ import TableLoader from "components/Common/TableLoader";
 import ClientAddWallet from "./ClientAddWallet";
 import DeleteModal from "components/Common/DeleteModal";
 import WalletEditModal from "./WalletEditModal";
+import QrPukModal from "./QrPukModal";
 
 function ClientWallets(props) {
   const clientId = props.clientId;
   const [sizePerPage, setSizePerPage] = useState(5);
   const [deleteModal, setDeleteModal] = useState(false);
   const [walletEditModal, setWalletEditModal] = useState(false);
+  const [pukModal, setPukEditModal] = useState(false);
+  const [puk, setPuk] = useState("");
+
   const dispatch = useDispatch();
   const loadClientWalletDetails = () => {
     dispatch(fetchClientWallets(clientId));
@@ -34,7 +38,12 @@ function ClientWallets(props) {
   const switchSelectedWalletStatus = (item) => {
     item.active = !item.active;
   };
-  
+  const pukHandeler = (puk) => {
+    setPuk(puk);
+    setPukEditModal(true); 
+    // console.log(puk);
+  };
+
   const columns = [
     {
       dataField: "belongsTo",
@@ -53,7 +62,7 @@ function ClientWallets(props) {
       formatter: (item) => (
         item.amount === " " ? "-" : parseFloat(item.amount)
       )
-    }, 
+    },
     {
       dataField: "isCrypto",
       text: props.t("Crypto"),
@@ -62,10 +71,25 @@ function ClientWallets(props) {
       )
     },
     {
+      dataField: "address",
+      text: props.t("Address"),
+      formatter: (item) => {
+        if (item.isCrypto)
+          return <i
+            className="mdi mdi-eye font-size-22"
+            style={{ color: "green" }}
+            onClick={() => { pukHandeler(item.puk) }}
+          ></i>;
+        else
+          return "";
+        // return <i className="mdi mdi-close-circle-outline font-size-22" style={{ color: "red" }}></i>;
+      },
+    },
+    {
       dataField: "freezeAmount",
       text: props.t("Freeze Amount"),
       formatter: (item) => (
-        item.freezeAmount === " " ? "-" : parseFloat(item.freezeAmount) 
+        item.freezeAmount === " " ? "N/A" : parseFloat(item.freezeAmount)
       )
     },
     {
@@ -73,12 +97,12 @@ function ClientWallets(props) {
       text: props.t("Status"),
       formatter: (item) => (
         <div className="d-flex gap-3">
-          <Input 
-            type="checkbox" 
-            id={item.id} 
-            switch="none" 
-            defaultChecked={item.active} 
-            onClick={() => { switchSelectedWalletStatus(item) }} 
+          <Input
+            type="checkbox"
+            id={item.id}
+            switch="none"
+            defaultChecked={item.active}
+            onClick={() => { switchSelectedWalletStatus(item) }}
           />
           <Label 
             className="me-1" 
@@ -98,21 +122,21 @@ function ClientWallets(props) {
             <i
               className="mdi mdi-pencil font-size-18"
               id="edittooltip"
-              onClick={() => {}}
+              onClick={() => { }}
             ></i>
           </Link>
           <Link className="text-danger" to="#">
             <i
               className="mdi mdi-delete font-size-18"
               id="deletetooltip"
-              onClick={() => {}}
+              onClick={() => { }}
             ></i>
           </Link>
         </div>
       )
     }
   ];
-  
+
   return (
     <React.Fragment>
       <div className="">
@@ -165,7 +189,7 @@ function ClientWallets(props) {
                                 <Tr key={rowIndex}>
                                   {columns.map((column, index) =>
                                     <Td key={`${rowIndex}-${index}`}>
-                                      { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
+                                      {column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
                                     </Td>
                                   )}
                                 </Tr>
@@ -185,17 +209,22 @@ function ClientWallets(props) {
               </Card>
             </Col>
           </Row>
-          {<DeleteModal 
-            loading={props.deleteLoading} 
+          <QrPukModal
+            open={pukModal}
+            puk={puk}
+            onClose={() => { setPukEditModal(false)}}
+          />
+          {<DeleteModal
+            loading={props.deleteLoading}
             // onDeleteClick={deleteBankAccountFunction} 
-            show={deleteModal} 
-            onCloseClick={()=>{setDeleteModal(false)}} 
+            show={deleteModal}
+            onCloseClick={() => { setDeleteModal(false) }}
           />}
-          {<WalletEditModal 
-            open={walletEditModal}  
+          {<WalletEditModal
+            open={walletEditModal}
             // selectedBankAccount={selectedBankAccount} 
-            onClose={()=>{setWalletEditModal(false)}} 
-            // bankAccountUpdateHandler={bankAccountUpdateHanlder} 
+            onClose={() => { setWalletEditModal(false) }}
+          // bankAccountUpdateHandler={bankAccountUpdateHanlder} 
           />}
         </div>
       </div>

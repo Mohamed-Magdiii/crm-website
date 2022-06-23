@@ -19,7 +19,8 @@ const initialState = {
   markups: [],
   error: "",
   addMarkupSuccess: false,
-  addMarkupSuccessMessage: ""
+  addMarkupSuccessMessage: "",
+  editR: 0
 };
 
 const markupsReducer = (state = initialState, action) => {
@@ -31,6 +32,7 @@ const markupsReducer = (state = initialState, action) => {
       };
     case FETCH_MARKUPS_SUCCESS:
       return {
+        ...state,
         markups: [...action.payload.result.docs],
         totalDocs: action.payload.result.totalDocs,
         hasNextPage: action.payload.result.hasNextPage,
@@ -66,13 +68,14 @@ const markupsReducer = (state = initialState, action) => {
           }
         }),
         editLoading: false,
-        editDone: true
+        editDone: true 
       };
     case EDIT_MARKUP_CLEAR:
       return {
         ...state,
         editDone: false,
         editClear: true,
+        editR: state.editR + 1
       };
     case DELETE_MARKUP_START:
       return {

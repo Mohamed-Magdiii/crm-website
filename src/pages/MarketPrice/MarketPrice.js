@@ -162,7 +162,8 @@ function MarketPrice(props) {
             isOpen={menu}
           >
             <DropdownToggle caret>
-              {markup ? `${markup.title} (${markup.value})` : "Choose Markup"}
+              
+              {markup ? `${markup.title} (${markup.value["$numberDecimal"] ? markup.value["$numberDecimal"] : markup.value})` : "Choose Markup"}
               <i className="mdi mdi-chevron-down"></i>
             </DropdownToggle>
             <DropdownMenu>
@@ -174,7 +175,7 @@ function MarketPrice(props) {
               </DropdownItem>
               {!props.loading && props.markups.map((markup, index) => {
                 return <DropdownItem key={`Markup-Dropdown-${index}`} onClick={() => { handleChooseMarkup(markup) }}>
-                  {markup.title} ({markup.value})
+                  {markup.title} ({markup.value["$numberDecimal"] ? markup.value["$numberDecimal"] : markup.value})
                 </DropdownItem>;
               })}
             </DropdownMenu>

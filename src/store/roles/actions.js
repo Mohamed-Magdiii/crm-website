@@ -13,6 +13,9 @@ import {
 
   DELETE_ROLES_START,
   DELETE_ROLES_DONE,
+
+  CHANGE_STATUS_ROLES_START,
+  CHANGE_STATUS_ROLES_END
 } from "./actionTypes";
 
 export const fetchRoles = (params = {})=>{
@@ -89,5 +92,22 @@ export const deleteRoleDone = (data)=>{
   return {
     type:DELETE_ROLES_DONE,
     payload: data
+  };
+};
+export const changeStatus = (id, status, index)=>{
+  return {
+    type: CHANGE_STATUS_ROLES_START,
+    payload: {
+      id, 
+      status,
+      index,
+    },
+  };
+};
+
+export const changeStatusDone = (params = {})=>{
+  return {
+    type:CHANGE_STATUS_ROLES_END,
+    payload: params
   };
 };

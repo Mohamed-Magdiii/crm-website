@@ -30,6 +30,7 @@ const SidebarContent = (props) => {
   const { get:getRoles } = props.rolesPermissions;
   const { get:getDictionaries } = props.dictionariesPermissions;
   const { get : getFeeGroup } = props.feeGroupsPermissions;
+  // const { get : getTransactionFeeGroup } = props.transactionFeeGroupsPermissions;
   const { get: getSystemEmail } = props.systemEmailsPermissions;
   const { get: getTeams } = props.teamsPermissions;
   const { get: getSymbols } = props.symbolsPermissions;
@@ -226,10 +227,14 @@ const SidebarContent = (props) => {
                   <Link to="/currency-pairs" className={`${!getCurrencyPair ? "d-none" : ""}`}>{props.t("Currency Pairs")}</Link>
                 </li>   
                 <li>
-                  <Link to="/fee-groups" className={`${!getFeeGroup ? "d-none" : ""}`}>{props.t("Fee Groups")}</Link>
+                  <Link to="/fee-groups" className={`${!getFeeGroup ? "d-none" : ""}`}>{props.t("Trading Fee Groups")}</Link>
                 </li>
                 <li>
                   <Link to="/markups" className={`${!getMarkups ? "d-none" : ""}`}>{props.t("Markups")}</Link>
+                </li>   
+                <li>
+                  {/* <Link to="/transaction-fee-groups" className={`${!getTransactionFeeGroup ? "d-none" : ""}`}>{props.t("Transaction Fee Groups")}</Link> */}
+                  <Link to="/transaction-fee-groups" >{props.t("Transaction Fee Groups")}</Link>
                 </li>      
               </ul>
             </li> 
@@ -259,7 +264,8 @@ const mapStateToProps = (state) => ({
   symbolsPermissions : state.Profile.symbolsPermissions || {},
   dictionariesPermissions : state.Profile.dictionariesPermissions || {},
   currencyPairsPermissions : state.Profile.currencyPairsPermissions || {},
-  markupsPermissions : state.Profile.markupsPermissions || {}
+  markupsPermissions : state.Profile.markupsPermissions || {},
+  transactionFeeGroupsPermissions : state.Profile.transactionFeeGroupsPermissions || {}
 
 });
 export default withTranslation()(withRouter(connect(mapStateToProps, null) (SidebarContent)));

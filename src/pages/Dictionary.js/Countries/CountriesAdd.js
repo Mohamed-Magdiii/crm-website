@@ -45,56 +45,86 @@ function CountriesAdd(props){
               <AvField
                 name="alpha2"
                 label={props.t("Alpha2")}
-                placeholder={props.t("Alpha2")}
+                placeholder={props.t("Enter Alpha2")}
                 type="text"
                 errorMessage={props.t("Enter valid alpha2")}
-                validate={{ required: { value: true } }}
+                validate={{ 
+                  required: { value: true },
+                  pattern:{
+                    value:"/^[a-z]{2}$/",
+                    errorMessage: "Aplha2 should be 2 characters only"
+                  }
+                }}
               />
             </div>
             <div className="mb-3">
               <AvField
                 name="alpha3"
                 label={props.t("Alpha3")}
-                placeholder={props.t("Alpha3")}
+                placeholder={props.t("Enter Alpha3")}
                 type="text"
-                errorMessage={props.t("Enter valid alpha3")}
-                validate={{ required: { value: true } }}
+                validate={{
+                  required: { value: true }, 
+                  pattern:{
+                    value : "/^[a-z]{3}$/",
+                    errorMessage:"Alpha3 should be 3 characters only"
+                  }
+                }}
               />
             </div>
             <div className="mb-3">
               <AvField
                 name="callingCode"
                 label={props.t("Calling Code")}
-                placeholder={props.t("Calling Code")}
+                placeholder={props.t("Enter Calling Code")}
                 type="text"
                 errorMessage={props.t("Enter valid calling code")}
-                validate={{ required: { value: true } }}
+                validate={{
+                  
+                  required: { value: true },
+                  pattern :{
+                    value:"^[0-9]+$",
+                    errorMessage:"Calling code must be all in numbers"
+                  }
+                }}
+              
               />
             </div>
             <div className="mb-3">
               <AvField
                 name="ar"
-                label={props.t("Ar")}
-                placeholder={props.t("AR")}
+                label={props.t("AR")}
+                placeholder={props.t("Enter the Arabic Country name")}
                 type="text"
-                errorMessage={props.t("Enter valid ar")}
-                validate={{ required: { value: true } }}
+                validate={{ 
+                  required: { value: true },
+                  pattern : {
+                    value :"/^[\u0621-\u064A]+$/",
+                    errorMessage : "This field should be all in arabic letters"
+                  }
+                }}
               />
             </div>
             <div className="mb-3">
               <AvField
                 name="en"
                 label={props.t("EN")}
-                placeholder={props.t("en")}
+                placeholder={props.t("Enter the English Country name")}
                 type="text"
-                errorMessage={props.t("Enter valid en")}
-                validate={{ required: { value: true } }}
+                validate={{ 
+                  required: { value: true },
+                  pattern : {
+                    value: "/^[A-Za-z]+$/",
+                    errorMessage : "This field should be all in english letters"
+                  }
+              
+                }}
               />
             </div>
             
             <div className='text-center pt-3 p-2'>
-              <Button  type="submit" color="primary" className="">
-                {props.t("Add New Country")}
+              <Button disabled = {props.disableAddButton} type="submit" color="primary" className="">
+                {props.t("Add")}
               </Button>
             </div>
           </AvForm>
@@ -117,6 +147,7 @@ const mapStateToProps = (state)=>({
   error : state.dictionaryReducer.error,
   id :state.dictionaryReducer.id,
   showAddSuccessMessage:state.dictionaryReducer.showAddSuccessMessage,
-  dictionariesPermissions :state.Profile.dictionariesPermissions || {}
+  dictionariesPermissions :state.Profile.dictionariesPermissions || {},
+  disableAddButton: state.dictionaryReducer.disableAddButton
 });
 export default connect(mapStateToProps, null)(withTranslation()(CountriesAdd));

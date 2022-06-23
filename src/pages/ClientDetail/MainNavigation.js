@@ -1,3 +1,4 @@
+/* eslint-disable object-property-newline */
 import React from "react";
 import { NavLink } from "react-router-dom";
 
@@ -6,86 +7,35 @@ import { withTranslation } from "react-i18next";
 
 function MainNavigation(props){
   const clientId = props.clientId;
+
+  const tabsArr = [
+    { name: "Profile", url: `/clients/${clientId}/profile` },
+    { name: "Bank Accounts", url: `/clients/${clientId}/bank` },
+    { name: "Documents", url: `/clients/${clientId}/documents` },
+    { name: "Transactions", url: `/clients/${clientId}/transactions` },
+    { name: "Wallets", url: `/clients/${clientId}/wallets` },
+    { name: "Orders", url: `/clients/${clientId}/orders` },
+    { name: "Logs", url: `/clients/${clientId}/logs` },
+    { name: "Security", url: `/clients/${clientId}/security` },
+  ];
   
   return (
     <React.Fragment>
       <div className="navbar-header mb-3">
         <div className="container-fluid">
           <ul className="nav-tabs-custom nav-justified nav nav-tabs">
-            <li className="nav-item">
-              <NavLink 
-                to={"/clients/" + clientId + "/profile"}
-                className={isActive =>
-                  "nav-link" + (!isActive ? " unselected" : "")
-                }
-              >
-                {props.t("Profile")}
-              </NavLink>
-            </li>
-
-            <li className="nav-item">
-              <NavLink 
-                to={"/clients/" + clientId + "/bank"}
-                className={isActive =>
-                  "nav-link" + (!isActive ? " unselected" : "")
-                }
-              >
-                {props.t("Bank Accounts")}
-              </NavLink>
-            </li>
-            
-            <li className="nav-item">
-              <NavLink 
-                to={"/clients/" + clientId + "/transactions"}
-                className={isActive =>
-                  "nav-link" + (!isActive ? " unselected" : "")
-                }
-              >
-                {props.t("Transactions")}
-              </NavLink>
-            </li>
-            
-            <li className="nav-item">
-              <NavLink 
-                to={"/clients/" + clientId + "/wallets"}
-                className={isActive =>
-                  "nav-link" + (!isActive ? " unselected" : "")
-                }
-              >
-                {props.t("Wallets")}
-              </NavLink>
-            </li>
-            
-            <li className="nav-item">
-              <NavLink 
-                to={"/clients/" + clientId + "/orders"}
-                className={isActive =>
-                  "nav-link" + (!isActive ? " unselected" : "")
-                }
-              >
-                {props.t("Orders")}
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink 
-                to={"/clients/" + clientId + "/logs"}
-                className={isActive =>
-                  "nav-link" + (!isActive ? " unselected" : "")
-                }
-              >
-                {props.t("Logs")}
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink 
-                to={"/clients/" + clientId + "/security"}
-                className={isActive =>
-                  "nav-link" + (!isActive ? " unselected" : "")
-                }
-              >
-                {props.t("Security")}
-              </NavLink>
-            </li>
+            {tabsArr.map((obj, index) =>
+              <li className="nav-item" key={index}>
+                <NavLink 
+                  to={obj.url}
+                  className={isActive =>
+                    "nav-link" + (!isActive ? " unselected" : "")
+                  }
+                >
+                  {props.t(obj.name)}
+                </NavLink>
+              </li>
+            )}
           </ul>
         </div>
       </div>

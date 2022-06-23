@@ -1,3 +1,4 @@
+/* eslint-disable object-property-newline */
 /* eslint-disable no-debugger */
 import React, { useState, useEffect } from "react";
 import { 
@@ -54,6 +55,16 @@ function ClientMainPage(props) {
     }
   };
 
+  const tabsArr = [
+    { component: ClientProfile, url: `/clients/${clientId}/profile` },
+    { component: ClientBank, url: `/clients/${clientId}/bank` },
+    { component: "Documents", url: `/clients/${clientId}/documents` },
+    { component: ClientTransactions, url: `/clients/${clientId}/transactions` },
+    { component: ClientWallets, url: `/clients/${clientId}/wallets` },
+    { component: OrderList, url: `/clients/${clientId}/orders` },
+    { component: "Logs", url: `/clients/${clientId}/logs` },
+    { component: "Security", url: `/clients/${clientId}/security` },
+  ];
   useEffect(()=>{
     getClientDetails(clientId);
   }, []);
@@ -89,6 +100,7 @@ function ClientMainPage(props) {
                   !props.fetchClientDetailsError
                     ?
                     <Layout clientId={clientId}>
+<<<<<<< HEAD
                       {/* client details */}
                       <Route exact path="/clients/:id/profile">
                         <ClientProfile clientId={clientId} />
@@ -113,6 +125,16 @@ function ClientMainPage(props) {
                       <Route exact path="/clients/:id/orders">
                         <OrderList clientId={clientId} />
                       </Route>
+=======
+
+                      {tabsArr.map((obj, index) =>
+                        <Route key={index} exact path={obj.url}>
+                          <obj.component clientId={clientId} />
+                        </Route>
+                      )}
+                      {/* default route to details right on loading */}
+                      <Redirect to={tabsArr[0].url} />
+>>>>>>> 2a54a50e375c16fc3018b5fff740a5f09346b9dd
                     </Layout>
                     :
                     <Redirect to={"/dashboard"} />

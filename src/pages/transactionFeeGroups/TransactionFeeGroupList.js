@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { 
-  useDispatch,  connect 
+import {
+  useDispatch, connect
 } from "react-redux";
 import {
-  Row, Col, Card, CardBody, CardTitle, CardHeader 
+  Row, Col, Card, CardBody, CardTitle, CardHeader
 } from "reactstrap";
 import {
   Table, Thead, Tbody, Tr, Th, Td
@@ -13,31 +13,31 @@ import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
 import { Link } from "react-router-dom";
 import { withTranslation } from "react-i18next";
-import { fetchFeeGroupStart, deleteFeeGroupStart } from "store/feeGroups/actions";
+import { fetchTransactionFeeGroupStart, deleteTransactionFeeGroupStart } from "store/transactionFeeGroups/actions";
 import DeleteModal from "components/Common/DeleteModal";
-import FeeGroupAdd from "./feeGroupAdd";
-import FeeGroupEdit from "./feeGroupEdit";
-import { fetchMarketsStart } from "store/markets/actions";
-function FeeGroupsList(props) {
+import TransactionFeeGroupEdit from "./TransactionFeeGroupEdit";
+import TransactionFeeGroupAdd from "./TransactionFeeGroupAdd";
+
+function TransactionFeeGroupList(props) {
   const [deleteModal, setDeleteModal] = useState(false);
   const [deletedItem, setDeletedItem] = useState();
   const [selectedItem, setSelectedItem] = useState();
-  const [editModal, setEditModal ] = useState(false);
-  const { update, delete:deletePermission } = props.feeGroupsPermissions;
+  const [editModal, setEditModal] = useState(false);
+  const { update, delete: deletePermission } = props.transactionFeeGroupsPermissions;
   const columns = [
     {
-      dataField:"checkbox",
-      text: <input type="checkbox"/>
+      dataField: "checkbox",
+      text: <input type="checkbox" />
     },
-    
+
     {
       dataField: "createdAt",
       text: props.t("Date"),
       formatter: (val) => (new Date(val.createdAt).toLocaleDateString()),
-    }, 
+    },
     {
-      dataField:"title",
-      text : props.t("Title")
+      dataField: "title",
+      text: props.t("Title")
     },
     {
       dataField: "isPercentage",
@@ -46,19 +46,19 @@ function FeeGroupsList(props) {
     },
     {
       dataField: "value",
-      text:props.t("Value"),
-      formatter: (val) => (val.value ? val.value.$numberDecimal : "")
+      text: props.t("Value"),
+      formatter: (val) => (val?.value?.$numberDecimal || ""),
+
     },
     {
       dataField: "maxValue",
-      text:props.t("Max Value"),
-      formatter: (val) => (val.minValue ? val.maxValue.$numberDecimal : "")
-     
+      text: props.t("Max Value"),
+      formatter: (val) => (val?.maxValue?.$numberDecimal || ""),
     },
     {
       dataField: "minValue",
-      text:props.t("Min Value"),
-      formatter: (val) => (val.minValue ? val.minValue.$numberDecimal : "")
+      text: props.t("Min Value"),
+      formatter: (val) => (val?.minValue?.$numberDecimal || ""),
     },
     {
       dataField: "",
@@ -71,70 +71,64 @@ function FeeGroupsList(props) {
             <i
               className="mdi mdi-pencil font-size-18"
               id="edittooltip"
-              onClick={() => {setEditModal(!editModal); setSelectedItem(item)}}
+              onClick={() => { setEditModal(!editModal); setSelectedItem(item) }}
             ></i>
           </Link>
           <Link className={`text-danger ${!deletePermission ? "d-none" : ""}`} to="#">
             <i
               className="mdi mdi-delete font-size-18"
               id="deletetooltip"
-              onClick={() => {setDeleteModal(!deleteModal) ; setDeletedItem(item)}}
+              onClick={() => { setDeleteModal(!deleteModal); setDeletedItem(item) }}
             ></i>
           </Link>
         </div>
       ),
     },
   ];
- 
+
   const [sizePerPage, setSizePerPage] = useState(10);
 
   const dispatch = useDispatch();
-  
-  
+
+
   useEffect(() => {
     loadFeeGroups(1, sizePerPage);
   }, [sizePerPage, 1]);
-  useEffect(()=>{
-    dispatch(fetchMarketsStart({
-      limit:1000,
-      page:1
-    }));
-  }, []);
-  useEffect(()=>{
+  useEffect(() => {
     if (!props.showEditSuccessMessage && editModal) {
       setEditModal(false);
-      
+
     }
   }, [props.showEditSuccessMessage]);
-  useEffect(()=>{
+  useEffect(() => {
     if (!props.showDeleteModal && deleteModal) {
       setDeleteModal(false);
-      
+
     }
   }, [props.showDeleteModal]);
   const loadFeeGroups = (page, limit) => {
-    dispatch(fetchFeeGroupStart({
+    dispatch(fetchTransactionFeeGroupStart({
       page,
       limit
     }));
   };
-  const deleteFeeGroup = ()=>{
-    dispatch(deleteFeeGroupStart(deletedItem._id));
+  const deleteFeeGroup = () => {
+    dispatch(deleteTransactionFeeGroupStart(deletedItem._id));
   };
-  
+
 
   return (
     <React.Fragment>
-      <div className="page-content"> 
+      <div className="page-content">
         <div className="container-fluid">
-          <h2>{props.t("Trading Fee Group")}</h2>
+          <h2>{props.t("Transaction Fee Groups")}</h2>
           <Row>
             <Col className="col-12">
               <Card>
                 <CardHeader className="d-flex flex-column gap-3">
                   <div className="d-flex justify-content-between  align-items-center">
-                    <CardTitle>{props.t("Fee Groups List")} ({props.totalDocs})</CardTitle>
-                    <FeeGroupAdd/>
+                    <CardTitle>{props.t("Transaction Fee Groups List")} ({props.totalDocs})</CardTitle>
+                    <TransactionFeeGroupAdd />
                   </div>
                 </CardHeader>
                 <CardBody>
@@ -156,11 +150,11 @@ function FeeGroupsList(props) {
                         </Thead>
                         <Tbody style={{ fontSize: "13px" }}>
                           {props.loading && <TableLoader colSpan={4} />}
-                          {!props.loading && props.feeGroups.map((row, rowIndex) =>
+                          {!props.loading && props.transactionFeeGroups.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`}>
-                                  { column.dataField === "checkbox" ? <input  type="checkbox"/> : ""}
+                                  {column.dataField === "checkbox" ? <input type="checkbox" /> : ""}
                                   {column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
                                 </Td>
                               )}
@@ -181,8 +175,8 @@ function FeeGroupsList(props) {
               </Card>
             </Col>
           </Row>
-          {<FeeGroupEdit disabled= {props.editButtonDisabled} open ={editModal} selectedItem={selectedItem} onClose={()=>setEditModal(false)}/>}
-          {<DeleteModal loading ={props.deleteLoading} show={deleteModal} onDeleteClick={deleteFeeGroup} onCloseClick={()=>setDeleteModal(false)}/>}
+          {<TransactionFeeGroupEdit disabled={props.editButtonDisabled} open={editModal} selectedItem={selectedItem} onClose={() => setEditModal(false)} />}
+          {<DeleteModal loading={props.deleteLoading} show={deleteModal} onDeleteClick={deleteFeeGroup} onCloseClick={() => setDeleteModal(false)} />}
         </div>
       </div>
     </React.Fragment>
@@ -190,22 +184,22 @@ function FeeGroupsList(props) {
 }
 
 const mapStateToProps = (state) => ({
-  loading: state.feeGroupReducer.loading || false,
-  feeGroups: state.feeGroupReducer.feeGroups || [],
-  page: state.feeGroupReducer.page || 1,
-  totalDocs: state.feeGroupReducer.totalDocs || 0,
-  totalPages: state.feeGroupReducer.totalPages || 0,
-  hasNextPage: state.feeGroupReducer.hasNextPage,
-  hasPrevPage: state.feeGroupReducer.hasPrevPage,
-  limit: state.feeGroupReducer.limit,
-  nextPage: state.feeGroupReducer.nextPage,
-  pagingCounter: state.feeGroupReducer.pagingCounter,
-  prevPage: state.feeGroupReducer.prevPage,
-  showEditSuccessMessage:state.feeGroupReducer.showEditSuccessMessage,
-  showDeleteModal:state.feeGroupReducer.showDeleteModal,
-  deleteLoading :state.feeGroupReducer.deleteLoading,
-  editButtonDisabled: state.feeGroupReducer.editButtonDisabled,
-  feeGroupsPermissions : state.Profile.feeGroupsPermissions || {},
+  loading: state.transactionFeeGroupReducer.loading || false,
+  transactionFeeGroups: state.transactionFeeGroupReducer.transactionFeeGroups || [],
+  page: state.transactionFeeGroupReducer.page || 1,
+  totalDocs: state.transactionFeeGroupReducer.totalDocs || 0,
+  totalPages: state.transactionFeeGroupReducer.totalPages || 0,
+  hasNextPage: state.transactionFeeGroupReducer.hasNextPage,
+  hasPrevPage: state.transactionFeeGroupReducer.hasPrevPage,
+  limit: state.transactionFeeGroupReducer.limit,
+  nextPage: state.transactionFeeGroupReducer.nextPage,
+  pagingCounter: state.transactionFeeGroupReducer.pagingCounter,
+  prevPage: state.transactionFeeGroupReducer.prevPage,
+  showEditSuccessMessage: state.transactionFeeGroupReducer.showEditSuccessMessage,
+  showDeleteModal: state.transactionFeeGroupReducer.showDeleteModal,
+  deleteLoading: state.transactionFeeGroupReducer.deleteLoading,
+  editButtonDisabled: state.transactionFeeGroupReducer.editButtonDisabled,
+  transactionFeeGroupsPermissions: state.Profile.transactionFeeGroupsPermissions || {}
 });
 
-export default connect(mapStateToProps, null)(withTranslation()(FeeGroupsList));
+export default connect(mapStateToProps, null)(withTranslation()(TransactionFeeGroupList));

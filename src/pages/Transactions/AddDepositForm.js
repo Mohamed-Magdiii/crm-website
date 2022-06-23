@@ -25,6 +25,8 @@ function DepositForm(props){
   const [addModal, setDepositModal] = useState(false);
   
   const [selectedClient, setSelectedClient] = useState("");
+  const [selectedWalletId, setSelectedWalletId] = useState("");
+  const [gateway, setGateway] = useState("");
   const dispatch = useDispatch();
   const { create } = props.depositsPermissions;
   const [searchInput, setSearchInput]  = useState("");
@@ -32,6 +34,8 @@ function DepositForm(props){
     event.preventDefault();
     dispatch(addDepositStart({
       customerId:selectedClient,
+      walletId: selectedWalletId,
+      gateway,
       ...values
     }));
     setSearchInput("");
@@ -84,10 +88,10 @@ function DepositForm(props){
               handleAddDeposit(e, v);
             }}
           >
-            <Row>
+            <Row className="mb-3">
               <Col md="6">
                 <Label>{props.t("Client")}</Label>
-            
+                
                 
                 <div>
                   <Select 
@@ -107,46 +111,64 @@ function DepositForm(props){
 
                     ))}
                     classNamePrefix="select2-selection"
-                    placeholder = "Select the client"
+                    placeholder = "choose a client name"
                     onInputChange = {(e)=>setSearchInput(e)}
                   />
                 </div>
               </Col>
               <Col md="6">
-                <AvField name="walletId" 
-                  type="select" 
-                  label={props.t("Select a wallet")}
-                  id="walletList"
-                  validate = {{ required:{ value:true } }}
-                >
-                  <option hidden></option>
-                  {props.wallets.map(wallet=> (
-                    <option key={wallet._id} value={wallet._id} >
-                      {props.t(`${wallet.asset}-(Balance ${wallet.amount} ${wallet.asset})`)}
-                    </option>
-                  ))}
-     
-                </AvField>
+                <Label>{props.t("Wallet")}</Label>
+                <div>
+                  <Select 
+                    onChange={(e) => {
+                      setSelectedWalletId(e.value.id);
+                      
+                    }}
+                    isSearchable = {true}
+                    options={props.wallets.map((wallet) => (
+                      {
+                        label : `${wallet.asset}-(Balance ${wallet.amount} ${wallet.asset})`,
+                        value : {
+                          id: `${wallet._id}`
+                        }
+                      }
+
+                    ))}
+                    classNamePrefix="select2-selection"
+                    placeholder = "choose your wallet"
+                      
+                  />
+                </div>
+              
               </Col>
           
             </Row>
           
         
             <div className="mb-3">
-              <AvField
-                name="gateway"
-                label={props.t("Gateway")}
-                placeholder={props.t("gateway")}
-                type="select"
-                errorMessage={props.t("Enter valid gateway")}
-                validate={{ required: { value: true } }}
-              >
-                <option hidden></option>
-                {Object.keys(props.gateways).map((key)=>{
-                  return <option key={key}>{props.t(props.gateways[key])}</option>;
-                })}
+              
+              <Label>{props.t("Gateway")}</Label>
+              <div>
+                <Select 
+                  onChange={(e) => {
+                      
+                    setGateway(e.value.gateway);
+                  }}
+                  isSearchable = {true}
+                  options={Object.keys(props.gateways).map((key) => (
+                    {
+                      label : `${props.gateways[key]}`,
+                      value : {
+                        gateway: `${props.gateways[key]}`
+                      }
+                    }
 
-              </AvField>
+                  ))}
+                  classNamePrefix="select2-selection"
+                  placeholder = "choose a gateway"
+                      
+                />
+              </div>
             </div>
               
                
@@ -154,26 +176,36 @@ function DepositForm(props){
               <AvField
                 name="amount"
                 label={props.t("Amount")}
-                placeholder={props.t("Amount")}
+                placeholder={props.t("enter amount")}
                 type="text"
                 errorMessage={props.t("Enter Valid Amount")}
-                validate={{ required: { value: true } }}
+                validate={{ 
+                  required: { value: true },
+                  pattern : {
+                    // eslint-disable-next-line no-useless-escape
+                    value : "/[+]?[1-9]+[,.]?[0-9]*([\/][0-9]+[,.]?[0-9]*)*/g",
+                    errorMessage :"Amount must be positve number"
+                  }
+                }}
               />
             </div>
             <div className="mb-3">
               <AvField
                 name="note"
                 label={props.t("Note")}
-                placeholder={props.t("Note")}
+                placeholder={props.t("enter note")}
                 type="text"
                 errorMessage={props.t("Enter Valid Note")}
-                validate={{ required: { value: true } }}
+                validate={{ 
+                  required: { value: true },
+                  
+                }}
               />
             </div>
     
             <div className='text-center pt-3 p-2'>
-              <Button  type="submit" color="primary" className="">
-                {props.t("Add Deposit")}
+              <Button disabled = {props.disableAddButton} type="submit" color="primary" className="">
+                {props.t("Add")}
               </Button>
             </div>
           </AvForm>
@@ -196,6 +228,7 @@ const mapStateToProps = (state) => ({
   depositResponseMessage:state.depositReducer.depositResponseMessage,
   clients:state.clientReducer.clients || [],
   wallets:state.walletReducer.wallets || [],
-  depositsPermissions : state.Profile.depositsPermissions || {}
+  depositsPermissions : state.Profile.depositsPermissions || {}, 
+  disableAddButton : state.depositReducer.disableAddButton
 });
 export default connect(mapStateToProps, null)(withTranslation()(DepositForm));

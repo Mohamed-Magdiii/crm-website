@@ -93,8 +93,8 @@ function CountriesEdit(props){
             </div>
             
             <div className='text-center pt-3 p-2'>
-              <Button  type="submit" color="primary" className="">
-                {props.t("Edit Country")}
+              <Button disabled = {props.disableEditButton} type="submit" color="primary" className="">
+                {props.t("Edit")}
               </Button>
             </div>
           </AvForm>
@@ -116,6 +116,7 @@ const mapStateToProps = (state)=>({
   dictionary: state.dictionaryReducer.dictionary || [],
   error : state.dictionaryReducer.error,
   id :state.dictionaryReducer.id,
-  editSuccess:state.dictionaryReducer.editSuccess
+  editSuccess:state.dictionaryReducer.editSuccess,
+  disableEditButton : state.dictionaryReducer.disableEditButton
 });
 export default connect(mapStateToProps, null)(withTranslation()(CountriesEdit));

@@ -16,6 +16,7 @@ import TableLoader from "components/Common/TableLoader";
 import DeleteModal from "components/Common/DeleteModal";
 import { removeItem } from "store/dictionary/actions";
 import EmailProviderEdit from "./EmailProviderEdit";
+import { captilazeFirstLetter } from "common/utils/manipulateString";
 function EmailProvidersTab(props){
   const [selectedEmailProvider, setSelectedEmailProvider] = useState();
   const [deletedItem, setDeletedItem] = useState();
@@ -37,6 +38,7 @@ function EmailProvidersTab(props){
     {
       dataField:"emailProviders",
       text:props.t("Email Providers"),
+      formatter :(val)=>captilazeFirstLetter(val.emailProviders)
     }, 
     {
       dataField: "",
@@ -101,7 +103,7 @@ function EmailProvidersTab(props){
                     )}
                   </Tr>
                 </Thead>
-                <Tbody>
+                <Tbody style = {{ fontSize:"13px" }}>
                   {props.loading && <TableLoader colSpan={4} />}
                   {!props.loading && customData.map((row, rowIndex) =>
                            
@@ -122,7 +124,7 @@ function EmailProvidersTab(props){
         </CardBody>
       </Card>
       {<EmailProviderEdit open={editModal} selectedEmailProvider={selectedEmailProvider} onClose={()=>setEditModal(false)}/>}
-      {<DeleteModal show ={deleteModal} onDeleteClick={deleteEmailProvider} onCloseClick={()=>setDeleteModal(false)}/>}
+      {<DeleteModal loading = {props.disableDeleteButton} show ={deleteModal} onDeleteClick={deleteEmailProvider} onCloseClick={()=>setDeleteModal(false)}/>}
     </React.Fragment>
   );
 }
@@ -130,10 +132,11 @@ const mapStateToProps = (state)=>({
   dictionary:state.dictionaryReducer.dictionary || [],
   emailProviders :state.dictionaryReducer.emailProviders || [],
   id:state.dictionaryReducer.id,
-  deleteLoading : state.dictionaryReducer.deletingLoading || false,
+  disableDeleteButton: state.dictionaryReducer.disableDeleteButton,
   editSuccess : state.dictionaryReducer.editSuccess,
   clearDeleteModal :state.dictionaryReducer.clearDeleteModal,
-  dictionariesPermissions : state.Profile.dictionariesPermissions || {}
+  dictionariesPermissions : state.Profile.dictionariesPermissions || {},
+  
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(EmailProvidersTab));

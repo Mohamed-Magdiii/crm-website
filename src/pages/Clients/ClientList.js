@@ -45,8 +45,18 @@ function ClientsList(props) {
     {
       dataField: "name",
       text: props.t("Name"),
+<<<<<<< HEAD
       formatter: (client) => (
         <div className="d-flex gap-3">
+=======
+      formatter: (user) => (
+        // this link will lead the user to client main page then automatically 
+        // lead the user to client details pages which contains two parts 
+        // 1- a navbar which is used in details, bank, transactions and wallets on top
+        // 2- the user details on bottom
+        // and it will send the selected client's Id to the details page
+        <div>
+>>>>>>> 2a54a50e375c16fc3018b5fff740a5f09346b9dd
           <Link 
             to={{
               pathname: "/clients/" + client.id + "/profile",

@@ -24,12 +24,16 @@ function WithdrawForm(props){
   const [open, setWithdrawalModal] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [selectedClient, setSelectedClient] = useState("");
+  const [selectedWalletId, setSelectedWalletId] = useState("");
+  const [gateway, setGateway] = useState("");
   const dispatch = useDispatch();
   const { create } = props.withdrawalsPermissions;
   const handleWithdraw = (event, values) => {
     event.preventDefault();
     dispatch(makeWithdrawalStart({
       customerId:selectedClient,
+      walletId: selectedWalletId,
+      gateway,
       ...values
     }));
     setSearchInput("");
@@ -68,10 +72,10 @@ function WithdrawForm(props){
   
   return (
     <React.Fragment >
-      <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> {props.t("Withdraw")}</Link>
+      <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> {props.t("Make Withdraw")}</Link>
       <Modal isOpen={open} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
-          {props.t("Withdraw")}
+          {props.t("Make Withdraw")}
         </ModalHeader>
         <ModalBody >
 
@@ -82,7 +86,7 @@ function WithdrawForm(props){
             }}
           >
             
-            <Row>
+            <Row className="mb-3">
               <Col md="6">
                 <Label>{props.t("Client")}</Label>
                 <div>
@@ -104,7 +108,7 @@ function WithdrawForm(props){
 
                     ))}
                     classNamePrefix="select2-selection"
-                    placeholder = "Select the client"
+                    placeholder = "choose client name"
                     onInputChange = {(e)=>setSearchInput(e)}
                     name = "clientId"
                     
@@ -114,50 +118,76 @@ function WithdrawForm(props){
               
               </Col>
               <Col md="6">
-                <AvField name="walletId" 
-                  type="select" 
-                  label={props.t("Select a wallet")}
-                  id="walletList"
-                  validate = {{ required:{ value:true } }}
-                  
-                >
-                  <option hidden></option>
-                  {props.wallets.map(wallet=> (
-                    <option key={wallet._id} value={wallet._id} >
-                      {props.t(`${wallet.asset}-(Balance ${wallet.amount} ${wallet.asset})`)}
-                    </option>
-                  ))}
- 
-                </AvField>
+                <Label>{props.t("Wallet")}</Label>
+                <div>
+                  <Select 
+                    onChange={(e) => {
+                    
+                      setSelectedWalletId(e.value.id);
+                    
+                    }}
+                    isSearchable = {true}
+                    options={props.wallets.map((wallet) => (
+                      {
+                        label : `${wallet.asset} ${wallet.amount} ${wallet.asset}`,
+                        value : {
+                          id: `${wallet._id}`
+                        }
+                      }
+
+                    ))}
+                    classNamePrefix="select2-selection"
+                    placeholder = "choose your wallet"
+
+                  />
+                </div>
+              
               </Col>
       
             </Row>  
             <div className="mb-3">
-              <AvField
-                name="gateway"
-                label={props.t("Gateway")}
-                placeholder={props.t("gateway")}
-                type="select"
-                errorMessage={props.t("Enter valid gateway")}
-                validate={{ required: { value: true } }}
-                
-              >
-                <option hidden></option>
-                {Object.keys(props.gateways).map((key)=>{
-                  return <option  key={key}>{props.t(props.gateways[key])}</option>;
-                })}
-              </AvField>
+              <Label>{props.t("Gateway")}</Label>
+              <div>
+                <Select 
+                  onChange={(e) => {
+                  
+                    setGateway(e.value.gateway);
+                  
+                  }}
+                  isSearchable = {true}
+                  options={Object.keys(props.gateways).map((key) => (
+                    {
+                      label : `${props.gateways[key]}`,
+                      value : {
+                        gateway : `${props.gateways[key]}`
+                      }
+                    }
+
+                  ))}
+                  classNamePrefix="select2-selection"
+                  placeholder = "choose a gateway"
+                 
+                />
+              </div>
+            
             </div>
-              
+            
                
             <div className="mb-3">
               <AvField
                 name="amount"
                 label={props.t("Amount")}
-                placeholder={props.t("Amount")}
+                placeholder={props.t("enter amount")}
                 type="text"
                 errorMessage={props.t("Enter Valid Amount")}
-                validate={{ required: { value: true } }}
+                validate={{ 
+                  required: { value: true },
+                  pattern : {
+                    // eslint-disable-next-line no-useless-escape
+                    value : "/[+]?[1-9]+[,.]?[0-9]*([\/][0-9]+[,.]?[0-9]*)*/g",
+                    errorMessage :"Amount must be positve number"
+                  }
+                }}
                 
 
               />
@@ -166,7 +196,7 @@ function WithdrawForm(props){
               <AvField
                 name="note"
                 label={props.t("Note")}
-                placeholder={props.t("Note")}
+                placeholder={props.t("enter note")}
                 type="text"
                 errorMessage={props.t("Enter Valid Note")}
                 validate={{ required: { value: true } }}
@@ -174,7 +204,7 @@ function WithdrawForm(props){
             </div>
     
             <div className='text-center pt-3 p-2'>
-              <Button  type="submit" color="primary" className="">
+              <Button disabled = {props.disableWithdrawalButton} type="submit" color="primary" className="">
                 {props.t("Make Withdraw")}
               </Button>
             </div>
@@ -199,6 +229,7 @@ const mapStateToProps = (state) => ({
   modalClear:state.withdrawalReducer.modalClear,
   clients:state.clientReducer.clients || [],
   wallets:state.walletReducer.wallets || [],
-  withdrawalsPermissions: state.Profile.withdrawalsPermissions || {}
+  withdrawalsPermissions: state.Profile.withdrawalsPermissions || {}, 
+  disableWithdrawalButton : state.withdrawalReducer.disableWithdrawalButton
 });
 export default connect(mapStateToProps, null)(withTranslation()(WithdrawForm));
