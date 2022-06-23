@@ -24,3 +24,21 @@ export const addNewWallet = async ({ payload }) => {
 
   return data;
 };
+// export const changeStatusWallet = async({ payload }) => {
+//   const data = await axiosHelper.post(`/wallets/${payload.id}/${payload.status}`);
+//   if (data.isError) {
+//     throw new Error(data.message);
+//   } 
+//   return data;
+// };
+export const changeStatusWallet = async ({ payload }) => { 
+  const statu = {
+    status: payload?.status 
+  };
+  const { id } = payload;
+  const data = await axiosHelper.patch(`/wallets/${id}`, statu);
+  if (data.isError) {
+    throw new Error(data.message);
+  }
+  return data;
+};

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, connect } from "react-redux";
 import { Link } from "react-router-dom";
 import {
-  Row, Col, Card, CardBody, CardTitle, CardHeader, Input, Label
+  Row, Col, Card, CardBody, CardTitle, CardHeader, Input, Spinner, Label
 } from "reactstrap";
 import {
   Table, Thead, Tbody, Tr, Th, Td
@@ -12,7 +12,7 @@ import FeatherIcon from "feather-icons-react";
 
 // i18n 
 import { withTranslation } from "react-i18next";
-import { fetchClientWallets } from "store/wallet/action";
+import { fetchClientWallets, changeStatus } from "store/wallet/action";
 import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
 import ClientAddWallet from "./ClientAddWallet";
@@ -36,18 +36,10 @@ function ClientWallets(props) {
   useEffect(() => {
     loadClientWalletDetails();
   }, []);
-
-  const switchSelectedWalletStatus = (item) => {
-    // console.log(item);
-    // const values = {
-    //   "active": !item.active
-    // }; 
-    // dispatch(editBankAccount({
-    //   id: item.id,
-    //   values
-    // }));
-    item.active = !item.active;
-  };
+  const updateStatus = (event, item, index) => { 
+    dispatch(changeStatus(item._id, !item.active ? true : false, index));
+    event.preventDefault();
+  }; 
   const pukHandeler = (puk) => {
     setPuk(puk);
     setPukEditModal(true);
@@ -87,7 +79,7 @@ function ClientWallets(props) {
         if (item.isCrypto)
           return (
             <Link to="#" onClick={() => { pukHandeler(item.puk) }}>
-              <FeatherIcon icon="eye"/> 
+              <FeatherIcon icon="eye" />
             </Link>
           );
         else
@@ -105,22 +97,39 @@ function ClientWallets(props) {
     {
       dataField: "active",
       text: props.t("Status"),
-      formatter: (item) => (
+      formatter: (item, index) => (
+        // <div className="d-flex gap-3">
+        //   <Input
+        //     type="checkbox"
+        //     id={item.id}
+        //     switch="none"
+        //     defaultChecked={item.active}
+        //     onClick={() => { switchSelectedWalletStatus(item) }}
+        //   />
+        //   <Label
+        //     className="me-1"
+        //     htmlFor={item.id}
+        //     data-on-label={props.t("Active")}
+        //     data-off-label=""
+        //   />
+        // </div>
         <div className="d-flex gap-3">
-          <Input
-            type="checkbox"
-            id={item.id}
-            switch="none"
-            defaultChecked={item.active}
-            onClick={() => { switchSelectedWalletStatus(item) }}
-          />
-          <Label
-            className="me-1"
-            htmlFor={item.id}
-            data-on-label={props.t("Active")}
-            data-off-label=""
-          />
+          {(props.changeStatusLoading && props.changeStatusLoadingIndex === index) ? <React.Fragment>
+            <Spinner className="ms-2" color="primary" />
+          </React.Fragment> : <React.Fragment>
+            <Input
+              checked={item.active}
+              type="checkbox"
+              onChange={(e) => { updateStatus(e, item, index) }}
+              id={item.id}
+              switch="none"
+            // defaultChecked={item.isActive}
+            // onClick={() => {}}
+            />
+            <Label className="me-1" htmlFor={item.id} data-on-label="" data-off-label=""></Label>
+          </React.Fragment>}
         </div>
+
       ),
     },
     {
@@ -261,6 +270,10 @@ const mapStateToProps = (state) => ({
   error: state.walletReducer.error,
   errorDetails: state.walletReducer.errorDetails,
   success: state.walletReducer.success,
+
+  changeStatusLoading: state.walletReducer.changeStatusLoading,
+  changeStatusLoadingIndex: state.walletReducer.changeStatusLoadingIndex,
+
   docs: state.walletReducer.docs,
   totalWalletDocs: state.walletReducer.totalWalletDocs
 });
