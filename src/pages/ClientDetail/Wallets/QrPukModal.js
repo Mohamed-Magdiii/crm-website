@@ -35,14 +35,14 @@ function QrPukModal(props) {
           <br/>
           <br/>
           <Row>
-            <Col>
-              {puk} 
-            </Col>
-            <Col>
+            <Col  className="d-flex justify-content-center" md="3">
               <Link to="#" onClick={CopyPuk}>
                 <FeatherIcon icon="copy" onClick={CopyPuk}/>
               </Link>   
             </Col> 
+            <Col className="d-flex justify-content-center">
+              {puk} 
+            </Col>
           </Row>
         </ModalBody>
       </Modal>
