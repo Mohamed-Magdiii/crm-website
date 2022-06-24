@@ -2,22 +2,24 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, connect } from "react-redux";
 import { Link } from "react-router-dom";
 import {
-  Row, Col, Card, CardBody, CardTitle, CardHeader, Input, Label
+  Row, Col, Card, CardBody, CardTitle, CardHeader, Input, Spinner, Label
 } from "reactstrap";
 import {
   Table, Thead, Tbody, Tr, Th, Td
 } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
+import FeatherIcon from "feather-icons-react";
 
 // i18n 
 import { withTranslation } from "react-i18next";
-import { fetchClientWallets } from "store/wallet/action";
+import { fetchClientWallets, changeStatus } from "store/wallet/action";
 import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
 import ClientAddWallet from "./ClientAddWallet";
 import DeleteModal from "components/Common/DeleteModal";
 import WalletEditModal from "./WalletEditModal";
 import QrPukModal from "./QrPukModal";
+// import { editBankAccount } from "store/bankAccount/actions";
 
 function ClientWallets(props) {
   const clientId = props.clientId;
@@ -34,24 +36,17 @@ function ClientWallets(props) {
   useEffect(() => {
     loadClientWalletDetails();
   }, []);
-
-  const switchSelectedWalletStatus = (item) => {
-    item.active = !item.active;
-  };
+  const updateStatus = (event, item, index) => { 
+    dispatch(changeStatus(item._id, !item.active ? true : false, index));
+    event.preventDefault();
+  }; 
   const pukHandeler = (puk) => {
     setPuk(puk);
-    setPukEditModal(true); 
+    setPukEditModal(true);
     // console.log(puk);
   };
 
-  const columns = [
-    {
-      dataField: "belongsTo",
-      text: props.t("Belongs to"),
-      formatter: (item) => (
-        item.belongsTo.firstName + " " + item.belongsTo.lastName
-      )
-    },
+  const columns = [ 
     {
       dataField: "asset",
       text: props.t("Asset")
@@ -75,11 +70,11 @@ function ClientWallets(props) {
       text: props.t("Address"),
       formatter: (item) => {
         if (item.isCrypto)
-          return <i
-            className="mdi mdi-eye font-size-22"
-            style={{ color: "green" }}
-            onClick={() => { pukHandeler(item.puk) }}
-          ></i>;
+          return (
+            <Link to="#" onClick={() => { pukHandeler(item.puk) }}>
+              <FeatherIcon icon="eye" />
+            </Link>
+          );
         else
           return "";
         // return <i className="mdi mdi-close-circle-outline font-size-22" style={{ color: "red" }}></i>;
@@ -95,22 +90,39 @@ function ClientWallets(props) {
     {
       dataField: "active",
       text: props.t("Status"),
-      formatter: (item) => (
+      formatter: (item, index) => (
+        // <div className="d-flex gap-3">
+        //   <Input
+        //     type="checkbox"
+        //     id={item.id}
+        //     switch="none"
+        //     defaultChecked={item.active}
+        //     onClick={() => { switchSelectedWalletStatus(item) }}
+        //   />
+        //   <Label
+        //     className="me-1"
+        //     htmlFor={item.id}
+        //     data-on-label={props.t("Active")}
+        //     data-off-label=""
+        //   />
+        // </div>
         <div className="d-flex gap-3">
-          <Input
-            type="checkbox"
-            id={item.id}
-            switch="none"
-            defaultChecked={item.active}
-            onClick={() => { switchSelectedWalletStatus(item) }}
-          />
-          <Label
-            className="me-1"
-            htmlFor={item.id}
-            data-on-label={props.t("Active")}
-            data-off-label=""
-          />
+          {(props.changeStatusLoading && props.changeStatusLoadingIndex === index) ? <React.Fragment>
+            <Spinner className="ms-2" color="primary" />
+          </React.Fragment> : <React.Fragment>
+            <Input
+              checked={item.active}
+              type="checkbox"
+              onChange={(e) => { updateStatus(e, item, index) }}
+              id={item.id}
+              switch="none"
+            // defaultChecked={item.isActive}
+            // onClick={() => {}}
+            />
+            <Label className="me-1" htmlFor={item.id} data-on-label="" data-off-label=""></Label>
+          </React.Fragment>}
         </div>
+
       ),
     },
     {
@@ -226,7 +238,7 @@ function ClientWallets(props) {
           <QrPukModal
             open={pukModal}
             puk={puk}
-            onClose={() => { setPukEditModal(false)}}
+            onClose={() => { setPukEditModal(false) }}
           />
           {<DeleteModal
             loading={props.deleteLoading}
@@ -251,6 +263,10 @@ const mapStateToProps = (state) => ({
   error: state.walletReducer.error,
   errorDetails: state.walletReducer.errorDetails,
   success: state.walletReducer.success,
+
+  changeStatusLoading: state.walletReducer.changeStatusLoading,
+  changeStatusLoadingIndex: state.walletReducer.changeStatusLoadingIndex,
+
   docs: state.walletReducer.docs,
   totalWalletDocs: state.walletReducer.totalWalletDocs
 });
