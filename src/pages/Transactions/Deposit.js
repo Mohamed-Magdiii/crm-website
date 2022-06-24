@@ -65,7 +65,7 @@ function Deposit(props){
     {
       dataField:"amount",
       text:props.t("Amount"),
-      formatter: (val) => (val.amount || ""),
+      formatter: (val) => (val?.amount?.$numberDecimal || val?.amount || ""),
     },
     
     {
