@@ -11,6 +11,7 @@ import ClientProfile from "./Profile/ClientProfile";
 import ClientTransactions from "./Transactions/ClientTransactions";
 import ClientWallets from "./Wallets/ClientWallets";
 import OrderList from "./orders/OrdersList";
+import Documents from "./Documents/Documents";
 import Loader from "components/Common/Loader";
 import * as axiosHelper from "../../apis/api_helper";
 import ClientDetailsHeader from "./ClientDetailsHeader";
@@ -59,7 +60,7 @@ function ClientMainPage(props) {
   const tabsArr = [
     { component: ClientProfile, url: `/clients/${clientId}/profile` },
     { component: ClientBank, url: `/clients/${clientId}/bank` },
-    { component: "Documents", url: `/clients/${clientId}/documents` },
+    { component: Documents, url: `/clients/${clientId}/documents` },
     { component: ClientTransactions, url: `/clients/${clientId}/transactions` },
     { component: ClientWallets, url: `/clients/${clientId}/wallets` },
     { component: OrderList, url: `/clients/${clientId}/orders` },
@@ -103,7 +104,7 @@ function ClientMainPage(props) {
 
                       {tabsArr.map((obj, index) =>
                         <Route key={index} exact path={obj.url}>
-                          <obj.component clientId={clientId} />
+                          <obj.component clientId={clientId} path={obj.url} />
                         </Route>
                       )}
                       {/* default route to details right on loading */}
