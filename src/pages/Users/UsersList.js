@@ -89,7 +89,7 @@ function UsersList() {
       sort: true,
     },
     {
-      text: "RoleId",
+      text: "Role",
       dataField: "roleId.title",
       sort: true,
       formatter: (user) => (
