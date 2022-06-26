@@ -5,7 +5,7 @@ import {
 } from "react-redux";
 import { Link } from "react-router-dom";
 import {
-  Row, Col, Card, CardBody, CardTitle, CardHeader, Input, Label
+  Row, Col, Card, CardBody, CardTitle, CardHeader, Input, Label, Spinner
 } from "reactstrap";
 import {
   Table, Thead, Tbody, Tr, Th, Td
@@ -14,7 +14,11 @@ import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 
 // i18n
 import { withTranslation } from "react-i18next";
-import { fetchSystemEmails, deleteSystemEmail } from "../../store/systemEmail/actions";
+import { 
+  fetchSystemEmails, 
+  deleteSystemEmail,
+  changeSystemEmailStatus 
+} from "../../store/systemEmail/actions";
 import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
 import DeleteModal from "components/Common/DeleteModal";
@@ -37,8 +41,9 @@ function SystemEmailsList(props){
   };
 
   // a function to switch status of a selected system email
-  const switchSelectedSystemEmailStatusHandler = (selectedItem) => {
-    selectedItem.isActive = !selectedItem.isActive;
+  const updateStatus = (event, item, index) => {
+    dispatch(changeSystemEmailStatus(item._id, !item.isActive ? "activate" : "deactivate", index));
+    event.preventDefault();
   };
   const { update, delete: deletePermission } = props.systemEmailsPermissions;
   const columns = [
@@ -64,7 +69,7 @@ function SystemEmailsList(props){
                 pathname: "/system-emails/" + systemEmail.id,
               }}
             >
-              <i>{systemEmail.title}</i>
+              <strong className="text-capitalize">{systemEmail.title}</strong>
             </Link>
           </div>
           :
@@ -83,16 +88,26 @@ function SystemEmailsList(props){
     {
       dataField: "isActive",
       text: props.t("Status"),
-      formatter: (item) => (
+      formatter: (item, index) => (
         <div className="d-flex gap-3">
-          <Input 
-            type="checkbox" 
-            id={item.id} 
-            switch="none" 
-            defaultChecked={item.isActive} 
-            onClick={() => { switchSelectedSystemEmailStatusHandler(item) }} 
-          />
-          <Label className="me-1" htmlFor={item.id}></Label>
+          {
+            (props.changeStatusLoading && props.changeStatusLoadingIndex === index) 
+              ? 
+              <React.Fragment>
+                <Spinner className="ms-2" color="primary" />  
+              </React.Fragment> 
+              : 
+              <React.Fragment>
+                <Input
+                  checked={item.isActive}
+                  type="checkbox"
+                  onChange={(e) => {updateStatus(e, item, index)}}
+                  id={item.id}
+                  switch="none"
+                />
+                <Label className="me-1" htmlFor={item.id} data-on-label="" data-off-label=""></Label>
+              </React.Fragment>
+          }
         </div>
       ),
     },
@@ -257,7 +272,9 @@ const mapStateToProps = (state) => ({
   clearingCounter: state.systemEmailsReducer.clearingCounter,
   activeComponentProp: state.systemEmailsReducer.activeComponentProp,
   systemEmail: state.systemEmailsReducer.systemEmail,
-  systemEmailsPermissions : state.Profile.systemEmailsPermissions || {}
+  changeStatusLoading: state.systemEmailsReducer.changeStatusLoading,
+  changeStatusIndex: state.systemEmailsReducer.changeStatusIndex,
+  systemEmailsPermissions : state.Profile.systemEmailsPermissions || {},
 });
 
 SystemEmailsList.propTypes = {

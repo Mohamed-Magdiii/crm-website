@@ -62,13 +62,23 @@ function SystemEmailHTMLModal(props){
 
   return (
     <React.Fragment >
-      <Modal isOpen={open} toggle={onClose} centered={true}>
+      <Modal 
+        isOpen={open} 
+        toggle={onClose} 
+        centered={true} 
+        size="lg" 
+        style={
+          {
+            maxWidth: "900px", 
+            width: "100%"
+          }
+        }>
         <ModalHeader toggle={onClose} tag="h4">
           {props.t("System email preview")}
         </ModalHeader>
-        <ModalBody >
-          <AvForm className='p-4'>
-            {/* <div className="mb-3">
+        <ModalBody>
+          <AvForm>
+            <div className="mb-3">
               <label>{props.t("Available languages")}</label>
               {
                 props.role &&
@@ -93,13 +103,14 @@ function SystemEmailHTMLModal(props){
                   />
                 </>
               }
-            </div> */}
+            </div>
 
             <div className="mb-3">
               <div
                 dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(props.systemEmailHtml && props.systemEmailHtml) }}
               />  
             </div>
+          
             {role.permissions && Object.keys(role.permissions).map((permKey, permInd) =>
               <div className="mb-3" key={permInd}>
                 <h6 className="text-capitalize">{permKey}</h6>

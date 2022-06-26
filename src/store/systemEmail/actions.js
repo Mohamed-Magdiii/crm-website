@@ -29,7 +29,10 @@ import {
 
   FETCH_SYSTEM_EMAIL_HTML_REQUESTED,
   FETCH_SYSTEM_EMAIL_HTML_SUCCESS,
-  FETCH_SYSTEM_EMAIL_HTML_FAIL
+  FETCH_SYSTEM_EMAIL_HTML_FAIL,
+
+  CHANGE_SYSTEM_EMAIL_STATUS_REQUESTED,
+  CHANGE_SYSTEM_EMAIL_STATUS_DONE
 } from "./actionTypes";
 
 // fetch
@@ -193,5 +196,23 @@ export const fetchSystemEmailHTMLFail = (error) => {
   return {
     type: FETCH_SYSTEM_EMAIL_HTML_FAIL,
     payload: { error }
+  };
+};
+
+// change system email status
+export const changeSystemEmailStatus = (params = {}) => {
+  return {
+    type: CHANGE_SYSTEM_EMAIL_STATUS_REQUESTED,
+    payload: params
+  };
+};
+export const changeSystemEmailStatusDone = (id, index, status) => {
+  return {
+    type: CHANGE_SYSTEM_EMAIL_STATUS_DONE,
+    payload: {
+      id,
+      status,
+      index
+    }
   };
 };

@@ -17,9 +17,9 @@ import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
 import Select from "react-select";
 
-import { editSystemEmailContent, fetchSystemEmailById } from "store/systemEmail/actions";
 // i18n
 import { withTranslation } from "react-i18next"; 
+import { editSystemEmailContent, fetchSystemEmailById } from "store/systemEmail/actions";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 function SystemEmailEdit(props){
@@ -113,10 +113,10 @@ function SystemEmailEdit(props){
               <AvField
                 name="subject"
                 label={props.t("Subject")}
-                placeholder={props.t("Enter Subject")}
+                placeholder={props.t("Enter Email Subject")}
                 type="text"
                 value={role.content[selectedLanguage.value].subject}
-                errorMessage={props.t("Enter Subject")}
+                errorMessage={props.t("Enter Email Subject")}
                 validate={{ required: { value: true } }}
               />
             </div>
@@ -130,13 +130,13 @@ function SystemEmailEdit(props){
                 editorClassName="editorClassName"
                 editorState={editorState}
                 onEditorStateChange={setEditorState}
-                placeholder={props.t("Enter Content")}
+                placeholder={props.t("Enter Email Content")}
               />
               <AvField
                 name="body"
                 id="body"
                 type="text"
-                errorMessage={props.t("Enter Content")}
+                errorMessage={props.t("Enter Email Content")}
                 validate={{ required: { value: true } }}
                 value={draftToHtml(convertToRaw(editorState.getCurrentContent()))}
                 style={{

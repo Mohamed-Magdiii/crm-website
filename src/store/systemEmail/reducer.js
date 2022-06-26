@@ -29,7 +29,10 @@ import {
 
   FETCH_SYSTEM_EMAIL_HTML_REQUESTED,
   FETCH_SYSTEM_EMAIL_HTML_SUCCESS,
-  FETCH_SYSTEM_EMAIL_HTML_FAIL
+  FETCH_SYSTEM_EMAIL_HTML_FAIL,
+
+  CHANGE_SYSTEM_EMAIL_STATUS_REQUESTED,
+  CHANGE_SYSTEM_EMAIL_STATUS_DONE
 } from "./actionTypes";
 
 const initialState = {
@@ -284,6 +287,27 @@ const systemEmailsReducer = (state = initialState, action) => {
         htmlSuccess: false,
         htmlFail: true,
         htmlFailDetails: action.payload
+      };
+      break;
+
+    // change system email status
+    case CHANGE_SYSTEM_EMAIL_STATUS_REQUESTED:
+      state = {
+        ...state,
+        changeStatusLoading:true,
+        changeStatusIndex: action.payload.index,
+      };
+      break;
+    case CHANGE_SYSTEM_EMAIL_STATUS_DONE:
+      state = {
+        ...state,
+        docs: state.docs.map((systemEmail, index) => {
+          if (index === action.payload.index && !action.payload.error) {
+            systemEmail.isActive = !systemEmail.isActive;
+          }
+          return systemEmail;
+        }),
+        changeStatusLoading: false
       };
       break;
     
