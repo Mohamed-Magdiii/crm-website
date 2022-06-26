@@ -21,12 +21,14 @@ import Notification from "components/Common/Notification";
 import logo from "../../assets/images/logo-sm.svg";
 import { withTranslation } from "react-i18next";
 import { checkAllBoxes } from "common/utils/checkAllBoxes";
+import { Link } from "react-router-dom";
+import DetailsModal from "./DetailsModal";
 function Deposit(props){
   const dispatch = useDispatch();
   const [searchInput, setSearchInput] = useState("");
   const [showNotication, setShowNotifaction] = useState(false);
-  
-  
+  const [detailsModal, setDetailsModal] = useState(false);
+  const [selectedContent, setSelectedContent] = useState("");
   const [sizePerPage, setSizePerPage] = useState(10);
   const columns = [
     {
@@ -46,7 +48,20 @@ function Deposit(props){
     {
       dataField:"customerId",
       text:props.t("Client"),
-      formatter:(val)=>(val.customerId ? `${val.customerId.firstName} ${val.customerId.lastName}` : "")
+      formatter:(val)=>{
+        return (
+          <div>
+            <Link 
+              to ={{
+                pathname : `/clients/${val.customerId._id}/profile`,
+                state : { clientId : val.customerId }
+              }}>
+              <i>{val.customerId ? `${val.customerId.firstName} ${val.customerId.lastName}` : ""}</i>
+            </Link>
+          </div>
+        );
+        
+      }
     },
     {
       dataField:"gateway",
@@ -60,7 +75,22 @@ function Deposit(props){
     {
       dataField: "status",
       text: props.t("Status"),
-      
+      formatter:(val)=>{
+        if (val.reason){
+          return (
+            <div>
+              <p>{val.status}</p>
+              <small className = "text-danger">{val.reason}</small>
+            </div>
+            
+          );
+        }
+        else {
+          return (
+            <p>{val.status}</p>
+          );
+        }
+      }
     },
     {
       dataField:"amount",
@@ -71,6 +101,29 @@ function Deposit(props){
     {
       dataField:"dropdown", 
       text:props.t("Action")
+    },
+    {
+      dataField: "",
+      isDummyField: true,
+      editable: false,
+      text: props.t("Details"),
+      formatter: (val) => (
+        <div className="d-flex gap-3">
+          <Link className={val.gateway === "BLOCKCHAIN" ? "text-success" : "text-muted"} to="#">
+            <i
+              className="mdi mdi-eye font-size-20"
+              id="edittooltip"
+              onClick={() => {
+                if (val.gateway === "BLOCKCHAIN"){
+                  setDetailsModal(true); 
+                  setSelectedContent(val.rawData);
+                }
+               
+              }}
+            ></i>
+          </Link>
+        </div>
+      ),
     },
   ];
   
@@ -144,14 +197,14 @@ function Deposit(props){
                         className="table "
                       >
                         <Thead>
-                          <Tr className = "text-center">
+                          <Tr>
                             {columns.map((column, index) =>
                               <Th data-priority={index} key={index}>{column.text}</Th>
                             )}
                           </Tr>
                         </Thead>
                         
-                        <Tbody className = "text-center" style = {{ fontSize : "13px" }}>
+                        <Tbody style = {{ fontSize : "13px" }}>
                           {props.loading && <TableLoader colSpan={4} />}
                           {!props.loading && props.deposits.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
@@ -179,7 +232,7 @@ function Deposit(props){
               </Card>
             </Col>
           </Row>
-   
+          {<DetailsModal rawData= {selectedContent} open = {detailsModal} onClose = {()=>setDetailsModal(false)} />}
         </div>
       </div>
     </React.Fragment>
