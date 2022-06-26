@@ -1,11 +1,14 @@
-import { 
-  FETCH_WALLET_START, 
-  FETCH_WALLET_SUCCESS, 
+import {
+  FETCH_WALLET_START,
+  FETCH_WALLET_SUCCESS,
   CLEAR_WALLETS,
 
   FETCH_CLIENT_WALLETS_REQUESTED,
   FETCH_CLIENT_WALLETS_SUCCESS,
   FETCH_CLIENT_WALLETS_FAIL,
+
+  CHANGE_STATUS_WALLET_START,
+  CHANGE_STATUS_WALLET_END,
 
   ADD_CLIENT_WALLET_REQUESTED,
   ADD_CLIENT_WALLET_SUCCESS,
@@ -13,21 +16,21 @@ import {
   ADD_CLIENT_WALLET_CLEAR
 } from "./actionTypes";
 
-export const fetchWalletStart = (params)=>{
+export const fetchWalletStart = (params) => {
   return {
-    type:FETCH_WALLET_START,
-    payload:params
+    type: FETCH_WALLET_START,
+    payload: params
   };
 };
-export const fetchWalletSuccess = (data)=>{
+export const fetchWalletSuccess = (data) => {
   return {
-    type:FETCH_WALLET_SUCCESS,
-    payload:data
+    type: FETCH_WALLET_SUCCESS,
+    payload: data
   };
 };
-export const clearWallets = ()=>{
+export const clearWallets = () => {
   return {
-    type:CLEAR_WALLETS
+    type: CLEAR_WALLETS
   };
 };
 
@@ -55,7 +58,7 @@ export const fetchClientWalletsFail = (error) => {
 export const addWallet = (params = {}) => {
   return {
     type: ADD_CLIENT_WALLET_REQUESTED,
-    payload: params 
+    payload: params
   };
 };
 export const addWalletSuccess = (data) => {
@@ -74,5 +77,23 @@ export const addWalletClear = (data) => {
   return {
     type: ADD_CLIENT_WALLET_CLEAR,
     payload: data
+  };
+};
+
+export const changeStatus = (id, status, index) => {
+  return {
+    type: CHANGE_STATUS_WALLET_START,
+    payload: {
+      id,
+      status,
+      index,
+    },
+  };
+};
+
+export const changeStatusDone = (params = {}) => {
+  return {
+    type: CHANGE_STATUS_WALLET_END,
+    payload: params
   };
 };
