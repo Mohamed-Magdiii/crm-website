@@ -114,7 +114,7 @@ function UsersList() {
       formatter: (user) => (
         <div className="d-flex gap-3">
           <Input type="checkbox" id={user.id} switch="none" checked={user.isActive} onChange={() => { setSelectedUser(user); statusUser(user) }} />
-          <Label className="me-1" htmlFor={user.id} data-on-label="isActive" data-off-label=""></Label>
+          <Label className="me-1" htmlFor={user.id} data-on-label="" data-off-label=""></Label>
         </div>
       ),
     },
