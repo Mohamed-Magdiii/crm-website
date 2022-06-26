@@ -123,7 +123,7 @@ function UsersAddModal(props) {
                 })}
               </AvField>
             </div>
-            <div className='text-center p-5'>
+            <div className='text-center'>
               <Button type="submit" color="primary" className="" disabled={submitState}>
                 Add New User
               </Button>
