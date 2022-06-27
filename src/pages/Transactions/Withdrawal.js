@@ -86,23 +86,15 @@ function Withdrawal(props){
     {
       dataField: "status",
       text: props.t("Status"),
-      formatter : (val)=>{
-        if (val.reason){
-          return (
-            <div>
-              <p>{val.status}</p>
-              <small className = "text-danger">{val.reason}</small>
-            </div>
-          ); 
-
-        }
-        else {
-          return (
-            <p>{val.status}</p>
-          );
-        }
-      }
     },
+    {
+      dataField: "reason",
+      text:"Reason",
+      formatter:(val)=>val.reason ? <div data-title ={val.reason} >
+        {val.reason.length > 20 ? `${val.reason.slice(0, 20)}...` : val.reason}
+      </div> : ""
+    },
+
     {
       dataField:"amount",
       text:props.t("Amount"),
@@ -202,7 +194,7 @@ function Withdrawal(props){
                           {!props.loading && props.withdrawals.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
                               {columns.map((column, index) =>
-                                <Td key={`${rowIndex}-${index}`}>
+                                <Td key={`${rowIndex}-${index}`} className = "pt-4">
                                   { column.dataField === "checkbox" ? <input className= "withdraw-checkbox"  type="checkbox"/> : ""}
                                   { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
                                   {column.dataField === "dropdown" ? <CustomDropdown permission={props.withdrawalsPermissions.actions ? true : false} id={row._id} status={row.status} approve={withdrawApprove} reject={withdrawReject}/> : ""}

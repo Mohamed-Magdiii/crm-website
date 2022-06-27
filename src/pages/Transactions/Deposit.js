@@ -75,22 +75,16 @@ function Deposit(props){
     {
       dataField: "status",
       text: props.t("Status"),
-      formatter:(val)=>{
-        if (val.reason){
-          return (
-            <div>
-              <p>{val.status}</p>
-              <small className = "text-danger">{val.reason}</small>
-            </div>
-            
-          );
+  
+    },
+    {
+      dataField:"reason",
+      text: props.t("Reason"),
+      formatter:(val)=>val.reason ? <div data-title = {val.reason}>
+        {
+          val.reason.length > 20 ? `${val.reason.slice(0, 20)}...` : val.reson
         }
-        else {
-          return (
-            <p>{val.status}</p>
-          );
-        }
-      }
+      </div> : ""
     },
     {
       dataField:"amount",
@@ -204,12 +198,12 @@ function Deposit(props){
                           </Tr>
                         </Thead>
                         
-                        <Tbody style = {{ fontSize : "13px" }}>
+                        <Tbody style = {{ fontSize : "13px" }}  >
                           {props.loading && <TableLoader colSpan={4} />}
                           {!props.loading && props.deposits.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
                               {columns.map((column, index) =>
-                                <Td key={`${rowIndex}-${index}`}>
+                                <Td key={`${rowIndex}-${index}`} className= "pt-4">
                                   { column.dataField === "checkbox" ? <input className = "deposit-checkbox" type="checkbox"/> : ""}
                                   { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
                                   {column.dataField === "dropdown" ? <CustomDropdown  permission={props.depositsPermissions.actions ? true : false} id={row._id} status={row.status} approve={depositApprove} reject={depositReject} /> : ""}
