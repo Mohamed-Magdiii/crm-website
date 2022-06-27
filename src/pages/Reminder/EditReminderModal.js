@@ -166,12 +166,12 @@ function EditReminderModal(props) {
 
             :
 
-            <AvForm onValidSubmit={handleValidUpdateSubmit}> 
+            <AvForm onValidSubmit={handleValidUpdateSubmit}>
               <Row form>
                 <Col className="col-12 mb-3">
                   <AvField
                     name="note"
-                    label="Note" 
+                    label="Note"
                     placeholder="Enter Note"
                     type="text"
                     value={title}
@@ -187,7 +187,7 @@ function EditReminderModal(props) {
                     name="timeEnd"
                     label="Date"
                     value={timeEnd}
-                    errorMessage="Invalid Reminder Note"
+                    errorMessage="Invalid Date"
                     validate={{
                       required: { value: true },
                     }}
@@ -200,8 +200,11 @@ function EditReminderModal(props) {
                     type="select"
                     name="status"
                     value={status}
+                    errorMassage="Invalid Status"
                     validate={{
-                      required: { value: true },
+                      required: {
+                        value: true
+                      },
                     }}
                   >
                     <option value="">Select</option>
