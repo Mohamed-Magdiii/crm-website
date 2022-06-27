@@ -53,7 +53,7 @@ function Deposit(props){
           <div>
             <Link 
               to ={{
-                pathname : `/clients/${val.customerId._id}/profile`,
+                pathname : `/clients/${val?.customerId?._id}/profile`,
                 state : { clientId : val.customerId }
               }}>
               <i>{val.customerId ? `${val.customerId.firstName} ${val.customerId.lastName}` : ""}</i>
