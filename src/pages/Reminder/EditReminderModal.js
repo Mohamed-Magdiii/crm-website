@@ -26,6 +26,7 @@ function EditReminderModal(props) {
   const [alertShow, setAlertShow] = useState(false);
   const [alertmsg, setAlertMsg] = useState("");
   const [editFlag, setEditFlag] = useState(false);
+  const [submitState, setSubmitState] = useState(false);
 
   const { openEdit, eventReminder = {}, onClose } = props;
   const [clientName, setclientName] = useState("");
@@ -55,7 +56,7 @@ function EditReminderModal(props) {
 
 
   const handleValidUpdateSubmit = (e, values) => {
-
+    setSubmitState(true);
     updateEvent(id, values)
       .then(() => {
         showAlert(false, true);
@@ -65,6 +66,9 @@ function EditReminderModal(props) {
         seterrorMassage(e.toString());
         showAlert(true, false);
       });
+    setTimeout(() => {
+      setSubmitState(false);
+    }, 2500);
 
   };
 
@@ -228,6 +232,7 @@ function EditReminderModal(props) {
                     <button
                       type="submit"
                       className="btn btn-success save-event"
+                      disabled={submitState}
                     >
                       Save
                     </button>
