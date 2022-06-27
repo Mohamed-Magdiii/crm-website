@@ -175,7 +175,7 @@ function EditReminderModal(props) {
                     placeholder="Enter Note"
                     type="text"
                     value={title}
-                    errorMessage="Invalid Reminder Note"
+                    errorMessage="Invalid Note"
                     validate={{
                       required: { value: true },
                     }}
