@@ -21,6 +21,7 @@ import { addNewEvent } from "../../apis/reminder";
 function AddReminderModal(props) {
   const { openAdd, selectedDate = {}, onClose } = props;
   const [clientValue, setclientValue] = useState(null);
+  const [submitState, setSubmitState] = useState(false);
 
   const [errorMassage, seterrorMassage] = useState("");
   const [errorAlert, setErrorAlertMassage] = useState(false);
@@ -35,7 +36,7 @@ function AddReminderModal(props) {
       type: values.type,
       timeEnd: values.timeEnd,
     };
-
+    setSubmitState(true);
     addNewEvent(newEvent)
       .then(() => {
         showAlert(false, true);
@@ -45,6 +46,9 @@ function AddReminderModal(props) {
         seterrorMassage(e.toString());
         showAlert(true, false);
       });
+    setTimeout(() => {
+      setSubmitState(false);
+    }, 2500);
   };
   const showAlert = (danger, succ, msg) => {
     if (succ) {
@@ -67,7 +71,7 @@ function AddReminderModal(props) {
   };
 
   const loadPageOptions = async (q, prevOptions, { page }) => {
-    
+
     const { options, hasMore } = await loadClientsOptions(q, page);
 
     return {
@@ -133,8 +137,8 @@ function AddReminderModal(props) {
                   required
                   errorMessage="Invalid Reminder type"
                 >
-                  <AvRadio  label="Reminder" value="1" />
-                  <AvRadio  label="Todo" value="0" />
+                  <AvRadio label="Reminder" value="1" />
+                  <AvRadio label="Todo" value="0" />
                 </AvRadioGroup>
               </Col>
             </Row>
@@ -144,6 +148,7 @@ function AddReminderModal(props) {
                   <button
                     type="submit"
                     className="btn btn-success save-event"
+                    disabled={submitState}
                   >
                     Add
                   </button>
