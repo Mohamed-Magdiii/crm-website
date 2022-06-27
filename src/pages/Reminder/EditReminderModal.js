@@ -116,7 +116,7 @@ function EditReminderModal(props) {
                 <Row>
                   <Col className="col-10">
                     <div className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-3">
-                      <h2>Client: {clientName}</h2>
+                      <h5>Client: {clientName}</h5>
                     </div>
                   </Col>
                   <Col className="col-2">
@@ -166,14 +166,13 @@ function EditReminderModal(props) {
 
             :
 
-            <AvForm onValidSubmit={handleValidUpdateSubmit}>
-              <h1>Update</h1>
-
+            <AvForm onValidSubmit={handleValidUpdateSubmit}> 
               <Row form>
                 <Col className="col-12 mb-3">
                   <AvField
                     name="note"
-                    label="Reminder Note"
+                    label="Note" 
+                    placeholder="Enter Note"
                     type="text"
                     value={title}
                     errorMessage="Invalid Reminder Note"
@@ -186,7 +185,7 @@ function EditReminderModal(props) {
                   <AvField
                     type="datetime-local"
                     name="timeEnd"
-                    label="Reminder"
+                    label="Date"
                     value={timeEnd}
                     errorMessage="Invalid Reminder Note"
                     validate={{
@@ -197,7 +196,7 @@ function EditReminderModal(props) {
                 </Col>
                 <Col className="col-12 mb-3">
                   <AvField
-                    label="status"
+                    label="Status"
                     type="select"
                     name="status"
                     value={status}
@@ -205,14 +204,14 @@ function EditReminderModal(props) {
                       required: { value: true },
                     }}
                   >
-                    <option value="">select</option>
+                    <option value="">Select</option>
                     <option>open</option>
                     <option>ongoing</option>
                     <option>completed</option>
 
                   </AvField>
                 </Col>
-                <Col className="col-12 mb-3">
+                <Col className="col-12 mb-2">
                   <AvRadioGroup
                     inline
                     name="type"
@@ -234,7 +233,7 @@ function EditReminderModal(props) {
                       className="btn btn-success save-event"
                       disabled={submitState}
                     >
-                      Save
+                      Edit
                     </button>
                   </div>
                 </Col>
