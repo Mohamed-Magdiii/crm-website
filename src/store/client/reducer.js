@@ -7,7 +7,8 @@ import {
   EDIT_CLIENT_DETAILS_REQUESTED,
   EDIT_CLIENT_DETAILS_SUCCESS,
   EDIT_CLIENT_DETAILS_FAIL,
-  EDIT_CLIENT_DETAILS_CLEAR
+  EDIT_CLIENT_DETAILS_CLEAR,
+  FETCH_CLIENT_STAGES_END
 } from "./actionsType";
 
 const initalState = {
@@ -90,7 +91,7 @@ export const clientReducer = (state = initalState, action)=>{
     case FETCH_CLIENT_DETAILS_REQUESTED:
       state = {
         ...state,
-        loading: true
+        clientProfileloading: true
       };
       break;
     case FETCH_CLIENT_DETAILS_SUCCESS:
@@ -99,7 +100,7 @@ export const clientReducer = (state = initalState, action)=>{
         error: false,
         success: true,
         clientDetails: action.payload.result,
-        loading: false,
+        clientProfileloading: false,
         totalDocs: action.payload.totalDocs,
         hasNextPage: action.payload.hasNextPage,
         hasPrevPage: action.payload.hasPrevPage,
@@ -115,9 +116,8 @@ export const clientReducer = (state = initalState, action)=>{
     case FETCH_CLIENT_DETAILS_FAIL:
       state = {
         ...state,
-        error: true,
-        errorDetails: action.payload.error,
-        loading: false
+        clientProfileError: true,
+        clientProfileloading: false
       };
       break;
     case FETCH_CLIENT_DETAILS_CLEAR:
@@ -159,7 +159,15 @@ export const clientReducer = (state = initalState, action)=>{
         error: false
       };
       break;
-    
+    case FETCH_CLIENT_STAGES_END:
+      state = {
+        ...state,
+        clientDetails: {
+          ...state.clientDetails,
+          stages: action.payload
+        }
+      };
+      break;
     default:
       state = { ...state };
   }

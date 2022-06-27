@@ -56,6 +56,20 @@ export async function post(url, data, config = {}) {
     }).catch(err => apiErrorHandler(err));
 }
 
+export async function postFormData(url, data, config = {}) {
+  const path = config.crypto ? `/crm${url}` : `/crm${url}`;
+  return axiosApi({
+    method: "post",
+    url: path,
+    data,
+    headers: { 
+      "Content-Type": "multipart/form-data",
+    },
+  }).then(function (response) {
+    return response.data;
+  }).catch(err => apiErrorHandler(err));
+}
+
 export async function patch(url, data, config = {}) {
   const path = config.crypto ? `/crm${url}` : `/crm${url}`;
   return axiosApi
