@@ -6,9 +6,9 @@ import { Row, Col } from "reactstrap";
 import { withTranslation } from "react-i18next";
 import DocumentUpload from "./DocumentUpload";
 import DocumentList from "./DocumentList";
-import {
-  fetchDocsStart
-} from "store/documents/actions";
+import { fetchDocsStart } from "store/documents/actions";
+// import { fetchClientStages } from "store/client/actions";
+
 function ClientDetails(props) {
   const dispatch = useDispatch();
 

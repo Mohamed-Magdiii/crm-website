@@ -9,7 +9,8 @@ import {
   FETCH_CLIENT_DETAILS_SUCCESS,
   FETCH_CLIENT_DETAILS_FAIL,
   FETCH_CLIENT_DETAILS_CLEAR,
-
+  FETCH_CLIENT_STAGES_START,
+  FETCH_CLIENT_STAGES_END,
   EDIT_CLIENT_DETAILS_REQUESTED,
   EDIT_CLIENT_DETAILS_SUCCESS,
   EDIT_CLIENT_DETAILS_FAIL,
@@ -73,6 +74,18 @@ export const fetchClientDetailsFail = (error) => {
 export const fetchClientDetailsClear = (data) => {
   return {
     type: FETCH_CLIENT_DETAILS_CLEAR,
+    payload: data
+  };
+};
+export const  fetchClientStagesStart = (data) => {
+  return {
+    type: FETCH_CLIENT_STAGES_START,
+    payload: data
+  };
+};
+export const fetchClientStagesEnd = (data) => {
+  return {
+    type: FETCH_CLIENT_STAGES_END,
     payload: data
   };
 };

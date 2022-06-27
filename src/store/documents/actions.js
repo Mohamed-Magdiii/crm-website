@@ -7,6 +7,9 @@ import {
   CHANGE_DOCS_CLEAR,
   CHANGESTATUS_DOC_START,
   CHANGESTATUS_DOC_END,
+  DELETE_DOC_START,
+  DELETE_DOC_END,
+  DELETE_CLEAR
 } from "./actionTypes";
 
 export const fetchDocsStart = (clientId)=>{
@@ -76,5 +79,31 @@ export const changeStatusDocFail = (params)=>{
   return {
     type:CHANGESTATUS_DOC_END,
     error: params.error
+  };
+};
+
+export const deleteDocStart = (params)=>{
+  return {
+    type:DELETE_DOC_START,
+    payload: params
+  };
+};
+export const deleteDocSuccess = (params)=>{
+  return {
+    type:DELETE_DOC_END,
+    payload: params
+  };
+};
+export const deleteDocFail = (params)=>{
+  return {
+    type:DELETE_DOC_END,
+    error: params.error
+  };
+};
+
+export const deleteClear = ()=>{
+  return {
+    type: DELETE_CLEAR,
+    payload:{ }
   };
 };

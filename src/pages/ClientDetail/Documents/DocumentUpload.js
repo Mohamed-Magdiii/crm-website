@@ -50,12 +50,12 @@ function UploadKYC (props) {
 
   const [showKYC, setShowKYC] = React.useState(true);
   useEffect(()=>{
-    const id = props.documents.find(obj => obj.type === "ID");
-    const address = props.documents.find(obj => obj.type === "ADDRESS");
-    if (id && address && id.status === "APPROVED" && address.status === "APPROVED") {
-      setShowKYC(false);
+    if (props.clientDetails && props.clientDetails.stages) {
+      if (props.clientDetails.stages.kycApproved) {
+        setShowKYC(false);
+      }
     }
-  }, [props.documents]);
+  }, [props.clientDetails]);
 
   return (<React.Fragment>
     <AvForm

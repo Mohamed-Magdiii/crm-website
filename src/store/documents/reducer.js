@@ -8,7 +8,10 @@ import {
   UPLOADED_DOCS_CLEAR,
   CHANGESTATUS_DOC_START,
   CHANGESTATUS_DOC_END,
-  CHANGE_DOCS_CLEAR
+  CHANGE_DOCS_CLEAR,
+  DELETE_DOC_START,
+  DELETE_DOC_END,
+  DELETE_CLEAR,
 } from "./actionTypes";
 
 const initialState = {
@@ -16,7 +19,8 @@ const initialState = {
   loading:false,
   documents: [],
   clear: 0,
-  clearChangeStatus: 0
+  clearChangeStatus: 0,
+  clearDelete: 0
 };
 const DocumentsReducer = (state = initialState, action)=>{
   switch (action.type){
@@ -30,6 +34,7 @@ const DocumentsReducer = (state = initialState, action)=>{
       state = {
         ...state,
         loading:true,
+        documents: [],
       };
       break;
     case GET_DOC_END:
@@ -71,6 +76,9 @@ const DocumentsReducer = (state = initialState, action)=>{
         documents = documents.map((obj, num) => {
           if (!action.error && num === action.payload.index) {
             obj.status = action.payload.status;
+            if (action.payload.rejectionReason) {
+              obj.rejectionReason = action.payload.rejectionReason;
+            }
           }
           return obj;
         });
@@ -82,6 +90,33 @@ const DocumentsReducer = (state = initialState, action)=>{
         documents,
       };
       break;
+    
+    case DELETE_CLEAR:
+      state = {
+        ...state,
+        clearDelete: state.clearDelete + 1,
+      };
+      break;
+    case DELETE_DOC_START:
+      state = {
+        ...state,
+        docDeleting: true,
+      };
+      break;
+    case DELETE_DOC_END:
+      var docs = state.documents;      
+      if (!action.error ) {
+        docs = docs.filter((obj, index) => index !== action.payload.index);
+      }
+      state = {
+        ...state,
+        docDeleting: false,
+        deleteError: action.error,
+        documents: docs,
+      };
+      break;
+    
+    
     default:
       state = { ...state };
 

@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 
 function QrPukModal(props) {
   const { open, puk = "", onClose } = props;
+  // eslint-disable-next-line no-unused-vars
   const [Copy, setCopy] = useState("Copy Puk");
 
   const CopyPuk = () => { 

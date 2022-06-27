@@ -6,6 +6,7 @@ import {
   UPLOAD_DOC_START,
   GET_DOC_START,
   CHANGESTATUS_DOC_START,
+  DELETE_DOC_START,
 } from "./actionTypes";
 import {
   fetchDocsStart,
@@ -17,7 +18,11 @@ import {
   changeStatusDocFail,
   changeStatusDocSuccess,
   changeStatusClear,
+  deleteDocSuccess,
+  deleteDocFail,
+  deleteClear,
 } from "./actions";
+import { fetchClientStagesStart } from "../client/actions";
 import { showErrorNotification, showSuccessNotification } from "store/notifications/actions";
 
 //Include Both Helper File with needed methods
@@ -43,7 +48,7 @@ function * uploadDocs({ payload }){
     yield put(uploadDocsClear());
     yield put(showSuccessNotification("Documents upload successfull"));
     yield put(fetchDocsStart(payload.clientId));
-    
+    yield put(fetchClientStagesStart(payload.clientId));
   }
   catch (error){
     yield put(uploadDocsFail(error.message));
@@ -60,12 +65,34 @@ function * changeStatusDoc({ payload }){
       ...data,
       index,
       status: params.status,
+      rejectionReason: params.rejectionReason
     }));
     yield put(changeStatusClear());
-    yield put(showSuccessNotification(`Documents ${payload.status} successfull`));    
+    yield put(showSuccessNotification(`Documents ${payload.status} successfull`));  
+    yield put(fetchClientStagesStart(params.customerId));  
   }
   catch (error){
     yield put(changeStatusDocFail(error.message));
+    yield put(showErrorNotification(error.message));
+
+  } 
+}
+
+function * deleteDoc({ payload }){
+  try {
+    const { index, ...params } = payload;
+    const data = yield call(documentsApi.deleteDocument, params);
+    yield put(deleteDocSuccess({
+      ...data,
+      index,
+      status: params.status,
+    }));
+    yield put(deleteClear());
+    yield put(showSuccessNotification("Documents Deleted successfull"));
+  }
+  catch (error){
+    yield put(deleteDocFail(error.message));
+    yield put(deleteClear());
     yield put(showErrorNotification(error.message));
 
   } 
@@ -76,6 +103,8 @@ function* authSaga() {
   yield takeEvery(GET_DOC_START, fetchDocs);
   yield takeEvery(UPLOAD_DOC_START, uploadDocs);
   yield takeEvery(CHANGESTATUS_DOC_START, changeStatusDoc);
+  yield takeEvery(DELETE_DOC_START, deleteDoc);
+
 }
 
 export default authSaga;

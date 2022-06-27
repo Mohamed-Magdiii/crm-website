@@ -14,12 +14,13 @@ import {
   editClientDetailsSuccess,
   editClientDetailsFail,
   editClientDetailsClear,
-  addModalClear
+  addModalClear,
+  fetchClientStagesEnd,
 } from "./actions";
 import { 
   ADD_NEW_CLIENT, 
   FETCH_CLIENTS_START,
-  
+  FETCH_CLIENT_STAGES_START,
   FETCH_CLIENT_DETAILS_REQUESTED,
   EDIT_CLIENT_DETAILS_REQUESTED
 } from "./actionsType";
@@ -72,11 +73,23 @@ function * editClientDetails(params){
   }
 }
 
+function * fetchClientStages(params){
+  try {
+    const data = yield call(clientApi.getClientById, params);
+    if (data && data.result && data.result.stages) {
+      yield put(fetchClientStagesEnd(data.result.stages));
+    }
+  } catch (error){ }
+}
+
 function * clientSaga() {
   yield takeEvery(FETCH_CLIENTS_START, fetchClients);
   yield takeEvery(ADD_NEW_CLIENT, addNewClient);
   yield takeEvery(FETCH_CLIENT_DETAILS_REQUESTED, fetchClientDetails);
   yield takeEvery(EDIT_CLIENT_DETAILS_REQUESTED, editClientDetails);
+  yield takeEvery(FETCH_CLIENT_STAGES_START, fetchClientStages);
+
+  
 }
 
 export default clientSaga;

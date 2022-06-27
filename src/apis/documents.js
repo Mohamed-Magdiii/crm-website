@@ -19,3 +19,11 @@ export const changeStatusDocuments = async ({ customerId, documentId, status, re
   } 
   return data;
 };
+
+export const deleteDocument = async ({ customerId, documentId })=>{
+  const data = await axiosHelper.del(`/documents/${customerId}/${documentId}`, {});
+  if (data.isError) {
+    throw new Error(data.message);
+  } 
+  return data;
+};

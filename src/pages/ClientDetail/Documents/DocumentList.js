@@ -13,7 +13,8 @@ import {
 } from "react-super-responsive-table";
 import { Link } from "react-router-dom";
 import {
-  changeStatusDocStart
+  changeStatusDocStart,
+  deleteDocStart
 } from "store/documents/actions";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 import Select from "react-select";
@@ -25,6 +26,7 @@ import {
 // i18n 
 import { withTranslation } from "react-i18next";
 import TableLoader from "components/Common/TableLoader";
+import { imagesUrl } from "content";
 
 function DocumentApprove (props) {
   const dispatch = useDispatch();
@@ -59,7 +61,7 @@ function DocumentApprove (props) {
   };
 
   useEffect(()=> {
-    if (props.clearChangeStatus > 0) {
+    if (props.onClose && props.clearChangeStatus > 0) {
       props.onClose();
     }
   }, [props.clearChangeStatus]);
@@ -118,6 +120,55 @@ function DocumentApprove (props) {
   </React.Fragment>);
 }
 
+function DocumentDelete (props) {
+  const dispatch = useDispatch();
+  const { customerId, documentId, index } = props;
+  const deleteDocument = () => {
+    dispatch(deleteDocStart({
+      documentId,
+      customerId,
+      index
+    }));
+  };
+
+  useEffect(()=> {
+    if (props.onClose && props.clearDelete > 0) {
+      props.onClose();
+    }
+  }, [props.clearDelete]);
+
+  return (<React.Fragment>
+    <Modal isOpen={props.show} toggle={props.onClose} centered={true} size={"md"}>
+      <ModalHeader toggle={props.onClose} tag="h4">
+            Delete Document
+      </ModalHeader>
+      <ModalBody >
+        <AvForm
+          className='p-4'
+          onValidSubmit={(e, v) => {
+            deleteDocument(e, v);
+          }}
+        >
+          <Row className="mb-3">
+            <Col sm={12}>
+              <label>Are you sure you want to deleted the Document ?</label>
+
+            </Col>
+          </Row>
+          <div className='text-center pt-3 p-2'>
+            <Button disabled={false} onClick={props.onClose} type="button" color="primary" className="" style={{ margin: "1rem" }}>
+                Cancel
+            </Button>
+            <Button disabled={false} type="submit" color="danger" className="" style={{ margin: "1rem" }}>
+                Delete
+            </Button>
+          </div>
+        </AvForm>
+      </ModalBody>
+    </Modal>
+  </React.Fragment>);
+}
+
 function DocumentListing(props) {
   const docs = props.documents.map(obj => {
     let arr = [obj.file1];
@@ -134,7 +185,18 @@ function DocumentListing(props) {
     clientId: null,
     status: "APPROVED"
   });
-  
+  const [deleteModal, setDeleteModal] = React.useState({
+    show: false,
+    documentId: null,
+    clientId: null,
+  });
+  function titleCase(str) {
+    let tmpArr = str.toLowerCase().split("_");
+    return tmpArr.map(obj => { return obj[0].toUpperCase() + obj.slice(1) }).join(" ");
+  }
+  function getFileLink(obj){
+    return <a target="_blank" href={`${imagesUrl}${obj.filename}`} rel="noreferrer">{obj.originalname}</a>;
+  }
   const columns = [
     {
       dataField: "createdAt",
@@ -143,24 +205,30 @@ function DocumentListing(props) {
     }, 
     {
       dataField:"type",
-      text:"Type"
+      text:"Type",
+      formatter: (val) => {
+        return titleCase(val.type);
+      }
     },
     {
       dataField: "files",
       text: "Files",
       formatter: (val) => {
-        return val.files.map(obj => obj.originalname).join(",");
+        return val.files.map(obj => getFileLink(obj));
       }
-    },
-    {
-      dataField: "status",
-      text: "Status"
     },
     {
       dataField: "status",
       text: "Status",
       formatter: (val) => {
-        return val.rejectionReason ? val.rejectionReason : "";
+        return titleCase(val.status);
+      }
+    },
+    {
+      dataField: "status",
+      text: " ",
+      formatter: (val) => {
+        return val.rejectionReason ? val.rejectionReason : "dd";
       }
     },
     {
@@ -170,7 +238,7 @@ function DocumentListing(props) {
       text: "Action",
       formatter: (item, index) => (
         <div className="d-flex gap-3">
-          {["PENDING", "EXPIRED"].indexOf(item.status) > -1  && <React.Fragment>
+          {["PENDING", "EXPIRED", "IN_PROGRESS"].indexOf(item.status) > -1  && <React.Fragment>
             <Link className="text-danger" to="#">
               <i
                 className="mdi mdi-sticker-remove-outline font-size-18"
@@ -213,12 +281,23 @@ function DocumentListing(props) {
               <i
                 className="mdi mdi-delete font-size-18"
                 id="deletetooltip3"
-              //   onClick={() => { setSelectedRole(item); setDeleteUserModal(true)}}
+                onClick={() => {
+                  setDeleteModal({
+                    show: true,
+                    customerId: item.customerId,
+                    documentId: item._id,
+                    index,
+                    onClose: ()=> {setDeleteModal({
+                      ...deleteModal,
+                      show: false,
+                    });}
+                  });
+                }}
               ></i>
             </Link>
           </React.Fragment>
           }
-          {["PENDING", "EXPIRED"].indexOf(item.status) === -1 && <React.Fragment>----</React.Fragment>}
+          {["PENDING", "EXPIRED", "IN_PROGRESS"].indexOf(item.status) === -1 && <React.Fragment>----</React.Fragment>}
         </div>
       ),
     },
@@ -226,8 +305,9 @@ function DocumentListing(props) {
 
   return (
     <React.Fragment>
+      <DocumentApprove {...approveModal} {...props}/>
+      <DocumentDelete {...deleteModal} {...props} />
       <Row>
-        <DocumentApprove {...approveModal} {...props}/>
         <div className="table-rep-plugin">
           <div
             className="table-responsive mb-0"
@@ -272,6 +352,7 @@ function DocumentListing(props) {
 const mapStateToProps = (state) => ({
   loading: state.documentsReducer.loading,
   clearChangeStatus: state.documentsReducer.clearChangeStatus,
+  clearDelete: state.documentsReducer.clearDelete,
   documents: state.documentsReducer.documents,
   error: state.documentsReducer.error,
 });
