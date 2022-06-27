@@ -3,6 +3,9 @@ import {
   FETCH_CLIENT_WALLETS_SUCCESS,
   FETCH_CLIENT_WALLETS_FAIL,
 
+  CHANGE_STATUS_WALLET_END,
+  CHANGE_STATUS_WALLET_START,
+
   ADD_CLIENT_WALLET_REQUESTED,
   ADD_CLIENT_WALLET_SUCCESS,
   ADD_CLIENT_WALLET_FAIL,
@@ -10,37 +13,37 @@ import {
 } from "./actionTypes";
 
 const initState = {
-  wallets:[],
-  loading:false,
-  error:"",
+  wallets: [],
+  loading: false,
+  error: "",
   addClearingCounter: 0
 };
 
-const walletReducer = (state = initState, action)=>{
-  switch (action.type){
+const walletReducer = (state = initState, action) => {
+  switch (action.type) {
     case "FETCH_WALLET_START":
       state = {
         ...state,
-        loading:true
+        loading: true
       };
       break;
     case "FETCH_WALLET_SUCCESS":
       state = {
         ...state,
-        wallets:[...action.payload.result.docs],
-        loading:false
+        wallets: [...action.payload.result.docs],
+        loading: false
       };
       break;
     case "CLEAR_WALLETS":
       state = {
-        wallets:[],
-        loading:false
+        wallets: [],
+        loading: false
       };
       break;
 
     // fetch client wallet details
     case FETCH_CLIENT_WALLETS_REQUESTED:
-      state = { 
+      state = {
         ...state,
         loading: true
       };
@@ -56,7 +59,7 @@ const walletReducer = (state = initState, action)=>{
       };
       break;
     case FETCH_CLIENT_WALLETS_FAIL:
-      state = { 
+      state = {
         ...state,
         error: true,
         errorDetails: action.payload.error,
@@ -94,11 +97,31 @@ const walletReducer = (state = initState, action)=>{
         addClearingCounter: state.addClearingCounter + 1
       };
       break;
-    
+    case CHANGE_STATUS_WALLET_START:
+      state = {
+        ...state,
+        changeStatusLoading: true,
+        changeStatusLoadingIndex: action.payload.index,
+      };
+      break;
+    case CHANGE_STATUS_WALLET_END:
+      state = {
+        ...state,
+        docs: state.docs.map((obj, index) => {
+          if (index === action.payload.index && !action.payload.error) {
+            obj.active = !obj.active;
+          }
+          return obj;
+        }),
+        changeStatusLoading: false,
+      };
+      break;
+
+
     default:
       state = { ...state };
   }
-    
+
 
   return state;
 };
