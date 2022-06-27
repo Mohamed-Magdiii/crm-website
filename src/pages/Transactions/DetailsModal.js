@@ -18,8 +18,8 @@ function DetailsModal(props){
           </ModalHeader>
           <ModalBody>
             <div >
-              {rawData ? Object.keys(rawData).map(key => {
-                return <p key={rawData[key]}>{`${captilazeFirstLetter(props.t(key))} :${props.t(rawData[key])}`}</p>;
+              {Object.keys(rawData).length > 0 ? Object.keys(rawData).map(key => {
+                return <p className="paragraph" key={rawData[key]}>{`${captilazeFirstLetter(props.t(key))} : ${props.t(rawData[key])}`}</p>;
               }) : "" }
             </div>
           </ModalBody>
