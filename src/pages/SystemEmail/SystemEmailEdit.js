@@ -74,6 +74,27 @@ function SystemEmailEdit(props){
     
   }, [role, selectedLanguage]);
 
+  // subject temp value handler
+  const subjectTempInitialValues = availableLanguages.map((item) => (
+    {
+      language: item,
+      tempSubject: ""
+    }
+  ));
+  const [subjectTempValue, setSubjectTempValue] = useState(subjectTempInitialValues);
+  const subjectTempValueHandler = (e) => {
+    const updatedTempSubject = [];
+    for (let item of subjectTempValue){
+      if (item.language === selectedLanguage.value){
+        item.tempSubject = e.target.value;
+        updatedTempSubject.push(item);
+      } else {
+        updatedTempSubject.push(item);
+      }
+    }
+    setSubjectTempValue(updatedTempSubject);
+  };
+  
   return (
     <React.Fragment >
       <div className="page-content">
@@ -115,9 +136,13 @@ function SystemEmailEdit(props){
                 label={props.t("Subject")}
                 placeholder={props.t("Enter Email Subject")}
                 type="text"
-                value={role.content[selectedLanguage.value].subject}
+                value={
+                  role.content[selectedLanguage.value].subject || 
+                  subjectTempValue.find((item) => (item.language === selectedLanguage.value)).tempSubject
+                }
                 errorMessage={props.t("Enter Email Subject")}
                 validate={{ required: { value: true } }}
+                onChange={subjectTempValueHandler}
               />
             </div>
 

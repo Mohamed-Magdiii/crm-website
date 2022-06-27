@@ -101,37 +101,36 @@ function ClientMainPage(props) {
                     ?
                     <Layout clientId={clientId}>
                       {/* client details */}
-                      <Route exact path="/clients/:id/profile">
+                      {/* <Route exact path="/clients/:id/profile">
                         <ClientProfile clientId={clientId} />
-                      </Route>
+                      </Route> */}
 
                       {/*  client bank */}
-                      <Route exact path="/clients/:id/bank">
+                      {/* <Route exact path="/clients/:id/bank">
                         <ClientBank clientId={clientId} />
-                      </Route>
+                      </Route> */}
 
                       {/* client transactions */}
-                      <Route exact path="/clients/:id/transactions">
+                      {/* <Route exact path="/clients/:id/transactions">
                         <ClientTransactions clientId={clientId} />
-                      </Route>
+                      </Route> */}
 
                       {/* client wallets */}
-                      <Route exact path="/clients/:id/wallets">
+                      {/* <Route exact path="/clients/:id/wallets">
                         <ClientWallets clientId={clientId} />
-                      </Route>
+                      </Route> */}
 
                       {/* client orders */}
-                      <Route exact path="/clients/:id/orders">
+                      {/* <Route exact path="/clients/:id/orders">
                         <OrderList clientId={clientId} />
-                      </Route>
+                      </Route> */}
 
                       {tabsArr.map((obj, index) =>
                         <Route key={index} exact path={obj.url}>
                           <obj.component clientId={clientId} />
                         </Route>
                       )}
-                      {/* default route to details right on loading */}
-                      <Redirect to={tabsArr[0].url} />
+                      {/* <Redirect to={tabsArr[0].url} /> */}
                     </Layout>
                     :
                     <Redirect to={"/dashboard"} />

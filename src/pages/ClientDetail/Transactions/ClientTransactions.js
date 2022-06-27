@@ -9,7 +9,6 @@ import {
   Table, Thead, Tbody, Tr, Th, Td
 } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
-import { useParams } from "react-router-dom";
 
 // i18n
 import { withTranslation } from "react-i18next";
@@ -26,8 +25,7 @@ import Notification from "components/Common/Notification";
 import logo from "assets/images/logo-sm.svg";
 
 function ClientTransactions(props) {
-  const pathParams = useParams();
-  const clientId = pathParams.id;
+  const clientId = props.clientId;
   const [showNotication, setShowNotifaction] = useState(false);
   const [btnprimary1, setBtnprimary1] = useState(false);
   const [sizePerPage, setSizePerPage] = useState(5);
@@ -98,7 +96,7 @@ function ClientTransactions(props) {
       dataField: "amount",
       text: props.t("Amount"),
       formatter: (item) => (
-        item.amount === " " ? "-" : parseFloat(item.amount)
+        parseFloat(item?.amount?.$numberDecimal) || parseFloat(item?.amount) || "-"
       )
     },
     {
