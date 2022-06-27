@@ -112,7 +112,7 @@ function AddReminderModal(props) {
                 <AvField
                   name="note"
                   label="Reminder Note"
-                  type="text"
+                  type="textarea"
                   errorMessage="Invalid Reminder Note"
                   validate={{
                     required: { value: true },
