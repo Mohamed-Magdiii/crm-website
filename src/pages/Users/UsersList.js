@@ -71,7 +71,7 @@ function UsersList() {
       text: "CreatedAt",
       dataField: "createdAt",
       sort: true,
-      formatter: (user) => { return new Date(user.createdAt).toDateString() },
+      formatter: (val) => (new Date(val.createdAt).toLocaleDateString()),
     },
     {
       text: "First Name",
