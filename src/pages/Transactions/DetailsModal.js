@@ -2,10 +2,12 @@ import React from "react";
 import {
   Modal,
   ModalHeader,
-  ModalBody
+  ModalBody,
+  Card
 } from "reactstrap";
 import { captilazeFirstLetter } from "common/utils/manipulateString";
 import { withTranslation } from "react-i18next";
+
 function DetailsModal(props){
   const { rawData, open, onClose } = props;
   
@@ -19,7 +21,9 @@ function DetailsModal(props){
           <ModalBody>
             <div >
               {Object.keys(rawData).length > 0 ? Object.keys(rawData).map(key => {
-                return <p className="paragraph" key={rawData[key]}>{`${captilazeFirstLetter(props.t(key))} : ${props.t(rawData[key])}`}</p>;
+                return <Card className="p-3" key={rawData[key]}>
+                  <p className="d-flex center-vertically"><span className="bold">{`${captilazeFirstLetter(props.t(key))} `} </span> : <span>{` ${props.t(rawData[key])}`}</span></p> 
+                </Card>;
               }) : "" }
             </div>
           </ModalBody>
