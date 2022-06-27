@@ -282,14 +282,7 @@ function feeGroupAdd(props) {
               </UncontrolledAlert>
             )
           }
-          {
-            props.showEditSuccessMessage && (
-              <UncontrolledAlert color="success">
-                <i className="mdi mdi-check-all me-2"/>
-                {props.t("Fees Group is updated successfully !!!")}
-              </UncontrolledAlert>
-            )
-          }
+        
         </ModalBody>
       </Modal>
     </React.Fragment>

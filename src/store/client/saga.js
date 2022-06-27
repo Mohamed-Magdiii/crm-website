@@ -23,7 +23,7 @@ import {
   FETCH_CLIENT_DETAILS_REQUESTED,
   EDIT_CLIENT_DETAILS_REQUESTED
 } from "./actionsType";
-  
+import { showSuccessNotification } from "store/notifications/actions";
 function *fetchClients(params) {
   try {
     const data = yield call(clientApi.getClients, params);
@@ -40,7 +40,8 @@ function * addNewClient({ payload:{ newClient } }) {
     const { status } = data;
     if (status){
       yield put(addNewClientSuccess(newClient));
-      yield delay(2000);
+      yield put(showSuccessNotification("Client is added successfully"));
+      yield delay(1000);
       yield put(addModalClear());
     }
   } catch (error){

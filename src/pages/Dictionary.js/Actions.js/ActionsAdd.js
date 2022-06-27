@@ -60,10 +60,7 @@ function ActionsAdd(props){
             <i className="mdi mdi-block-helper me-2"></i>
             {props.editError}
           </UncontrolledAlert>}
-          {props.showAddSuccessMessage && <UncontrolledAlert color="success">
-            <i className="mdi mdi-check-all me-2"></i>
-            {props.t("Action has been added successfully!")}
-          </UncontrolledAlert>}
+          
         </ModalBody>
       </Modal>
     </React.Fragment>

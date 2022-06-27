@@ -177,10 +177,6 @@ function AssestForm(props){
             <i className="mdi mdi-block-helper me-2"></i>
             {props.t(props.error)}
           </UncontrolledAlert>}
-          {props.addSymbolSuccessMessage && <UncontrolledAlert color="success">
-            <i className="mdi mdi-check-all me-2"></i>
-            {props.t("Symbol Added successfully !!!")}
-          </UncontrolledAlert>}
         </ModalBody>
       </Modal>
     </React.Fragment>

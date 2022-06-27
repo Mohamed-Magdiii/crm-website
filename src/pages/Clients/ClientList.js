@@ -20,10 +20,13 @@ import { Link } from "react-router-dom";
 import { withTranslation } from "react-i18next";
 import { captilazeFirstLetter, displaySubString } from "common/utils/manipulateString";
 import { checkAllBoxes } from "common/utils/checkAllBoxes";
+import { fetchUsers } from "store/users/actions";
+import Select from "react-select";
+import { NonceProvider } from "react-select/dist/react-select.cjs.prod";
 function ClientsList(props) {
   const [addModal, setAddReminderToClientModal] = useState(false);
   const [selectedClient, setSelectedClient] = useState({});
-
+  console.log(props.docs);
   const columns = [
     {
       dataField: "checkbox",
@@ -85,8 +88,25 @@ function ClientsList(props) {
     {
       dataField: "agent",
       text:props.t("Agent"),
-      formatter: (val) => (val.agent ? <select defaultValue={true}><option>{val.agent.firstName} {val.agent.lastName}</option></select> : 
-        <select disabled></select>),
+      formatter: (val) => {
+        const filteredUsers = props.docs.filter(user=>user.roleId.title === "sales");
+        const usersOptions = filteredUsers.map(user=>{
+    
+          return  {
+            label :`${user.firstName} ${user.lastName}`,
+            value: user.roleId.title
+          } ;
+          
+          
+        }  
+        );
+        return <Select  
+          classNamePrefix="select2-selection"
+          placeHolder={props.t("sales agent")}
+          options= {usersOptions}
+        />;
+      }
+      
     },
     {
       dataField: "source",
@@ -183,6 +203,12 @@ function ClientsList(props) {
       }));
     }
   };
+  useEffect(()=>{
+    dispatch(fetchUsers({
+      page:1,
+      limit:1000
+    }));
+  }, []);
   
   return (
     <React.Fragment>
@@ -221,10 +247,13 @@ function ClientsList(props) {
                             )}
                           </Tr>
                         </Thead>
-                        <Tbody className="text-center" style={{ fontSize: "13px" }}>
+                        <Tbody className="text-center" style={{ 
+                          fontSize: "10px",
+                           
+                        }}>
                           {props.loading && <TableLoader colSpan={4} />}
                           {!props.loading && props.clients.map((row, rowIndex) =>
-                            <Tr key={rowIndex}>
+                            <Tr key={rowIndex} >
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`}>
                                   {column.dataField === "checkbox" ? <input className="client-checkbox" type="checkbox" /> : ""}
@@ -268,6 +297,7 @@ const mapStateToProps = (state) => ({
   nextPage: state.clientReducer.nextPage,
   pagingCounter: state.clientReducer.pagingCounter,
   prevPage: state.clientReducer.prevPage,
-  clientPermissions: state.Profile.clientPermissions || {}
+  clientPermissions: state.Profile.clientPermissions || {},
+  docs:state.usersReducer.docs || []
 });
 export default connect(mapStateToProps, null)(withTranslation()(ClientsList));

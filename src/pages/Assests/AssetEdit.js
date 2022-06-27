@@ -196,10 +196,6 @@ function AssetEdit (props) {
             <i className="mdi mdi-block-helper me-2"></i>
             {props.t(props.error)}
           </UncontrolledAlert>}
-          {props.editDone && <UncontrolledAlert color="success">
-            <i className="mdi mdi-check-all me-2"></i>
-            {props.t("Symbol Updated successfully !!!")}
-          </UncontrolledAlert>}
         </ModalBody>
       </Modal>
     </React.Fragment>

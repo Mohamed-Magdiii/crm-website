@@ -68,7 +68,6 @@ export const clientReducer = (state = initalState, action)=>{
           ...action.payload.newClient
         },
         ...state.clients] : [...state.clients],
-        showAddSuccessMessage:true,
         disableAddButton:true
       };
       break;
