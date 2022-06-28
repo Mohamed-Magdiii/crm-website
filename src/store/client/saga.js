@@ -16,15 +16,17 @@ import {
   editClientDetailsClear,
   addModalClear,
   fetchClientStagesEnd,
+  assignAgentToClientSuccess,
 } from "./actions";
 import { 
   ADD_NEW_CLIENT, 
   FETCH_CLIENTS_START,
   FETCH_CLIENT_STAGES_START,
   FETCH_CLIENT_DETAILS_REQUESTED,
-  EDIT_CLIENT_DETAILS_REQUESTED
+  EDIT_CLIENT_DETAILS_REQUESTED,
+  ASSIGN_AGENT_START
 } from "./actionsType";
-import { showSuccessNotification } from "store/notifications/actions";
+import { showSuccessNotification, showErrorNotification } from "store/notifications/actions";
 function *fetchClients(params) {
   try {
     const data = yield call(clientApi.getClients, params);
@@ -73,7 +75,25 @@ function * editClientDetails(params){
     yield put(editClientDetailsFail({ error: error.message }));
   }
 }
-
+function * assignAgent (params){
+  
+  const { payload :{ id }  } = params;
+  const { payload: { agent: clientAgent } } = params;
+  try {
+    yield call(clientApi.updateClientDetails, params);
+    
+    yield put(assignAgentToClientSuccess({
+      id, 
+      agent:{
+        ...clientAgent
+      }
+    }));
+    yield put(showSuccessNotification("Sales Agent has been assigned to the client successfully"));
+  } catch (error){
+    yield put(showErrorNotification("Error happened while assign the agent"));
+  }
+  
+}
 function * fetchClientStages(params){
   try {
     const data = yield call(clientApi.getClientById, params);
@@ -89,7 +109,7 @@ function * clientSaga() {
   yield takeEvery(FETCH_CLIENT_DETAILS_REQUESTED, fetchClientDetails);
   yield takeEvery(EDIT_CLIENT_DETAILS_REQUESTED, editClientDetails);
   yield takeEvery(FETCH_CLIENT_STAGES_START, fetchClientStages);
-
+  yield takeEvery(ASSIGN_AGENT_START, assignAgent);
   
 }
 
