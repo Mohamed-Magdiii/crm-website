@@ -27,6 +27,7 @@ function AgentDropDown(props){
     
   };
   const assignAgent = (e)=>{
+    setMenu(true);
     dispatch(assignAgentToClientStart({
       id:clientId,
       agent : {
@@ -40,7 +41,6 @@ function AgentDropDown(props){
       }
     }));
     setSelected(true);
-    setMenu(false);
   };
   const filteredUsers = props.docs.filter(user=>user.roleId.title === "sales");
   const usersOptions = filteredUsers.map(user=>{
@@ -57,20 +57,21 @@ function AgentDropDown(props){
   }  
   );
   return  (<Dropdown isOpen={menu} toggle = {(e)=>{toggle(e) }} className="d-inline-block">
-    <DropdownToggle  className="btn header-item zero-height " tag="button">
+    <DropdownToggle  onClick = {e=>e.stopPropagation()} className="btn header-item zero-height " tag="button">
       {agent ? `${agent.firstName} ${agent.lastName}` : "unassigned"}  
     </DropdownToggle>
-    <DropdownMenu className="dropdown-menu-end">
-        
-      <DropdownItem
+    <DropdownMenu  onClick = {e=>e.stopPropagation()} className="dropdown-menu-end">
+       
+      <DropdownItem onClick={(e)=>{e.stopPropagation(); setMenu(true)}}
       >
         <Select  
           classNamePrefix="select2-selection"
           placeHolder={"sales agent"}
           options= {usersOptions}
           onChange = {(e)=>{assignAgent(e)}}
-          
+          closeMenuOnSelect={true}
         />
+
       </DropdownItem>
     </DropdownMenu>
   </Dropdown>);
