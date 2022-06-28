@@ -271,7 +271,7 @@ function feeGroupAdd(props) {
             
             <div className='text-center pt-3 p-2'>
               <Button disabled={props.addButtonDisabled} type="submit" color="primary" className="">
-                {props.t("Add New Fees Group")}
+                {props.t("Add")}
               </Button>
             </div>
           </AvForm>
