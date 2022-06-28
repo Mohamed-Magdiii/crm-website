@@ -60,7 +60,7 @@ function ClientsList(props) {
               state: { clientId: user.id }
             }}
           >
-            <i>{user.firstName + " " + user.lastName}</i>
+            <i className="no-italics" >{captilazeFirstLetter(user.firstName) + " " + captilazeFirstLetter(user.lastName)}</i>
           </Link>
         </div>
       )

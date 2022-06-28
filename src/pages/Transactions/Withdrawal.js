@@ -22,6 +22,7 @@ import { withTranslation } from "react-i18next";
 import { checkAllBoxes } from "common/utils/checkAllBoxes";
 import { Link } from "react-router-dom";
 import DetailsModal from "./DetailsModal";
+import { captilazeFirstLetter} from "common/utils/manipulateString";
 function Withdrawal(props){
   const dispatch = useDispatch();
   const [, setSearchInput] = useState("");
@@ -66,7 +67,7 @@ function Withdrawal(props){
               }}
             
             >
-              <i> {val.customerId ? `${val.customerId.firstName} ${val.customerId.lastName}` : ""}</i>
+              <i className="no-italics"> {val.customerId ? `${captilazeFirstLetter(val.customerId.firstName)} ${captilazeFirstLetter(val.customerId.lastName)}` : ""}</i>
             </Link>
           </div>
         );

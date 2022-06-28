@@ -23,6 +23,7 @@ import { withTranslation } from "react-i18next";
 import { checkAllBoxes } from "common/utils/checkAllBoxes";
 import { Link } from "react-router-dom";
 import DetailsModal from "./DetailsModal";
+import { captilazeFirstLetter} from "common/utils/manipulateString";
 function Deposit(props){
   const dispatch = useDispatch();
   const [searchInput, setSearchInput] = useState("");
@@ -56,7 +57,7 @@ function Deposit(props){
                 pathname : `/clients/${val?.customerId?._id}/profile`,
                 state : { clientId : val.customerId }
               }}>
-              <i>{val.customerId ? `${val.customerId.firstName} ${val.customerId.lastName}` : ""}</i>
+              <i className="no-italics">{val.customerId ? `${captilazeFirstLetter(val.customerId.firstName)} ${captilazeFirstLetter(val.customerId.lastName)}` : ""}</i>
             </Link>
           </div>
         );
