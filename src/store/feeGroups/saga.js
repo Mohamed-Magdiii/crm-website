@@ -74,6 +74,7 @@ function * deleteFeegroup ({ payload : { id } }){
   try {
     yield call(deleteFeeGroup, id);
     yield put(deleteFeeGroupSuccess(id));
+    yield put(showSuccessNotification("Fee Group has been deleted successfully!"));
     yield delay(1000);
     yield put(deleteModalClear());
   } catch (error){
