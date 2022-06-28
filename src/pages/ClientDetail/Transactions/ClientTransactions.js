@@ -9,6 +9,7 @@ import {
   Table, Thead, Tbody, Tr, Th, Td
 } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
+import { Link } from "react-router-dom";
 
 // i18n
 import { withTranslation } from "react-i18next";
@@ -58,7 +59,7 @@ function ClientTransactions(props) {
 
   const columns = [
     {
-      dataField:"checkbox",
+      dataField: "checkbox",
       text: <input type="checkbox"/>
     },
     {
@@ -67,18 +68,32 @@ function ClientTransactions(props) {
       formatter: (val) => (new Date(val.createdAt).toLocaleDateString())
     }, 
     {
-      dataField:"customerId",
-      text:props.t("Client"),
+      dataField: "customerId",
+      text: props.t("Client"),
       formatter:(val)=>(val.customerId ? `${val.customerId.firstName} ${val.customerId.lastName}` : "")
     },
     {
-      dataField:"gateway",
-      text:props.t("Gateway")
+      dataField: "gateway",
+      text: props.t("Gateway")
     },
     {
       dataField: "currency",
       text: props.t("Currency"),
     
+    },
+    selectedTransactionType === "Deposit" && {
+      dataField: "to",
+      text: props.t("To"),
+      formatter: (val) => (
+        val.to?.length >= 10 ? val.to.substr(0, 4) + "....." + val.to.substr(-5, 4) : val.to
+      )
+    },
+    selectedTransactionType === "Withdrawal" && {
+      dataField: "from",
+      text: props.t("From"),
+      formatter: (val) => (
+        val.from?.length >= 10 ? val.from.substr(0, 4) + "....." + val.from.substr(-5, 4) : val.from
+      )
     },
     {
       dataField: "status",
@@ -104,6 +119,21 @@ function ClientTransactions(props) {
       text: props.t("Comments"),
       formatter: (item) => (
         item.comments.length === 0 ? "-" : item.comments
+      )
+    },
+    {
+      dataField: "",
+      isDummyField: true,
+      editable: false,
+      text: props.t("Tx-id"), 
+      formatter: (item) => (
+        <Link to="#">
+          <i
+            className="mdi mdi-clipboard font-size-18"
+            id="preview"
+            onClick={ () => {navigator.clipboard.writeText(item.txId)} }
+          ></i>
+        </Link>
       )
     },
     {

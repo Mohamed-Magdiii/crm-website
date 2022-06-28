@@ -117,7 +117,6 @@ function SystemEmailsList(props){
       editable: false,
       text: props.t("Preview"), 
       formatter: (item) => (
-        // TODO needs to be centered on sm or xs I'm not sure yet
         <Link className={`text ${!update ? "d-none" : ""}`} to="#">
           <i
             className="mdi mdi-eye font-size-18"

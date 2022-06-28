@@ -53,7 +53,7 @@ function ClientsList(props) {
               state: { clientId: client.id }
             }}
           >
-            <i className="text-bold">{client.firstName + " " + client.lastName}</i>
+            <strong className="text-capitalize">{client.firstName + " " + client.lastName}</strong>
           </Link>
         </div>
       )

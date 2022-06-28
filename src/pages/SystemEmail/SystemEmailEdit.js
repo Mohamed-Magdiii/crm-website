@@ -16,13 +16,19 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
 import Select from "react-select";
+import { useHistory } from "react-router-dom";
+
 
 // i18n
 import { withTranslation } from "react-i18next"; 
+import BackConfirmationModal from "components/Common/BackConfirmationModal";
 import { editSystemEmailContent, fetchSystemEmailById } from "store/systemEmail/actions";
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 function SystemEmailEdit(props){
+  // two states used to check if subject or content were changed
+  const [isSubjectChanged, setIsSubjectChanged] = useState(false);
+  const [isContentChanged, setIsContentChanged] = useState(false);
+  const [backConfirmationModalState, setBackConfirmationModalState] = useState(false);
   const readableLanguages = {
     "en-gb": "English",
     "ar-ae": "Arabic"
@@ -92,7 +98,53 @@ function SystemEmailEdit(props){
         updatedTempSubject.push(item);
       }
     }
+    setIsSubjectChanged(true);
     setSubjectTempValue(updatedTempSubject);
+  };
+
+  // content temp value handler
+  const contentTempInitialValues = availableLanguages.map((item) => (
+    {
+      language: item,
+      tempContent: ""
+    }
+  ));
+  const [contentTempValue, setContentempValue] = useState(contentTempInitialValues);
+  const contentTempValueHandler = (e) => {
+    const blocksFromHTML = htmlToDraft(e.blocks[0].text);
+    const { contentBlocks, entityMap } = blocksFromHTML;
+    const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+    const editorState = EditorState.createWithContent(contentState); 
+    
+    const updatedTempContent = [];
+    for (let item of contentTempValue){
+      if (item.language === selectedLanguage.value){
+        item.tempContent = editorState;
+        updatedTempContent.push(item);
+      } else {
+        updatedTempContent.push(item);
+      }
+    }
+    setIsContentChanged(true);
+    setContentempValue(updatedTempContent);
+  };
+
+  // back button handler
+  const history = useHistory();
+  const backButtonConfirmationHandler = () => {
+    if (props.editContentClearingCounter === 0 && (isSubjectChanged || isContentChanged)){
+      // subject, content or both were updated and 
+      // system email wasn't updated successfully yet
+      setBackConfirmationModalState(true);
+    } else {
+      // no updates were made to subject or content
+      history.push("/system-emails");
+    }
+  };
+
+  // modal back button handler
+  const modalBackConfirmationButton = () => {
+    history.push("/system-emails");
   };
   
   return (
@@ -153,9 +205,13 @@ function SystemEmailEdit(props){
                 toolbarClassName="toolbarClassName"
                 wrapperClassName="wrapperClassName"
                 editorClassName="editorClassName"
-                editorState={editorState}
+                editorState={
+                  editorState || 
+                  contentTempValue.find((item) => (item.language === selectedLanguage.value)).tempContent
+                }
                 onEditorStateChange={setEditorState}
                 placeholder={props.t("Enter Email Content")}
+                onChange={contentTempValueHandler}
               />
               <AvField
                 name="body"
@@ -196,21 +252,22 @@ function SystemEmailEdit(props){
 
               {/* back button */}
               <div className="p-2">
-                <Link 
-                  to={{
-                    pathname: "/system-emails"
-                  }}
+                <Button 
+                  disabled={props.editLoading || !props.isBackButtonActive} 
+                  type="button" 
+                  color="primary"
+                  onClick={backButtonConfirmationHandler} 
                 >
-                  <Button 
-                    disabled={props.editLoading || !props.isBackButtonActive} 
-                    type="button" 
-                    color="primary" 
-                  >
-                    {props.t("Back")}
-                  </Button>
-                </Link>
+                  {props.t("Back")}
+                </Button>
               </div>
             </div>
+            {<BackConfirmationModal 
+              loading={props.editLoading} 
+              onBackClick={modalBackConfirmationButton} 
+              show={backConfirmationModalState} 
+              onCloseClick={()=>{setBackConfirmationModalState(false)}} 
+            />}
             {props.editContentError && <UncontrolledAlert color="danger" className="col-sm-8">
               <i className="mdi mdi-block-helper me-2"></i>
               {/* TODO this need to be handled in translation */}
