@@ -127,18 +127,23 @@ function * removeItemFromDictionary({ payload }){
     if ( status.code === 200){
       if (key[0] === "actions"){
         yield put(removeItemFromActions(actionValue));
+        yield put(showSuccessNotification("Action has been deleted successfully!"));
       }
       else if (key[0] === "exchanges"){
         yield put(removeItemFromExchanges(actionValue));
+        yield put(showSuccessNotification("Exchange has been deleted successfully!"));
       }
       else if (key[0] === "emailProviders"){
         yield put(removeItemFromEmailProviders(actionValue));
+        yield put(showSuccessNotification("Email Provider has been deleted successfully!"));
       }
       else if (key[0] === "countries"){
         yield put(removeItemFromCountries(actionValue));
+        yield put(showSuccessNotification("Country has been deleted successfully!"));
       }
     }
     yield delay(1000);
+
     yield put(clearDeleteModal());
   } catch (error){
     yield put(apiError(error));
