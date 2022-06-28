@@ -98,7 +98,7 @@ function feeGroupAdd(props) {
                   <AvField
                     name="title"
                     label={props.t("Title")}
-                    placeholder={props.t("title")}
+                    placeholder={props.t("Enter title")}
                     type="text"
                     errorMessage={props.t("Enter Valid title")}
                     validate={{ required: { value: true } }}
@@ -115,7 +115,7 @@ function feeGroupAdd(props) {
                   <AvField
                     name="value"
                     label={props.t("Value")}
-                    placeholder={props.t("value")}
+                    placeholder={props.t("Enter value")}
                     type="text"
                     errorMessage={props.t("Enter valid fees group value")}
                     validate={{ 
@@ -135,7 +135,7 @@ function feeGroupAdd(props) {
                   <AvField
                     name="maxValue"
                     label={props.t("Max Value")}
-                    placeholder={props.t("Max Value")}
+                    placeholder={props.t("Enter Max")}
                     type="text"
                     errorMessage={props.t("Enter Valid max feees group value")}
                     validate={{ 
@@ -155,7 +155,7 @@ function feeGroupAdd(props) {
                   <AvField
                     name="minValue"
                     label={props.t("Min value")}
-                    placeholder={props.t("min value")}
+                    placeholder={props.t("Enter Min")}
                     type="text"
                     errorMessage={props.t("Enter valid min fees group value")}
                     validate={{ 
@@ -223,6 +223,7 @@ function feeGroupAdd(props) {
                                         errorMessage : "Value must be a number"
                                       }
                                     }} 
+                                    placeholder = {props.t("Enter Value")}
                                     value={value}></AvField>
                                 </Col>
                                 <Col>
@@ -237,12 +238,14 @@ function feeGroupAdd(props) {
                                         errorMessage : "Max value must be a number"
                                       }
                                     }} 
+                                    placeholder = {props.t("Enter Max")}
                                     value={maxAmount}></AvField>
                                 </Col>
                                 <Col>
                                   <AvField 
                                     name={`minAmount${i}`} 
                                     label="Min Value" 
+                                    placeholder = {props.t("Enter Min")}
                                     validate = {{
                                       required :{ value:true },
                                       pattern : {
