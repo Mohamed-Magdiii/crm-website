@@ -168,6 +168,25 @@ export const clientReducer = (state = initalState, action)=>{
         }
       };
       break;
+    case "ASSIGN_AGENT_SUCCESS":
+      
+      state = {
+        ...state,
+        clients : state.clients.map(client=>{
+          if (client.id === action.payload.id){
+            return {
+              ...client,
+              agent:{
+                ...action.payload.agent
+              }
+            };
+          }
+          else {
+            return client;
+          }
+        })
+      };
+      break;
     default:
       state = { ...state };
   }

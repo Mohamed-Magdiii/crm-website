@@ -15,7 +15,9 @@ import {
   EDIT_CLIENT_DETAILS_SUCCESS,
   EDIT_CLIENT_DETAILS_FAIL,
   EDIT_CLIENT_DETAILS_CLEAR,
-  ADD_MODAL_CLEAR
+  ADD_MODAL_CLEAR,
+  ASSIGN_AGENT_START,
+  ASSIGN_AGENT_SUCCESS
 } from "./actionsType";
 
 export const fetchClientsStart = (params = {})=>{
@@ -29,6 +31,18 @@ export const fetchClientsSuccess = (data)=>{
     type:FETCH_CLIENTS_SUCCESS,
     payload:data
   };
+};
+export const assignAgentToClientStart = (params = {})=>{
+  return {
+    type:ASSIGN_AGENT_START,
+    payload:params
+  };
+};
+export const assignAgentToClientSuccess = (data)=>{
+  return {
+    type: ASSIGN_AGENT_SUCCESS,
+    payload:data
+  }; 
 };
 export const apiError = (error)=>{
   return {
