@@ -80,7 +80,7 @@ function * deleteAsset(params){
       id:params.payload,
       
     }));
-   
+    yield  put(showSuccessNotification("Asset has been deleted successfully!"));
   } catch (error){
     yield put(apiError("An error happned during deleting this record"));
   }

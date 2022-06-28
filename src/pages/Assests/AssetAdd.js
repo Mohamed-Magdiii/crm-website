@@ -31,12 +31,12 @@ function AssestForm(props){
   };
 
   useEffect(() => {
-    if (!props.addSymbolSuccessMessage  && addModal) {
+    if (props.clearModal  && addModal) {
       
       setAddUserModal(false);
       
     }
-  }, [props.addSymbolSuccessMessage]);
+  }, [props.clearModal]);
 
   return (
     <React.Fragment >
@@ -113,7 +113,14 @@ function AssestForm(props){
                     placeholder={props.t("Desposit Fee")}
                     type="text"
                     errorMessage={props.t("Enter valid deposit fee")}
-                    validate={{ required: { value: true } }}
+                    validate = {{
+                      required :{ value:true },
+                      pattern : {
+                        // eslint-disable-next-line no-useless-escape
+                        value :"/^[+]?([0-9]+\.?[0-9]*|\.[0-9]+)$/",
+                        errorMessage : "Min deposit fee must be a number"
+                      }
+                    }}
                   />
                 </div>
               </Col>
@@ -125,7 +132,14 @@ function AssestForm(props){
                     placeholder={props.t("Withdraw Fee")}
                     type="text"
                     errorMessage={props.t("Enter valid withdraw fee")}
-                    validate={{ required: { value: true } }}
+                    validate = {{
+                      required :{ value:true },
+                      pattern : {
+                        // eslint-disable-next-line no-useless-escape
+                        value :"/^[+]?([0-9]+\.?[0-9]*|\.[0-9]+)$/",
+                        errorMessage : "Min withdraw fee must be a number"
+                      }
+                    }}
                   />
                 </div>
               </Col>
@@ -139,7 +153,14 @@ function AssestForm(props){
                     placeholder={props.t("deposit amount")}
                     type="text"
                     errorMessage={props.t("Enter valid deposit amount")}
-                    validate={{ required: { value: true } }}
+                    validate = {{
+                      required :{ value:true },
+                      pattern : {
+                        // eslint-disable-next-line no-useless-escape
+                        value :"/^[+]?([0-9]+\.?[0-9]*|\.[0-9]+)$/",
+                        errorMessage : "Min deposit amount must be a number"
+                      }
+                    }}
                   />
                 </div>
               </Col>
@@ -151,7 +172,14 @@ function AssestForm(props){
                     placeholder={props.t("withdraw amount")}
                     type="text"
                     errorMessage={props.t("Enter valid withdraw amount")}
-                    validate={{ required: { value: true } }}
+                    validate = {{
+                      required :{ value:true },
+                      pattern : {
+                        // eslint-disable-next-line no-useless-escape
+                        value :"/^[+]?([0-9]+\.?[0-9]*|\.[0-9]+)$/",
+                        errorMessage : "Min withdraw amount must be a number"
+                      }
+                    }}
                   />
                 </div>
               </Col>
@@ -168,8 +196,8 @@ function AssestForm(props){
             </div>
             
             <div className='text-center pt-3 p-2'>
-              <Button  type="submit" color="primary" className="">
-                {props.t("Add New Symbol")}
+              <Button  disabled = {props.disableAddButton} type="submit" color="primary" className="">
+                {props.t("Add")}
               </Button>
             </div>
           </AvForm>
@@ -184,7 +212,8 @@ function AssestForm(props){
 }
 const mapStateToProps = (state) => ({
   error: state.assetReducer.error,
-  addSymbolSuccessMessage: state.assetReducer.addSymbolSuccessMessage,
-  symbolsPermissions: state.Profile.symbolsPermissions || {}
+  symbolsPermissions: state.Profile.symbolsPermissions || {},
+  disableAddButton: state.assetReducer.disableAddButton,
+  clearModal: state.assetReducer.clearModal 
 });
 export default connect(mapStateToProps, null)(withTranslation()(AssestForm));
