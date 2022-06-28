@@ -3,7 +3,12 @@ import {
   useDispatch, connect
 } from "react-redux";
 import {
-  Row, Col, Card, CardBody, CardTitle, CardHeader
+  Row, 
+  Col,
+  Card, 
+  CardBody, 
+  CardTitle, 
+  CardHeader,
 } from "reactstrap";
 import {
   Table, Thead, Tbody, Tr, Th, Td
@@ -20,13 +25,11 @@ import { Link } from "react-router-dom";
 import { withTranslation } from "react-i18next";
 import { captilazeFirstLetter, displaySubString } from "common/utils/manipulateString";
 import { checkAllBoxes } from "common/utils/checkAllBoxes";
+import AgentDropDown from "./AgentDropDown";
 import { fetchUsers } from "store/users/actions";
-import Select from "react-select";
-import { NonceProvider } from "react-select/dist/react-select.cjs.prod";
 function ClientsList(props) {
   const [addModal, setAddReminderToClientModal] = useState(false);
   const [selectedClient, setSelectedClient] = useState({});
-  console.log(props.docs);
   const columns = [
     {
       dataField: "checkbox",
@@ -86,27 +89,16 @@ function ClientsList(props) {
     },
 
     {
-      dataField: "agent",
+      dataField: "",
+      isDummyField: true,
+      editable: false,
       text:props.t("Agent"),
       formatter: (val) => {
-        const filteredUsers = props.docs.filter(user=>user.roleId.title === "sales");
-        const usersOptions = filteredUsers.map(user=>{
-    
-          return  {
-            label :`${user.firstName} ${user.lastName}`,
-            value: user.roleId.title
-          } ;
-          
-          
-        }  
+        return (
+          <AgentDropDown client= {val}/>
         );
-        return <Select  
-          classNamePrefix="select2-selection"
-          placeHolder={props.t("sales agent")}
-          options= {usersOptions}
-        />;
-      }
       
+      }
     },
     {
       dataField: "source",
@@ -248,7 +240,7 @@ function ClientsList(props) {
                           </Tr>
                         </Thead>
                         <Tbody className="text-center" style={{ 
-                          fontSize: "10px",
+                          fontSize: "13px",
                            
                         }}>
                           {props.loading && <TableLoader colSpan={4} />}
