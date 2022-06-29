@@ -117,7 +117,7 @@ function AddReminderModal(props) {
                   validate={{
                     required: { value: true },
                   }}
-                />
+                /> 
               </Col>
               <Col className="col-12 mb-3">
                 <AvField
