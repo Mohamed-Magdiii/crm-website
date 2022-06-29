@@ -115,7 +115,6 @@ function SystemEmailEdit(props){
     const { contentBlocks, entityMap } = blocksFromHTML;
     const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
     const editorState = EditorState.createWithContent(contentState); 
-    console.log(editorState);
     
     const updatedTempContent = [];
     for (let item of contentTempValue){

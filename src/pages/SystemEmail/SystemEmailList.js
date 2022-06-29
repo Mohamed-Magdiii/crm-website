@@ -42,7 +42,7 @@ function SystemEmailsList(props){
 
   // a function to switch status of a selected system email
   const updateStatus = (event, item, index) => {
-    dispatch(changeSystemEmailStatus(item._id, !item.isActive ? "activate" : "deactivate", index));
+    dispatch(changeSystemEmailStatus(item._id, index, !item.isActive ? "activate" : "deactivate"));
     event.preventDefault();
   };
   const { update, delete: deletePermission } = props.systemEmailsPermissions;
@@ -91,7 +91,7 @@ function SystemEmailsList(props){
       formatter: (item, index) => (
         <div className="d-flex gap-3">
           {
-            (props.changeStatusLoading && props.changeStatusLoadingIndex === index) 
+            props.changeStatusLoading && props.changeStatusIndex === index
               ? 
               <React.Fragment>
                 <Spinner className="ms-2" color="primary" />  
