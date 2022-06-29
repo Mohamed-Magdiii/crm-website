@@ -230,7 +230,7 @@ function ClientsList(props) {
                     <CardTitle>{props.t("Clients List")} ({props.totalDocs})</CardTitle>
                     <ClientForm />
                   </div>
-                  <div className="d-flex justify-content-between  align-items-center">
+                  <div className="d-flex justify-content-between  align-items-end">
                     <SearchBar handleSearchInput={handleSearchInput} />
                     {assignedClients.length > 0 && <AgentForm clients= {[...assignedClients]}/> }
                   </div>
