@@ -7,6 +7,10 @@ export const getUsers = async ({ payload }) => {
   const data = await axiosHelper.get(`/users?${qs.stringify(payload)}`);
   return data.result;
 };
+export const getAssignedUsers = async({ payload })=>{
+  const data = await axiosHelper.get(`/users/assignable?${qs.stringify(payload)}`);
+  return data;
+};
 export const getRoles = async ({ payload }) => {
   const data = await axiosHelper.get(`/roles?${qs.stringify(payload)}`);
   return data.result;

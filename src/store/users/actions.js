@@ -19,6 +19,8 @@ import {
   
   DELETE_USERS_START,
   DELETE_USERS_DONE,
+  GET_ASSIGNED_USERS_START,
+  GET_ASSIGNED_USERS_SUCCESS
 } from "./actionTypes";
 
 export const fetchUsers = (params = {})=>{
@@ -126,6 +128,18 @@ export const deleteUsers = (params = {})=>{
 export const deleteUserDone = (data)=>{
   return {
     type:DELETE_USERS_DONE,
+    payload: data
+  };
+};
+export const getSalesAgentsStart = (params = {})=>{
+  return {
+    type: GET_ASSIGNED_USERS_START, 
+    payload:params
+  };
+};
+export const  getSalesAgentsSuccess = (data)=>{
+  return {
+    type: GET_ASSIGNED_USERS_SUCCESS,
     payload: data
   };
 };
