@@ -162,14 +162,6 @@ function LeadForm(props) {
               </UncontrolledAlert>
             )
           }
-          {
-            props.showAddSuccessMessage && (
-              <UncontrolledAlert color="success">
-                <i className="mdi mdi-check-all me-2"/>
-                {props.t("Lead Added successfully !!!")}
-              </UncontrolledAlert>
-            )
-          }
         </ModalBody>
       </Modal>
     </React.Fragment>

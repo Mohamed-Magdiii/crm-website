@@ -10,7 +10,7 @@ import {
   addModalClear
 } from "./actions";
 import { ADD_NEW_LEAD, FETCH_LEADS_START } from "./actionsType";
-
+import { showSuccessNotification } from "store/notifications/actions";
 function * fetchLeads(params){
   try {
     const data = yield call(fetchLeadsFromAPI, params);
@@ -26,7 +26,8 @@ function *addNewLeadSaga({ payload:{ newLead } }){
     const { status } = data;
     if (status){
       yield put (addNewLeadSuccess(newLead));
-      yield delay(2000);
+      yield put(showSuccessNotification("Lead is added successfully!"));
+      yield delay(1000);
       yield put(addModalClear());
     }        
   }

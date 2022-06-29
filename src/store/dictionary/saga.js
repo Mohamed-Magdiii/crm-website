@@ -32,6 +32,7 @@ import {
   UPDATE_EXCHANGE_START,
   UPDATE_COUNTRY_START
 } from "./actionsType";
+import { showSuccessNotification } from "store/notifications/actions";
 function * fetchDictionary(){
   try {
     const dictionary = yield call(getDictionary);
@@ -54,19 +55,23 @@ function * addItem({ payload }){
   if (status.code === 200){
     if (key[0] === "actions"){
       yield put(addItemToActions(actionValue));
+      yield put(showSuccessNotification("Action has been added successfully!"));
     }
     else if (key[0] === "exchanges"){
       yield put(addItemToExchanges(actionValue));
+      yield put(showSuccessNotification("Exchange has been added successfully!"));
     }
     else if (key[0] === "emailProviders"){
       yield put(addItemToEmailProviders(actionValue));
+      yield put(showSuccessNotification("Email Provider has been added successfully!"));
     }
     else if (key[0] === "countries"){
       yield put(addItemToCountries(actionValue));
+      yield put(showSuccessNotification("Country has been added successfully!"));
     }
     
   }
-  yield delay(2000);
+  yield delay(1000);
   yield put(addClear());
   
 }
@@ -77,7 +82,8 @@ function * updateAction({ payload }){
     const { body, value } = payload;
     const { actions: oldValue } = body;
     yield put(updateActionSuccess(oldValue, value));
-    yield delay(2000); 
+    yield put(showSuccessNotification("Action has been updated successfully!"));
+    yield delay(1000); 
     yield put(editClear());
   } catch (error){
     yield put(apiError(error));
@@ -89,7 +95,8 @@ function * updateEmailProviderValue({ payload }){
     const { body, value : newValue } = payload;
     const { emailProviders :oldValue } = body;
     yield put(updateEmailProviderSuccess(oldValue, newValue));
-    yield delay(2000);
+    yield put(showSuccessNotification("Email provider has been updated successfully!"));
+    yield delay(1000);
     yield put(editClear());
   } catch (error){
     yield put(apiError(error));
@@ -101,7 +108,8 @@ function * updateExchangeValue ({ payload }){
     const { body, value:newValue } = payload;
     const { exchanges:oldValue } = body;
     yield put(updateExchangeSuccess(oldValue, newValue));
-    yield delay(2000);
+    yield put(showSuccessNotification("Exchange has been updated successfully!"));
+    yield delay(1000);
     yield put(editClear());
   } catch (error){
     yield put(apiError(error));
@@ -119,18 +127,23 @@ function * removeItemFromDictionary({ payload }){
     if ( status.code === 200){
       if (key[0] === "actions"){
         yield put(removeItemFromActions(actionValue));
+        yield put(showSuccessNotification("Action has been deleted successfully!"));
       }
       else if (key[0] === "exchanges"){
         yield put(removeItemFromExchanges(actionValue));
+        yield put(showSuccessNotification("Exchange has been deleted successfully!"));
       }
       else if (key[0] === "emailProviders"){
         yield put(removeItemFromEmailProviders(actionValue));
+        yield put(showSuccessNotification("Email Provider has been deleted successfully!"));
       }
       else if (key[0] === "countries"){
         yield put(removeItemFromCountries(actionValue));
+        yield put(showSuccessNotification("Country has been deleted successfully!"));
       }
     }
     yield delay(1000);
+
     yield put(clearDeleteModal());
   } catch (error){
     yield put(apiError(error));
@@ -144,7 +157,8 @@ function * updateCountry({ payload }){
     const { countries } = body;
     const { value } = payload;
     yield put(updateCountrySuccess(countries._id, value));
-    yield delay(2000);
+    yield put(showSuccessNotification("Country has been updated successfully"));
+    yield delay(1000);
     yield put(editClear());
   } catch (error) {
     yield put(apiError(error));

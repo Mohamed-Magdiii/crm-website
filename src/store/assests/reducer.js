@@ -31,7 +31,7 @@ export const assetReducer = (state = initalState, action)=>{
       state = {
         ...state,
         error:"",
-        successMessage:""
+        disableAddButton:true
       };
       break;
     case "ADD_NEW_SYMBOL_SUCCESS":
@@ -55,21 +55,22 @@ export const assetReducer = (state = initalState, action)=>{
             withdrawal:action.payload.newSymbol.withdrawFee
           }
         }, ...state.assets],
-        addSymbolSuccessMessage:"New symbol is added successfully",
+        clearModal:false,
       };
       break;
     case "ADD_SYMBOL_CLEAR":
       
       state = {
         ...state,
-        addSymbolSuccessMessage:""
+        clearModal:true,
+        disableAddButton:false
       };
       break;
     case "EDIT_SYMBOL_START":
       state = {
         ...state,
-        editLoading:true,
         editClear:false,
+        disableEditButton : true
       };
       break;
     case "EDIT_SYMBOL_DONE":
@@ -103,15 +104,13 @@ export const assetReducer = (state = initalState, action)=>{
             return asset;
           }
         }),
-        editLoading:false,
-        editDone:true
       };
       break;
     case "EDIT_SYMBOL_CLEAR":
       state = {
         ...state,
-        editDone:false,
         editClear:true,
+        disableEditButton:false
       };
     
       break;

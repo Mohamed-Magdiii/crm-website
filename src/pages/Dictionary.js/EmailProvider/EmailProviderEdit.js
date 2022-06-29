@@ -57,10 +57,6 @@ function EmailProviderEdit(props){
             <i className="mdi mdi-block-helper me-2"></i>
             {props.error}
           </UncontrolledAlert>}
-          {props.editSuccess && <UncontrolledAlert color="success">
-            <i className="mdi mdi-check-all me-2"></i>
-            {props.t("Email Provider has been updated successfully!")}
-          </UncontrolledAlert>}
         </ModalBody>
       </Modal>
     </React.Fragment>

@@ -129,7 +129,14 @@ function AssetEdit (props) {
                     type="text"
                     errorMessage={props.t("Enter valid deposit fee")}
                     value={depositFee}
-                    validate={{ required:{ value:true } } }
+                    validate = {{
+                      required :{ value:true },
+                      pattern : {
+                        // eslint-disable-next-line no-useless-escape
+                        value :"/^[+]?([0-9]+\.?[0-9]*|\.[0-9]+)$/",
+                        errorMessage : "Deposit Fee must be a number"
+                      }
+                    }}
                   />
                 </div>
               </Col>
@@ -142,7 +149,14 @@ function AssetEdit (props) {
                     type="text"
                     errorMessage={props.t("Enter valid withdraw fee")}
                     value={withdrawalFee}
-                    validate={{ required:{ value:true } }}
+                    validate = {{
+                      required :{ value:true },
+                      pattern : {
+                        // eslint-disable-next-line no-useless-escape
+                        value :"/^[+]?([0-9]+\.?[0-9]*|\.[0-9]+)$/",
+                        errorMessage : "Withdraw Fee must be a number"
+                      }
+                    }}
                   />
                 </div>
               </Col>
@@ -157,7 +171,14 @@ function AssetEdit (props) {
                     type="text"
                     errorMessage={props.t("Enter valid deposit amount")}
                     value={minDepositAmount}
-                    validate={{ required:{ value:true } }}
+                    validate = {{
+                      required :{ value:true },
+                      pattern : {
+                        // eslint-disable-next-line no-useless-escape
+                        value :"/^[+]?([0-9]+\.?[0-9]*|\.[0-9]+)$/",
+                        errorMessage : "Min deposit Amount must be a number"
+                      }
+                    }}
                   />
                 </div>
               </Col>
@@ -170,7 +191,14 @@ function AssetEdit (props) {
                     type="text"
                     errorMessage={props.t("Enter valid withdraw amount")}
                     value={minWithdrawAmount}
-                    validate={{ required:{ value:true } }}
+                    validate = {{
+                      required :{ value:true },
+                      pattern : {
+                        // eslint-disable-next-line no-useless-escape
+                        value :"/^[+]?([0-9]+\.?[0-9]*|\.[0-9]+)$/",
+                        errorMessage : "Min withdraw amount must be a number"
+                      }
+                    }}
                   />
                 </div>
               </Col>
@@ -187,18 +215,14 @@ function AssetEdit (props) {
               />
             </div>
             <div className='text-center pt-3 p-2'>
-              <Button disabled={props.addLoading} type="submit" color="primary" className="">
-                {props.t("Update Symbol")}
+              <Button disabled={props.disableEditButton} type="submit" color="primary" className="">
+                {props.t("Edit")}
               </Button>
             </div>
           </AvForm>
           {props.error && <UncontrolledAlert color="danger">
             <i className="mdi mdi-block-helper me-2"></i>
             {props.t(props.error)}
-          </UncontrolledAlert>}
-          {props.editDone && <UncontrolledAlert color="success">
-            <i className="mdi mdi-check-all me-2"></i>
-            {props.t("Symbol Updated successfully !!!")}
           </UncontrolledAlert>}
         </ModalBody>
       </Modal>
@@ -208,9 +232,8 @@ function AssetEdit (props) {
 
 
 const mapStateToProps = (state) => ({
-  editLoading: state.assetReducer.editLoading,
-  editDone: state.assetReducer.editDone,
   editClear: state.assetReducer.editClear,  
-  error:state.assetReducer.error
+  error:state.assetReducer.error,
+  disableEditButton: state.assetReducer.disableEditButton
 });
 export default connect(mapStateToProps, null)(withTranslation()(AssetEdit));
