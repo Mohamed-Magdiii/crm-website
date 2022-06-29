@@ -13,7 +13,7 @@ const loadMembersOptions = async (search, page) => {
       .getMembers({
         payload: {
           page: page,
-          limit: 5,
+          limit: 15,
         },
       })
       .then((results) => {
@@ -36,7 +36,7 @@ const loadMembersOptions = async (search, page) => {
       .getMembers({
         payload: {
           page: page,
-          limit: 3,
+          limit: 15,
           searchText: search,
         },
       })
