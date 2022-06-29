@@ -26,7 +26,6 @@ import { withTranslation } from "react-i18next";
 import { captilazeFirstLetter, displaySubString } from "common/utils/manipulateString";
 import { checkAllBoxes } from "common/utils/checkAllBoxes";
 import AgentForm from "./AgentDropDown";
-import { fetchUsers } from "store/users/actions";
 function ClientsList(props) {
   const [addModal, setAddReminderToClientModal] = useState(false);
   const [selectedClient, setSelectedClient] = useState({});
@@ -212,12 +211,6 @@ function ClientsList(props) {
       }));
     }
   };
-  useEffect(()=>{
-    dispatch(fetchUsers({
-      page:1,
-      limit:1000
-    }));
-  }, []);
   
   return (
     <React.Fragment>

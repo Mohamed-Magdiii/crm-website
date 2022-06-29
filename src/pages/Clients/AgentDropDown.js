@@ -1,4 +1,4 @@
-import {  connect } from "react-redux";
+import {  connect, useDispatch } from "react-redux";
 import {
   Modal,
   ModalHeader,
@@ -11,16 +11,23 @@ import {
 } from "react-super-responsive-table";
 import { withTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Select from "react-select";
+import { getSalesAgentsStart } from "store/users/actions";
 function AgentForm(props){
 
   const [addModal, setAddUserModal] = useState(false);
   const { create } = props.clientPermissions;
+  const dispatch = useDispatch();
   const toggleAddModal = () => {
     setAddUserModal(!addModal);
   };
- 
+  useEffect(()=>{
+    dispatch(getSalesAgentsStart({
+      page:1,
+      limit:1000
+    }));
+  }, []);
   const columns = [
     
     {
@@ -33,8 +40,8 @@ function AgentForm(props){
       text: props.t("Client Last Name")
     },
   ];
-  const filteredUsers = props.docs.filter(user=>user.roleId.title === "sales");
-  const usersOptions = filteredUsers.map(user=>{
+  
+  const usersOptions = props.salesAgent.map(user=>{
     return  {
       label :`${user.firstName} ${user.lastName}`,
       value: {
@@ -111,7 +118,6 @@ function AgentForm(props){
 const mapStateToProps = (state) => ({
   error: state.clientReducer.error,
   clientPermissions: state.Profile.clientPermissions,
-  docs: state.usersReducer.docs || []
-
+  salesAgent: state.usersReducer.salesAgent || []
 });
 export default connect(mapStateToProps, null)(withTranslation()(AgentForm));
