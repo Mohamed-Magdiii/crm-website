@@ -25,12 +25,12 @@ import {
   editUserClear,
   deleteUserDone,
   getSalesAgentsSuccess,
-} from "./actions";
 
+} from "./actions";
 
 //Include Both Helper File with needed methods
 import * as usersApi from "../../apis/users"; 
-import { showErrorNotification } from "store/notifications/actions";
+import { showErrorNotification, showSuccessNotification } from "store/notifications/actions";
 function* fetchUsers(params) {
 
   try {
@@ -133,7 +133,12 @@ function * fetchSalesAgent(params){
 }
 function * assignAgent(params){
   try {
-    yield call(usersApi.assignSalesAgent, params);
+    const data = yield call(usersApi.assignSalesAgent, params);
+    const { status } = data;
+    if (status){
+      
+      yield put(showSuccessNotification("Sales Agent has been assigned to the client successfully"));
+    }
   } catch (error){
     yield put(showErrorNotification("Error happened while assigning agent to clients"));
   }

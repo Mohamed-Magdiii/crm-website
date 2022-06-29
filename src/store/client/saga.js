@@ -87,7 +87,6 @@ function * assignAgent (params){
       clientIds,
       agent
     }));
-    yield put(showSuccessNotification("Sales Agent has been assigned to the client successfully"));
   } catch (error){
     yield put(showErrorNotification("Error happened while assign the agent"));
   }
