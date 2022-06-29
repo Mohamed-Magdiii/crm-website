@@ -106,7 +106,7 @@ function TeamsAddModal(props) {
                 value={managerValue}
                 loadOptions={loadPageOptions}
                 onChange={setManagerValue}
-                placeholder="Select Team Manager"
+                placeholder="Select Team Manager" 
                 errorMessage="please select Team Manager"
                 validate={{ required: { value: true } }}
               />
