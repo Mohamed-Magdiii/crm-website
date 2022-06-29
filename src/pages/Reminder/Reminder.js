@@ -73,8 +73,8 @@ const Reminder = () => {
   const handleDateClick = (arg) => {
     const date = arg["date"];
     var tomorrow = new Date(date);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    setSelectedDay(tomorrow.toISOString().replace(/.000Z/, ""));
+    tomorrow.setDate(tomorrow.getDate() + 1); 
+    setSelectedDay(tomorrow.toISOString().replace(/00:00.000Z/, "01"));   
     setAddReminderModal(true);
 
   };
