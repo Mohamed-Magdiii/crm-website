@@ -102,6 +102,7 @@ function AddReminderModal(props) {
                   additional={defaultAdditional}
                   value={clientValue}
                   loadOptions={loadPageOptions}
+                  placeholder="Choose Client Name ..."
                   onChange={setclientValue}
                   errorMessage="please select Client"
                   validate={{ required: { value: true } }}
@@ -112,6 +113,7 @@ function AddReminderModal(props) {
                 <AvField
                   name="note"
                   label="Reminder Note"
+                  placeholder="Enter Your Note"
                   type="textarea"
                   errorMessage="Invalid Reminder Note"
                   validate={{
