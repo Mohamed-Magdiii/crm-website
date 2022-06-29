@@ -126,7 +126,7 @@ function AddReminderModal(props) {
                   label="Note"
                   placeholder="Enter Your Note"
                   type="textarea"
-                  errorMessage="Invalid Reminder Note"
+                  errorMessage="Enter Your Note"
                   validate={{
                     required: { value: true },
                   }}
