@@ -116,7 +116,6 @@ function EditReminderModal(props) {
                 <Row>
                   <Col className="col-10">
                     <div className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-3">
-                      <h5>Client: {clientName}</h5>
                     </div>
                   </Col>
                   <Col className="col-2">
@@ -138,25 +137,25 @@ function EditReminderModal(props) {
                   </Col>
                 </Row>
                 <div className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-3">
-                  <h5>Reminder At : {ReminderEnd}</h5>
+                  Reminder At :<span> &nbsp; </span>{ReminderEnd}
                 </div>
                 <div className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-3">
-                  <h5>Created By : {createdBy?.firstName + " " + createdBy?.lastName}</h5>
+                  Created By :<span> &nbsp; </span> {createdBy?.firstName + " " + createdBy?.lastName}
                 </div>
                 <div className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12">
-                  <h5>Reminder Note :  {title}</h5>
+                  Reminder Note : <span> &nbsp; </span> {title?.slice(0, 1).toUpperCase() + title?.slice(1, title.length)}
                   {/* <br /> */}
                 </div>
                 <div className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-3">
                   {type == "0" &&
-                    <h5>
-                      Type : Todo
-                    </h5>
+                    <>
+                      Type : <span> &nbsp; </span>Todo
+                    </>
                   }
                   {type == "1" &&
-                    <h5>
-                      Type : Reminder
-                    </h5>
+                    <>
+                      Type :<span> &nbsp; </span> Reminder
+                    </>
                   }
                   {/* <h5>Created By: {createdBy?.firstName + " " + createdBy?.lastName}</h5> */}
                 </div>
