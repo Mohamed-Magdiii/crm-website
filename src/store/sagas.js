@@ -27,6 +27,7 @@ import feeGroupSaga from "./feeGroups/saga";
 import markupSaga from "./markups/saga";
 import marketPricingSaga from "./marketPricing/saga";
 import transactionFeeGroupSaga from "./transactionFeeGroups/saga";
+import documentsSaga from "./documents/saga";
 
 export default function* rootSaga() {
   yield all([
@@ -60,5 +61,6 @@ export default function* rootSaga() {
     fork(marketSaga),
     fork(feeGroupSaga),
     fork(transactionFeeGroupSaga),
+    fork(documentsSaga),
   ]);
 }

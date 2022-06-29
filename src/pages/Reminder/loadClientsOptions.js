@@ -13,7 +13,7 @@ const loadClientsOptions = async (search, page) => {
       .getClients({
         payload: {
           page: page,
-          limit: 5,
+          limit: 30,
         },
       })
       .then((results) => {
@@ -36,7 +36,7 @@ const loadClientsOptions = async (search, page) => {
       .getClients({
         payload: {
           page: page,
-          limit: 3,
+          limit: 20,
           searchText: search,
         },
       })

@@ -23,7 +23,7 @@ const Calendar = (state = INIT_STATE, action) => {
   switch (action.type) {
     case API_SUCCESS:
       switch (action.payload.actionType) {
-        case GET_EVENTS:
+        case GET_EVENTS: 
           return {
             ...state,
             events: action.payload.data,

@@ -71,8 +71,9 @@ const Login = props => {
                           label="Email"
                           value=""
                           className="form-control"
-                          placeholder="Enter email"
-                          type="email"
+                          placeholder="Enter Your Email"
+                          type="email" 
+                          errorMessage="Enter Valid Email"
                           required
                         />
                       </div>
@@ -91,7 +92,8 @@ const Login = props => {
                             type="password"
                             className="form-control"
                             required
-                            placeholder="Enter Password"
+                            errorMessage="Enter Valid Password"
+                            placeholder="Enter Your Password"
                           />
                         </div>
                       </div>
