@@ -148,7 +148,7 @@ function AddReminderModal(props) {
                   inline
                   name="type"
                   required
-                  errorMessage="Invalid Reminder type"
+                  errorMessage="Invalid Type"
                 >
                   <AvRadio label="Reminder" value="1" />
                   <AvRadio label="Todo" value="0" />
