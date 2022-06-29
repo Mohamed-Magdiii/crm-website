@@ -22,7 +22,7 @@ import { withTranslation } from "react-i18next";
 import { checkAllBoxes } from "common/utils/checkAllBoxes";
 import { Link } from "react-router-dom";
 import DetailsModal from "./DetailsModal";
-import { captilazeFirstLetter} from "common/utils/manipulateString";
+import { captilazeFirstLetter } from "common/utils/manipulateString";
 function Withdrawal(props){
   const dispatch = useDispatch();
   const [, setSearchInput] = useState("");
