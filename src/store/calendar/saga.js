@@ -28,9 +28,9 @@ import {
   deleteEvent,
   getCategories,
 } from "../../apis/reminder"; 
-function* fetchEvents() {
+function* fetchEvents(params) {
   try {
-    const response = yield call(getEvents);  
+    const response = yield call(getEvents, params);  
     let output = [];
 
     response.result?.docs?.map(function (item) {
