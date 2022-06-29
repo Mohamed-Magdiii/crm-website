@@ -71,7 +71,7 @@ function TeamsEditModal(props) {
       {/* <Link to="#" className="btn btn-light" onClick={onClose}><i className="bx bx-plus me-1"></i> Add New</Link> */}
       <Modal isOpen={open} toggle={onClose} centered={true}>
         <ModalHeader toggle={onClose} tag="h4">
-          Edit User
+          Edit Team
         </ModalHeader>
         <ModalBody>
           <AvForm

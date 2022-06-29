@@ -22,6 +22,7 @@ import DeleteModal from "components/Common/DeleteModal";
 import TeamsAddModal from "./TeamsAddModal";
 import TeamsEditModal from "./TeamsEditModal";
 import TeamsEditMembersModal from "./TeamsEditMembersModal";
+import { showSuccessNotification } from "store/notifications/actions";
 
 function Teams() {
 
@@ -181,6 +182,7 @@ function Teams() {
   };
   const deleteTeamHandel = () => {
     dispatch(deleteTeam(selectedTeam._id));
+    dispatch(showSuccessNotification("Team deleted Successfully"));
   };
 
   const searchHandelEnterClik = (event) => {
