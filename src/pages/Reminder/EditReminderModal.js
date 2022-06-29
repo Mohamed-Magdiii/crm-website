@@ -26,6 +26,7 @@ function EditReminderModal(props) {
   const [alertShow, setAlertShow] = useState(false);
   const [alertmsg, setAlertMsg] = useState("");
   const [editFlag, setEditFlag] = useState(false);
+  const [submitState, setSubmitState] = useState(false);
 
   const { openEdit, eventReminder = {}, onClose } = props;
   const [clientName, setclientName] = useState("");
@@ -55,7 +56,7 @@ function EditReminderModal(props) {
 
 
   const handleValidUpdateSubmit = (e, values) => {
-
+    setSubmitState(true);
     updateEvent(id, values)
       .then(() => {
         showAlert(false, true);
@@ -65,6 +66,9 @@ function EditReminderModal(props) {
         seterrorMassage(e.toString());
         showAlert(true, false);
       });
+    setTimeout(() => {
+      setSubmitState(false);
+    }, 2500);
 
   };
 
@@ -112,7 +116,6 @@ function EditReminderModal(props) {
                 <Row>
                   <Col className="col-10">
                     <div className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-3">
-                      <h2>Client: {clientName}</h2>
                     </div>
                   </Col>
                   <Col className="col-2">
@@ -134,25 +137,25 @@ function EditReminderModal(props) {
                   </Col>
                 </Row>
                 <div className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-3">
-                  <h5>Reminder At : {ReminderEnd}</h5>
+                  Reminder At :<span> &nbsp; </span>{ReminderEnd}
                 </div>
                 <div className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-3">
-                  <h5>Created By : {createdBy?.firstName + " " + createdBy?.lastName}</h5>
+                  Created By :<span> &nbsp; </span> {createdBy?.firstName + " " + createdBy?.lastName}
                 </div>
                 <div className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12">
-                  <h5>Reminder Note :  {title}</h5>
+                  Reminder Note : <span> &nbsp; </span> {title?.slice(0, 1).toUpperCase() + title?.slice(1, title.length)}
                   {/* <br /> */}
                 </div>
                 <div className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-3">
                   {type == "0" &&
-                    <h5>
-                      Type : Todo
-                    </h5>
+                    <>
+                      Type : <span> &nbsp; </span>Todo
+                    </>
                   }
                   {type == "1" &&
-                    <h5>
-                      Type : Reminder
-                    </h5>
+                    <>
+                      Type :<span> &nbsp; </span> Reminder
+                    </>
                   }
                   {/* <h5>Created By: {createdBy?.firstName + " " + createdBy?.lastName}</h5> */}
                 </div>
@@ -163,16 +166,15 @@ function EditReminderModal(props) {
             :
 
             <AvForm onValidSubmit={handleValidUpdateSubmit}>
-              <h1>Update</h1>
-
               <Row form>
                 <Col className="col-12 mb-3">
                   <AvField
                     name="note"
-                    label="Reminder Note"
+                    label="Note"
+                    placeholder="Enter Note"
                     type="text"
                     value={title}
-                    errorMessage="Invalid Reminder Note"
+                    errorMessage="Invalid Note"
                     validate={{
                       required: { value: true },
                     }}
@@ -182,9 +184,9 @@ function EditReminderModal(props) {
                   <AvField
                     type="datetime-local"
                     name="timeEnd"
-                    label="Reminder"
+                    label="Date"
                     value={timeEnd}
-                    errorMessage="Invalid Reminder Note"
+                    errorMessage="Invalid Date"
                     validate={{
                       required: { value: true },
                     }}
@@ -193,22 +195,25 @@ function EditReminderModal(props) {
                 </Col>
                 <Col className="col-12 mb-3">
                   <AvField
-                    label="status"
+                    label="Status"
                     type="select"
                     name="status"
                     value={status}
+                    errorMassage="Invalid Status"
                     validate={{
-                      required: { value: true },
+                      required: {
+                        value: true
+                      },
                     }}
                   >
-                    <option value="">select</option>
+                    <option value="">Select</option>
                     <option>open</option>
                     <option>ongoing</option>
                     <option>completed</option>
 
                   </AvField>
                 </Col>
-                <Col className="col-12 mb-3">
+                <Col className="col-12 mb-2">
                   <AvRadioGroup
                     inline
                     name="type"
@@ -228,8 +233,9 @@ function EditReminderModal(props) {
                     <button
                       type="submit"
                       className="btn btn-success save-event"
+                      disabled={submitState}
                     >
-                      Save
+                      Edit
                     </button>
                   </div>
                 </Col>

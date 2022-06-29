@@ -21,6 +21,8 @@ import { addNewEvent } from "../../apis/reminder";
 function AddReminderModal(props) {
   const { openAdd, selectedDate = {}, onClose } = props;
   const [clientValue, setclientValue] = useState(null);
+  const [clientError, setClientError] = useState(false);
+  const [submitState, setSubmitState] = useState(false);
 
   const [errorMassage, seterrorMassage] = useState("");
   const [errorAlert, setErrorAlertMassage] = useState(false);
@@ -35,20 +37,31 @@ function AddReminderModal(props) {
       type: values.type,
       timeEnd: values.timeEnd,
     };
+    if (clientValue) {
+      setSubmitState(true);
+      addNewEvent(newEvent)
+        .then(() => {
+          showAlert(false, true);
+        }
+        )
+        .catch((e) => {
+          seterrorMassage(e.toString());
+          showAlert(true, false);
+        });
+      setTimeout(() => {
+        setSubmitState(false);
+      }, 2500);
+    } else {
+      setClientError(true);
+      setTimeout(() => {
+        setClientError(false);
+      }, 2000);
+    }
 
-    addNewEvent(newEvent)
-      .then(() => {
-        showAlert(false, true);
-      }
-      )
-      .catch((e) => {
-        seterrorMassage(e.toString());
-        showAlert(true, false);
-      });
   };
   const showAlert = (danger, succ, msg) => {
     if (succ) {
-      setAlertMsg(msg || "Reminder Added successfully !!!");
+      setAlertMsg(msg || "ToDo Added successfully !!!");
       setAlertShow(true);
       setTimeout(() => {
         setAlertShow(false);
@@ -67,7 +80,7 @@ function AddReminderModal(props) {
   };
 
   const loadPageOptions = async (q, prevOptions, { page }) => {
-    
+
     const { options, hasMore } = await loadClientsOptions(q, page);
 
     return {
@@ -90,26 +103,30 @@ function AddReminderModal(props) {
 
           <AvForm onValidSubmit={handleValidEventSubmit}>
             <Row form>
-
               <Col className="col-12 mb-3">
-                <label>Select Client</label>
-
+                <label>Client</label>
                 <AsyncPaginate
                   additional={defaultAdditional}
                   value={clientValue}
                   loadOptions={loadPageOptions}
+                  placeholder="Choose Client Name ..."
                   onChange={setclientValue}
                   errorMessage="please select Client"
                   validate={{ required: { value: true } }}
                 />
+                {clientError && (
+                  <p className="small text-danger ">Please Select Client</p>
+                )}
+
               </Col>
 
               <Col className="col-12 mb-3">
                 <AvField
                   name="note"
-                  label="Reminder Note"
-                  type="text"
-                  errorMessage="Invalid Reminder Note"
+                  label="Note"
+                  placeholder="Enter Your Note"
+                  type="textarea"
+                  errorMessage="Enter Your Note"
                   validate={{
                     required: { value: true },
                   }}
@@ -119,22 +136,22 @@ function AddReminderModal(props) {
                 <AvField
                   type="datetime-local"
                   name="timeEnd"
-                  label="Reminder"
+                  label="Date"
                   value={selectedDate}
                   errorMessage="Invalid Reminder Note"
                 >
                 </AvField>
               </Col>
               <Col className="col-12 mb-3">
+                <label>Type</label>
                 <AvRadioGroup
                   inline
                   name="type"
-                  label="Type"
                   required
-                  errorMessage="Invalid Reminder type"
+                  errorMessage="Invalid Type"
                 >
-                  <AvRadio  label="Reminder" value="1" />
-                  <AvRadio  label="Todo" value="0" />
+                  <AvRadio label="Reminder" value="1" />
+                  <AvRadio label="Todo" value="0" />
                 </AvRadioGroup>
               </Col>
             </Row>
@@ -144,6 +161,7 @@ function AddReminderModal(props) {
                   <button
                     type="submit"
                     className="btn btn-success save-event"
+                    disabled={submitState}
                   >
                     Add
                   </button>
