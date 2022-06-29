@@ -37,12 +37,13 @@ function *fetchClients(params) {
     
 }
 
-function * addNewClient({ payload:{ newClient } }) {
+function * addNewClient({ payload }) {
   try {
-    const data = yield call(clientApi.addClient, newClient);
+    const data = yield call(clientApi.addClient, payload);
     const { status } = data;
+    const { result:client } = data;
     if (status){
-      yield put(addNewClientSuccess(newClient));
+      yield put(addNewClientSuccess(client));
       yield put(showSuccessNotification("Client is added successfully"));
       yield delay(1000);
       yield put(addModalClear());
@@ -77,16 +78,14 @@ function * editClientDetails(params){
 }
 function * assignAgent (params){
   
-  const { payload :{ id }  } = params;
-  const { payload: { agent: clientAgent } } = params;
+  const { payload :{ agent }  } = params;
+  const { payload: { body } } = params;
+  const { clientIds } = body;
   try {
-    yield call(clientApi.updateClientDetails, params);
     
     yield put(assignAgentToClientSuccess({
-      id, 
-      agent:{
-        ...clientAgent
-      }
+      clientIds,
+      agent
     }));
     yield put(showSuccessNotification("Sales Agent has been assigned to the client successfully"));
   } catch (error){

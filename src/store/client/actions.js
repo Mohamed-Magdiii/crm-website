@@ -54,15 +54,14 @@ export const apiError = (error)=>{
 export const addNewClient = (newClient)=>{
   return {
     type:ADD_NEW_CLIENT,
-    payload:{ newClient }
+    payload:newClient
   };
 };
 export const addNewClientSuccess = (newClient)=>{
   return {
     type:ADD_NEW_CLIENT_SUCCESS,
-    payload:{
-      newClient
-    }
+    payload:newClient
+    
   };
 };
 

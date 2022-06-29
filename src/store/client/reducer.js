@@ -57,16 +57,9 @@ export const clientReducer = (state = initalState, action)=>{
       state = {
         ...state,
         loading: false,
-        totalDocs:action.payload.newClient ? state.totalDocs + 1 : state.totalDocs,
-        clients: action.payload.newClient ? [{ 
-          createdAt:new Date().toLocaleDateString(), 
-          source:"REGISTER_DEMO",
-          category:"LIVE_INDIVIDUAL",
-          stages:{
-            kycApproved:false,
-            kyRejected:false
-          },
-          ...action.payload.newClient
+        totalDocs:state.totalDocs + 1,
+        clients: action.payload ? [{ 
+          ...action.payload
         },
         ...state.clients] : [...state.clients],
         disableAddButton:true
@@ -169,21 +162,23 @@ export const clientReducer = (state = initalState, action)=>{
       };
       break;
     case "ASSIGN_AGENT_SUCCESS":
-      
       state = {
         ...state,
         clients : state.clients.map(client=>{
-          if (client.id === action.payload.id){
-            return {
-              ...client,
-              agent:{
-                ...action.payload.agent
-              }
-            };
+          for (let i = 0 ; i < action.payload.clientIds.length; i++){
+            if (client._id === action.payload.clientIds[i]){
+              return {
+                ...client,
+                agent:{
+                  ...action.payload.agent
+                }
+              };
+            }
           }
-          else {
-            return client;
-          }
+       
+          
+          return client;
+          
         })
       };
       break;
