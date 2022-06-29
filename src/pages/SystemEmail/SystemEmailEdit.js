@@ -111,10 +111,11 @@ function SystemEmailEdit(props){
   ));
   const [contentTempValue, setContentempValue] = useState(contentTempInitialValues);
   const contentTempValueHandler = (e) => {
-    const blocksFromHTML = htmlToDraft(e.blocks[0].text);
+    const blocksFromHTML = htmlToDraft(`<p>${e.blocks[0].text}</p>`);
     const { contentBlocks, entityMap } = blocksFromHTML;
     const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
     const editorState = EditorState.createWithContent(contentState); 
+    console.log(editorState);
     
     const updatedTempContent = [];
     for (let item of contentTempValue){
@@ -132,14 +133,14 @@ function SystemEmailEdit(props){
   // back button handler
   const history = useHistory();
   const backButtonConfirmationHandler = () => {
-    if (props.editContentClearingCounter === 0 && (isSubjectChanged || isContentChanged)){
+    props.editContentClearingCounter === 0 && (isSubjectChanged || isContentChanged)
+      ?
       // subject, content or both were updated and 
       // system email wasn't updated successfully yet
-      setBackConfirmationModalState(true);
-    } else {
+      setBackConfirmationModalState(true)
+      :
       // no updates were made to subject or content
       history.push("/system-emails");
-    }
   };
 
   // modal back button handler
