@@ -82,7 +82,7 @@ function TeamsAddModal(props) {
               <AvField
                 name="title"
                 label="Team Title  "
-                placeholder="Team Title"
+                placeholder="Enter Team Title"
                 type="text"
                 errorMessage="Enter Team Title"
                 validate={{ required: { value: true } }}
@@ -97,6 +97,7 @@ function TeamsAddModal(props) {
                 value={managerValue}
                 loadOptions={loadPageOptions}
                 onChange={setManagerValue}
+                placeholder="Select Team Manager"
                 errorMessage="please select Team Manager"
                 validate={{ required: { value: true } }}
               />
@@ -104,7 +105,7 @@ function TeamsAddModal(props) {
 
             <div className="text-center p-5">
               <Button type="submit" color="primary" className="">
-                Add New User
+                Add  
               </Button>
             </div>
           </AvForm>
