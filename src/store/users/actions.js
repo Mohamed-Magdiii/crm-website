@@ -20,7 +20,9 @@ import {
   DELETE_USERS_START,
   DELETE_USERS_DONE,
   GET_ASSIGNED_USERS_START,
-  GET_ASSIGNED_USERS_SUCCESS
+  GET_ASSIGNED_USERS_SUCCESS,
+  ASSIGN_AGENT_START,
+  ASSIGN_AGENT_SUCCESS
 } from "./actionTypes";
 
 export const fetchUsers = (params = {})=>{
@@ -141,5 +143,17 @@ export const  getSalesAgentsSuccess = (data)=>{
   return {
     type: GET_ASSIGNED_USERS_SUCCESS,
     payload: data
+  };
+};
+export const assignAgentStart = (params = {})=>{
+  return {
+    type:ASSIGN_AGENT_START,
+    payload: params
+  };
+};
+export const assignAgentSuccess = (data)=>{
+  return {
+    type:ASSIGN_AGENT_SUCCESS,
+    payload:data
   };
 };

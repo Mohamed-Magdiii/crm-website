@@ -46,3 +46,8 @@ export const deleteUser = async ({ payload }) => {
   }
   return data;
 };
+export const assignSalesAgent = async  ({ payload })=>{
+  const { agentId, body } = payload;
+  const data = await axiosHelper.post(`/users/${agentId}/assign`, body);
+  return data;
+};
