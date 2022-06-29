@@ -46,22 +46,17 @@ function AgentForm(props){
   return (
     <React.Fragment >
       
-      <div  style = {{ 
-      }} className="d-flex align-items-center gap-2">
-        
-        <label className="d-flex m-auto">Select A Sales Agent</label>
-        <div style={{ minWidth:"200px" }}>
-          <Select   
-            classNamePrefix="select2-selection"
-            placeHolder={"sales agent"}
-            options= {usersOptions}
-            onChange = {(e)=>assignAgent(e)}
-          />
-        </div>
-      
+      <div style={{ minWidth:"200px" }}>
+        <Select   
+          classNamePrefix="select2-selection"
+          placeholder="Select a sales agent"
+          options= {usersOptions}
+          onChange = {(e)=>assignAgent(e)}
+          
+        />
       </div>
       
-   
+
     </React.Fragment>
   );
 }
