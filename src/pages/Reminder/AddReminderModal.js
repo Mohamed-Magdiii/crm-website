@@ -93,11 +93,9 @@ function AddReminderModal(props) {
         <ModalBody >
 
           <AvForm onValidSubmit={handleValidEventSubmit}>
-            <Row form>
-
+            <Row form> 
               <Col className="col-12 mb-3">
-                <label>Select Client</label>
-
+                <label>Client</label> 
                 <AsyncPaginate
                   additional={defaultAdditional}
                   value={clientValue}
@@ -112,7 +110,7 @@ function AddReminderModal(props) {
               <Col className="col-12 mb-3">
                 <AvField
                   name="note"
-                  label="Reminder Note"
+                  label="Note"
                   placeholder="Enter Your Note"
                   type="textarea"
                   errorMessage="Invalid Reminder Note"
@@ -125,7 +123,7 @@ function AddReminderModal(props) {
                 <AvField
                   type="datetime-local"
                   name="timeEnd"
-                  label="Reminder"
+                  label="Date"
                   value={selectedDate}
                   errorMessage="Invalid Reminder Note"
                 >
