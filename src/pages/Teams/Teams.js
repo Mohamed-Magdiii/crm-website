@@ -69,9 +69,9 @@ function Teams() {
     // roles: state.teamsReducer.rolesData,
     clearingCounter: state.teamsReducer.clearingCounter,
     // editClearingCounter: state.teamsReducer.editClearingCounter,
-    teamsPermissions : state.Profile.teamsPermissions || {}
+    teamsPermissions: state.Profile.teamsPermissions || {}
   }));
-  const { update, delete : deletePermission } = teamsPermissions;
+  const { update, delete: deletePermission } = teamsPermissions;
   const columns = [
     {
       text: "Title",
@@ -85,13 +85,9 @@ function Teams() {
       formatter: (team) => (
         <>
           {team.managerId ? (
-            <div className="d-flex gap-3">
-              <Label className="me-1" data-on-label="roleId" data-off-label="">{team.managerId.firstName + " " + team.managerId.lastName}</Label>
-            </div>
+            <> {team.managerId.firstName + " " + team.managerId.lastName}</>
           ) : (
-            <div className="d-flex gap-3">
-              <Label className="me-1" data-on-label="roleId" data-off-label=""> </Label>
-            </div>
+            " "
           )}
         </>
       ),
@@ -103,13 +99,11 @@ function Teams() {
       formatter: (team) => (
         <>
           {team.members ? (
-            <div className="d-flex gap-3">
-              <Label className="me-1" data-on-label="roleId" data-off-label="">{team.members.length}</Label>
-            </div>
+            <>
+              {team.members.length}
+            </>
           ) : (
-            <div className="d-flex gap-3">
-              <Label className="me-1" data-on-label="roleId" data-off-label=""> </Label>
-            </div>
+            ""
           )}
         </>
       ),
