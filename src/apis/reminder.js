@@ -1,8 +1,16 @@
 import * as axiosHelper from "./api_helper";
 import * as url from "../helpers/url_helper";
-// get Events
-export const getEvents = () => axiosHelper.get("/todos");
+import qs from "qs";
 
+// get Events 
+export const getEvents = async ({ payload }) => {
+  const data = await axiosHelper.get(`/todos?${qs.stringify(payload)}`);
+  if (data.isError){
+    throw new Error(data.isError);
+  }
+  return data;
+
+};
 // add Events 
 export const addNewEvent = async (event) => {
   // const { id, values } = payload;
