@@ -93,9 +93,9 @@ function AddReminderModal(props) {
         <ModalBody >
 
           <AvForm onValidSubmit={handleValidEventSubmit}>
-            <Row form> 
+            <Row form>
               <Col className="col-12 mb-3">
-                <label>Client</label> 
+                <label>Client</label>
                 <AsyncPaginate
                   additional={defaultAdditional}
                   value={clientValue}
@@ -117,7 +117,7 @@ function AddReminderModal(props) {
                   validate={{
                     required: { value: true },
                   }}
-                /> 
+                />
               </Col>
               <Col className="col-12 mb-3">
                 <AvField
@@ -130,10 +130,10 @@ function AddReminderModal(props) {
                 </AvField>
               </Col>
               <Col className="col-12 mb-3">
+                <label>Type</label>
                 <AvRadioGroup
                   inline
                   name="type"
-                  label="Type"
                   required
                   errorMessage="Invalid Reminder type"
                 >
