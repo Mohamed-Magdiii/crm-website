@@ -21,6 +21,7 @@ import { addNewEvent } from "../../apis/reminder";
 function AddReminderModal(props) {
   const { openAdd, selectedDate = {}, onClose } = props;
   const [clientValue, setclientValue] = useState(null);
+  const [clientError, setClientError] = useState(false);
   const [submitState, setSubmitState] = useState(false);
 
   const [errorMassage, seterrorMassage] = useState("");
@@ -36,19 +37,27 @@ function AddReminderModal(props) {
       type: values.type,
       timeEnd: values.timeEnd,
     };
-    setSubmitState(true);
-    addNewEvent(newEvent)
-      .then(() => {
-        showAlert(false, true);
-      }
-      )
-      .catch((e) => {
-        seterrorMassage(e.toString());
-        showAlert(true, false);
-      });
-    setTimeout(() => {
-      setSubmitState(false);
-    }, 2500);
+    if (clientValue) {
+      setSubmitState(true);
+      addNewEvent(newEvent)
+        .then(() => {
+          showAlert(false, true);
+        }
+        )
+        .catch((e) => {
+          seterrorMassage(e.toString());
+          showAlert(true, false);
+        });
+      setTimeout(() => {
+        setSubmitState(false);
+      }, 2500);
+    } else {
+      setClientError(true);
+      setTimeout(() => {
+        setClientError(false);
+      }, 2000);
+    }
+
   };
   const showAlert = (danger, succ, msg) => {
     if (succ) {
@@ -105,6 +114,10 @@ function AddReminderModal(props) {
                   errorMessage="please select Client"
                   validate={{ required: { value: true } }}
                 />
+                {clientError && (
+                  <p className="small text-danger ">Please Select Client</p>
+                )}
+
               </Col>
 
               <Col className="col-12 mb-3">
