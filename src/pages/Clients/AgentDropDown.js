@@ -1,50 +1,40 @@
-import React, { useState } from "react";
-import { connect, useDispatch } from "react-redux";
+import {  connect } from "react-redux";
 import {
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  Row,
+  Col
 } from "reactstrap";
+import {
+  Table, Thead, Tbody, Tr, Th, Td
+} from "react-super-responsive-table";
+import { withTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import Select from "react-select";
-import { assignAgentToClientStart } from "store/client/actions";
-function AgentDropDown(props){
-  const [menu, setMenu] = useState(false);
-  const [selected, setSelected] = useState(false);
-  const { client } = props;
-  const { _id : clientId } = client;
-  const dispatch = useDispatch();
-  const { agent } = client;
-  const toggle = () => {
-    if (selected){
-      setMenu(false);
-      setSelected(false);
-    }
-    else {
+function AgentForm(props){
 
-      setMenu(true);
-    }
+  const [addModal, setAddUserModal] = useState(false);
+  const { create } = props.clientPermissions;
+  const toggleAddModal = () => {
+    setAddUserModal(!addModal);
+  };
+ 
+  const columns = [
     
-  };
-  const assignAgent = (e)=>{
-    setMenu(true);
-    dispatch(assignAgentToClientStart({
-      id:clientId,
-      agent : {
-        _id:e.value._id,
-        firstName: e.value.firstName,
-        lastName:e.value.lastName,
-        email:e.value.email
-      },
-      values:{
-        agent: e.value._id,
-      }
-    }));
-    setSelected(true);
-  };
+    {
+      dataField: "firstName",
+      text: props.t("Client First Name"),
+     
+    },
+    {
+      dataField: "lastName",
+      text: props.t("Client Last Name")
+    },
+  ];
   const filteredUsers = props.docs.filter(user=>user.roleId.title === "sales");
   const usersOptions = filteredUsers.map(user=>{
-  
     return  {
       label :`${user.firstName} ${user.lastName}`,
       value: {
@@ -56,28 +46,72 @@ function AgentDropDown(props){
     } ; 
   }  
   );
-  return  (<Dropdown isOpen={menu} toggle = {(e)=>{toggle(e) }} className="d-inline-block">
-    <DropdownToggle  onClick = {e=>e.stopPropagation()} className="btn header-item zero-height " tag="button">
-      {agent ? `${agent.firstName} ${agent.lastName}` : "unassigned"}  
-    </DropdownToggle>
-    <DropdownMenu  onClick = {e=>e.stopPropagation()} className="dropdown-menu-end">
-       
-      <DropdownItem onClick={(e)=>{e.stopPropagation(); setMenu(true)}}
-      >
-        <Select  
-          classNamePrefix="select2-selection"
-          placeHolder={"sales agent"}
-          options= {usersOptions}
-          onChange = {(e)=>{assignAgent(e)}}
-          closeMenuOnSelect={true}
-        />
-
-      </DropdownItem>
-    </DropdownMenu>
-  </Dropdown>);
-   
+  return (
+    <React.Fragment >
+      <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`}  onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> {props.t("Assign Sales Agent")}</Link>
+      <Modal isOpen={addModal} toggle={toggleAddModal} centered={true} size = "lg">
+        <ModalHeader toggle={toggleAddModal} tag="h4" >
+          {props.t("Assign Sales Agent")}
+        </ModalHeader>
+        <ModalBody >
+          <div className="table-rep-plugin">
+            <div
+              className="table-responsive mb-0"
+              data-pattern="priority-columns"
+            >
+              <Table
+                id="tech-companies-1"
+                className="table "
+              >
+                <Thead className="text-center" >
+                  <Tr>
+                    {columns.map((column, index) =>
+                      <Th data-priority={index} key={index}>{column.text}</Th>
+                    )}
+                  </Tr>
+                </Thead>
+                <Tbody className="text-center" style={{ 
+                  fontSize: "13px",
+               
+                }}>
+              
+                  {props.clients.map((row, rowIndex) =>
+                    <Tr key={rowIndex} >
+                      {columns.map((column, index) =>
+                        <Td key={`${rowIndex}-${index}`}>
+                     
+                          {column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
+                        </Td>
+                      )}
+                    </Tr>
+                  )}
+                </Tbody>
+              </Table>
+          
+            </div>
+          </div>
+          <Row>
+            <Col>
+              <label>Select A Sales Agent</label>
+              <Select  
+                classNamePrefix="select2-selection"
+                placeHolder={"sales agent"}
+                options= {usersOptions}
+            
+            
+              />
+            </Col>
+           
+          </Row> 
+        </ModalBody>
+      </Modal>
+    </React.Fragment>
+  );
 }
-const mapStateToProps = (state)=>({
-  docs:state.usersReducer.docs || []
+const mapStateToProps = (state) => ({
+  error: state.clientReducer.error,
+  clientPermissions: state.Profile.clientPermissions,
+  docs: state.usersReducer.docs || []
+
 });
-export default connect(mapStateToProps, null)(AgentDropDown);
+export default connect(mapStateToProps, null)(withTranslation()(AgentForm));

@@ -25,15 +25,37 @@ import { Link } from "react-router-dom";
 import { withTranslation } from "react-i18next";
 import { captilazeFirstLetter, displaySubString } from "common/utils/manipulateString";
 import { checkAllBoxes } from "common/utils/checkAllBoxes";
-import AgentDropDown from "./AgentDropDown";
+import AgentForm from "./AgentDropDown";
 import { fetchUsers } from "store/users/actions";
 function ClientsList(props) {
   const [addModal, setAddReminderToClientModal] = useState(false);
   const [selectedClient, setSelectedClient] = useState({});
+  const [assignedClients, setAssignedClients] = useState([]);
+  
   const columns = [
     {
       dataField: "checkbox",
-      text: <input type="checkbox" id="select-all-clients" onChange={()=>checkAllBoxes("select-all-clients", ".client-checkbox")}className = "select-all-check-box" />
+      text: <input type="checkbox" id="select-all-clients" onChange={(e)=>{
+        checkAllBoxes("select-all-clients", ".client-checkbox");
+        setAssignedClients(()=>{
+          if (e.target.checked){
+            return [...props.clients];
+          }
+          else if (!e.target.checked){
+            return [];
+          }
+        });
+      }} />,
+      formatter:(val)=> <input type="checkbox" onChange = {(e)=>setAssignedClients(preValue=>{
+
+        if (e.target.checked){
+          return [val, ...preValue];
+        }
+        else if (!e.target.checked){
+          return preValue.filter(client=>client._id !== val._id);
+        }
+        
+      })} className ="client-checkbox" />,
     },
     {
       dataField: "createdAt",
@@ -93,12 +115,7 @@ function ClientsList(props) {
       isDummyField: true,
       editable: false,
       text:props.t("Agent"),
-      formatter: (val) => {
-        return (
-          <AgentDropDown client= {val}/>
-        );
-      
-      }
+      formatter: (val) => (val.agent ? `${val.agent.firstName} ${val.agent.lastName}` : "unassigned")
     },
     {
       dataField: "source",
@@ -220,7 +237,11 @@ function ClientsList(props) {
                     <CardTitle>{props.t("Clients List")} ({props.totalDocs})</CardTitle>
                     <ClientForm />
                   </div>
-                  <SearchBar handleSearchInput={handleSearchInput} />
+                  <div className="d-flex justify-content-between  align-items-center">
+                    <SearchBar handleSearchInput={handleSearchInput} />
+                    {assignedClients.length > 0 && <AgentForm clients= {[...assignedClients]}/> }
+                  </div>
+           
                 </CardHeader>
                 <CardBody>
                   <div className="table-rep-plugin">
@@ -248,7 +269,7 @@ function ClientsList(props) {
                             <Tr key={rowIndex} >
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`}>
-                                  {column.dataField === "checkbox" ? <input className="client-checkbox" type="checkbox" /> : ""}
+                                 
                                   {column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
                                 </Td>
                               )}
