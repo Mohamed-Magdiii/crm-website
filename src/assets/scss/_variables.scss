@@ -132,6 +132,7 @@ $yellow:  #ffbf53;
 $green:   #2ab57d;
 $teal:    #050505;
 $cyan:    #4ba6ef;
+$darkblue:  #405189;
 
 // scss-docs-start colors-map
 $colors: (
@@ -151,7 +152,7 @@ $colors: (
 );
 // scss-docs-end colors-map
 
-$primary:       $blue;
+$primary:       $darkblue;
 $secondary:     $gray-600;
 $success:       $green;
 $info:          $cyan;
