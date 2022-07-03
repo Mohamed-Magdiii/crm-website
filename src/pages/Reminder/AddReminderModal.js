@@ -19,10 +19,11 @@ import loadClientsOptions from "./loadClientsOptions";
 import { addNewEvent } from "../../apis/reminder";
 
 function AddReminderModal(props) {
-  const { openAdd, selectedDate = {}, onClose } = props;
+  const { openAdd, selectedDate = "", onClose } = props;
   const [clientValue, setclientValue] = useState(null);
   const [clientError, setClientError] = useState(false);
   const [submitState, setSubmitState] = useState(false);
+  const [dateCheck, setDateCheck] = useState(0);
 
   const [errorMassage, seterrorMassage] = useState("");
   const [errorAlert, setErrorAlertMassage] = useState(false);
@@ -92,6 +93,14 @@ function AddReminderModal(props) {
       },
     };
   };
+
+  const checkDate = (v) => {
+    if (v.target?.value > new Date().toISOString()) {
+      setDateCheck(90);
+    } else {
+      setDateCheck(0);
+    }
+  };
   return (
     <React.Fragment >
       {/* <Link to="#" className="btn btn-light" onClick={onClose}><i className="bx bx-plus me-1"></i> Add New</Link> */}
@@ -138,6 +147,19 @@ function AddReminderModal(props) {
                   name="timeEnd"
                   label="Date"
                   value={selectedDate}
+                  // min={new Date()}
+                  onChange={checkDate}
+                  validate={{
+                    maxLength: {
+                      value: dateCheck,
+                      errorMessage: "Select Future Date"
+                    }
+                    // start: { name: new Date() }
+                    // dateRange: {
+                    //   start: { value: new Date() },
+                    //   end: { value: "12/31/2120" }
+                    // }
+                  }}
                   errorMessage="Invalid Reminder Note"
                 >
                 </AvField>

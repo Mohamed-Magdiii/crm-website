@@ -5,7 +5,7 @@ import {
 import { Link } from "react-router-dom";
 
 import {
-  Row, Col, Card, CardBody, CardTitle, CardHeader, Label
+  Row, Col, Card, CardBody, CardTitle, CardHeader 
 } from "reactstrap";
 
 import {

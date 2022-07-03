@@ -17,8 +17,9 @@ import {
 
 import { Link } from "react-router-dom";
 
-import { getClientById } from "../../apis/client";
+// import { getClientById } from "../../apis/client";
 import { deleteEvent, updateEvent } from "../../apis/reminder";
+import DeleteModal from "components/Common/DeleteModal";
 
 function EditReminderModal(props) {
   const [errorMassage, seterrorMassage] = useState("");
@@ -27,32 +28,35 @@ function EditReminderModal(props) {
   const [alertmsg, setAlertMsg] = useState("");
   const [editFlag, setEditFlag] = useState(false);
   const [submitState, setSubmitState] = useState(false);
+  const [dateCheck, setDateCheck] = useState(90);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [reminderId, setReminderId] = useState("");
 
   const { openEdit, eventReminder = {}, onClose } = props;
-  const [clientName, setclientName] = useState("");
-  const { id, title, createdBy, client, status, timeEnd, differentEndReminderAndNow, type } = eventReminder;
+  // const [clientName, setclientName] = useState("");
+  const { id, title, createdBy,  status, timeEnd, differentEndReminderAndNow, type } = eventReminder;
   let ReminderEnd = "";
   if (differentEndReminderAndNow < 0) {
     ReminderEnd = differentEndReminderAndNow * -1 + " days ago";
   } else {
     ReminderEnd = "After " + differentEndReminderAndNow + " days";
   }
-  useEffect(() => {
-    setEditFlag(false);
-
+  useEffect(() => {  
+    setEditFlag(false);  
   }, [openEdit]);
-  useEffect(() => {
-    getClientById(client)
-      .then(response => {
-        setclientName(response.result?.firstName + " " + response.result?.lastName);
-      }
-      )
-      .catch(() => {
-        seterrorMassage("fetch client error");
-        showAlert(true, false);
-      });
+  // useEffect(() => {
+  //   const clientId = { payload: client };
+  //   getClientById(clientId)
+  //     .then(response => {
+  //       setclientName(response.result?.firstName + " " + response.result?.lastName);
+  //     }
+  //     )
+  //     .catch(() => {
+  //       seterrorMassage("fetch client error");
+  //       showAlert(true, false);
+  //     });
 
-  }, [client]);
+  // }, [client]);
 
 
   const handleValidUpdateSubmit = (e, values) => {
@@ -101,6 +105,15 @@ function EditReminderModal(props) {
         seterrorMassage(e.toString());
         showAlert(true, false);
       });
+    setDeleteModal(false);
+  };
+
+  const checkDate = (v) => {
+    if (v.target?.value > new Date().toISOString()) {
+      setDateCheck(90);
+    } else {
+      setDateCheck(0);
+    }
   };
   return (
     <React.Fragment >
@@ -131,7 +144,7 @@ function EditReminderModal(props) {
                       <i
                         className="mdi mdi-delete font-size-18"
                         id="deletetooltip"
-                        onClick={() => { handleDeleteReminder(id) }}
+                        onClick={() => { setReminderId(id); setDeleteModal(true) }}
                       ></i>
                     </Link>
                   </Col>
@@ -187,8 +200,13 @@ function EditReminderModal(props) {
                     label="Date"
                     value={timeEnd}
                     errorMessage="Invalid Date"
+                    onChange={checkDate}
                     validate={{
-                      required: { value: true },
+                      maxLength: {
+                        value: dateCheck,
+                        errorMessage: "Select Future Date"
+                      },
+                      required: { value: true }
                     }}
                   >
                   </AvField>
@@ -198,15 +216,13 @@ function EditReminderModal(props) {
                     label="Status"
                     type="select"
                     name="status"
-                    value={status}
-                    errorMassage="Invalid Status"
+                    value={status} 
                     validate={{
                       required: {
                         value: true
                       },
-                    }}
-                  >
-                    <option value="">Select</option>
+                    }} 
+                  > 
                     <option>open</option>
                     <option>ongoing</option>
                     <option>completed</option>
@@ -259,6 +275,8 @@ function EditReminderModal(props) {
 
         </ModalBody>
       </Modal>
+      {<DeleteModal onDeleteClick={() => { handleDeleteReminder(reminderId) }} show={deleteModal} onCloseClick={() => { setDeleteModal(false) }} />}
+
     </React.Fragment>
   );
 }
