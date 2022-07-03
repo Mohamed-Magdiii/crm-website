@@ -67,6 +67,7 @@ function SystemEmailsList(props){
             <Link 
               to={{
                 pathname: "/system-emails/" + systemEmail.id,
+                state: systemEmail
               }}
             >
               <strong className="text-capitalize">{systemEmail.title}</strong>
@@ -170,7 +171,7 @@ function SystemEmailsList(props){
     // the same logic applies for props.deleteClearingCounter
     // when a system email is deleted the page reloads pushing all system emails forward 
     // one step
-  }, [sizePerPage, 1, isSystemEmailUpdated, props.deleteClearingCounter]);
+  }, [sizePerPage, 1, isSystemEmailUpdated, props.deleteClearingCounter, props.editContentClearingCounter]);
   useEffect(() => {
     if (props.deleteClearingCounter > 0 && deleteModal){
       setDeleteModal(false);
@@ -273,7 +274,8 @@ const mapStateToProps = (state) => ({
   systemEmail: state.systemEmailsReducer.systemEmail,
   changeStatusLoading: state.systemEmailsReducer.changeStatusLoading,
   changeStatusIndex: state.systemEmailsReducer.changeStatusIndex,
-  systemEmailsPermissions : state.Profile.systemEmailsPermissions || {},
+  editContentClearingCounter: state.systemEmailsReducer.editContentClearingCounter,
+  systemEmailsPermissions : state.Profile.systemEmailsPermissions || {}
 });
 
 SystemEmailsList.propTypes = {
