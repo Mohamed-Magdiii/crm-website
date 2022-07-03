@@ -133,7 +133,7 @@ function AssetEdit (props) {
                       required :{ value:true },
                       pattern : {
                         // eslint-disable-next-line no-useless-escape
-                        value :"/^[+]?([0-9]+\.?[0-9]*|\.[0-9]+)$/",
+                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
                         errorMessage : "Deposit Fee must be a number"
                       }
                     }}
@@ -153,7 +153,7 @@ function AssetEdit (props) {
                       required :{ value:true },
                       pattern : {
                         // eslint-disable-next-line no-useless-escape
-                        value :"/^[+]?([0-9]+\.?[0-9]*|\.[0-9]+)$/",
+                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
                         errorMessage : "Withdraw Fee must be a number"
                       }
                     }}
@@ -175,7 +175,7 @@ function AssetEdit (props) {
                       required :{ value:true },
                       pattern : {
                         // eslint-disable-next-line no-useless-escape
-                        value :"/^[+]?([0-9]+\.?[0-9]*|\.[0-9]+)$/",
+                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
                         errorMessage : "Min deposit Amount must be a number"
                       }
                     }}
@@ -195,7 +195,7 @@ function AssetEdit (props) {
                       required :{ value:true },
                       pattern : {
                         // eslint-disable-next-line no-useless-escape
-                        value :"/^[+]?([0-9]+\.?[0-9]*|\.[0-9]+)$/",
+                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
                         errorMessage : "Min withdraw amount must be a number"
                       }
                     }}

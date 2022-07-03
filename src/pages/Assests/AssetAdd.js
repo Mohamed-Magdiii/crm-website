@@ -117,7 +117,7 @@ function AssestForm(props){
                       required :{ value:true },
                       pattern : {
                         // eslint-disable-next-line no-useless-escape
-                        value :"/^[+]?([0-9]+\.?[0-9]*|\.[0-9]+)$/",
+                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
                         errorMessage : "Min deposit fee must be a number"
                       }
                     }}
@@ -136,7 +136,7 @@ function AssestForm(props){
                       required :{ value:true },
                       pattern : {
                         // eslint-disable-next-line no-useless-escape
-                        value :"/^[+]?([0-9]+\.?[0-9]*|\.[0-9]+)$/",
+                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
                         errorMessage : "Min withdraw fee must be a number"
                       }
                     }}
@@ -157,7 +157,7 @@ function AssestForm(props){
                       required :{ value:true },
                       pattern : {
                         // eslint-disable-next-line no-useless-escape
-                        value :"/^[+]?([0-9]+\.?[0-9]*|\.[0-9]+)$/",
+                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
                         errorMessage : "Min deposit amount must be a number"
                       }
                     }}
@@ -176,7 +176,7 @@ function AssestForm(props){
                       required :{ value:true },
                       pattern : {
                         // eslint-disable-next-line no-useless-escape
-                        value :"/^[+]?([0-9]+\.?[0-9]*|\.[0-9]+)$/",
+                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
                         errorMessage : "Min withdraw amount must be a number"
                       }
                     }}
