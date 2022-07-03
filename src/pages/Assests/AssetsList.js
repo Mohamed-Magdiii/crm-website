@@ -30,7 +30,7 @@ function AssestsList(props){
     },
     {
       dataField: "createdAt",
-      text: props.t("Date"),
+      text: props.t("Created Date"),
       formatter: (val) => (new Date(val.createdAt).toLocaleDateString())
     }, 
     {
@@ -49,12 +49,12 @@ function AssestsList(props){
     },
     {
       dataField: "minAmount",
-      text: props.t("Min deposit Amount"),
+      text: props.t("Min Deposit"),
       formatter:(val)=>(`${val.minAmount.deposit}`)
     },
     {
       dataField:"minAmount",
-      text:props.t("Min withdrawal Amount"),
+      text:props.t("Min Withdrawal"),
       formatter:(val)=>(`${val.minAmount.withdrawal}`)
     },
     
