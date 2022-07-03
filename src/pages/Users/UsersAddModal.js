@@ -12,8 +12,6 @@ import {
 } from "reactstrap";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { addUser } from "store/users/actions";
-import { sassFalse } from "sass";
-
 
 function UsersAddModal(props) {
   const [addModal, setAddUserModal] = useState(false);
