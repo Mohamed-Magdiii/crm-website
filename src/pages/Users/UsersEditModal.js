@@ -51,7 +51,7 @@ function UsersEditModal(props) {
               <AvField
                 name="firstName"
                 label="Frist Name  "
-                placeholder="Frist Name"
+                placeholder="Enter First Name"
                 type="text"
                 errorMessage="Enter Frist Name"
                 value={user.firstName}
@@ -62,7 +62,7 @@ function UsersEditModal(props) {
               <AvField
                 name="lastName"
                 label="Last Name  "
-                placeholder="Last Name"
+                placeholder="Enter Last Name"
                 type="text"
                 errorMessage="Enter Last Name"
                 value={user.lastName}
@@ -73,9 +73,9 @@ function UsersEditModal(props) {
               <AvField
                 name="email"
                 label="Email"
-                placeholder="Enter Valid Email"
+                placeholder="Enter Email"
                 type="email"
-                errorMessage="Invalid Email"
+                errorMessage="Enter Valid Email"
                 validate={{
                   required: { value: true },
                   email: { value: true },
@@ -84,7 +84,7 @@ function UsersEditModal(props) {
               />
             </div>
             <div className="mb-3">
-              <label >Role</label>
+              <label >Select Role </label>
               <AvField
                 type="select"
                 name="roleId"
@@ -100,9 +100,9 @@ function UsersEditModal(props) {
                 <option>3</option> */}
               </AvField>
             </div>
-            <div className='text-center p-5'>
+            <div className='text-center  '>
               <Button type="submit" color="primary" className="">
-                Edit User
+                Edit
               </Button>
             </div>
           </AvForm>

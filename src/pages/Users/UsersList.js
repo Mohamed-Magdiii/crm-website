@@ -62,16 +62,16 @@ function UsersList() {
     roles: state.usersReducer.rolesData,
     clearingCounter: state.usersReducer.clearingCounter,
     // editClearingCounter: state.usersReducer.editClearingCounter,
-    userPermissions :state.Profile.userPermissions || {}
+    userPermissions: state.Profile.userPermissions || {}
   }));
-  
+
   const { delete: deleteUserPermission, update } = userPermissions;
   const columns = [
     {
-      text: "createdAt",
+      text: "CreatedAt",
       dataField: "createdAt",
       sort: true,
-      formatter: (user) => { return new Date(user.createdAt).toDateString() },
+      formatter: (val) => (new Date(val.createdAt).toLocaleDateString()),
     },
     {
       text: "First Name",
@@ -89,14 +89,14 @@ function UsersList() {
       sort: true,
     },
     {
-      text: "RoleId",
+      text: "Role",
       dataField: "roleId.title",
       sort: true,
       formatter: (user) => (
         <>
           {user.roleId ? (
             <div className="d-flex gap-3">
-              <Label className="me-1" data-on-label="roleId" data-off-label="">{user.roleId.title}</Label>
+              {user.roleId.title}
             </div>
           ) : (
             <div className="d-flex gap-3">
@@ -109,12 +109,12 @@ function UsersList() {
     },
     {
       dataField: "isActive",
-      text: "status",
+      text: "Status",
       sort: true,
       formatter: (user) => (
         <div className="d-flex gap-3">
-          <Input type="checkbox" id={user.id} switch="none" checked={user.isActive} onChange={() => { setSelectedUser(user); statusUser(user)}} />
-          <Label className="me-1" htmlFor={user.id} data-on-label="isActive" data-off-label=""></Label>
+          <Input type="checkbox" id={user.id} switch="none" checked={user.isActive} onChange={() => { setSelectedUser(user); statusUser(user) }} />
+          <Label className="me-1" htmlFor={user.id} data-on-label="" data-off-label=""></Label>
         </div>
       ),
     },

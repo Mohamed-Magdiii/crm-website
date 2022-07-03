@@ -27,10 +27,12 @@ import {
   getSalesAgentsSuccess,
 
 } from "./actions";
+import { showErrorNotification, showSuccessNotification } from "store/notifications/actions";
 
 //Include Both Helper File with needed methods
-import * as usersApi from "../../apis/users"; 
-import { showErrorNotification, showSuccessNotification } from "store/notifications/actions";
+
+import * as usersApi from "../../apis/users";
+
 function* fetchUsers(params) {
 
   try {
@@ -75,7 +77,7 @@ function* addUser(params) {
 
 function* editUser(params) {
   try {
-    const data = yield call(usersApi.editUser, params); 
+    const data = yield call(usersApi.editUser, params);
     const { result } = data;
     yield put(editUserDone({
       result,
@@ -88,11 +90,11 @@ function* editUser(params) {
     yield put(editUserError({ error: error.message }));
     yield delay(2000);
     yield put(editUserClear());
-  } 
+  }
 }
 function* editUserPass(params) {
   try {
-    const data = yield call(usersApi.editUserPass, params); 
+    const data = yield call(usersApi.editUserPass, params);
     const { result } = data;
     yield put(editUserDone({
       result,
@@ -105,7 +107,7 @@ function* editUserPass(params) {
     yield put(editUserError({ error: error.message }));
     yield delay(2000);
     yield put(editUserClear());
-  } 
+  }
 }
 function* deleteUser(params) {
   try {
@@ -115,8 +117,11 @@ function* deleteUser(params) {
       result,
       id: params.payload
     }));
+    yield put(showSuccessNotification("User deleted successfully"));
   }
   catch (error) {
+    yield put(showErrorNotification(error.message));
+    yield delay(1000);
     yield put(deleteUserDone({ error: error.message }));
   }
 

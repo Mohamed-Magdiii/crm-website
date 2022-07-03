@@ -51,7 +51,10 @@ const Reminder = () => {
   // ################################
 
   useEffect(() => {
-    dispatch(onGetEvents());
+    dispatch(onGetEvents({
+      page: 1,
+      limit: 200,
+    }));
   }, [dispatch, editLoad]);
 
   /**
@@ -74,7 +77,7 @@ const Reminder = () => {
     const date = arg["date"];
     var tomorrow = new Date(date);
     tomorrow.setDate(tomorrow.getDate() + 1);
-    setSelectedDay(tomorrow.toISOString().replace(/.000Z/, ""));
+    setSelectedDay(tomorrow.toISOString().replace(/00:00.000Z/, "01"));
     setAddReminderModal(true);
 
   };
