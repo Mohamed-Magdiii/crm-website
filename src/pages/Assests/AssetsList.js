@@ -17,6 +17,7 @@ import AssetForm from "./AssetAdd";
 import AssetEdit from "./AssetEdit";
 import DeleteModal from "components/Common/DeleteModal";
 import { withTranslation } from "react-i18next";
+import { checkAllBoxes } from "common/utils/checkAllBoxes";
 function AssestsList(props){
   const [selectedSymbol, setSelectedSymbol] = useState();
   const [editModal, setEditModal] = useState(false);
@@ -25,7 +26,7 @@ function AssestsList(props){
   const columns = [
     {
       dataField:"checkbox",
-      text: <input type="checkbox"/>
+      text: <input type="checkbox" id="check-all-assets" onChange={()=>checkAllBoxes("check-all-assets", ".asset-check-box")}/>
     },
     {
       dataField: "createdAt",
@@ -161,7 +162,7 @@ function AssestsList(props){
                             <Tr key={rowIndex}>
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`}>
-                                  { column.dataField === "checkbox" ? <input type="checkbox"/> : ""}
+                                  { column.dataField === "checkbox" ? <input type="checkbox" className="asset-check-box"/> : ""}
                                   { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
                                 </Td>
                               )}

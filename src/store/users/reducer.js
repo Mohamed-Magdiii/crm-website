@@ -16,7 +16,8 @@ import {
   EDIT_USER_CLEAR,
   DELETE_USERS_START,
   DELETE_USERS_DONE,
-  EDIT_USERS_ERROR
+  EDIT_USERS_ERROR,
+  GET_ASSIGNED_USERS_SUCCESS
 } from "./actionTypes";
 
 const initialState = {
@@ -26,6 +27,7 @@ const initialState = {
   clearingCounter: 0,
   editClearingCounter: 0,
   deleteClearingCounter: 0,
+  salesAgent:[],
   addSuccess: false,
   // totalDocs: 0,
   // docs: [],
@@ -175,6 +177,12 @@ const usersReducer = (state = initialState, action) => {
         deleteResult: action.payload.result,
         deleteError: action.payload.error,
         deleteClearingCounter: state.deleteClearingCounter + 1,
+      };
+      break;
+    case GET_ASSIGNED_USERS_SUCCESS:
+      state = { 
+        ...state,
+        salesAgent:[...action.payload.docs]
       };
       break;
     default:

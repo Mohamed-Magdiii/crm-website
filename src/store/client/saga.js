@@ -14,16 +14,19 @@ import {
   editClientDetailsSuccess,
   editClientDetailsFail,
   editClientDetailsClear,
-  addModalClear
+  addModalClear,
+  fetchClientStagesEnd,
+  assignAgentToClientSuccess,
 } from "./actions";
 import { 
   ADD_NEW_CLIENT, 
   FETCH_CLIENTS_START,
-  
+  FETCH_CLIENT_STAGES_START,
   FETCH_CLIENT_DETAILS_REQUESTED,
-  EDIT_CLIENT_DETAILS_REQUESTED
+  EDIT_CLIENT_DETAILS_REQUESTED,
+  ASSIGN_AGENT_START
 } from "./actionsType";
-  
+import { showSuccessNotification, showErrorNotification } from "store/notifications/actions";
 function *fetchClients(params) {
   try {
     const data = yield call(clientApi.getClients, params);
@@ -34,13 +37,15 @@ function *fetchClients(params) {
     
 }
 
-function * addNewClient({ payload:{ newClient } }) {
+function * addNewClient({ payload }) {
   try {
-    const data = yield call(clientApi.addClient, newClient);
+    const data = yield call(clientApi.addClient, payload);
     const { status } = data;
+    const { result:client } = data;
     if (status){
-      yield put(addNewClientSuccess(newClient));
-      yield delay(2000);
+      yield put(addNewClientSuccess(client));
+      yield put(showSuccessNotification("Client is added successfully"));
+      yield delay(1000);
       yield put(addModalClear());
     }
   } catch (error){
@@ -71,12 +76,39 @@ function * editClientDetails(params){
     yield put(editClientDetailsFail({ error: error.message }));
   }
 }
+function * assignAgent (params){
+  
+  const { payload :{ agent }  } = params;
+  const { payload: { body } } = params;
+  const { clientIds } = body;
+  try {
+    
+    yield put(assignAgentToClientSuccess({
+      clientIds,
+      agent
+    }));
+  } catch (error){
+    yield put(showErrorNotification("Error happened while assign the agent"));
+  }
+  
+}
+function * fetchClientStages(params){
+  try {
+    const data = yield call(clientApi.getClientById, params);
+    if (data && data.result && data.result.stages) {
+      yield put(fetchClientStagesEnd(data.result.stages));
+    }
+  } catch (error){ }
+}
 
 function * clientSaga() {
   yield takeEvery(FETCH_CLIENTS_START, fetchClients);
   yield takeEvery(ADD_NEW_CLIENT, addNewClient);
   yield takeEvery(FETCH_CLIENT_DETAILS_REQUESTED, fetchClientDetails);
   yield takeEvery(EDIT_CLIENT_DETAILS_REQUESTED, editClientDetails);
+  yield takeEvery(FETCH_CLIENT_STAGES_START, fetchClientStages);
+  yield takeEvery(ASSIGN_AGENT_START, assignAgent);
+  
 }
 
 export default clientSaga;

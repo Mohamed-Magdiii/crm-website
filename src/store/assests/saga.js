@@ -16,7 +16,7 @@ import {
 import {
   FETCH_ASSETS_START, ADD_NEW_SYMBOL, EDIT_SYMBOL_START, DELETE_SYMBOL_START
 } from "./actionsType";
-
+import { showSuccessNotification } from "store/notifications/actions";
 function * fetchAsset(params){
   try {
     const data = yield call(getAssets, params);
@@ -39,7 +39,8 @@ function * addNewAsset({ payload :{ newSymbol } }){
         id:_id, 
         ...newSymbol
       }));
-      yield delay(2000);
+      yield put(showSuccessNotification("Asset has been added successfully!"));
+      yield delay(1000);
       yield put(addAssetModalClear());
     }
     
@@ -61,7 +62,8 @@ function * editAsset(params){
       id,
       values
     }));
-    yield delay(2000);
+    yield put(showSuccessNotification("Asset has been updated successfully!"));
+    yield delay(1000);
     yield put(assetEditModalClear());
   } catch (error){
     yield put(apiError("Please Enter Valid data"));
@@ -78,7 +80,7 @@ function * deleteAsset(params){
       id:params.payload,
       
     }));
-   
+    yield  put(showSuccessNotification("Asset has been deleted successfully!"));
   } catch (error){
     yield put(apiError("An error happned during deleting this record"));
   }

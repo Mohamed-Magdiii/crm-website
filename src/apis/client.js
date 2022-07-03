@@ -20,9 +20,7 @@ export const addClient = async (values) => {
 
 export const getClientById = async ({ payload }) => {
   const id = payload;
-  // console.log(payload);
-  // console.log(id);
-  const data = await axiosHelper.get(`/clients/${id}`);
+  const data = await axiosHelper.get(`/clients/${id}?data=stages`);
   if (data.isError){
     throw new Error(data.isError);
   }

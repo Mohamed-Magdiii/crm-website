@@ -7,6 +7,10 @@ export const getUsers = async ({ payload }) => {
   const data = await axiosHelper.get(`/users?${qs.stringify(payload)}`);
   return data.result;
 };
+export const getAssignedUsers = async({ payload })=>{
+  const data = await axiosHelper.get(`/users/assignable?${qs.stringify(payload)}`);
+  return data;
+};
 export const getRoles = async ({ payload }) => {
   const data = await axiosHelper.get(`/roles?${qs.stringify(payload)}`);
   return data.result;
@@ -40,5 +44,10 @@ export const deleteUser = async ({ payload }) => {
   if (data.isError) {
     throw new Error(data.message);
   }
+  return data;
+};
+export const assignSalesAgent = async  ({ payload })=>{
+  const { agentId, body } = payload;
+  const data = await axiosHelper.post(`/users/${agentId}/assign`, body);
   return data;
 };

@@ -7,7 +7,8 @@ import {
   EDIT_CLIENT_DETAILS_REQUESTED,
   EDIT_CLIENT_DETAILS_SUCCESS,
   EDIT_CLIENT_DETAILS_FAIL,
-  EDIT_CLIENT_DETAILS_CLEAR
+  EDIT_CLIENT_DETAILS_CLEAR,
+  FETCH_CLIENT_STAGES_END
 } from "./actionsType";
 
 const initalState = {
@@ -56,19 +57,11 @@ export const clientReducer = (state = initalState, action)=>{
       state = {
         ...state,
         loading: false,
-        totalDocs:action.payload.newClient ? state.totalDocs + 1 : state.totalDocs,
-        clients: action.payload.newClient ? [{ 
-          createdAt:new Date().toLocaleDateString(), 
-          source:"REGISTER_DEMO",
-          category:"LIVE_INDIVIDUAL",
-          stages:{
-            kycApproved:false,
-            kyRejected:false
-          },
-          ...action.payload.newClient
+        totalDocs:state.totalDocs + 1,
+        clients: action.payload ? [{ 
+          ...action.payload
         },
         ...state.clients] : [...state.clients],
-        showAddSuccessMessage:true,
         disableAddButton:true
       };
       break;
@@ -91,7 +84,7 @@ export const clientReducer = (state = initalState, action)=>{
     case FETCH_CLIENT_DETAILS_REQUESTED:
       state = {
         ...state,
-        loading: true
+        clientProfileloading: true
       };
       break;
     case FETCH_CLIENT_DETAILS_SUCCESS:
@@ -100,7 +93,7 @@ export const clientReducer = (state = initalState, action)=>{
         error: false,
         success: true,
         clientDetails: action.payload.result,
-        loading: false,
+        clientProfileloading: false,
         totalDocs: action.payload.totalDocs,
         hasNextPage: action.payload.hasNextPage,
         hasPrevPage: action.payload.hasPrevPage,
@@ -116,9 +109,8 @@ export const clientReducer = (state = initalState, action)=>{
     case FETCH_CLIENT_DETAILS_FAIL:
       state = {
         ...state,
-        error: true,
-        errorDetails: action.payload.error,
-        loading: false
+        clientProfileError: true,
+        clientProfileloading: false
       };
       break;
     case FETCH_CLIENT_DETAILS_CLEAR:
@@ -160,7 +152,36 @@ export const clientReducer = (state = initalState, action)=>{
         error: false
       };
       break;
-    
+    case FETCH_CLIENT_STAGES_END:
+      state = {
+        ...state,
+        clientDetails: {
+          ...state.clientDetails,
+          stages: action.payload
+        }
+      };
+      break;
+    case "ASSIGN_AGENT_SUCCESS":
+      state = {
+        ...state,
+        clients : state.clients.map(client=>{
+          for (let i = 0 ; i < action.payload.clientIds.length; i++){
+            if (client._id === action.payload.clientIds[i]){
+              return {
+                ...client,
+                agent:{
+                  ...action.payload.agent
+                }
+              };
+            }
+          }
+       
+          
+          return client;
+          
+        })
+      };
+      break;
     default:
       state = { ...state };
   }

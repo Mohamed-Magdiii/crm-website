@@ -3,7 +3,12 @@ import {
   useDispatch, connect
 } from "react-redux";
 import {
-  Row, Col, Card, CardBody, CardTitle, CardHeader
+  Row, 
+  Col,
+  Card, 
+  CardBody, 
+  CardTitle, 
+  CardHeader,
 } from "reactstrap";
 import {
   Table, Thead, Tbody, Tr, Th, Td
@@ -20,14 +25,36 @@ import { Link } from "react-router-dom";
 import { withTranslation } from "react-i18next";
 import { captilazeFirstLetter, displaySubString } from "common/utils/manipulateString";
 import { checkAllBoxes } from "common/utils/checkAllBoxes";
+import AgentForm from "./AgentDropDown";
 function ClientsList(props) {
   const [addModal, setAddReminderToClientModal] = useState(false);
   const [selectedClient, setSelectedClient] = useState({});
-
+  const [assignedClients, setAssignedClients] = useState([]);
+  
   const columns = [
     {
       dataField: "checkbox",
-      text: <input type="checkbox" id="select-all-clients" onChange={()=>checkAllBoxes("select-all-clients", ".client-checkbox")}className = "select-all-check-box" />
+      text: <input type="checkbox" id="select-all-clients" onChange={(e)=>{
+        checkAllBoxes("select-all-clients", ".client-checkbox");
+        setAssignedClients(()=>{
+          if (e.target.checked){
+            return [...props.clients];
+          }
+          else if (!e.target.checked){
+            return [];
+          }
+        });
+      }} />,
+      formatter:(val)=> <input type="checkbox" onChange = {(e)=>setAssignedClients(preValue=>{
+
+        if (e.target.checked){
+          return [val, ...preValue];
+        }
+        else if (!e.target.checked){
+          return preValue.filter(client=>client._id !== val._id);
+        }
+        
+      })} className ="client-checkbox" />,
     },
     {
       dataField: "createdAt",
@@ -54,7 +81,7 @@ function ClientsList(props) {
               state: { clientId: user.id }
             }}
           >
-            <i>{user.firstName + " " + user.lastName}</i>
+            <i className="no-italics" >{captilazeFirstLetter(user.firstName) + " " + captilazeFirstLetter(user.lastName)}</i>
           </Link>
         </div>
       )
@@ -83,10 +110,11 @@ function ClientsList(props) {
     },
 
     {
-      dataField: "agent",
+      dataField: "",
+      isDummyField: true,
+      editable: false,
       text:props.t("Agent"),
-      formatter: (val) => (val.agent ? <select defaultValue={true}><option>{val.agent.firstName} {val.agent.lastName}</option></select> : 
-        <select disabled></select>),
+      formatter: (val) => (val.agent ? `${val.agent.firstName} ${val.agent.lastName}` : "unassigned")
     },
     {
       dataField: "source",
@@ -202,7 +230,11 @@ function ClientsList(props) {
                     <CardTitle>{props.t("Clients List")} ({props.totalDocs})</CardTitle>
                     <ClientForm />
                   </div>
-                  <SearchBar handleSearchInput={handleSearchInput} />
+                  <div className="d-flex justify-content-between  align-items-end">
+                    <SearchBar handleSearchInput={handleSearchInput} />
+                    {assignedClients.length > 0 && <AgentForm clients= {[...assignedClients]}/> }
+                  </div>
+           
                 </CardHeader>
                 <CardBody>
                   <div className="table-rep-plugin">
@@ -212,22 +244,25 @@ function ClientsList(props) {
                     >
                       <Table
                         id="tech-companies-1"
-                        className="table "
+                        className="table table-hover"
                       >
-                        <Thead className="text-center" >
+                        <Thead className="text-center table-light" >
                           <Tr>
                             {columns.map((column, index) =>
                               <Th data-priority={index} key={index}>{column.text}</Th>
                             )}
                           </Tr>
                         </Thead>
-                        <Tbody className="text-center" style={{ fontSize: "13px" }}>
+                        <Tbody className="text-center" style={{ 
+                          fontSize: "13px",
+                           
+                        }}>
                           {props.loading && <TableLoader colSpan={4} />}
                           {!props.loading && props.clients.map((row, rowIndex) =>
-                            <Tr key={rowIndex}>
+                            <Tr key={rowIndex} >
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`}>
-                                  {column.dataField === "checkbox" ? <input className="client-checkbox" type="checkbox" /> : ""}
+                                 
                                   {column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
                                 </Td>
                               )}
@@ -268,6 +303,7 @@ const mapStateToProps = (state) => ({
   nextPage: state.clientReducer.nextPage,
   pagingCounter: state.clientReducer.pagingCounter,
   prevPage: state.clientReducer.prevPage,
-  clientPermissions: state.Profile.clientPermissions || {}
+  clientPermissions: state.Profile.clientPermissions || {},
+  docs:state.usersReducer.docs || []
 });
 export default connect(mapStateToProps, null)(withTranslation()(ClientsList));

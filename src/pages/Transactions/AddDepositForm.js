@@ -213,10 +213,6 @@ function DepositForm(props){
             <i className="mdi mdi-block-helper me-2"></i>
             {props.t(props.error)}
           </UncontrolledAlert>}
-          {props.depositResponseMessage && <UncontrolledAlert color="success">
-            <i className="mdi mdi-check-all me-2"></i>
-            {props.t(`Deposit has been ${props.depositResponseMessage}`)}
-          </UncontrolledAlert>}
         </ModalBody> 
       </Modal>
     </React.Fragment>

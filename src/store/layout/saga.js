@@ -122,7 +122,7 @@ function* changelayoutMode({ payload: { layoutMode, layoutType } }) {
       yield call(changeBodyAttribute, "data-layout-mode", layoutMode);
       yield put(changeTopbarThemeAction("light"));
       if (layoutType !== "horizontal") {
-        yield call(changeBodyAttribute, "data-sidebar", "light");
+        yield call(changeBodyAttribute, "data-sidebar", "brand");
       } else {
         yield call(changeBodyAttribute, "data-sidebar", "");
       }

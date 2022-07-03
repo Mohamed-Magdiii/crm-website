@@ -6,12 +6,32 @@ import { withTranslation } from "react-i18next";
 
 function ClientDetailsHeader(props){
   const { clientDetails = {} } = props;
-
+  const [kycStatus, setKycStatus] = React.useState("Pending");
+  React.useEffect(()=>{
+    if (clientDetails && clientDetails.stages) {
+      if (clientDetails.stages.kycRejected) setKycStatus("Rejected");
+      else if (clientDetails.stages.kycApproved) setKycStatus("Approved");
+      else setKycStatus("Pending");
+    }
+  }, [clientDetails]);
+  /**
+   * 
+   * {
+  "madeDeposit":false,
+  "emailVerified":false,
+  "phoneVerified":false,
+  "individual":{
+  "updateProfile":false,
+  "startTrading":false
+  }
+  }
+  * 
+  */
   return (
     <React.Fragment>
       <div className="row">
         <div className="col-md-6 col-xl-3">
-          <div className="card-h-100 card">
+          <div className="card-h-100 card card-animate">
             <div className="card-body">
               <div className="align-items-center">
                 <div className="col-6">
@@ -30,7 +50,7 @@ function ClientDetailsHeader(props){
         </div>
 
         <div className="col-md-6 col-xl-3 col-xs-3">
-          <div className="card-h-100 card">
+          <div className="card-h-100 card card-animate">
             <div className="card-body">
               <div className="align-items-center row">
                 <div className="col-6">
@@ -49,7 +69,7 @@ function ClientDetailsHeader(props){
         </div>
 
         <div className="col-md-6 col-xl-3 col-xs-3">
-          <div className="card-h-100 card">
+          <div className="card-h-100 card card-animate">
             <div className="card-body">
               <div className="align-items-center row">
                 <div className="col-6">
@@ -62,16 +82,7 @@ function ClientDetailsHeader(props){
                     </span>
                   </h6>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-md-6 col-xl-3 col-xs-3">
-          <div className="card-h-100 card">
-            <div className="card-body">
-              <div className="align-items-center row">
-                <div className="col-8">
+                <div className="col-6">
                   <span className="text-muted mb-3 lh-1 d-block text-truncate">
                     Category
                   </span>
@@ -85,6 +96,26 @@ function ClientDetailsHeader(props){
             </div>
           </div>
         </div>
+
+        <div className="col-md-6 col-xl-3 col-xs-3">
+          <div className="card-h-100 card card-animate">
+            <div className="card-body">
+              <div className="align-items-center row">
+                <div className="col-6">
+                  <span className="text-muted mb-3 lh-1 d-block text-truncate">
+                    KYC Status
+                  </span>
+                  <h6 className="mb-1">
+                    <span className="counter-value">
+                      {kycStatus}
+                    </span>
+                  </h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
       </div>
     </React.Fragment>
   );
