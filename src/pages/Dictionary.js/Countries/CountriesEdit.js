@@ -40,55 +40,84 @@ function CountriesEdit(props){
               <AvField
                 name="alpha2"
                 label={props.t("Alpha2")}
-                placeholder={props.t("Alpha2")}
+                value={props.t(alpha2)}
+                placeholder={props.t("Enter Alpha2")}
                 type="text"
                 errorMessage={props.t("Enter valid alpha2")}
-                value={props.t(alpha2)}
-                validate={{ required: { value: true } }}
+                validate={{ 
+                  required: { value: true },
+                  pattern:{
+                    value:"/^[a-z]{2}$/",
+                    errorMessage: "Aplha2 should be 2 characters only"
+                  }
+                }}
               />
             </div>
             <div className="mb-3">
               <AvField
                 name="alpha3"
                 label={props.t("Alpha3")}
-                placeholder={props.t("Alpha3")}
-                type="text"
                 value = {props.t(alpha3)}
-                errorMessage={props.t("Enter valid alpha3")}
-                validate={{ required: { value: true } }}
+                placeholder={props.t("Enter Alpha3")}
+                type="text"
+                validate={{
+                  required: { value: true }, 
+                  pattern:{
+                    value : "/^[a-z]{3}$/",
+                    errorMessage:"Alpha3 should be 3 characters only"
+                  }
+                }}
               />
             </div>
             <div className="mb-3">
               <AvField
                 name="callingCode"
                 label={props.t("Calling Code")}
-                placeholder={props.t("Calling Code")}
-                type="text"
                 value = {props.t(callingCode)}
+                placeholder={props.t("Enter Calling Code")}
+                type="text"
                 errorMessage={props.t("Enter valid calling code")}
-                validate={{ required: { value: true } }}
+                validate={{
+                  
+                  required: { value: true },
+                  pattern :{
+                    value:"^[0-9]+$",
+                    errorMessage:"Calling code must be all in numbers"
+                  }
+                }}
               />
             </div>
             <div className="mb-3">
               <AvField
                 name="ar"
                 label={props.t("Ar")}
-                placeholder={props.t("AR")}
-                type="text"
                 value = {props.t(ar)}
-                errorMessage={props.t("Enter valid ar")}
-                validate={{ required: { value: true } }}
+                placeholder={props.t("Enter the Arabic Country name")}
+                type="text"
+                validate={{ 
+                  required: { value: true },
+                  pattern : {
+                    value :"/^[\u0621-\u064A]+$/",
+                    errorMessage : "This field should be all in arabic letters"
+                  }
+                }}
               />
             </div>
             <div className="mb-3">
               <AvField
                 name="en"
                 label={props.t("EN")}
-                placeholder={props.t("en")}
-                type="text"
                 value = {props.t(en)}
-                errorMessage={props.t("Enter valid en")}
-                validate={{ required: { value: true } }}
+                placeholder={props.t("Enter the English Country name")}
+                type="text"
+                validate={{ 
+                  required: { value: true },
+                  pattern : {
+                    value: "/^[A-Za-z]+$/",
+                    errorMessage : "This field should be all in english letters"
+                  }
+              
+                }}
               />
             </div>
             
