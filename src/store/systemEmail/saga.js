@@ -8,7 +8,9 @@ import {
   ADD_SYSTEM_EMAIL_REQUESTED,
   DELETE_SYSTEM_EMAIL_REQUESTED,
   EDIT_SYSTEM_EMAIL_REQUESTED,
-  EDIT_SYSTEM_EMAIL_CONTENT_REQUESTED
+  EDIT_SYSTEM_EMAIL_CONTENT_REQUESTED,
+  FETCH_SYSTEM_EMAIL_HTML_REQUESTED,
+  CHANGE_SYSTEM_EMAIL_STATUS_REQUESTED
 } from "./actionTypes";
 // import all actions except the login oncs (started or requested)
 import {
@@ -32,9 +34,15 @@ import {
 
   editSystemEmailContentSuccess,
   editSystemEmailContentFail,
-  editSystemEmailContentClear
+  editSystemEmailContentClear,
+
+  fetchSystemEmailHTMLSuccess,
+  fetchSystemEmailHTMLFail,
+
+  changeSystemEmailStatusDone
 } from "./actions";
 import * as systemEmailApi from "../../apis/systemEmails";
+import { showErrorNotification, showSuccessNotification } from "store/notifications/actions";
 
 function * fetchSystemEmails(params){
   try {
@@ -65,7 +73,7 @@ function * addSystemEmail(params){
     const data = yield call(systemEmailApi.addSystemEmail, params);
     const { result } = data;
     yield put(addSystemEmailSuccess(result));
-    yield delay(2000);
+    yield put(showSuccessNotification("System email added successfully"));
     yield put(addSystemEmailClear());
   } catch (error){
     yield put(addSystemEmailFail(error));
@@ -79,8 +87,8 @@ function * editSystemEmail(params){
       data,
       id: params.id
     }));
-    yield delay(2000);
     yield put(editSystemEmailClear());
+    yield put(showSuccessNotification("System email updated successsfully"));
   } catch (error){
     yield put(editSystemEmailFail({ error: error.message }));
   }
@@ -93,8 +101,8 @@ function * editSystemEmailContent(params){
       data,
       id: params.id
     }));
-    yield delay(2000);
     yield put(editSystemEmailContentClear());
+    yield put(showSuccessNotification("System email updated successsfully"));
   } catch (error){
     yield put(editSystemEmailContentFail({ error: error.message }));
   }
@@ -108,9 +116,39 @@ function * deleteSystemEmail(params){
       result,
       id: params.payload 
     }));
+    yield put(showSuccessNotification("System email deleted successsfully"));
   } catch (error){
     yield put(deleteSystemEmailFail({ error: error.message }));
   }
+}
+
+function * fetchSystemEmailHTML(params){
+  try {
+    const data = yield call(systemEmailApi.fetchSystemEmailHTML, params);
+    yield put(fetchSystemEmailHTMLSuccess(data));
+  } catch (error){
+    yield put(fetchSystemEmailHTMLFail({ error: error.message }));
+  }
+}
+
+function * changeSystemEmailStatus(params) {
+  try {
+    const data = yield call(systemEmailApi.changeSystemEmailStatus, params);
+    const { result } = data;
+    yield put(changeSystemEmailStatusDone({
+      result,
+      id: params.payload.id,
+      index: params.payload.index,
+    }));
+    yield put(showSuccessNotification("System email updated successfully"));
+  }
+  catch (error){
+    yield put(changeSystemEmailStatusDone({
+      error: error.message,
+      index: params.payload.index,
+    }));
+    yield put(showErrorNotification(error.message));
+  }   
 }
 
 function * authSaga(){
@@ -120,6 +158,8 @@ function * authSaga(){
   yield takeEvery(EDIT_SYSTEM_EMAIL_REQUESTED, editSystemEmail);
   yield takeEvery(EDIT_SYSTEM_EMAIL_CONTENT_REQUESTED, editSystemEmailContent);
   yield takeEvery(DELETE_SYSTEM_EMAIL_REQUESTED, deleteSystemEmail);
+  yield takeEvery(FETCH_SYSTEM_EMAIL_HTML_REQUESTED, fetchSystemEmailHTML);
+  yield takeEvery(CHANGE_SYSTEM_EMAIL_STATUS_REQUESTED, changeSystemEmailStatus);
 }
 
 export default authSaga;

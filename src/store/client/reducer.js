@@ -149,7 +149,7 @@ export const clientReducer = (state = initalState, action)=>{
       state = {
         ...state,
         editSuccess: false,
-        error: false
+        editError: false
       };
       break;
     case FETCH_CLIENT_STAGES_END:

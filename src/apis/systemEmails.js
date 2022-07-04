@@ -55,5 +55,25 @@ export const deleteSystemEmail = async ({ payload }) => {
   if (data.isError){
     throw new Error(data.message);
   }
+  
+  return data;
+};
+
+export const fetchSystemEmailHTML = async ({ payload }) => {
+  const { id, lang } = payload;
+  const data = await axiosHelper.get(`/system-emails/${id}/preview/${lang}`);
+  if (data.isError){
+    throw new Error(data.message);
+  }
+
+  return data;
+};
+
+export const changeSystemEmailStatus = async({ payload }) => {
+  const { id, status } = payload;
+  const data = await axiosHelper.post(`/system-emails/${id}/${status}`);
+  if (data.isError) {
+    throw new Error(data.message);
+  } 
   return data;
 };
