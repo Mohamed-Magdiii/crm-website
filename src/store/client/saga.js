@@ -12,8 +12,6 @@ import {
   fetchClientDetailsClear,
 
   editClientDetailsSuccess,
-  editClientDetailsFail,
-  editClientDetailsClear,
   addModalClear,
   fetchClientStagesEnd,
   assignAgentToClientSuccess,

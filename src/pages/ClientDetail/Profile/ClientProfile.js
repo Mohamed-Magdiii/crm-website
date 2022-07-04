@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, connect } from "react-redux";
 import {
-  Row, Col, Button, UncontrolledAlert, CardBody, CardHeader, CardTitle, Card
+  Row, Col, Button, CardBody, CardHeader, CardTitle, Card
 } from "reactstrap";
 import {
   AvForm, AvField
@@ -10,7 +10,7 @@ import AvFieldSelect from "components/Common/AvFieldSelect";
 
 // i18n 
 import { withTranslation } from "react-i18next";
-import { fetchClientDetails, editClientDetails } from "store/client/actions";
+import { editClientDetails } from "store/client/actions";
 import { fetchUsers } from "store/users/actions";
 import Loader from "components/Common/Loader";
 import { CALL_STATUSES } from "common/callstatus";

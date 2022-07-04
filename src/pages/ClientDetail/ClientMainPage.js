@@ -14,7 +14,6 @@ import ClientTransactions from "./Transactions/ClientTransactions";
 import ClientWallets from "./Wallets/ClientWallets";
 import OrderList from "./orders/OrdersList";
 import Documents from "./Documents/Documents";
-import Loader from "components/Common/Loader";
 import ClientDetailsHeader from "./ClientDetailsHeader";
 import { fetchClientDetails } from "store/client/actions";
 import { fetchDictionaryStart } from "store/dictionary/actions";
