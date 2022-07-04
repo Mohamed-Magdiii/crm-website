@@ -14,7 +14,7 @@ const loadOptions = async (search, page) => {
       .getManagers({
         payload: {
           page: page,
-          limit: 5,
+          limit: 15,
         },
       })
       .then((results) => {
@@ -35,7 +35,7 @@ const loadOptions = async (search, page) => {
       .getManagers({
         payload: {
           page: page,
-          limit: 3,
+          limit: 15,
           searchText: search,
         },
       })

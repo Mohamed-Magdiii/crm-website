@@ -8,9 +8,10 @@ import {
 } from "reactstrap";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 
-import {  addSystemEmail } from "store/systemEmail/actions";
 // i18n
 import { withTranslation } from "react-i18next";
+import {  addSystemEmail } from "store/systemEmail/actions";
+import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 
 function SystemEmailAdd(props){
   const [addModal, setAddModal] = useState(false);
@@ -24,15 +25,18 @@ function SystemEmailAdd(props){
   };
   useEffect(()=>{
     if (props.clearingCounter > 0 && addModal) {
-      props.switchComponents();
       setAddModal(false);
     }
   }, [props.clearingCounter]);
-  
+
+  const disableAddButton = () => (
+    props.systemEmail ? true : false
+  );
+
   return (
     <React.Fragment >
-      <Link to="#" className={`btn btn-light ${!create ? "d-none" : ""}`} onClick={toggleAddModal}>
-        <i className="bx bx-plus me-1"></i> {props.t("Add new")} 
+      <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}>
+        <i className="bx bx-plus me-1"></i> {props.t("Add New Email")} 
       </Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
@@ -49,9 +53,9 @@ function SystemEmailAdd(props){
               <AvField
                 name="title"
                 label={props.t("Title")}
-                placeholder={props.t("Title")}
+                placeholder={props.t("Enter Title")}
                 type="text"
-                errorMessage={props.t("Title is required")}
+                errorMessage={props.t("Enter Title")}
                 validate={{ required: { value: true } }}
               />
             </div>
@@ -59,17 +63,19 @@ function SystemEmailAdd(props){
               <AvField
                 name="action"
                 label={props.t("Action")}
-                placeholder={props.t("Action")}
+                placeholder={props.t("Enter Action")}
                 type="text"
-                errorMessage={props.t("Action is required")}
+                errorMessage={props.t("Enter Action")}
                 validate={{ required: { value: true } }}
               />
             </div>
             <div className='text-center pt-3 p-2'>
-              {/* on clicking this button it switches from the list component to the edit component if 
-                  submission is valid but it adds the new system email to the db onValidSubmit above */}
-              <Button disabled={props.addLoading} type="submit" color="primary">
-                {props.t("Next")}
+              <Button 
+                disabled={disableAddButton()} 
+                type="submit" 
+                color="primary"
+              >
+                {props.t("Add")}
               </Button>
             </div>
           </AvForm>
@@ -78,10 +84,12 @@ function SystemEmailAdd(props){
             {/* TODO this needs to be handled in translation */}
             {props.t(JSON.stringify(props.addErrorDetails))}
           </UncontrolledAlert>}
-          {props.addSuccess && <UncontrolledAlert color="success">
-            <i className="mdi mdi-check-all me-2"></i>
-            {props.t("First step completed successfully")} !!!
-          </UncontrolledAlert>}
+          
+          {/* after adding new system email successfully it will 
+              redirect the user to the edit page */}
+          {props.systemEmail && props.clearingCounter > 0 && 
+            <Redirect to={"/system-emails/" + props.systemEmail._id} />
+          }
         </ModalBody>
       </Modal>
     </React.Fragment>
@@ -95,6 +103,7 @@ const mapStateToProps = (state) => ({
   addError: state.systemEmailsReducer.addError,  
   clearingCounter: state.systemEmailsReducer.clearingCounter,
   activeComponentProp: state.systemEmailsReducer.activeComponentProp,
+  systemEmail: state.systemEmailsReducer.systemEmail,
   systemEmailsPermissions: state.Profile.systemEmailsPermissions || {}
 });
 

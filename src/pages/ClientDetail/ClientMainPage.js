@@ -23,6 +23,7 @@ function ClientMainPage(props) {
   const pathParams = useParams();
   const dispatch = useDispatch();
 
+  // const history = useHistory();
   const clientId = pathParams.id;
 
   // getting client details to check if client exists using their Id
@@ -52,6 +53,7 @@ function ClientMainPage(props) {
         <>
           <div className="page-content">
             <div className="container-fluid">
+              {/* TODO make this loader centered */}
               <Loader />
             </div>
           </div>
@@ -76,13 +78,37 @@ function ClientMainPage(props) {
                   !props.fetchClientDetailsError
                     ?
                     <Layout clientId={clientId}>
+                      {/* client details */}
+                      {/* <Route exact path="/clients/:id/profile">
+                        <ClientProfile clientId={clientId} />
+                      </Route> */}
+
+                      {/*  client bank */}
+                      {/* <Route exact path="/clients/:id/bank">
+                        <ClientBank clientId={clientId} />
+                      </Route> */}
+
+                      {/* client transactions */}
+                      {/* <Route exact path="/clients/:id/transactions">
+                        <ClientTransactions clientId={clientId} />
+                      </Route> */}
+
+                      {/* client wallets */}
+                      {/* <Route exact path="/clients/:id/wallets">
+                        <ClientWallets clientId={clientId} />
+                      </Route> */}
+
+                      {/* client orders */}
+                      {/* <Route exact path="/clients/:id/orders">
+                        <OrderList clientId={clientId} />
+                      </Route> */}
+
                       {tabsArr.map((obj, index) =>
                         <Route key={index} exact path={obj.url}>
                           <obj.component clientId={clientId} path={obj.url} />
                         </Route>
                       )}
-                      {/* default route to details right on loading */}
-                      <Redirect to={tabsArr[0].url} />
+                      {/* <Redirect to={tabsArr[0].url} /> */}
                     </Layout>
                     :
                     <Redirect to={"/dashboard"} />

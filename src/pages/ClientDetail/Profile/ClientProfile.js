@@ -41,8 +41,8 @@ function ClientDetails(props) {
 
   }, [props.updatedClientDetails]);
 
-  // useEffect is used to set initial value for agent, nationality and country 
-  // right after loading the page so if the user clicks update without changing 
+  // useEffect is used to set initial value once client details is loaded 
+  // for agent, nationality and country so if the user clicks update without changing 
   // any of them it will load it's previous value and update all updated fields
   useEffect(() => {
   }, [props.clientDetails]);
@@ -56,7 +56,7 @@ function ClientDetails(props) {
       {(!props.clientProfileloading && !props.usersLoading) &&
         <div className="">
           <div className="container-fluid">
-            <div className="">
+            <div>
               <Row>
                 {/* input fields to the left side */}
                 <Col md="9" sm="12" xs="12">
@@ -98,9 +98,9 @@ function ClientDetails(props) {
                                 <AvField
                                   name="firstName"
                                   label={props.t("First name")}
-                                  placeholder={props.t("First name")}
+                                  placeholder={props.t("Enter First Name")}
                                   type="text"
-                                  errorMessage={props.t("First name is required")}
+                                  errorMessage={props.t("Enter First Name")}
                                   validate={{ required: { value: true } }}
                                   value={props.clientDetails.firstName}
                                 />
@@ -111,9 +111,9 @@ function ClientDetails(props) {
                                 <AvField
                                   name="lastName"
                                   label={props.t("Last name")}
-                                  placeholder={props.t("Last name")}
+                                  placeholder={props.t("Enter Last Name")}
                                   type="text"
-                                  errorMessage={props.t("Last name is required")}
+                                  errorMessage={props.t("Enter Last Name")}
                                   validate={{ required: { value: true } }}
                                   value={props.clientDetails.lastName}
                                 />
@@ -124,7 +124,7 @@ function ClientDetails(props) {
                                 <AvField
                                   name="phone"
                                   label={props.t("Phone")}
-                                  placeholder={props.t("Phone")}
+                                  placeholder={props.t("Enter Phone")}
                                   type="text"
                                   errorMessage={props.t("Phone is required")}
                                   validate={
@@ -183,9 +183,9 @@ function ClientDetails(props) {
                                 <AvField
                                   name="dob"
                                   label={props.t("Date of birth")}
-                                  placeholder={props.t("Date of birth")}
+                                  placeholder={props.t("Enter Date of birth")}
                                   type="date"
-                                  errorMessage={props.t("Date of birth is required")}
+                                  errorMessage={props.t("Enter Date of birth")}
                                   validate={{ required: { value: true } }}
                                   value={props.clientDetails.dob}
                                 />
@@ -230,9 +230,9 @@ function ClientDetails(props) {
                                 <AvField
                                   name="city"
                                   label={props.t("City")}
-                                  placeholder={props.t("City")}
+                                  placeholder={props.t("Enter City")}
                                   type="text"
-                                  errorMessage={props.t("City is required")}
+                                  errorMessage={props.t("Enter City")}
                                   validate={{ required: { value: true } }}
                                   value={props.clientDetails.city}
                                 />

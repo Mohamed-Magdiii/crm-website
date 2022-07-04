@@ -15,26 +15,45 @@ import {
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
+import Select from "react-select";
+import { useHistory } from "react-router-dom";
 
-import { editSystemEmailContent, fetchSystemEmailById } from "store/systemEmail/actions";
+
 // i18n
 import { withTranslation } from "react-i18next"; 
+import BackConfirmationModal from "components/Common/BackConfirmationModal";
+import { editSystemEmailContent, fetchSystemEmailById } from "store/systemEmail/actions";
 
 function SystemEmailEdit(props){
+  // two states used to check if subject or content were changed
+  const [isSubjectChanged, setIsSubjectChanged] = useState(false);
+  const [isContentChanged, setIsContentChanged] = useState(false);
+  const [backConfirmationModalState, setBackConfirmationModalState] = useState(false);
   const readableLanguages = {
     "en-gb": "English",
     "ar-ae": "Arabic"
   };
-  // props.systemEmail if it's coming from add modal (systemEmail = new system email)
+  // props.systemEmail if it's coming from add modal (systemEmail = newly added system email)
   // props.role if it's coming from an edit call (pre existing system email)
   let role = props.systemEmail || props.role;
   
   const availableLanguages = Object.keys(role.content);
-  const [selectedLanguage, setSelectedLanguage] = useState("en-gb");
-  
-  const changeLanguageHandler = (e) => {
-    setSelectedLanguage(e.target.value);
+  const availableLanguageSelect = availableLanguages.map((availableLanguage) => {
+    return (
+      {
+        value: availableLanguage,
+        label: readableLanguages[availableLanguage]
+      }
+    );
+  });
+  const languageInitialValue = availableLanguageSelect.find((item) => (
+    item.value === "en-gb"
+  ));
+  const [selectedLanguage, setSelectedLanguage] = useState(languageInitialValue);
+  const languageChangeHanlder = (selectedLanguageVar) => {
+    setSelectedLanguage(selectedLanguageVar);
   };
+  
   const dispatch = useDispatch();
   const handleSystemEmailEdit = (e, values) => {
     dispatch(editSystemEmailContent({
@@ -49,7 +68,7 @@ function SystemEmailEdit(props){
   };
 
   // rich editor handler 
-  const blocksFromHTML = htmlToDraft(role.content[selectedLanguage].body);
+  const blocksFromHTML = htmlToDraft(role.content[selectedLanguage.value].body);
   const { contentBlocks, entityMap } = blocksFromHTML;
   const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
   const [editorState, setEditorState] = useState(EditorState.createWithContent(contentState)); 
@@ -60,6 +79,74 @@ function SystemEmailEdit(props){
     setEditorState(EditorState.createWithContent(contentState));
     
   }, [role, selectedLanguage]);
+
+  // subject temp value handler
+  const subjectTempInitialValues = availableLanguages.map((item) => (
+    {
+      language: item,
+      tempSubject: ""
+    }
+  ));
+  const [subjectTempValue, setSubjectTempValue] = useState(subjectTempInitialValues);
+  const subjectTempValueHandler = (e) => {
+    const updatedTempSubject = [];
+    for (let item of subjectTempValue){
+      if (item.language === selectedLanguage.value){
+        item.tempSubject = e.target.value;
+        updatedTempSubject.push(item);
+      } else {
+        updatedTempSubject.push(item);
+      }
+    }
+    setIsSubjectChanged(true);
+    setSubjectTempValue(updatedTempSubject);
+  };
+
+  // content temp value handler
+  const contentTempInitialValues = availableLanguages.map((item) => (
+    {
+      language: item,
+      tempContent: ""
+    }
+  ));
+  const [contentTempValue, setContentempValue] = useState(contentTempInitialValues);
+  const contentTempValueHandler = (e) => {
+    const blocksFromHTML = htmlToDraft(`<p>${e.blocks[0].text}</p>`);
+    const { contentBlocks, entityMap } = blocksFromHTML;
+    const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+    const editorState = EditorState.createWithContent(contentState); 
+    console.log(editorState);
+    
+    const updatedTempContent = [];
+    for (let item of contentTempValue){
+      if (item.language === selectedLanguage.value){
+        item.tempContent = editorState;
+        updatedTempContent.push(item);
+      } else {
+        updatedTempContent.push(item);
+      }
+    }
+    setIsContentChanged(true);
+    setContentempValue(updatedTempContent);
+  };
+
+  // back button handler
+  const history = useHistory();
+  const backButtonConfirmationHandler = () => {
+    props.editContentClearingCounter === 0 && (isSubjectChanged || isContentChanged)
+      ?
+      // subject, content or both were updated and 
+      // system email wasn't updated successfully yet
+      setBackConfirmationModalState(true)
+      :
+      // no updates were made to subject or content
+      history.push("/system-emails");
+  };
+
+  // modal back button handler
+  const modalBackConfirmationButton = () => {
+    history.push("/system-emails");
+  };
   
   return (
     <React.Fragment >
@@ -68,8 +155,6 @@ function SystemEmailEdit(props){
           <h2>{props.t("Advanced edit")}</h2>
           <AvForm
             onValidSubmit={(e, v) => {
-              // storing rich text editor content as HTML to it could be sent as an email
-              v.body = draftToHtml(convertToRaw(editorState.getCurrentContent()));
               handleSystemEmailEdit(e, v);
               // with every update it fetches the updated values of the system email 
               // to keep fields up to date with database
@@ -77,34 +162,40 @@ function SystemEmailEdit(props){
             }}
           >
             <div className="col-sm-8">
+              <label>{props.t("Available languages")}</label>
+              <Select
+                defaultValue={selectedLanguage}
+                options={availableLanguageSelect} 
+                onChange={languageChangeHanlder}
+              />
               <AvField
                 name="language"
                 id="Available languages"
-                label={props.t("Available languages")}
-                placeholder={props.t("Available languages")}
-                type="select"
-                errorMessage={props.t("Language is required")}
+                type="text"
+                errorMessage={props.t("Enter Language")}
                 validate={{ required: { value: true } }}
-                onChange={changeLanguageHandler}
-                value={props.t(selectedLanguage)}
-              >
-                {availableLanguages.map(availableLanguage => (
-                  <option key={availableLanguages.indexOf(availableLanguage)} value={availableLanguage}>
-                    {props.t(readableLanguages[availableLanguage])}
-                  </option>
-                ))}
-              </AvField>
+                value={selectedLanguage.value}
+                style={{
+                  opacity: 0,
+                  height: 0,
+                  margin: -8 
+                }}
+              />
             </div>
 
             <div className="col-sm-8">
               <AvField
                 name="subject"
                 label={props.t("Subject")}
-                placeholder={props.t("Subject")}
+                placeholder={props.t("Enter Email Subject")}
                 type="text"
-                value={role.content[selectedLanguage].subject}
-                errorMessage={props.t("Subject is required")}
+                value={
+                  role.content[selectedLanguage.value].subject || 
+                  subjectTempValue.find((item) => (item.language === selectedLanguage.value)).tempSubject
+                }
+                errorMessage={props.t("Enter Email Subject")}
                 validate={{ required: { value: true } }}
+                onChange={subjectTempValueHandler}
               />
             </div>
 
@@ -115,9 +206,26 @@ function SystemEmailEdit(props){
                 toolbarClassName="toolbarClassName"
                 wrapperClassName="wrapperClassName"
                 editorClassName="editorClassName"
-                editorState={editorState}
+                editorState={
+                  editorState || 
+                  contentTempValue.find((item) => (item.language === selectedLanguage.value)).tempContent
+                }
                 onEditorStateChange={setEditorState}
-                placeholder={props.t("Content")}
+                placeholder={props.t("Enter Email Content")}
+                onChange={contentTempValueHandler}
+              />
+              <AvField
+                name="body"
+                id="body"
+                type="text"
+                errorMessage={props.t("Enter Email Content")}
+                validate={{ required: { value: true } }}
+                value={draftToHtml(convertToRaw(editorState.getCurrentContent()))}
+                style={{
+                  opacity: 0,
+                  height: 0,
+                  margin: -8 
+                }}
               />
             </div>
             {role.permissions && Object.keys(role.permissions).map((permKey, permInd) =>
@@ -135,9 +243,7 @@ function SystemEmailEdit(props){
             <div className="d-flex justify-content-end col-sm-8 mt-3">
               {/* submit button */}
               <div className="p-2">
-                <Button 
-                  // the editorState check is added to make sure that the user has entered a content
-                  disabled={props.editLoading || !editorState.getCurrentContent().getPlainText()}  
+                <Button
                   type="submit" 
                   color="primary"
                 >
@@ -147,15 +253,22 @@ function SystemEmailEdit(props){
 
               {/* back button */}
               <div className="p-2">
-                <Button disabled={props.editLoading || !props.isBackButtonActive} 
+                <Button 
+                  disabled={props.editLoading || !props.isBackButtonActive} 
                   type="button" 
-                  color="primary" 
-                  onClick={() => {props.switchComponents(); props.systemEmailUpdatedHandler()}}
+                  color="primary"
+                  onClick={backButtonConfirmationHandler} 
                 >
                   {props.t("Back")}
                 </Button>
               </div>
             </div>
+            {<BackConfirmationModal 
+              loading={props.editLoading} 
+              onBackClick={modalBackConfirmationButton} 
+              show={backConfirmationModalState} 
+              onCloseClick={()=>{setBackConfirmationModalState(false)}} 
+            />}
             {props.editContentError && <UncontrolledAlert color="danger" className="col-sm-8">
               <i className="mdi mdi-block-helper me-2"></i>
               {/* TODO this need to be handled in translation */}

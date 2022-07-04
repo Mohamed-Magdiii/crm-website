@@ -26,7 +26,7 @@ function TeamsEditModal(props) {
   }, [manager]);
   const dispatch = useDispatch();
   // console.log(usersRoles);
-  const handleEditTeam = (e, values) => { 
+  const handleEditTeam = (e, values) => {
     values.managerId = managerValue.value;
     dispatch(
       editTeam({
@@ -35,7 +35,7 @@ function TeamsEditModal(props) {
       })
     );
   };
-  useEffect(() => { 
+  useEffect(() => {
     if (props.editClearingCounter > 0 && open) {
       setTimeout(() => {
         onClose();
@@ -71,7 +71,7 @@ function TeamsEditModal(props) {
       {/* <Link to="#" className="btn btn-light" onClick={onClose}><i className="bx bx-plus me-1"></i> Add New</Link> */}
       <Modal isOpen={open} toggle={onClose} centered={true}>
         <ModalHeader toggle={onClose} tag="h4">
-          Edit User
+          Edit Team
         </ModalHeader>
         <ModalBody>
           <AvForm
@@ -84,13 +84,13 @@ function TeamsEditModal(props) {
               <AvField
                 name="title"
                 label="Team Title  "
-                placeholder="Team Title"
+                placeholder="Enter Team Title"
                 type="text"
                 errorMessage="Enter Team Title"
                 value={team.title}
                 validate={{ required: { value: true } }}
               />
-            </div> 
+            </div>
             <div className="mb-3">
               <label>Team Manager</label>
 
@@ -99,14 +99,15 @@ function TeamsEditModal(props) {
                 default={manager}
                 value={managerValue}
                 loadOptions={loadPageOptions}
+                placeholder="Select Team Manager"
                 onChange={setManagerValue}
                 errorMessage="please select Team Manager"
                 validate={{ required: { value: true } }}
               />
-            </div> 
-            <div className="text-center p-5">
+            </div>
+            <div className="text-center ">
               <Button type="submit" color="primary" className="">
-                Edit User
+                Edit 
               </Button>
             </div>
           </AvForm>
