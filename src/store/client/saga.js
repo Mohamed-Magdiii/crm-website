@@ -70,10 +70,13 @@ function * editClientDetails(params){
   try {
     const data = yield call(clientApi.updateClientDetails, params);
     yield put(editClientDetailsSuccess(data));
-    yield delay(2000);
-    yield put(editClientDetailsClear());
+    yield put(showSuccessNotification("Client updated sucessfully!"));
+
+    // yield delay(2000);
+    // yield put(editClientDetailsClear());
   } catch (error){
-    yield put(editClientDetailsFail({ error: error.message }));
+    yield put(showErrorNotification(error.message || "Error updating client"));
+    // yield put(editClientDetailsFail({ error: error.message }));
   }
 }
 function * assignAgent (params){

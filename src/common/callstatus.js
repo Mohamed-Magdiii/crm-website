@@ -1,0 +1,22 @@
+export const CALL_STATUSES = [
+  "No Status",
+  "1st Call Attempted",
+  "2nd Call Attempted",
+  "3rd Call Attempted",
+  "4th Call Attempted",
+  "Busy Tune",
+  "Not Interested",
+  "Archived",
+  "Qualified",
+  "Interested",
+  "Language Not Support",
+  "Converted",
+  "Wrong Number",
+  "Fake Registration",
+  "Duplicate",
+  "Poor quality but can follow up",
+  "Interested (Individual))",
+  "Interested (Introducing Broker - IB)",
+  "Interested (AccuPay)",
+  "Interested (Real Zero)"
+];

@@ -29,7 +29,7 @@ function ClientDetailsHeader(props){
   */
   return (
     <React.Fragment>
-      <div className="row">
+      <div className="row p-2">
         <div className="col-md-6 col-xl-3">
           <div className="card-h-100 card card-animate">
             <div className="card-body">

@@ -1,0 +1,24 @@
+
+
+.quick-actions-card{
+    .quick-actions-heading{
+        font-weight: $font-weight-bold;
+        margin-bottom: $paragraph-margin-bottom;
+    }
+    
+    .quick-actions-heading::after{
+        content: "";
+        height: 2px;
+        display: block;
+        background: linear-gradient(90deg,rgba(0,0,0,.5),transparent 50%,transparent);
+        margin: 0.5rem 0 0.2rem;
+    }
+    .btn-container{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: calc($spacer / 2);
+    }
+    .btn {
+        font-size: $btn-font-size-sm;
+    }
+}
