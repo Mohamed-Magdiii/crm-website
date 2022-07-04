@@ -31,7 +31,8 @@ function AvFieldSelecvt(props) {
       style={{
         opacity: 0,
         height: 0,
-        margin: -10 
+        margin: -10,
+        "pointer-events": "none",
       }}
     >
       {options.map((obj, index) => {

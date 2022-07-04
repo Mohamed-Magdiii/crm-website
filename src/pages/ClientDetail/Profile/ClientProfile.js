@@ -39,7 +39,7 @@ function ClientDetails(props) {
     // dispatch(fetchClientDetails(clientId)); 
     dispatch(fetchUsers());
 
-  }, [props.updatedClientDetails]);
+  }, []);
 
   // useEffect is used to set initial value once client details is loaded 
   // for agent, nationality and country so if the user clicks update without changing 
@@ -201,7 +201,7 @@ function ClientDetails(props) {
                                   value={props.clientDetails.nationality}
                                   options={props.countries.map((country)=>{
                                     return ({
-                                      label: `${country.en} ${country.ar}`, 
+                                      label: `${country.en}`, 
                                       value: country.en
                                     });
                                   })}
@@ -222,7 +222,7 @@ function ClientDetails(props) {
                                   value={props.clientDetails.country}
                                   options={props.countries.map((country)=>{
                                     return ({
-                                      label: `${country.en} ${country.ar}`, 
+                                      label: `${country.en}`, 
                                       value: country.en
                                     });
                                   })}
@@ -473,7 +473,7 @@ function ClientDetails(props) {
                                   value={props.clientDetails.idDetails && props.clientDetails.idDetails.countryOfIssue}
                                   options={props.countries.map((country)=>{
                                     return ({
-                                      label: `${country.en} ${country.ar}`, 
+                                      label: `${country.en}`, 
                                       value: country.en
                                     });
                                   })}
@@ -521,7 +521,7 @@ function ClientDetails(props) {
                         <div className="d-flex justify-content-end">
                           <div className="p-4">
                             <Button 
-                              disabled={props.editLoading}  
+                              disabled={props.updating}  
                               type="submit" 
                               color="primary"
                             >
@@ -605,6 +605,7 @@ function ClientDetails(props) {
 
 const mapStateToProps = (state) => ({
   clientProfileloading: state.clientReducer.clientProfileloading,
+  updating: state.clientReducer.updating,
   clientDetails: state.clientReducer.clientDetails,
   editError: state.clientReducer.editError,
   editErrorDetials: state.clientReducer.editErrorDetails,

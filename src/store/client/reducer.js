@@ -13,7 +13,7 @@ import {
 
 const initalState = {
   error:"",
-  loading:true,
+  loading:false,
   clients:[],
   successMessage:"",
   clientDetails: {},
@@ -123,7 +123,7 @@ export const clientReducer = (state = initalState, action)=>{
     case EDIT_CLIENT_DETAILS_REQUESTED:
       state = {
         ...state,
-        loading: true
+        updating: true
       };
       break;
     case EDIT_CLIENT_DETAILS_SUCCESS:
@@ -132,7 +132,7 @@ export const clientReducer = (state = initalState, action)=>{
         updatedClientDetails: action.payload.result,
         editSuccess: true,
         error: false,
-        loading: false
+        updating: false
       };
       break;
     // TODO check the error message with the backend
@@ -142,7 +142,7 @@ export const clientReducer = (state = initalState, action)=>{
         success: false,
         editError: true,
         EditErrorDetails: action.payload.error,
-        loading: false
+        updating: false
       };
       break;
     case EDIT_CLIENT_DETAILS_CLEAR:
