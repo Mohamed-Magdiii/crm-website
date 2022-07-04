@@ -48,12 +48,12 @@ function ClientDetails(props) {
   }, [props.clientDetails]);
   return (
     <React.Fragment>
-      {(props.clientProfileloading || props.usersLoading) && 
+      {(props.clientProfileloading || props.usersLoading || props.dictLoading) && 
         <div className="d-flex justify-content-center">
           <Loader />
         </div>
       }
-      {(!props.clientProfileloading && !props.usersLoading) &&
+      {(!props.clientProfileloading && !props.usersLoading && !props.dictLoading) &&
         <div className="">
           <div className="container-fluid">
             <div>
@@ -213,19 +213,21 @@ function ClientDetails(props) {
                           {/* third row */}
                           <Row>
                             <Col md="3">
-                              <AvFieldSelect 
-                                name="country"
-                                label={props.t("Country")}
-                                errorMessage={props.t("Country is required")}
-                                validate={{ required: { value: true } }}
-                                value={props.clientDetails.country}
-                                options={props.countries.map((country)=>{
-                                  return ({
-                                    label: `${country.en} ${country.ar}`, 
-                                    value: country.en
-                                  });
-                                })}
-                              />
+                              <div className="mt-2">
+                                <AvFieldSelect 
+                                  name="country"
+                                  label={props.t("Country")}
+                                  errorMessage={props.t("Country is required")}
+                                  validate={{ required: { value: true } }}
+                                  value={props.clientDetails.country}
+                                  options={props.countries.map((country)=>{
+                                    return ({
+                                      label: `${country.en} ${country.ar}`, 
+                                      value: country.en
+                                    });
+                                  })}
+                                />
+                              </div>
                             </Col>
                             <Col md="3">
                               <div className="mt-2">
@@ -271,24 +273,26 @@ function ClientDetails(props) {
                           {/* fourth row */}
                           <Row>
                             <Col md="3">
-                              <AvFieldSelect
-                                name="gender"
-                                type="text"
-                                errorMessage={props.t("Gender is required")}
-                                validate={{ required: { value: true } }}
-                                value={props.clientDetails.gender}
-                                label={props.t("Gender")}
-                                options = {[{
-                                  value: "",
-                                  label: "Select Gender"
-                                }, {
-                                  value: "male",
-                                  label: "Male"
-                                }, {
-                                  value: "female",
-                                  label: "Female"
-                                }]}
-                              />
+                              <div className="mt-2">
+                                <AvFieldSelect
+                                  name="gender"
+                                  type="text"
+                                  errorMessage={props.t("Gender is required")}
+                                  validate={{ required: { value: true } }}
+                                  value={props.clientDetails.gender}
+                                  label={props.t("Gender")}
+                                  options = {[{
+                                    value: "",
+                                    label: "Select Gender"
+                                  }, {
+                                    value: "male",
+                                    label: "Male"
+                                  }, {
+                                    value: "female",
+                                    label: "Female"
+                                  }]}
+                                />
+                              </div>
                             </Col>
                             <Col md="3">
                               <div className="mt-2">
@@ -608,7 +612,8 @@ const mapStateToProps = (state) => ({
   editSuccess: state.clientReducer.editSuccess,
   usersDocs: state.usersReducer.docs,
   usersLoading: state.usersReducer.loading,
-  countries: state.dictionaryReducer.countries || []
+  countries: state.dictionaryReducer.countries || [],
+  dictLoading: state.dictionaryReducer.loading,
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(ClientDetails));
