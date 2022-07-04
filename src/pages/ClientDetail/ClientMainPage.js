@@ -49,16 +49,11 @@ function ClientMainPage(props) {
 
   return (
     <React.Fragment>
-      {props.clientProfileloading && 
+      {/* {props.clientProfileloading && 
         <>
-          <div className="page-content">
-            <div className="container-fluid">
-              {/* TODO make this loader centered */}
-              <Loader />
-            </div>
-          </div>
+          <Loader />
         </>
-      }
+      } */}
       {props.clientDetails && 
         <div className="page-content">
           <div className="container-fluid">

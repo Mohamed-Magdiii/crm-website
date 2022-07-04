@@ -36,7 +36,7 @@ function ClientDetails(props) {
   };
   
   useEffect(() => {
-    dispatch(fetchClientDetails(clientId)); 
+    // dispatch(fetchClientDetails(clientId)); 
     dispatch(fetchUsers());
 
   }, [props.updatedClientDetails]);
@@ -192,19 +192,21 @@ function ClientDetails(props) {
                               </div>
                             </Col>
                             <Col md="3">
-                              <AvFieldSelect 
-                                name="nationality"
-                                label={props.t("Nationality")}
-                                errorMessage={props.t("Nationality is required")}
-                                validate={{ required: { value: true } }}
-                                value={props.clientDetails.nationality}
-                                options={props.countries.map((country)=>{
-                                  return ({
-                                    label: `${country.en} ${country.ar}`, 
-                                    value: country.en
-                                  });
-                                })}
-                              />
+                              <div className="mt-2">
+                                <AvFieldSelect 
+                                  name="nationality"
+                                  label={props.t("Nationality")}
+                                  errorMessage={props.t("Nationality is required")}
+                                  validate={{ required: { value: true } }}
+                                  value={props.clientDetails.nationality}
+                                  options={props.countries.map((country)=>{
+                                    return ({
+                                      label: `${country.en} ${country.ar}`, 
+                                      value: country.en
+                                    });
+                                  })}
+                                />
+                              </div>
                             </Col>
                           </Row>
 
