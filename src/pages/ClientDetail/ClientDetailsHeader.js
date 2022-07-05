@@ -30,14 +30,14 @@ function ClientDetailsHeader(props){
   */
   return (
     <React.Fragment>
-      <div className="row p-2">
-        <div className="col-md-6 col-xl-3">
+      <div className="row p-2 client-detail-header">
+        <div className="name" >
           <div className="card-h-100 card card-animate">
             <div className="card-body">
               <div className="align-items-center">
                 {props.clientProfileloading && <Loader />}
                 {!props.clientProfileloading &&
-                  <div className="col-6">
+                  <div >
                     <span className="text-muted mb-3 lh-1 d-block text-truncate">
                       {clientDetails.recordId}
                     </span>
@@ -53,13 +53,13 @@ function ClientDetailsHeader(props){
           </div>
         </div>
 
-        <div className="col-md-6 col-xl-3 col-xs-3">
+        <div className="date">
           <div className="card-h-100 card card-animate">
             <div className="card-body">
               <div className="align-items-center row">
                 {props.clientProfileloading && <Loader />}
                 {!props.clientProfileloading &&
-                  <div className="col-6">
+                  <div >
                     <span className="text-muted mb-3 lh-1 d-block text-truncate">
                       Created on
                     </span>
@@ -75,14 +75,14 @@ function ClientDetailsHeader(props){
           </div>
         </div>
 
-        <div className="col-md-6 col-xl-3 col-xs-3">
+        <div className="status">
           <div className="card-h-100 card card-animate">
             <div className="card-body">
               <div className="align-items-center row">
                 {props.clientProfileloading && <Loader />}
                 {!props.clientProfileloading &&
                   <>
-                    <div className="col-6">
+                    <div className="">
                       <span className="text-muted mb-3 lh-1 d-block text-truncate">
                         Status
                       </span>
@@ -92,7 +92,21 @@ function ClientDetailsHeader(props){
                         </span>
                       </h6>
                     </div>
-                    <div className="col-6">
+                  </>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="category">
+          <div className="card-h-100 card card-animate">
+            <div className="card-body">
+              <div className="align-items-center row">
+                {props.clientProfileloading && <Loader />}
+                {!props.clientProfileloading &&
+                  <>
+                    <div className="">
                       <span className="text-muted mb-3 lh-1 d-block text-truncate">
                         Category
                       </span>
@@ -109,13 +123,13 @@ function ClientDetailsHeader(props){
           </div>
         </div>
 
-        <div className="col-md-6 col-xl-3 col-xs-3">
+        <div className="stage">
           <div className="card-h-100 card card-animate">
             <div className="card-body">
               <div className="align-items-center row">
                 {props.clientProfileloading && <Loader />}
                 {!props.clientProfileloading &&
-                  <div className="col-6">
+                  <div >
                     <span className="text-muted mb-3 lh-1 d-block text-truncate">
                       KYC Status
                     </span>

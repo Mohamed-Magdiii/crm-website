@@ -126,7 +126,7 @@ function ClientsList(props) {
         if (val.stages) {
           const { kycApproved, kycRejected } = val.stages;
           if (kycApproved) {
-            return (<div className="d-flex gap-3">
+            return (<div className="">
               <Link className="text-success" to="#">
                 <i
                   className="mdi mdi-check-circle font-size-20"
@@ -138,7 +138,7 @@ function ClientsList(props) {
           }
           if (kycRejected) {
             return (
-              <div className="d-flex gap-3">
+              <div className="">
                 <Link className="text-danger" to="#">
                   <i
                     className="mdi mdi-close-thick font-size-20"
@@ -150,7 +150,7 @@ function ClientsList(props) {
             
           }
           else {
-            return (<div className="d-flex gap-3">
+            return (<div className="">
               <Link className="text-warning" to="#">
                 <i
                   className="mdi mdi-alert-decagram-outline font-size-20"
@@ -172,7 +172,7 @@ function ClientsList(props) {
       editable: false,
       text: props.t("Action"),
       formatter: (user) => (
-        <div className="d-flex gap-3">
+        <div className="">
           <Link className="text-success" to="#">
             <i
               className="mdi mdi-calendar-text font-size-20"
@@ -242,7 +242,7 @@ function ClientsList(props) {
                     >
                       <Table
                         id="tech-companies-1"
-                        className="table table-hover"
+                        className="table table-hover table-clients"
                       >
                         <Thead className="text-center table-light" >
                           <Tr>
