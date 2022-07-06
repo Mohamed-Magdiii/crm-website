@@ -147,9 +147,9 @@ function AssestsList(props){
                     >
                       <Table
                         id="tech-companies-1"
-                        className="table "
+                        className="table  table-hover "
                       >
-                        <Thead>
+                        <Thead className="text-center table-light" >
                           <Tr>
                             {columns.map((column, index) =>
                               <Th data-priority={index} key={index}>{column.text}</Th>

@@ -170,8 +170,11 @@ function MarkUpsList(props) {
                       className="table-responsive mb-0"
                       data-pattern="priority-columns"
                     >
-                      <Table id="tech-companies-1" className="table ">
-                        <Thead>
+                      <Table
+                        id="tech-companies-1"
+                        className="table table-hover"
+                      >
+                        <Thead className="text-center table-light" >
                           <Tr>
                             {columns.map((column, index) => (
                               <Th data-priority={index} key={index}>
