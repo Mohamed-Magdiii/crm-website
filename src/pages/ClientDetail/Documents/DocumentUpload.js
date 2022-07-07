@@ -141,21 +141,17 @@ function UploadKYC (props) {
                   />
                 </Col>
                 <Col md="12" className='text-center pt-3 p-2'>
-                  <Button disabled={props.uploading} type="button" onClick={resetForm} color="danger"
-                    style={{
-                      marginRight: "2rem",
-                      marginLeft: "2rem"
-                    }}>
-                    {props.t("Reset Form")}
-                  </Button>
-                  <Button disabled={props.uploading} type="submit" className="mr-2 ml-2" color="primary"
-                    style={{
-                      marginRight: "2rem",
-                      marginLeft: "2rem"
-                    }}
-                  >
-                    {props.t("Upload")}
-                  </Button>
+                  <Row className="spacing">
+                    <Col sm={6} xs={6}></Col>
+                    <Col sm={6} xs={12} className="d-flex justify-content-between">
+                      <Button disabled={props.uploading} type="button" className="w-md mb-2" onClick={resetForm} color="danger">
+                        {props.t("Reset Form")}
+                      </Button>
+                      <Button disabled={props.uploading} type="submit" className="w-md mb-2" color="primary">
+                        {props.t("Upload")}
+                      </Button>
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
             }
@@ -259,22 +255,19 @@ function UploadAdditionalDocs (props) {
                 </Col>
               </React.Fragment>)}
               <Col md="12" className='text-center pt-3 p-2'>
-                <Button disabled={props.uploading} type="button" className="mr-2 ml-2" onClick={resetForm} color="danger"
-                  style={{
-                    marginRight: "2rem",
-                    marginLeft: "2rem"
-                  }}
-                >
-                  {props.t("Reset Form")}
-                </Button>
-                <Button disabled={props.uploading} type="submit" className="mr-2 ml-2" color="primary"
-                  style={{
-                    marginRight: "2rem",
-                    marginLeft: "2rem"
-                  }}
-                >
-                  {props.t("Upload")}
-                </Button>
+                
+                
+                <Row className="spacing">
+                  <Col sm={6} xs={6}></Col>
+                  <Col sm={6} xs={12} className="d-flex justify-content-between">
+                    <Button disabled={props.uploading} type="button" className="w-md mb-2" onClick={resetForm} color="danger">
+                      {props.t("Reset Form")}
+                    </Button>
+                    <Button disabled={props.uploading} type="submit" className="w-md mb-2" color="primary">
+                      {props.t("Upload")}
+                    </Button>
+                  </Col>
+                </Row>
               </Col>
                   
             </Row>

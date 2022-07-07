@@ -110,7 +110,7 @@ function DocumentApprove (props) {
             </Col>
           </Row>}
           <div className='text-center pt-3 p-2'>
-            <Button disabled={false} type="submit" color="primary" className="">
+            <Button disabled={false} type="submit" color="primary" className="w-md">
                 Update
             </Button>
           </div>
@@ -156,10 +156,10 @@ function DocumentDelete (props) {
             </Col>
           </Row>
           <div className='text-center pt-3 p-2'>
-            <Button disabled={false} onClick={props.onClose} type="button" color="primary" className="" style={{ margin: "1rem" }}>
+            <Button disabled={false} onClick={props.onClose} type="button" color="primary" className="w-md" style={{ margin: "1rem" }}>
                 Cancel
             </Button>
-            <Button disabled={false} type="submit" color="danger" className="" style={{ margin: "1rem" }}>
+            <Button disabled={false} type="submit" color="danger" className="w-md" style={{ margin: "1rem" }}>
                 Delete
             </Button>
           </div>
