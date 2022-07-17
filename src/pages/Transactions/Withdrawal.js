@@ -62,8 +62,8 @@ function Withdrawal(props){
           <div>
             <Link 
               to = {{
-                pathname :`/clients/${val.customerId._id}/profile`,
-                state : { clientId : val.customerId._id }
+                pathname :val.customerId ? `/clients/${val.customerId._id}/profile` : "",
+                state : { clientId : val.customerId ? val.customerId._id : "" }
               }}
             
             >

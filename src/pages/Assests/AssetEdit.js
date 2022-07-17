@@ -71,7 +71,7 @@ function AssetEdit (props) {
   return (
     <React.Fragment >
       {/* <Link to="#" className="btn btn-light" onClick={onClose}><i className="bx bx-plus me-1"></i> Add New</Link> */}
-      <Modal isOpen={open} toggle={onClose} centered={true}>
+      <Modal isOpen={open} toggle={onClose} centered={true} size="lg">
         <ModalHeader toggle={onClose} tag="h4">
           {props.t("Edit Symbol")}
         </ModalHeader>
@@ -88,7 +88,7 @@ function AssetEdit (props) {
                   <AvField
                     name="name"
                     label={props.t("Name")}
-                    placeholder={props.t("Name")}
+                    placeholder={props.t("Enter Name")}
                     type="text"
                     errorMessage={props.t("Enter name of the symbol")}
                     value={symbol.name}
@@ -101,7 +101,7 @@ function AssetEdit (props) {
                   <AvField
                     name="symbol"
                     label={props.t("Symbol")}
-                    placeholder={props.t("Symbol")}
+                    placeholder={props.t("Enter Symbol")}
                     type="text"
                     errorMessage={props.t("Enter symbol")}
                     value={symbol.symbol}
@@ -116,7 +116,7 @@ function AssetEdit (props) {
                   <AvField
                     name="description"
                     label={props.t("Description")}
-                    placeholder={props.t("Description")}
+                    placeholder={props.t("Enter Description")}
                     type="text"
                     errorMessage={props.t("Enter description")}
                     value={symbol.description}
@@ -144,7 +144,7 @@ function AssetEdit (props) {
                   <AvField
                     name="depositFee"
                     label={props.t("Desposit Fee")}
-                    placeholder={props.t("Desposit Fee")}
+                    placeholder={props.t("Enter Desposit Fee")}
                     type="text"
                     errorMessage={props.t("Enter valid deposit fee")}
                     value={depositFee}
@@ -152,7 +152,7 @@ function AssetEdit (props) {
                       required :{ value:true },
                       pattern : {
                         // eslint-disable-next-line no-useless-escape
-                        value :"/^[+]?([0-9]+\.?[0-9]*|\.[0-9]+)$/",
+                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
                         errorMessage : "Deposit Fee must be a number"
                       }
                     }}
@@ -164,7 +164,7 @@ function AssetEdit (props) {
                   <AvField
                     name="withdrawFee"
                     label={props.t("Withdraw Fee")}
-                    placeholder={props.t("Withdraw Fee")}
+                    placeholder={props.t("Enter Withdrawal Fee")}
                     type="text"
                     errorMessage={props.t("Enter valid withdraw fee")}
                     value={withdrawalFee}
@@ -172,7 +172,7 @@ function AssetEdit (props) {
                       required :{ value:true },
                       pattern : {
                         // eslint-disable-next-line no-useless-escape
-                        value :"/^[+]?([0-9]+\.?[0-9]*|\.[0-9]+)$/",
+                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
                         errorMessage : "Withdraw Fee must be a number"
                       }
                     }}
@@ -186,7 +186,7 @@ function AssetEdit (props) {
                   <AvField
                     name="minDepositAmount"
                     label={props.t("Min Deposit Amount")}
-                    placeholder={props.t("deposit amount")}
+                    placeholder={props.t("Enter Min Deposit Amount")}
                     type="text"
                     errorMessage={props.t("Enter valid deposit amount")}
                     value={minDepositAmount}
@@ -194,7 +194,7 @@ function AssetEdit (props) {
                       required :{ value:true },
                       pattern : {
                         // eslint-disable-next-line no-useless-escape
-                        value :"/^[+]?([0-9]+\.?[0-9]*|\.[0-9]+)$/",
+                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
                         errorMessage : "Min deposit Amount must be a number"
                       }
                     }}
@@ -206,7 +206,7 @@ function AssetEdit (props) {
                   <AvField
                     name="minWithdrawAmount"
                     label={props.t("Min Withdraw Amount")}
-                    placeholder={props.t("withdraw amount")}
+                    placeholder={props.t("Enter Min Withdrawal Amount")}
                     type="text"
                     errorMessage={props.t("Enter valid withdraw amount")}
                     value={minWithdrawAmount}
@@ -214,7 +214,7 @@ function AssetEdit (props) {
                       required :{ value:true },
                       pattern : {
                         // eslint-disable-next-line no-useless-escape
-                        value :"/^[+]?([0-9]+\.?[0-9]*|\.[0-9]+)$/",
+                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
                         errorMessage : "Min withdraw amount must be a number"
                       }
                     }}
@@ -226,7 +226,7 @@ function AssetEdit (props) {
               <AvField
                 name="explorerLink"
                 label="Link"
-                placeholder="explorer link"
+                placeholder="Enter Link"
                 type="text"
                 errorMessage="explorer link"
                 value={symbol.explorerLink}

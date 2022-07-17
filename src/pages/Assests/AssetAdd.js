@@ -56,7 +56,7 @@ function AssestForm(props){
   return (
     <React.Fragment >
       <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i>{props.t("Add New Symbol")}</Link>
-      <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
+      <Modal isOpen={addModal} toggle={toggleAddModal} centered={true} size="lg">
         <ModalHeader toggle={toggleAddModal} tag="h4">
           {props.t("Add New Symbol")}
         </ModalHeader>
@@ -74,7 +74,7 @@ function AssestForm(props){
                   <AvField
                     name="name"
                     label={props.t("Name")}
-                    placeholder={props.t("Name")}
+                    placeholder={props.t("Enter Name")}
                     type="text"
                     errorMessage={props.t("Enter name of the symbol")}
                     validate={{ required: { value: true } }}
@@ -86,7 +86,7 @@ function AssestForm(props){
                   <AvField
                     name="symbol"
                     label={props.t("Symbol")}
-                    placeholder={props.t("Symbol")}
+                    placeholder={props.t("Enter Symbol")}
                     type="text"
                     errorMessage={props.t("Enter symbol")}
                     validate={{ required: { value: true } }}
@@ -100,7 +100,7 @@ function AssestForm(props){
                   <AvField
                     name="description"
                     label={props.t("Description")}
-                    placeholder={props.t("Description")}
+                    placeholder={props.t("Enter Description")}
                     type="text"
                     errorMessage={props.t("Enter description")}
                     validate={{ required: { value: true } }}
@@ -126,14 +126,14 @@ function AssestForm(props){
                   <AvField
                     name="depositFee"
                     label={props.t("Desposit Fee")}
-                    placeholder={props.t("Desposit Fee")}
+                    placeholder={props.t("Enter Desposit Fee")}
                     type="text"
                     errorMessage={props.t("Enter valid deposit fee")}
                     validate = {{
                       required :{ value:true },
                       pattern : {
                         // eslint-disable-next-line no-useless-escape
-                        value :"/^[+]?([0-9]+\.?[0-9]*|\.[0-9]+)$/",
+                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
                         errorMessage : "Min deposit fee must be a number"
                       }
                     }}
@@ -145,14 +145,14 @@ function AssestForm(props){
                   <AvField
                     name="withdrawFee"
                     label={props.t("Withdraw Fee")}
-                    placeholder={props.t("Withdraw Fee")}
+                    placeholder={props.t("Enter Withdrawal Fee")}
                     type="text"
                     errorMessage={props.t("Enter valid withdraw fee")}
                     validate = {{
                       required :{ value:true },
                       pattern : {
                         // eslint-disable-next-line no-useless-escape
-                        value :"/^[+]?([0-9]+\.?[0-9]*|\.[0-9]+)$/",
+                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
                         errorMessage : "Min withdraw fee must be a number"
                       }
                     }}
@@ -166,14 +166,14 @@ function AssestForm(props){
                   <AvField
                     name="minDepositAmount"
                     label={props.t("Min Deposit Amount")}
-                    placeholder={props.t("deposit amount")}
+                    placeholder={props.t("Enter Min Deposit Amount")}
                     type="text"
                     errorMessage={props.t("Enter valid deposit amount")}
                     validate = {{
                       required :{ value:true },
                       pattern : {
                         // eslint-disable-next-line no-useless-escape
-                        value :"/^[+]?([0-9]+\.?[0-9]*|\.[0-9]+)$/",
+                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
                         errorMessage : "Min deposit amount must be a number"
                       }
                     }}
@@ -185,14 +185,14 @@ function AssestForm(props){
                   <AvField
                     name="minWithdrawAmount"
                     label={props.t("Min Withdraw Amount")}
-                    placeholder={props.t("withdraw amount")}
+                    placeholder={props.t("Enter Min Withdrawal Amount")}
                     type="text"
                     errorMessage={props.t("Enter valid withdraw amount")}
                     validate = {{
                       required :{ value:true },
                       pattern : {
                         // eslint-disable-next-line no-useless-escape
-                        value :"/^[+]?([0-9]+\.?[0-9]*|\.[0-9]+)$/",
+                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
                         errorMessage : "Min withdraw amount must be a number"
                       }
                     }}
@@ -204,7 +204,7 @@ function AssestForm(props){
               <AvField
                 name="explorerLink"
                 label={props.t("Link")}
-                placeholder={props.t("explorer link")}
+                placeholder={props.t("Enter Link")}
                 type="text"
                 errorMessage={props.t("explorer link")}
                 validate={{ required: { value: true } }}
