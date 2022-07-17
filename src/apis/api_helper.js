@@ -17,7 +17,7 @@ export const redirectToLogin = function () {
 };
 
 //apply base url for axios
-const API_URL = `${process.env.REACT_APP_API_CRM_DOMAIN}/api/v1/`;
+const API_URL = "http://localhost:3001/api/v1/";
 
 const axiosApi = axios.create({
   baseURL: API_URL,
@@ -62,13 +62,25 @@ export async function postFormData(url, data, config = {}) {
     url: path,
     data,
     headers: { 
-      "Content-Type": "multipart/form-data",
+      "Content-Type":"multipart/form-data",
     },
   }).then(function (response) {
     return response.data;
   }).catch(err => apiErrorHandler(err));
 }
-
+export async function updateFormData(url, data, config = {}) {
+  const path = config.crypto ? `/crm${url}` : `/crm${url}`;
+  return axiosApi({
+    method: "patch",
+    url: path,
+    data,
+    headers: { 
+      "Content-Type":"multipart/form-data",
+    },
+  }).then(function (response) {
+    return response.data;
+  }).catch(err => apiErrorHandler(err));
+}
 export async function patch(url, data, config = {}) {
   const path = config.crypto ? `/crm${url}` : `/crm${url}`;
   return axiosApi
