@@ -17,9 +17,7 @@ export const addNewSymbol = async (formData)=>{
 export const updateSymbol = async (payload)=>{
   
   const { id, formData } = payload;
-  console.log(formData.get("image"));
   const data = await axiosHelper.updateFormData(`/assets/${id}`, formData);
-  console.log(data);
   if (data.code === 500){
     throw new Error("Please Enter Valid data");
   }

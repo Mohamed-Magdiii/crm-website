@@ -29,7 +29,6 @@ function * fetchAsset(params){
 }
 function * addNewAsset({ payload :{ newSymbol } }){
   try {
-    console.log(newSymbol);
     const data = yield call(addNewSymbol, newSymbol);
     const { status } = data;
     const { result } = data;
@@ -52,7 +51,6 @@ function * addNewAsset({ payload :{ newSymbol } }){
 function * editAsset(params){
   const { payload } = params;
   const { id,  jsonData } = payload;
-  console.log(jsonData);
   try {
     const data = yield call(updateSymbol, payload);
     const { status } = data;
