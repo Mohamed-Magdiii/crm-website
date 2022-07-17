@@ -50,10 +50,10 @@ function BankAccountEditModal(props){
               <AvField
                 name="bankName"
                 label={props.t("Bank name")}
-                placeholder={props.t("Bank name")}
+                placeholder={props.t("Enter Bank Name")}
                 type="text"
                 value={selectedBankAccount.bankName}
-                errorMessage={props.t("Bank name is required")}
+                errorMessage={props.t("Enter Bank Name")}
                 validate={{ required: { value: true } }}
               />
             </div>
@@ -62,10 +62,10 @@ function BankAccountEditModal(props){
               <AvField
                 name="swiftCode"
                 label={props.t("Swift code")}
-                placeholder={props.t("Swift code")}
+                placeholder={props.t("Enter Swift Code")}
                 type="text"
                 value={selectedBankAccount.swiftCode}
-                errorMessage={props.t("Swift code is required")}
+                errorMessage={props.t("Enter Swift Code")}
                 validate={{ required: { value: true } }}
               />
             </div>
@@ -74,10 +74,10 @@ function BankAccountEditModal(props){
               <AvField
                 name="iban"
                 label={props.t("IBAN")}
-                placeholder={props.t("IBAN")}
+                placeholder={props.t("Enter IBAN")}
                 type="text"
                 value={selectedBankAccount.swiftCode}
-                errorMessage={props.t("IBAN is required")}
+                errorMessage={props.t("Enter IBAN")}
                 validate={{ required: { value: true } }}
               />
             </div>
@@ -86,10 +86,10 @@ function BankAccountEditModal(props){
               <AvField
                 name="accountNumber"
                 label={props.t("Account number")}
-                placeholder={props.t("Account number")}
+                placeholder={props.t("Enter Account Number")}
                 type="text"
                 value={selectedBankAccount.accountNumber}
-                errorMessage={props.t("Account number is required")}
+                errorMessage={props.t("Enter Account Number")}
                 validate={{ required: { value: true } }}
               />
             </div>
@@ -98,10 +98,10 @@ function BankAccountEditModal(props){
               <AvField
                 name="currency"
                 label={props.t("Currency")}
-                placeholder={props.t("Currency")}
+                placeholder={props.t("Enter Currency")}
                 type="text"
                 value={selectedBankAccount.currency}
-                errorMessage={props.t("Currency is required")}
+                errorMessage={props.t("Enter Currency")}
                 validate={{ required: { value: true } }}
               />
             </div>

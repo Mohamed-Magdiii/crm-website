@@ -14,19 +14,21 @@ import ClientTransactions from "./Transactions/ClientTransactions";
 import ClientWallets from "./Wallets/ClientWallets";
 import OrderList from "./orders/OrdersList";
 import Documents from "./Documents/Documents";
-import Loader from "components/Common/Loader";
 import ClientDetailsHeader from "./ClientDetailsHeader";
 import { fetchClientDetails } from "store/client/actions";
+import { fetchDictionaryStart } from "store/dictionary/actions";
 
 function ClientMainPage(props) {
   const pathParams = useParams();
   const dispatch = useDispatch();
 
+  // const history = useHistory();
   const clientId = pathParams.id;
 
   // getting client details to check if client exists using their Id
   const getClientDetails = async(clientId) => {
-    dispatch(fetchClientDetails(clientId)); 
+    dispatch(fetchClientDetails(clientId));
+     
   };
 
   const tabsArr = [
@@ -41,23 +43,20 @@ function ClientMainPage(props) {
   ];
   useEffect(()=>{
     getClientDetails(clientId);
+    dispatch(fetchDictionaryStart());
   }, []);
 
   return (
     <React.Fragment>
-      {props.clientProfileloading && 
+      {/* {props.clientProfileloading && 
         <>
-          <div className="page-content">
-            <div className="container-fluid">
-              <Loader />
-            </div>
-          </div>
+          <Loader />
         </>
-      }
+      } */}
       {props.clientDetails && 
         <div className="page-content">
-          <ClientDetailsHeader clientId={clientId} clientDetails={props.clientDetails} />
           <div className="container-fluid">
+            <ClientDetailsHeader clientId={clientId} clientDetails={props.clientDetails} />
             {/* components to switch from one to the other
               1-details (default) 2-bank 3-transactions 4-wallets 
               and so on 
@@ -73,13 +72,37 @@ function ClientMainPage(props) {
                   !props.fetchClientDetailsError
                     ?
                     <Layout clientId={clientId}>
+                      {/* client details */}
+                      {/* <Route exact path="/clients/:id/profile">
+                        <ClientProfile clientId={clientId} />
+                      </Route> */}
+
+                      {/*  client bank */}
+                      {/* <Route exact path="/clients/:id/bank">
+                        <ClientBank clientId={clientId} />
+                      </Route> */}
+
+                      {/* client transactions */}
+                      {/* <Route exact path="/clients/:id/transactions">
+                        <ClientTransactions clientId={clientId} />
+                      </Route> */}
+
+                      {/* client wallets */}
+                      {/* <Route exact path="/clients/:id/wallets">
+                        <ClientWallets clientId={clientId} />
+                      </Route> */}
+
+                      {/* client orders */}
+                      {/* <Route exact path="/clients/:id/orders">
+                        <OrderList clientId={clientId} />
+                      </Route> */}
+
                       {tabsArr.map((obj, index) =>
                         <Route key={index} exact path={obj.url}>
                           <obj.component clientId={clientId} path={obj.url} />
                         </Route>
                       )}
-                      {/* default route to details right on loading */}
-                      <Redirect to={tabsArr[0].url} />
+                      {/* <Redirect to={tabsArr[0].url} /> */}
                     </Layout>
                     :
                     <Redirect to={"/dashboard"} />

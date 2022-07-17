@@ -28,6 +28,7 @@ import DictionaryList from "pages/Dictionary.js/DictionaryList";
 import MarketPrice from "pages/MarketPrice/MarketPrice";
 import feeGroupList from "pages/feeGroups/feeGroupList";
 import ClientMainPage from "pages/ClientDetail/ClientMainPage";
+import SystemEmailMainPage from "pages/SystemEmail/SystemEmailMainPage";
 import usePermissions from "./permissions";
 import TransactionFeeGroupList from "pages/transactionFeeGroups/TransactionFeeGroupList";
 
@@ -72,6 +73,11 @@ function userRoutes() {
     {
       path: "/clients/:id",
       component: ClientMainPage,
+      notExact: true,
+    },
+    {
+      path: "/system-emails/:id",
+      component: SystemEmailMainPage,
       notExact: true,
     },
     {

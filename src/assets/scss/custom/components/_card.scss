@@ -4,6 +4,18 @@
 
 .card {
   margin-bottom: $grid-gutter-width;
+  // border-radius: 10px;
+  box-shadow: $box-shadow;
+  border-radius: $border-radius-mu;
+  overflow: hidden;
+}
+.card-animate {
+  transition: all .4s;
+  -webkit-transition: all .4s;
+}
+.card-animate:hover {
+  box-shadow: $box-shadow;
+  transform: translateY(calc(-1.5rem / 5));
 }
 
 .card-drop {

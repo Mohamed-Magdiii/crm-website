@@ -9,14 +9,11 @@ import {
 } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 
-import CustomPagination from "components/Common/CustomPagination";
-import TableLoader from "components/Common/TableLoader";
 // i18n
 import { withTranslation } from "react-i18next";
-import { 
-  fetchClientBankAccount, 
-  deleteBankAccount 
-} from "store/bankAccount/actions";
+import CustomPagination from "components/Common/CustomPagination";
+import TableLoader from "components/Common/TableLoader";
+import { fetchClientBankAccount, deleteBankAccount } from "store/bankAccount/actions";
 import ClientAddBankAccountModal from "./ClientAddBankAccountModal";
 import BankAccountEditModal from "./EditBankAccountModal";
 import DeleteModal from "components/Common/DeleteModal";
@@ -56,7 +53,7 @@ function ClientBank(props) {
   const columns = [
     {
       dataField: "bankName",
-      text: props.t("Bank name")
+      text: props.t("Bank Name")
     },
     {
       dataField: "accountHolderName",
@@ -64,7 +61,7 @@ function ClientBank(props) {
     },
     {
       dataField: "swiftCode",
-      text: props.t("Swift code")
+      text: props.t("Swift Code")
     },
     {
       dataField: "iban",
@@ -72,7 +69,7 @@ function ClientBank(props) {
     }, 
     {
       dataField: "accountNumber",
-      text: props.t("Account number")
+      text: props.t("Account Number")
     },
     {
       dataField: "currency",
@@ -123,9 +120,9 @@ function ClientBank(props) {
                     >
                       <Table
                         id="tech-companies-1"
-                        className="table "
+                        className="table  table-hover "
                       >
-                        <Thead>
+                        <Thead className="text-center table-light" >
                           <Tr>
                             {columns.map((column, index) =>
                               <Th data-priority={index} key={index}>{column.text}</Th>

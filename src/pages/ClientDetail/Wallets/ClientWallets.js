@@ -55,7 +55,7 @@ function ClientWallets(props) {
       dataField: "amount",
       text: props.t("Amount"),
       formatter: (item) => (
-        item.amount === " " ? "N/A" : parseFloat(item.amount)
+        item.amount === " " ? "-" : parseFloat(item.amount)
       )
     },
     {
@@ -82,7 +82,7 @@ function ClientWallets(props) {
     },
     {
       dataField: "freezeAmount",
-      text: props.t("Freeze amount"),
+      text: props.t("Freeze Amount"),
       formatter: (item) => (
         item.freezeAmount === " " ? "N/A" : parseFloat(item.freezeAmount)
       )
@@ -172,9 +172,9 @@ function ClientWallets(props) {
                     >
                       <Table
                         id="tech-companies-1"
-                        className="table "
+                        className="table  table-hover "
                       >
-                        <Thead>
+                        <Thead className="text-center table-light" >
                           <Tr>
                             {columns.map((column, index) =>
                               <Th data-priority={index} key={index}>{column.text}</Th>
@@ -185,8 +185,8 @@ function ClientWallets(props) {
                           props.totalWalletDocs === 0
                             ?
                             <Tbody>
-                              {props.loading && <TableLoader colSpan={4} />}
-                              {!props.loading && /*props.totalDocs === 0 && */
+                              {props.loading && <TableLoader colSpan={4} />}                            
+                              {!props.loading &&
                                 <>
                                   <Tr>
                                     <Td colSpan={"100%"} className="fw-bolder text-center" st>
@@ -210,18 +210,6 @@ function ClientWallets(props) {
                               )}
                             </Tbody>
                         }
-                        {/* {props.docs && <Tbody>
-                          {props.loading && <TableLoader colSpan={4} />}
-                          {!props.loading && props.docs.map((row, rowIndex) =>
-                            <Tr key={rowIndex}>
-                              {columns.map((column, index) =>
-                                <Td key={`${rowIndex}-${index}`}>
-                                  { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
-                                </Td>
-                              )}
-                            </Tr>
-                          )}
-                        </Tbody>} */}
                       </Table>
                       <CustomPagination
                         {...props}

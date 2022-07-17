@@ -150,6 +150,7 @@ function TeamsEditMembersModal(props) {
                 value={selectedMember}
                 loadOptions={loadPageOptions}
                 onChange={setSelectedMember}
+                placeholder="Select Team Members ..."
                 errorMessage="please select Team Member"
                 validate={{ required: { value: true } }}
               />

@@ -25,7 +25,14 @@ import {
   EDIT_SYSTEM_EMAIL_CONTENT_REQUESTED,
   EDIT_SYSTEM_EMAIL_CONTENT_SUCCESS,
   EDIT_SYSTEM_EMAIL_CONTENT_FAIL,
-  EDIT_SYSTEM_EMAIL_CONTENT_CLEAR
+  EDIT_SYSTEM_EMAIL_CONTENT_CLEAR,
+
+  FETCH_SYSTEM_EMAIL_HTML_REQUESTED,
+  FETCH_SYSTEM_EMAIL_HTML_SUCCESS,
+  FETCH_SYSTEM_EMAIL_HTML_FAIL,
+
+  CHANGE_SYSTEM_EMAIL_STATUS_REQUESTED,
+  CHANGE_SYSTEM_EMAIL_STATUS_DONE
 } from "./actionTypes";
 
 // fetch
@@ -169,5 +176,43 @@ export const editSystemEmailContentClear = (data) => {
   return {
     type: EDIT_SYSTEM_EMAIL_CONTENT_CLEAR,
     payload: data
+  };
+};
+
+// fetch system email HTML
+export const fetchSystemEmailHTML = (params = {}) => {
+  return {
+    type: FETCH_SYSTEM_EMAIL_HTML_REQUESTED,
+    payload: params
+  };
+};
+export const fetchSystemEmailHTMLSuccess = (data) => {
+  return {
+    type: FETCH_SYSTEM_EMAIL_HTML_SUCCESS,
+    payload: data
+  };
+};
+export const fetchSystemEmailHTMLFail = (error) => {
+  return {
+    type: FETCH_SYSTEM_EMAIL_HTML_FAIL,
+    payload: { error }
+  };
+};
+
+// change system email status
+export const changeSystemEmailStatus = (params = {}) => {
+  return {
+    type: CHANGE_SYSTEM_EMAIL_STATUS_REQUESTED,
+    payload: params
+  };
+};
+export const changeSystemEmailStatusDone = (id, index, status) => {
+  return {
+    type: CHANGE_SYSTEM_EMAIL_STATUS_DONE,
+    payload: {
+      id,
+      status,
+      index
+    }
   };
 };

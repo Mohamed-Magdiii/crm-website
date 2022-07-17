@@ -32,6 +32,11 @@ function SystemEmailEditModal(props){
     }
   }, [props.editClearingCounter]);
 
+  // handling edit button after successfull edit
+  const disableAddButton = () => (
+    props.editResult ? true : false
+  );
+
   return (
     <React.Fragment >
       <Modal isOpen={open} toggle={onClose} centered={true}>
@@ -50,10 +55,10 @@ function SystemEmailEditModal(props){
               <AvField
                 name="title"
                 label={props.t("Title")}
-                placeholder={props.t("Title")}
+                placeholder={props.t("Enter Title")}
                 type="text"
                 value={role.title}
-                errorMessage={props.t("Title is required")}
+                errorMessage={props.t("Enter Title")}
                 validate={{ required: { value: true } }}
               />
             </div>
@@ -62,10 +67,10 @@ function SystemEmailEditModal(props){
               <AvField
                 name="action"
                 label={props.t("Action")}
-                placeholder={props.t("Action")}
+                placeholder={props.t("Enter Action")}
                 type="text"
                 value={role.action}
-                errorMessage={props.t("Action is required")}
+                errorMessage={props.t("Enter Action")}
                 validate={{ required: { value: true } }}
               />
             </div>
@@ -82,7 +87,11 @@ function SystemEmailEditModal(props){
             )}
             {/* submit button */}
             <div className='text-center pt-3 p-2'>
-              <Button disabled={props.addLoading} type="submit" color="primary">
+              <Button 
+                disabled={disableAddButton()} 
+                type="submit" 
+                color="primary"
+              >
                 {props.t("Update")}
               </Button>
             </div>
@@ -91,10 +100,6 @@ function SystemEmailEditModal(props){
             <i className="mdi mdi-block-helper me-2"></i>
             {/* TODO this needs to be handled in translation */}
             {props.t(JSON.stringify(props.editError))}
-          </UncontrolledAlert>}
-          {props.editResult && <UncontrolledAlert color="success">
-            <i className="mdi mdi-check-all me-2"></i>
-            {props.t("System email updated successfully")} !!!
           </UncontrolledAlert>}
         </ModalBody>
       </Modal>

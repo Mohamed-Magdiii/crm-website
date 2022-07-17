@@ -5,7 +5,7 @@ import {
 import { Link } from "react-router-dom";
 
 import {
-  Row, Col, Card, CardBody, CardTitle, CardHeader, Label
+  Row, Col, Card, CardBody, CardTitle, CardHeader 
 } from "reactstrap";
 
 import {
@@ -22,6 +22,7 @@ import DeleteModal from "components/Common/DeleteModal";
 import TeamsAddModal from "./TeamsAddModal";
 import TeamsEditModal from "./TeamsEditModal";
 import TeamsEditMembersModal from "./TeamsEditMembersModal";
+import { showSuccessNotification } from "store/notifications/actions";
 
 function Teams() {
 
@@ -69,9 +70,9 @@ function Teams() {
     // roles: state.teamsReducer.rolesData,
     clearingCounter: state.teamsReducer.clearingCounter,
     // editClearingCounter: state.teamsReducer.editClearingCounter,
-    teamsPermissions : state.Profile.teamsPermissions || {}
+    teamsPermissions: state.Profile.teamsPermissions || {}
   }));
-  const { update, delete : deletePermission } = teamsPermissions;
+  const { update, delete: deletePermission } = teamsPermissions;
   const columns = [
     {
       text: "Title",
@@ -85,13 +86,9 @@ function Teams() {
       formatter: (team) => (
         <>
           {team.managerId ? (
-            <div className="d-flex gap-3">
-              <Label className="me-1" data-on-label="roleId" data-off-label="">{team.managerId.firstName + " " + team.managerId.lastName}</Label>
-            </div>
+            <> {team.managerId.firstName + " " + team.managerId.lastName}</>
           ) : (
-            <div className="d-flex gap-3">
-              <Label className="me-1" data-on-label="roleId" data-off-label=""> </Label>
-            </div>
+            " "
           )}
         </>
       ),
@@ -103,13 +100,11 @@ function Teams() {
       formatter: (team) => (
         <>
           {team.members ? (
-            <div className="d-flex gap-3">
-              <Label className="me-1" data-on-label="roleId" data-off-label="">{team.members.length}</Label>
-            </div>
+            <>
+              {team.members.length}
+            </>
           ) : (
-            <div className="d-flex gap-3">
-              <Label className="me-1" data-on-label="roleId" data-off-label=""> </Label>
-            </div>
+            ""
           )}
         </>
       ),
@@ -187,6 +182,7 @@ function Teams() {
   };
   const deleteTeamHandel = () => {
     dispatch(deleteTeam(selectedTeam._id));
+    dispatch(showSuccessNotification("Team deleted Successfully"));
   };
 
   const searchHandelEnterClik = (event) => {
@@ -230,9 +226,9 @@ function Teams() {
                     >
                       <Table
                         id="tech-companies-1"
-                        className="table "
+                        className="table  table-hover "
                       >
-                        <Thead>
+                        <Thead className="text-center table-light" >
                           <Tr>
                             {columns.map((column, index) =>
                               <Th data-priority={index} key={index}>{column.text}</Th>

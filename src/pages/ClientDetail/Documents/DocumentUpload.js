@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { connect, useDispatch } from "react-redux";
 import {
-  Row, Col, Button, Card,  CardBody, CardHeader, CardTitle,
+  Row, Col, Button, Card,  CardBody, CardHeader, CardTitle, Input
 } from "reactstrap";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 // i18n 
@@ -78,18 +78,39 @@ function UploadKYC (props) {
               <Row>
                 <Col md="6" className="mb-3">
                       
-                  <AvField
+                  {/* <AvField
                     name="ID.file1"
                     label={props.t("Proof of ID - Front Side")}
                     type="file"
                     onChange={(e)=>{addFile("ID1", e.target.files[0])}}
                     errorMessage={props.t("Please select file for ID Front")}
                     // validate={{ required: { value: true } }}
+                  /> */}
+                  <Input
+                    className="form-control"
+                    id="Proof_of_ID_front_side"
+                    onChange={(e) => { addFile("ID1", e.target.files[0]) }}
+                    tag={AvField}
+                    errorMessage={props.t("Error in file")}
+                    name="ID.file1"
+                    label={props.t("Proof of ID - Front Side")}
+                    type="file"
                   />
                       
                 </Col>
                 <Col md="6" className="mb-3">
-                  <AvField
+                  {/* <AvField
+                    name="ID.file2"
+                    label={props.t("Proof of ID - Back Side")}
+                    type="file"
+                    onChange={(e)=>{addFile("ID2", e.target.files[0])}}
+                    errorMessage={props.t("must file")}
+                    // validate={{ required: { value: true } }}
+                  /> */}
+                  <Input
+                    className="form-control"
+                    id="Proof_of_ID_front_side"
+                    tag={AvField}
                     name="ID.file2"
                     label={props.t("Proof of ID - Back Side")}
                     type="file"
@@ -99,7 +120,18 @@ function UploadKYC (props) {
                   />
                 </Col>
                 <Col md="6" className="mb-3">
-                  <AvField
+                  {/* <AvField
+                    name="ADDRESS.file1"
+                    label={props.t("Proof of Address")}
+                    type="file"
+                    onChange={(e)=>{addFile("ADDRESS", e.target.files[0])}}
+                    errorMessage={props.t("Please select file for proof of Address")}
+                    // validate={{ required: { value: true } }}
+                  /> */}
+                  <Input
+                    className="form-control"
+                    id="Proof_of_ID_front_side"
+                    tag={AvField}
                     name="ADDRESS.file1"
                     label={props.t("Proof of Address")}
                     type="file"
@@ -109,21 +141,17 @@ function UploadKYC (props) {
                   />
                 </Col>
                 <Col md="12" className='text-center pt-3 p-2'>
-                  <Button disabled={props.uploading} type="button" onClick={resetForm} color="danger"
-                    style={{
-                      marginRight: "2rem",
-                      marginLeft: "2rem"
-                    }}>
-                    {props.t("Reset Form")}
-                  </Button>
-                  <Button disabled={props.uploading} type="submit" className="mr-2 ml-2" color="primary"
-                    style={{
-                      marginRight: "2rem",
-                      marginLeft: "2rem"
-                    }}
-                  >
-                    {props.t("Upload")}
-                  </Button>
+                  <Row className="spacing">
+                    <Col sm={6} xs={6}></Col>
+                    <Col sm={6} xs={12} className="d-flex justify-content-between">
+                      <Button disabled={props.uploading} type="button" className="w-md mb-2" onClick={resetForm} color="danger">
+                        {props.t("Reset Form")}
+                      </Button>
+                      <Button disabled={props.uploading} type="submit" className="w-md mb-2" color="primary">
+                        {props.t("Upload")}
+                      </Button>
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
             }
@@ -207,8 +235,18 @@ function UploadAdditionalDocs (props) {
             <Row>
               {options.map((obj, index) => <React.Fragment key={index}>
                 <Col md={6} className="mb-3">
-                  <AvField
+                  {/* <AvField
                     onChange={(e)=>{addFile(obj.value, e.target.files)}}
+                    name={obj.value}
+                    label={props.t(obj.label)}
+                    type="file"
+                    errorMessage={props.t("Error in file")}
+                  /> */}
+                  <Input
+                    className="form-control"
+                    id="Proof_of_ID_front_side"
+                    onChange={(e) => { addFile(obj.value, e.target.files) }}
+                    tag={AvField}
                     name={obj.value}
                     label={props.t(obj.label)}
                     type="file"
@@ -217,22 +255,19 @@ function UploadAdditionalDocs (props) {
                 </Col>
               </React.Fragment>)}
               <Col md="12" className='text-center pt-3 p-2'>
-                <Button disabled={props.uploading} type="button" className="mr-2 ml-2" onClick={resetForm} color="danger"
-                  style={{
-                    marginRight: "2rem",
-                    marginLeft: "2rem"
-                  }}
-                >
-                  {props.t("Reset Form")}
-                </Button>
-                <Button disabled={props.uploading} type="submit" className="mr-2 ml-2" color="primary"
-                  style={{
-                    marginRight: "2rem",
-                    marginLeft: "2rem"
-                  }}
-                >
-                  {props.t("Upload")}
-                </Button>
+                
+                
+                <Row className="spacing">
+                  <Col sm={6} xs={6}></Col>
+                  <Col sm={6} xs={12} className="d-flex justify-content-between">
+                    <Button disabled={props.uploading} type="button" className="w-md mb-2" onClick={resetForm} color="danger">
+                      {props.t("Reset Form")}
+                    </Button>
+                    <Button disabled={props.uploading} type="submit" className="w-md mb-2" color="primary">
+                      {props.t("Upload")}
+                    </Button>
+                  </Col>
+                </Row>
               </Col>
                   
             </Row>

@@ -25,6 +25,8 @@ import {
 import DeleteModal from "components/Common/DeleteModal";
 //css
 import "@fullcalendar/bootstrap/main.css";
+import { updateEvent } from "../../apis/reminder";
+import { showSuccessNotification, showErrorNotification } from "store/notifications/actions";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
@@ -121,37 +123,38 @@ const Reminder = () => {
   /**
    * On calendar drop event
    */
-  // const onDrop = (event) => {
+  const onDrop = ( ) => { 
+    // console.log("modifiedData"); 
+  };
+  const showNotification = (message = "", err) => {
+    if (err) {
+      dispatch(showErrorNotification(message));
 
-  // const date = event["date"];
-  // const day = date.getDate();
-  // const month = date.getMonth();
-  // const year = date.getFullYear();
+    } else {
+      dispatch(showSuccessNotification(message));
+    }
+  };
+  const handleEventReceive = (event) => {
+    // console.log(event.event._def);
+    const v = new Date(event.event._def.extendedProps.timeEnd);
+    //  console.log(new Date(new Date(event.event._def.extendedProps.timeEnd).setDate(v.getDate() + event.delta.days)).toISOString());
+    const newDate = {
+      timeEnd: new Date(new Date(event.event._def.extendedProps.timeEnd).setDate(v.getDate() + event.delta.days)).toISOString(),
+      note: event.event._def.title,
+      status: event.event._def.extendedProps.status,
+      type: event.event._def.extendedProps.type,
 
-  // const currectDate = new Date();
-  // const currentHour = currectDate.getHours();
-  // const currentMin = currectDate.getMinutes();
-  // const currentSec = currectDate.getSeconds();
-  // const modifiedDate = new Date(
-  //   year,
-  //   month,
-  //   day,
-  //   currentHour,
-  //   currentMin,
-  //   currentSec
-  // );
+    };
+    updateEvent(event.event._def.publicId, newDate)
+      .then(() => {
+        showNotification("date updated successfully");
+      }
+      )
+      .catch(() => {
+        showNotification("Date updated faild", true);
 
-  // const draggedEl = event.draggedEl;
-  // const modifiedData = {
-  //   id: Math.floor(Math.random() * 100),
-  //   title: draggedEl.innerText,
-  //   start: modifiedDate,
-  //   className: draggedEl.className,
-  // };
-  // dispatch(onAddNewEvent(modifiedData));
-  // };
-
-
+      });
+  };
   return (
     <React.Fragment>
       <DeleteModal
@@ -192,7 +195,8 @@ const Reminder = () => {
                 selectable={true}
                 dateClick={handleDateClick}
                 eventClick={handleEventClick}
-              // drop={onDrop}
+                eventDrop={handleEventReceive}
+                drop={onDrop}
               />
             </CardBody>
           </Card>

@@ -9,6 +9,7 @@ import {
   Table, Thead, Tbody, Tr, Th, Td
 } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
+import { Link } from "react-router-dom";
 
 // i18n
 import { withTranslation } from "react-i18next";
@@ -25,12 +26,12 @@ import Notification from "components/Common/Notification";
 import logo from "assets/images/logo-sm.svg";
 
 function ClientTransactions(props) {
+  const clientId = props.clientId;
   const [showNotication, setShowNotifaction] = useState(false);
   const [btnprimary1, setBtnprimary1] = useState(false);
-  const transactionTypes = ["withdrawal", "deposit"];
-  const clientId = props.clientId;
   const [sizePerPage, setSizePerPage] = useState(5);
-  const [selectedTransactionType, setSelectedTransactionType] = useState("withdrawal");
+  const [selectedTransactionType, setSelectedTransactionType] = useState("Withdrawal");
+  const transactionTypes = ["Withdrawal", "Deposit"];
   const dispatch = useDispatch();
 
   const changeTransactionTypeHandler = (e) => {
@@ -77,37 +78,68 @@ function ClientTransactions(props) {
     },
     {
       dataField: "currency",
-      text: props.t("Currency")
+      text: props.t("Currency"),
+    
+    },
+    selectedTransactionType === "Deposit" && {
+      dataField: "to",
+      text: props.t("To"),
+      formatter: (val) => (
+        val.to?.length >= 10 ? val.to.substr(0, 4) + "....." + val.to.substr(-5, 4) : val.to
+      )
+    },
+    selectedTransactionType === "Withdrawal" && {
+      dataField: "from",
+      text: props.t("From"),
+      formatter: (val) => (
+        val.from?.length >= 10 ? val.from.substr(0, 4) + "....." + val.from.substr(-5, 4) : val.from
+      )
     },
     {
       dataField: "status",
-      text: props.t("Status")
+      text: props.t("Status"),
+      
     },
     {
       dataField: "reason",
       text: props.t("Reason"),
       formatter: (item) => (
-        item.reason ? item.reason : "N/A"
+        item.reason ? item.reason : "-"
       )
     },
     {
       dataField: "amount",
       text: props.t("Amount"),
       formatter: (item) => (
-        item.amount === " " ? "N/A" : parseFloat(item.amount)
+        parseFloat(item?.amount?.$numberDecimal) || parseFloat(item?.amount) || "-"
       )
     },
     {
       dataField: "comments",
       text: props.t("Comments"),
       formatter: (item) => (
-        item.comments.length === 0 ? "N/A" : item.comments
+        item.comments.length === 0 ? "-" : item.comments
       )
     },
     {
-      dataField: "dropdown", 
-      text: props.t("Action")
-    }
+      dataField: "",
+      isDummyField: true,
+      editable: false,
+      text: props.t("Tx-id"), 
+      formatter: (item) => (
+        <Link to="#">
+          <i
+            className="mdi mdi-clipboard font-size-18"
+            id="preview"
+            onClick={ () => {navigator.clipboard.writeText(item.txId)} }
+          ></i>
+        </Link>
+      )
+    },
+    {
+      dataField:"dropdown", 
+      text:props.t("Action")
+    },
   ];
 
   return (
@@ -115,7 +147,7 @@ function ClientTransactions(props) {
       <div className="">
         <div className="container-fluid">
           {/* notification if selected transaction type is deposit */}
-          {selectedTransactionType === "deposit" && 
+          {selectedTransactionType === "Deposit" && 
             <Notification
               onClose={closeNotifaction}
               body={props.t("The deposit has been updated successfully")}
@@ -125,7 +157,7 @@ function ClientTransactions(props) {
             />
           }
           {/* notification if selected transaction type is withdrawal */}
-          {selectedTransactionType === "withdrawal" && 
+          {selectedTransactionType === "Withdrawal" && 
             <Notification onClose={closeNotifaction}
               body={props.t("The update of the withdraw has been made successfully")}
               show={showNotication}
@@ -139,7 +171,7 @@ function ClientTransactions(props) {
               <Card>
                 <CardHeader className="d-flex justify-content-between  align-items-center">
                   <CardTitle>
-                    {props.t("Transactions list")} ({selectedTransactionType === "withdrawal" ? props.withdrawalsTotalDocs : props.depositsTotalDocs})
+                    {props.t("Transactions list")} ({selectedTransactionType === "Withdrawal" ? props.withdrawalsTotalDocs : props.depositsTotalDocs})
                   </CardTitle>
                   <Dropdown
                     isOpen={btnprimary1}
@@ -168,9 +200,9 @@ function ClientTransactions(props) {
                     >
                       <Table
                         id="tech-companies-1"
-                        className="table "
+                        className="table  table-hover "
                       >
-                        <Thead>
+                        <Thead className="text-center table-light" >
                           <Tr>
                             {columns.map((column, index) =>
                               <Th data-priority={index} key={index}>{column.text}</Th>
@@ -180,7 +212,7 @@ function ClientTransactions(props) {
                         {/* if no records show "No records" otherwise show records */}
                         {
                           // if deposits is selected then render clientDeposits
-                          selectedTransactionType === "deposit"
+                          selectedTransactionType === "Deposit"
                             ?
                             // if deposits is selected but no data to show
                             props.depositsTotalDocs === 0 
@@ -201,13 +233,13 @@ function ClientTransactions(props) {
                               // if deposits is selected and there is data to show
                               <Tbody>
                                 {props.loading && <TableLoader colSpan={4} />}
-                                {(!props.loading && props.clientDeposits) && props.clientDeposits.map((row, rowIndex) =>
+                                {!props.depositLoading && props.clientDeposits.map((row, rowIndex) =>
                                   <Tr key={rowIndex}>
                                     {columns.map((column, index) =>
                                       <Td key={`${rowIndex}-${index}`}>
                                         { column.dataField === "checkbox" ? <input type="checkbox"/> : ""}
                                         { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
-                                        {column.dataField === "dropdown" ? <CustomDropdown  id={row._id} status={row.status} approve={depositApprove} reject={depositReject} /> : ""}
+                                        {/* {column.dataField === "dropdown" ? <CustomDropdown  permission={props.depositsPermissions.actions ? true : false} id={row._id} status={row.status} approve={depositApprove} reject={depositReject} /> : ""} */}
                                       </Td>
                                     )}
                                   </Tr>
@@ -219,8 +251,8 @@ function ClientTransactions(props) {
                               ?
                               // if withdrawals is seleceted but no data to show
                               <Tbody>
-                                {props.loading && <TableLoader colSpan={4} />}                            
-                                {!props.loading && /*props.totalDocs === 0 && */
+                                {props.loading && <TableLoader colSpan={4} />}  
+                                {!props.withdrawalLoading &&
                                   <>
                                     <Tr>
                                       <Td colSpan={"100%"} className="fw-bolder text-center" st="true">
@@ -250,7 +282,7 @@ function ClientTransactions(props) {
                       </Table>
                       {/* if deposits is selected */}
                       {
-                        (props.clientDeposits && selectedTransactionType === "deposit") && 
+                        (props.clientDeposits && selectedTransactionType === "Deposit") && 
                         <CustomPagination
                           {...props}
                           docs={props.clientDeposits}
@@ -261,7 +293,7 @@ function ClientTransactions(props) {
                       }
                       {/* if withdrawals is selected */}
                       {
-                        (props.clientWithdrawals && selectedTransactionType === "withdrawal") && 
+                        (props.clientWithdrawals && selectedTransactionType === "Withdrawal") && 
                         <CustomPagination
                           {...props}
                           docs={props.clientWithdrawals}
@@ -283,7 +315,8 @@ function ClientTransactions(props) {
 }
 
 const mapStateToProps = (state) => ({
-  loading: state.clientReducer.loading,
+  depositLoading: state.depositReducer.loading,
+  withdrawalLoading: state.withdrawalReducer.loading,
   error: state.clientReducer.error,
   clientDeposits: state.depositReducer.clientDeposits,
   clientWithdrawals: state.withdrawalReducer.clientWithdrawals,
