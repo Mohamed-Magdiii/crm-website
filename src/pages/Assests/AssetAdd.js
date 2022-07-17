@@ -17,12 +17,27 @@ import { withTranslation } from "react-i18next";
 function AssestForm(props){
 
   const [addModal, setAddUserModal] = useState(false);
-
+  const [file, setFile] = useState({});
   const dispatch = useDispatch();
   const { create } = props.symbolsPermissions;
   const handleAddLead = (event, values) => {
-    event.preventDefault();
-    dispatch(addNewSymbol(values));
+    event.preventDefault(); 
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append("symbol",  values.symbol);
+    formData.set("minAmount", JSON.stringify({
+      deposit :values.minDepositAmount,
+      withdrawal:values.minWithdrawAmount
+    }));
+    formData.set("fee", JSON.stringify({
+      deposit:values.depositFee,
+      withdrawal:values.withdrawFee
+    }));
+    formData.append("name", values.name);
+    formData.append("description", values.description);
+    formData.append("markup", values.markup);
+    formData.append("explorerLink", values.explorerLink);
+    dispatch(addNewSymbol(formData));
     
   }; 
 
@@ -51,6 +66,7 @@ function AssestForm(props){
             onValidSubmit={(e, v) => {
               handleAddLead(e, v);
             }}
+            id="form"
           >
             <Row>
               <Col md="6">
@@ -192,6 +208,16 @@ function AssestForm(props){
                 type="text"
                 errorMessage={props.t("explorer link")}
                 validate={{ required: { value: true } }}
+              />
+            </div>
+            <div className="mb-3">
+              <AvField
+                name="image"
+                type="file"
+                errorMessage={props.t("Please upload an image for the symbol")}
+                validate = {{ required :{ value:true } }}
+                accept ="image/jpg,image/png"
+                onChange = {(e)=>setFile(e.target.files[0])}
               />
             </div>
             

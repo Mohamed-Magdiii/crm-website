@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   useDispatch, connect
 } from "react-redux";
@@ -15,6 +15,7 @@ import {
 import { withTranslation } from "react-i18next";
 import { editSymbolStart } from "store/assests/actions";
 function AssetEdit (props) {
+  const [file, setFile] = useState();
   const { open, symbol = {}, onClose } = props;
   let minDepositAmount;
   let minWithdrawAmount;
@@ -36,10 +37,28 @@ function AssetEdit (props) {
   const handleSymbolUpdate = (e, values) => {
     e.preventDefault();
     const id = symbol._id;
-    
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append("symbol",  values.symbol);
+    formData.set("minAmount", JSON.stringify({
+      deposit :values.minDepositAmount,
+      withdrawal:values.minWithdrawAmount
+    }));
+    formData.set("fee", JSON.stringify({
+      deposit:values.depositFee,
+      withdrawal:values.withdrawFee
+    }));
+    formData.append("name", values.name);
+    formData.append("description", values.description);
+    formData.append("markup", values.markup);
+    formData.append("explorerLink", values.explorerLink);
     dispatch(editSymbolStart({
       id,
-      values
+      formData,
+      jsonData: {
+        ...values,
+        image:file
+      }
     }));
   };
   useEffect(()=>{
@@ -212,6 +231,15 @@ function AssetEdit (props) {
                 errorMessage="explorer link"
                 value={symbol.explorerLink}
                 validate={{ required:{ value:true } } }
+              />
+            </div>
+            <div>
+              <AvField
+                name="image"
+                type="file"
+                errorMessage = {props.t("Please upload an image for the symbol")}
+                validate = {{ required : { value:true } }}
+                onChange = {e=>setFile(e.target.files[0])}
               />
             </div>
             <div className='text-center pt-3 p-2'>
