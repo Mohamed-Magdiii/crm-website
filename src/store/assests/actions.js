@@ -35,9 +35,8 @@ export const addNewSymbolSuccess = (newSymbol)=>{
   
   return {
     type:ADD_NEW_SYMBOL_SUCCESS,
-    payload:{
-      newSymbol
-    }
+    payload:newSymbol
+    
   };
 };
 export const editSymbolStart = (params = {})=>{
