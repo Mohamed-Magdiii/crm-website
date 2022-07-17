@@ -50,23 +50,23 @@ function AssestsList(props){
     {
       dataField: "minAmount",
       text: props.t("Min deposit Amount"),
-      formatter:(val)=>(`${val.minAmount.deposit}`)
+      formatter:(val)=>(`${val?.minAmount?.deposit ? val.minAmount.deposit : ""}`)
     },
     {
       dataField:"minAmount",
       text:props.t("Min withdrawal Amount"),
-      formatter:(val)=>(`${val.minAmount.withdrawal}`)
+      formatter:(val)=>(`${val?.minAmount?.withdrawal ? val.minAmount.withdrawal : ""}`)
     },
     
     {
       dataField: "fee",
       text: "Deposit Fee",
-      formatter:(val) => (`${val.fee.deposit}`),
+      formatter:(val) => (`${val?.fee?.deposit ? val.fee.deposit : "" }`),
     },
     {
       dataField:"fee",
       text:props.t("Withdrawal Fee"),
-      formatter:(val)=>(`${val.fee.withdrawal}`)
+      formatter:(val)=>(`${val?.fee?.withdrawal ? val.fee.withdrawal : ""}`)
     },
     {
       dataField: "",
