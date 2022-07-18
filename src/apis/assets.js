@@ -4,60 +4,24 @@ export const getAssets = async ({ payload })=>{
   const data = await axiosHelper.get(`/assets/?${qs.stringify(payload)}`, { crypto: false });
   return data;
 };
-export const addNewSymbol = async (values)=>{
-  
-  const data = await axiosHelper.post("/assets", {
-    name:values.name,
-    symbol: values.symbol,
-    description: values.description,
-    markup: values.markup,
-    explorerLink:values.explorerLink,
-    fee: {
-      deposit:values.depositFee,
-      withdrawal:values.withdrawFee
-    },
-
-    minAmount: {
-      deposit :values.minDepositAmount,
-      withdrawal:values.minWithdrawAmount
-    },
-    isCrypto:true,
-      
-  }, { crypto:true }
-  );
-  
+export const addNewSymbol = async (formData)=>{
+  const data = await axiosHelper.postFormData("/assets", formData);
   if (data.code === 500){
     throw new Error("Please Enter Valid data");
   }
   
   return data;
-};
-export const updateSymbol = async ({ payload })=>{
   
-  const { id, values } = payload;
-  
-  const { name, markup, explorerLink, description } = values;
-  const data = await axiosHelper.patch(`/assets/${id}`, {
-  
-    name,
-    description,
-    markup,
-    explorerLink,
-    fee: {
-      deposit:values.depositFee,
-      withdrawal:values.withdrawFee
-    },
-    minAmount: {
-      deposit :values.minDepositAmount,
-      withdrawal:values.minWithdrawAmount
-    },
-    
-      
-  }, { crypto:true });
 
+};
+export const updateSymbol = async (payload)=>{
+  
+  const { id, formData } = payload;
+  const data = await axiosHelper.updateFormData(`/assets/${id}`, formData);
   if (data.code === 500){
     throw new Error("Please Enter Valid data");
   }
+
   return data;
 }; 
 export const deleteSymbol = async ({ payload })=>{

@@ -93,7 +93,7 @@ function ClientForm(props){
                     label={props.t("Email")}
                     placeholder={props.t("Enter Email")}
                     type="email"
-                    errorMessage={props.t("Enter Your Email")}
+                    errorMessage={props.t("Enter Valid Email")}
                     validate={{ required: { value: true } }}
                   />
                 </div>

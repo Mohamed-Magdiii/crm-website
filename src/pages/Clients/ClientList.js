@@ -112,7 +112,7 @@ function ClientsList(props) {
       isDummyField: true,
       editable: false,
       text:props.t("Agent"),
-      formatter: (val) => (val.agent ? `${val.agent.firstName} ${val.agent.lastName}` : "unassigned")
+      formatter: (val) => (val.agent ? captilazeFirstLetter(`${val.agent.firstName} ${val.agent.lastName}`) : "Unassigned")
     },
     {
       dataField: "source",
