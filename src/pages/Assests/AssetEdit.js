@@ -7,6 +7,7 @@ import {
   Modal, Button,
   ModalHeader,
   ModalBody,
+  Label,
   UncontrolledAlert,
 } from "reactstrap";
 import {
@@ -26,7 +27,7 @@ function AssetEdit (props) {
     minDepositAmount = deposit;
     minWithdrawAmount = withdrawal;
   }
-  
+  const { image } = symbol;
   if (symbol.fee){
     const { fee:{ deposit, withdrawal } } = symbol;
     depositFee = deposit;
@@ -223,6 +224,7 @@ function AssetEdit (props) {
               </Col>
             </Row>
             <div className="mb-3">
+              
               <AvField
                 name="explorerLink"
                 label="Link"
@@ -234,13 +236,20 @@ function AssetEdit (props) {
               />
             </div>
             <div>
+              <div className="d-flex gap-3 mb-3">
+                <Label className="d-flex my-auto">Asset Image</Label>
+                <img style = {{ width:"50px" }} src ={`${process.env.REACT_APP_API_CRM_DOMAIN}/images/${image}`} alt= ""/>
+              </div>
+           
               <AvField
+                className ="d-inline"
                 name="image"
                 type="file"
                 errorMessage = {props.t("Please upload an image for the symbol")}
-                validate = {{ required : { value:true } }}
+                validate = {{ required : { value: false } }}
                 onChange = {e=>setFile(e.target.files[0])}
               />
+   
             </div>
             <div className='text-center pt-3 p-2'>
               <Button disabled={props.disableEditButton} type="submit" color="primary" className="">

@@ -70,11 +70,13 @@ export const assetReducer = (state = initalState, action)=>{
         assets:state.assets.map(asset=>{
           // eslint-disable-next-line no-case-declarations
           const { name, description, markup, explorerLink } = action.payload.jsonData;
+
           if (asset._id === action.payload.id){
             
             return {
 
               ...asset,
+              image: action.payload.image ? action.payload.image : asset.image,
               name,
               description,
               markup,

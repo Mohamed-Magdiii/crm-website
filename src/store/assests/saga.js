@@ -52,12 +52,17 @@ function * editAsset(params){
   const { payload } = params;
   const { id,  jsonData } = payload;
   try {
-    const data = yield call(updateSymbol, payload);
-    const { status } = data;
+    const returnedData = yield call(updateSymbol, payload);
+    const { status } = returnedData;
+ 
     if (status){
+      const { result } = returnedData;
+      const { data } = result;
+      const { image } = data;
       yield put(editSymbolSuccess({
         id,
-        jsonData
+        jsonData,
+        image
       }));
     }
     
