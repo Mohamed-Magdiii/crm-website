@@ -10,7 +10,11 @@ import AvFieldSelect from "components/Common/AvFieldSelect";
 
 // i18n 
 import { withTranslation } from "react-i18next";
-import { editClientDetails } from "store/client/actions";
+import { 
+  editClientDetails, 
+  updateEmploymentStatusStart, 
+  updateFinancialInfoStart  
+} from "store/client/actions";
 import { fetchUsers } from "store/users/actions";
 import Loader from "components/Common/Loader";
 import { CALL_STATUSES } from "common/callstatus";
@@ -23,7 +27,7 @@ import sourceOfFunds from "common/souceOfFunds";
 function ClientDetails(props) {
   const clientId = props.clientId;
   const dispatch = useDispatch();
-
+  const { experience, financialInfo } = props.clientDetails;
   const agentOptions = props.usersDocs && props.usersDocs.map((user) => {
     return ({
       value: user._id,
@@ -37,7 +41,18 @@ function ClientDetails(props) {
       id: clientId
     }));
   };
-  
+  const updateFinancialInfo = (e, values)=>{
+    dispatch(updateFinancialInfoStart({
+      values,
+      id:clientId
+    }));
+  };
+  const updateEmploymentInfo = (e, values)=>{
+    dispatch(updateEmploymentStatusStart({
+      values,
+      id:clientId
+    }));
+  };
   useEffect(() => {
     // dispatch(fetchClientDetails(clientId)); 
     dispatch(fetchUsers());
@@ -49,6 +64,8 @@ function ClientDetails(props) {
   // any of them it will load it's previous value and update all updated fields
   useEffect(() => {
   }, [props.clientDetails]);
+
+
   return (
     <React.Fragment>
       {(props.clientProfileloading || props.usersLoading || props.dictLoading) && 
@@ -612,19 +629,22 @@ function ClientDetails(props) {
                                   
                     </Card>
                   </Col>
-                  <Col  md="4" sm="12" xs="12">
+                  <Col  md="5" sm="12" xs="12">
                     <Card>
                       <CardHeader>
                         <CardTitle>Employment Details</CardTitle>
                       </CardHeader>
                       <CardBody>
-                        <AvForm>
+                        <AvForm onValidSubmit = {(e, v)=>{
+                          updateEmploymentInfo(e, v);
+                        }}>
                           <Row>
                             <Col >
                               <div className="mt-2">
                                 <AvFieldSelect
                                   name="employmentStatus"
                                   type="text"
+                                  value = {experience ? experience.employmentStatus : ""}
                                   errorMessage={props.t("Employment Status is required")}
                                   validate={{ required: { value: true } }}
                                   label={props.t("Employment Status")}
@@ -646,9 +666,9 @@ function ClientDetails(props) {
                                   label={props.t("Indusrtry")}
                                   placeholder={props.t("Industry is required")}
                                   type="text"
+                                  value = {experience ? experience.profession : ""}
                                   errorMessage={props.t("Industry is required")}
                                   validate={{ required: { value: true } }}
-                                  value={props.clientDetails.firstName}
                                   options ={professions.map((obj)=>{
                                     return ({
                                       label:obj,
@@ -664,13 +684,18 @@ function ClientDetails(props) {
                           <Row>
                             <Col>
                               <div className="mt-4">
-                                <AvField name="jobTitle" label="Job Industry"/>
+                                <AvField name="jobTitle" 
+                                  value = {experience ? experience.jobTitle : ""} 
+                                  label="Job Industry"/>
                               </div>
                               
                             </Col>
                             <Col>
                               <div className= "mt-4">
-                                <AvField name="employer" label="Employer"/>
+                                <AvField 
+                                  value = {experience ? experience.employer : "" }
+                                  name="employer" 
+                                  label="Employer"/>
                               </div>
                               
                             </Col>
@@ -697,33 +722,39 @@ function ClientDetails(props) {
                       <CardHeader>
                         <CardTitle>Finanical Info</CardTitle>
                       </CardHeader>
-                      <CardBody style = {{ paddingBottom :"6rem" }}>
-                        <AvForm>
+                      <CardBody>
+                        <AvForm onValidSubmit = {(e, v)=>{
+                          updateFinancialInfo(e, v); 
+                        }}>
                           <Row>
                             <Col >
-                  
-                              <AvFieldSelect
-                                name="title"
-                                type="text"
-                                errorMessage={props.t("Annual Income Status is required")}
-                                validate={{ required: { value: true } }}
-                                label={props.t("Annual Income")}
-                                options={annualIncome.map((obj)=>{
-                                  return ({
-                                    label: obj, 
-                                    value: obj
-                                  });
-                                })}
-                              />
+                              <div className = "mt-2">
+                                <AvFieldSelect
+                                  name="annualIncome"
+                                  type="text"
+                                  errorMessage={props.t("Annual Income Status is required")}
+                                  validate={{ required: { value: true } }}
+                                  value = {financialInfo ? financialInfo.annualIncome : ""}
+                                  label={props.t("Annual Income")}
+                                  options={annualIncome.map((obj)=>{
+                                    return ({
+                                      label: obj, 
+                                      value: obj
+                                    });
+                                  })}
+                                />
+                              </div>
+
                 
                             </Col>
                             <Col>
                               <div className="mt-2">
                                 <AvFieldSelect
-                                  name="profession"
+                                  name="sourceOfFunds"
                                   label={props.t("Soucre of Funds")}
                                   placeholder={props.t("Industry is required")}
                                   type="text"
+                                  value = {financialInfo ? financialInfo.sourceOfFunds : ""}
                                   errorMessage={props.t("Source of Funds is required")}
                                   validate={{ required: { value: true } }}
                                   options ={sourceOfFunds.map((obj)=>{
@@ -736,9 +767,25 @@ function ClientDetails(props) {
                               </div>
                             </Col>
                 
-             
+                            
                           </Row>
-                   
+                          <Row>
+                            <div className="mt-2">
+                              <AvFieldSelect 
+                                label = "Worked in Financial?"
+                                name="workedInFinancial" 
+                                errorMessage = {props.t("This field is required")}
+                                validate = {{ required :{ value:true } }}
+                                options = {[{
+                                  value: "yes",
+                                  label: "Yes"
+                                }, {
+                                  value: "no",
+                                  label: "No"
+                                }]}
+                              />
+                            </div>
+                          </Row>
                           <div className="d-flex justify-content-end">
                             <div className="p-4">
                               <Button 
