@@ -107,17 +107,28 @@ function * fetchClientStages(params){
 }
 function * updateClientFinancialInfo ({ payload }){
   try {
-    yield call(clientApi.updateClientFinancialInfo, payload);
+    const data =  yield call(clientApi.updateClientFinancialInfo, payload);
+    const { status } = data;
+    if (status){
+      yield put(updateFinancialInfoSuccess(payload));
+      yield put(showSuccessNotification("Financial Info of the client has been updated"));
+    }
   } catch (error){
     yield put(showErrorNotification("Error happened while updating client"));
   }
 }
 function * updateClientEmploymentInfo ({ payload }){
   try {
-    const data =  yield call(clientApi.updateClientEmploymentStatus, payload);
-    console.log(data);
-  } catch (error){
 
+    const data =  yield call(clientApi.updateClientEmploymentStatus, payload);
+    
+    const { status } = data;
+    if (status) {
+      yield put(updateEmploymentStatusSuccess(payload));
+      yield put(showSuccessNotification("Employpment Info has been updated successfully"));
+    }
+  } catch (error){
+    yield put(showErrorNotification("Error happened while updating employment info"));
   }
 }
 function * clientSaga() {

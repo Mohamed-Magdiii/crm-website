@@ -8,7 +8,9 @@ import {
   EDIT_CLIENT_DETAILS_SUCCESS,
   EDIT_CLIENT_DETAILS_FAIL,
   EDIT_CLIENT_DETAILS_CLEAR,
-  FETCH_CLIENT_STAGES_END
+  FETCH_CLIENT_STAGES_END,
+  UPDATE_EMPLOYMENT_INFO_SUCCESS,
+  UPDATE_FINANCIAL_INFO_SUCCESS
 } from "./actionsType";
 
 const initalState = {
@@ -79,7 +81,39 @@ export const clientReducer = (state = initalState, action)=>{
         error:action.payload.error
       };
       break;
+    case UPDATE_FINANCIAL_INFO_SUCCESS:
+      state = {
+        ...state,
+        clients : state.clients.map((client)=>{
+          if (client._id === action.payload.id){
+            return {
+              ...client, 
+              financialInfo: { ...action.payload.financialInfo }
+            };
+          }
+          else {
+            return client;
+          }
 
+        })
+      };
+      break;
+    case UPDATE_EMPLOYMENT_INFO_SUCCESS:
+      state = {
+        ...state,
+        clients: state.clients.map((client)=>{
+          if (client._id === action.payload.id){
+            return {
+              ...client,
+              experience:{ ...action.payload.values }
+            };
+          }
+          else {
+            return client;
+          }
+        })
+      };
+      break;
     // fetch client details
     case FETCH_CLIENT_DETAILS_REQUESTED:
       state = {
