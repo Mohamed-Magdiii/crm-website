@@ -15,6 +15,8 @@ import {
   addModalClear,
   fetchClientStagesEnd,
   assignAgentToClientSuccess,
+  updateEmploymentStatusSuccess,
+  updateFinancialInfoSuccess
 } from "./actions";
 import { 
   ADD_NEW_CLIENT, 
@@ -22,7 +24,9 @@ import {
   FETCH_CLIENT_STAGES_START,
   FETCH_CLIENT_DETAILS_REQUESTED,
   EDIT_CLIENT_DETAILS_REQUESTED,
-  ASSIGN_AGENT_START
+  ASSIGN_AGENT_START,
+  UPDATE_EMPLOYMENT_INFO_START,
+  UPDATE_FINANCIAL_INFO_START
 } from "./actionsType";
 import { showSuccessNotification, showErrorNotification } from "store/notifications/actions";
 function *fetchClients(params) {
@@ -101,7 +105,21 @@ function * fetchClientStages(params){
     }
   } catch (error){ }
 }
+function * updateClientFinancialInfo ({ payload }){
+  try {
+    yield call(clientApi.updateClientFinancialInfo, payload);
+  } catch (error){
+    yield put(showErrorNotification("Error happened while updating client"));
+  }
+}
+function * updateClientEmploymentInfo ({ payload }){
+  try {
+    const data =  yield call(clientApi.updateClientEmploymentStatus, payload);
+    console.log(data);
+  } catch (error){
 
+  }
+}
 function * clientSaga() {
   yield takeEvery(FETCH_CLIENTS_START, fetchClients);
   yield takeEvery(ADD_NEW_CLIENT, addNewClient);
@@ -109,7 +127,8 @@ function * clientSaga() {
   yield takeEvery(EDIT_CLIENT_DETAILS_REQUESTED, editClientDetails);
   yield takeEvery(FETCH_CLIENT_STAGES_START, fetchClientStages);
   yield takeEvery(ASSIGN_AGENT_START, assignAgent);
-  
+  yield takeEvery(UPDATE_FINANCIAL_INFO_START, updateClientFinancialInfo);
+  yield takeEvery(UPDATE_EMPLOYMENT_INFO_START, updateClientEmploymentInfo);
 }
 
 export default clientSaga;
