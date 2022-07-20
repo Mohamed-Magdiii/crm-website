@@ -68,7 +68,12 @@ function OrderList(props) {
     {
       dataField:"createdAt",
       text : "Date",
-      formatter : (order)=>new Date(order.createdAt).toLocaleDateString()
+      formatter: (val) => {
+        let d = new Date(val.createdAt);
+        d = d.getDate()  + "-" + (d.getMonth() +  1) + "-" + d.getFullYear() + " " + "at " +
+        d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+        return d;
+      }
     },
 
     {
