@@ -37,13 +37,13 @@ export const updateClientDetails = async ({ payload }) => {
 
   return data;
 };
-export const updateClientEmploymentStatus = async ({ payload })=>{
+export const updateClientEmploymentStatus = async (payload )=>{
   const { id, values } = payload;
-  const data = await axiosHelper.patch(`/clients/${id}/experience`, values);
+  const data = await axiosHelper.patch(`/clients/${id}/experience`, { experience:{ ...values } });
   return data;
 };
-export const updateClientFinancialInfo = async ({payload})=>{
+export const updateClientFinancialInfo = async (payload)=>{
   const { id, values } = payload;
-  const data = await axiosHelper.patch(`/client/${id}/financial-info`, values);
+  const data = await axiosHelper.patch(`/clients/${id}/financial-info`, { financialInfo : { ...values } });
   return data;
 };
