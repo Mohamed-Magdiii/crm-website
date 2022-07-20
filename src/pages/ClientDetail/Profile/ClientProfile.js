@@ -16,7 +16,10 @@ import Loader from "components/Common/Loader";
 import { CALL_STATUSES } from "common/callstatus";
 import { LANGUAGES } from "common/languages";
 import TITLES from "common/titles";
-
+import employmentStatus from "common/employmentStatus";
+import professions from "common/profession";
+import annualIncome from "common/annualIncome";
+import sourceOfFunds from "common/souceOfFunds";
 function ClientDetails(props) {
   const clientId = props.clientId;
   const dispatch = useDispatch();
@@ -204,7 +207,7 @@ function ClientDetails(props) {
                                       label: `${country.en}`, 
                                       value: country.en
                                     });
-                                  })}
+                                  })} 
                                 />
                               </div>
                             </Col>
@@ -594,6 +597,167 @@ function ClientDetails(props) {
                     </CardBody>
                   </Card>
                 </Col>
+                <Row>
+                  <Col md="3" sm="12" xs="12">
+                    <Card>
+                      <CardHeader className="d-flex flex-column gap-3">
+                        <div className="d-flex justify-content-between align-items-center">
+                          <CardTitle>{props.t("Declarations")}</CardTitle>
+                        </div>
+                      </CardHeader>
+                      <CardBody className="p-0">
+               
+                      </CardBody>
+                  
+                                  
+                    </Card>
+                  </Col>
+                  <Col  md="4" sm="12" xs="12">
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Employment Details</CardTitle>
+                      </CardHeader>
+                      <CardBody>
+                        <AvForm>
+                          <Row>
+                            <Col >
+                              <div className="mt-2">
+                                <AvFieldSelect
+                                  name="employmentStatus"
+                                  type="text"
+                                  errorMessage={props.t("Employment Status is required")}
+                                  validate={{ required: { value: true } }}
+                                  label={props.t("Employment Status")}
+                                  options={employmentStatus.map((obj)=>{
+                                    return ({
+                                      label: obj, 
+                                      value: obj
+                                    });
+                                  })}
+                                />
+                              </div>
+                              
+                  
+                            </Col>
+                            <Col>
+                              <div className="mt-2">
+                                <AvFieldSelect
+                                  name="profession"
+                                  label={props.t("Indusrtry")}
+                                  placeholder={props.t("Industry is required")}
+                                  type="text"
+                                  errorMessage={props.t("Industry is required")}
+                                  validate={{ required: { value: true } }}
+                                  value={props.clientDetails.firstName}
+                                  options ={professions.map((obj)=>{
+                                    return ({
+                                      label:obj,
+                                      value:obj
+                                    });
+                                  })}
+                                />
+                              </div>
+                            </Col>
+                  
+               
+                          </Row>
+                          <Row>
+                            <Col>
+                              <div className="mt-4">
+                                <AvField name="jobTitle" label="Job Industry"/>
+                              </div>
+                              
+                            </Col>
+                            <Col>
+                              <div className= "mt-4">
+                                <AvField name="employer" label="Employer"/>
+                              </div>
+                              
+                            </Col>
+                          </Row>
+                          <div className="d-flex justify-content-end">
+                            <div className="p-4">
+                              <Button 
+                                disabled={props.updating}  
+                                type="submit" 
+                                color="primary"
+                              >
+                                {props.t("Update")}
+                              </Button>
+                            </div>
+                          </div>
+                        </AvForm>
+                      </CardBody>
+             
+                 
+                    </Card>
+                  </Col>
+                  <Col  md="4" sm="12" xs="12">
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Finanical Info</CardTitle>
+                      </CardHeader>
+                      <CardBody style = {{ paddingBottom :"6rem" }}>
+                        <AvForm>
+                          <Row>
+                            <Col >
+                  
+                              <AvFieldSelect
+                                name="title"
+                                type="text"
+                                errorMessage={props.t("Annual Income Status is required")}
+                                validate={{ required: { value: true } }}
+                                label={props.t("Annual Income")}
+                                options={annualIncome.map((obj)=>{
+                                  return ({
+                                    label: obj, 
+                                    value: obj
+                                  });
+                                })}
+                              />
+                
+                            </Col>
+                            <Col>
+                              <div className="mt-2">
+                                <AvFieldSelect
+                                  name="profession"
+                                  label={props.t("Soucre of Funds")}
+                                  placeholder={props.t("Industry is required")}
+                                  type="text"
+                                  errorMessage={props.t("Source of Funds is required")}
+                                  validate={{ required: { value: true } }}
+                                  options ={sourceOfFunds.map((obj)=>{
+                                    return ({
+                                      label:obj,
+                                      value:obj
+                                    });
+                                  })}
+                                />
+                              </div>
+                            </Col>
+                
+             
+                          </Row>
+                   
+                          <div className="d-flex justify-content-end">
+                            <div className="p-4">
+                              <Button 
+                                disabled={props.updating}  
+                                type="submit" 
+                                color="primary"
+                              >
+                                {props.t("Update")}
+                              </Button>
+                            </div>
+                          </div>
+                        </AvForm>
+                      </CardBody>
+           
+               
+                    </Card>
+                  </Col>
+                </Row>
+
               </Row>
             </div>
           </div>
