@@ -66,6 +66,16 @@ function OrderList(props) {
   }));
   const columns = [
     {
+      dataField:"createdAt",
+      text : "Date",
+      formatter: (val) => {
+        let d = new Date(val.createdAt);
+        d = `${d.toLocaleDateString()}, ${d.toLocaleTimeString()}`;
+        return d;
+      }
+    },
+
+    {
       text: "Symbol",
       dataField: "symbol",
       sort: true,
