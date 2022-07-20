@@ -70,8 +70,7 @@ function OrderList(props) {
       text : "Date",
       formatter: (val) => {
         let d = new Date(val.createdAt);
-        d = d.getDate()  + "-" + (d.getMonth() +  1) + "-" + d.getFullYear() + " " + "at " +
-        d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+        d = `${d.toLocaleDateString()}, ${d.toLocaleTimeString()}`;
         return d;
       }
     },
