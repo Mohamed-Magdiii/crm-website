@@ -15,7 +15,7 @@ import { fetchUsers } from "store/users/actions";
 import Loader from "components/Common/Loader";
 import { CALL_STATUSES } from "common/callstatus";
 import { LANGUAGES } from "common/languages";
-import TITLES from "common/titles";
+import { TITLES, YESNO } from "common/data/dropdowns";
 
 function ClientDetails(props) {
   const clientId = props.clientId;
@@ -339,23 +339,17 @@ function ClientDetails(props) {
                             <Col md="3">
                               <div className="mt-2">
                                 <AvFieldSelect
-                                  name="fatca"
+                                  name="usCitizen"
                                   type="text"
                                   label={props.t("US Citizen")}
                                   errorMessage={props.t("US Citizen is required")}
                                   // validate={{ required: { value: true } }}
-                                  value={props.clientDetails.fatca}
-                                  options = {[{
-                                    value: "yes",
-                                    label: "Yes"
-                                  }, {
-                                    value: "no",
-                                    label: "No"
-                                  }]}
+                                  value={props.clientDetails.usCitizen}
+                                  options = {YESNO}
                                 />
                               </div>
                             </Col>
-                            <Col md="3">
+                            {/* <Col md="3">
                               <div className="mt-2">
                                 <AvFieldSelect
                                   name="workedInCrypto"
@@ -365,16 +359,10 @@ function ClientDetails(props) {
                                   errorMessage={props.t("Worked in Crypto is required")}
                                   // validate={{ required: { value: true } }}
                                   value={props.clientDetails.workedInCrypto}
-                                  options = {[{
-                                    value: "yes",
-                                    label: "Yes"
-                                  }, {
-                                    value: "no",
-                                    label: "No"
-                                  }]}
+                                  options = {YESNO}
                                 />
                               </div>
-                            </Col>
+                            </Col> */}
                             <Col md="3">
                               <div className="mt-2">
                                 <AvField
@@ -396,13 +384,7 @@ function ClientDetails(props) {
                                   errorMessage={props.t("Politically exposed is required")}
                                   // validate={{ required: { value: true } }}
                                   value={props.clientDetails.politicallyExposed}
-                                  options = {[{
-                                    value: "yes",
-                                    label: "Yes"
-                                  }, {
-                                    value: "no",
-                                    label: "No"
-                                  }]}
+                                  options = {YESNO}
                                 />
                               </div>
                             </Col>
