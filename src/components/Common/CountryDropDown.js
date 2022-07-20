@@ -35,7 +35,7 @@ function CountryDropDown({ ...props }){
             }}
             options={optionGroup}
             classNamePrefix="select2-selection"
-            placeHolder={props.t("Select a country")}
+            placeholder={props.t("Select Country")}
           />
         }
         {

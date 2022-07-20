@@ -42,18 +42,8 @@ export const assetReducer = (state = initalState, action)=>{
         totalDocs:state.totalDocs + 1,
         assets:[{
           
-          ...action.payload.newSymbol,
-          _id:action.payload.newSymbol.id,
+          ...action.payload,
           createdAt:new Date().toLocaleDateString(),
-          
-          minAmount:{
-            deposit:action.payload.newSymbol.minDepositAmount,
-            withdrawal:action.payload.newSymbol.minDepositAmount
-          },
-          fee:{
-            deposit:action.payload.newSymbol.depositFee,
-            withdrawal:action.payload.newSymbol.withdrawFee
-          }
         }, ...state.assets],
         clearModal:false,
       };
@@ -79,23 +69,25 @@ export const assetReducer = (state = initalState, action)=>{
         ...state,
         assets:state.assets.map(asset=>{
           // eslint-disable-next-line no-case-declarations
-          const { name, description, markup, explorerLink } = action.payload.values;
+          const { name, description, markup, explorerLink } = action.payload.jsonData;
+
           if (asset._id === action.payload.id){
             
             return {
 
               ...asset,
+              image: action.payload.image ? action.payload.image : asset.image,
               name,
               description,
               markup,
               explorerLink,
               fee: {
-                deposit:action.payload.values.depositFee,
-                withdrawal:action.payload.values.withdrawFee
+                deposit:action.payload.jsonData.depositFee,
+                withdrawal:action.payload.jsonData.withdrawFee
               },
               minAmount: {
-                deposit :action.payload.values.minDepositAmount,
-                withdrawal:action.payload.values.minWithdrawAmount
+                deposit :action.payload.jsonData.minDepositAmount,
+                withdrawal:action.payload.jsonData.minWithdrawAmount
               },
             };
            

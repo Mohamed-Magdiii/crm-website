@@ -26,11 +26,12 @@ const languages = {
     label: "English",
     flag: usFlag,
   },
-  ar: {
+  "ar-ae": {
     label: "Arabic",
     flag: uae,
   },
 };
+
 
 export const LANGUAGES = Object.keys(languages).map(obj => {
   return {
