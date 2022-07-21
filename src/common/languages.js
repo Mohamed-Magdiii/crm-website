@@ -26,7 +26,7 @@ const languages = {
     label: "English",
     flag: usFlag,
   },
-  "ar-ae": {
+  ar: {
     label: "Arabic",
     flag: uae,
   },

@@ -21,8 +21,8 @@ function SystemEmailHTMLModal(props){
   const dispatch = useDispatch();
   const { open, role = {}, onClose } = props;
   const readableLanguages = {
-    "en-gb": "English",
-    "ar-ae": "Arabic"
+    "en": "English",
+    "ar": "Arabic"
   };
   const availableLanguageOptions = () => {
     return (
@@ -37,7 +37,7 @@ function SystemEmailHTMLModal(props){
     );
   };
   const languageInitialValue = props.role && availableLanguageOptions().find((item) => (
-    item.value === "en-gb"
+    item.value === "en"
   ));
   const [selectedLanguage, setSelectedLanguage] = useState(languageInitialValue);  
   const languageChangeHanlder = (selectedLanguageVar) => {
