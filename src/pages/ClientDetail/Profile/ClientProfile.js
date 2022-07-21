@@ -15,6 +15,9 @@ import {
   updateEmploymentStatusStart, 
   updateFinancialInfoStart  
 } from "store/client/actions";
+import { fetchMarkupsStart } from "store/markups/actions";
+import { fetchFeeGroupStart } from "store/feeGroups/actions";
+import { fetchTransactionFeeGroupStart } from "store/transactionFeeGroups/actions";
 import { fetchUsers } from "store/users/actions";
 import Loader from "components/Common/Loader";
 import { CALL_STATUSES } from "common/callstatus";
@@ -34,7 +37,7 @@ function ClientDetails(props) {
       label: user.firstName + " " + user.lastName
     });
   });
-    
+  
   const loadUpdatedClientDetailsHandler = (e, values) => {
     dispatch(editClientDetails({
       values,
@@ -56,7 +59,18 @@ function ClientDetails(props) {
   useEffect(() => {
     // dispatch(fetchClientDetails(clientId)); 
     dispatch(fetchUsers());
-
+    dispatch(fetchMarkupsStart({
+      limit:1000,
+      page:1
+    }));
+    dispatch(fetchFeeGroupStart({
+      limit:1000,
+      page:1
+    }));
+    dispatch(fetchTransactionFeeGroupStart({
+      limit:1000,
+      page:1
+    }));
   }, []);
 
   // useEffect is used to set initial value once client details is loaded 
@@ -461,7 +475,7 @@ function ClientDetails(props) {
                               </div>
                             </Col> 
                           </Row>
-
+                        
                           {/* seventh row */}
                           <Row>
                             <h6 className="mt-3 mb-4">{props.t("ID Details")}</h6>
@@ -614,22 +628,100 @@ function ClientDetails(props) {
                     </CardBody>
                   </Card>
                 </Col>
-                <Row>
-                  <Col md="3" sm="12" xs="12">
-                    <Card>
-                      <CardHeader className="d-flex flex-column gap-3">
-                        <div className="d-flex justify-content-between align-items-center">
-                          <CardTitle>{props.t("Declarations")}</CardTitle>
-                        </div>
-                      </CardHeader>
-                      <CardBody className="p-0">
+                <Col>
+                  <Row>
+                    <Col md="6">
+                      <Card>
+                        <CardTitle></CardTitle>
+                        <CardBody>
+                          <AvForm onValidSubmit = {(e, v)=>{
+                            console.log(v);
+                            dispatch(editClientDetails({
+                              id:clientId,
+                              values:{ ...v }
+                            }));
+                          }}>
+                            <Row>
+                              <Col md="4">
+                                <AvFieldSelect
+                                  label =" Trading Fee" 
+                                  name="tradingFeeId"
+                                  options = {props.feeGroups.map(feeGroup=>{
+                                    return {
+                                      label: feeGroup.title,
+                                      value : feeGroup._id
+                                    };
+                                  })}
+                                />
+                                
+                              </Col>
+                              <Col md="4">
+                                <div>
+                                  <AvFieldSelect 
+                                    label="Transaction Fee"
+                                    name="transactionFeeId"
+                                    options = {props.transactionFeeGroups.map(transactionFeeGroup=>{
+                                      return {
+                                        label:transactionFeeGroup.title,
+                                        value:transactionFeeGroup._id
+                                      };
+                                    })}
+                                    
+                                  />
+                                </div>
+                           
+                              </Col>
+                              <Col md="4">
+                                <div>
+                                  <AvFieldSelect 
+                                    label="Markup"
+                                    name="markupId"
+                                    options= {props.markups.map(markup=>{
+                                      return {
+                                        label:markup.title,
+                                        value:markup._id
+                                      };
+                                    })}
+                                  />
+                                </div>
+                             
+                              </Col>        
+                              <div className="d-flex justify-content-end">
+                                <div className="p-4">
+                                  <Button 
+                                    disabled={props.updating}  
+                                    type="submit" 
+                                    color="primary"
+                                  >
+                                    {props.t("Update")}
+                                  </Button>
+                                </div>
+                              </div>                    
+                            </Row>
+
+                          </AvForm>
+                        </CardBody>
+                      </Card>
+                    </Col>
+                    <Col md="5" sm="12" xs="12">
+                      <Card>
+                        <CardHeader className="d-flex flex-column gap-3">
+                          <div className="d-flex justify-content-between align-items-center">
+                            <CardTitle>{props.t("Declarations")}</CardTitle>
+                          </div>
+                        </CardHeader>
+                        <CardBody className="p-0">
                
-                      </CardBody>
+                        </CardBody>
                   
                                   
-                    </Card>
-                  </Col>
-                  <Col  md="5" sm="12" xs="12">
+                      </Card>
+                    </Col>
+                  </Row>
+                 
+                </Col>
+                <Row>
+                  <Col  md="6" sm="12" xs="12">
                     <Card>
                       <CardHeader>
                         <CardTitle>Employment Details</CardTitle>
@@ -717,7 +809,7 @@ function ClientDetails(props) {
                  
                     </Card>
                   </Col>
-                  <Col  md="4" sm="12" xs="12">
+                  <Col  md="6" sm="12" xs="12">
                     <Card>
                       <CardHeader>
                         <CardTitle>Finanical Info</CardTitle>
@@ -826,6 +918,9 @@ const mapStateToProps = (state) => ({
   usersLoading: state.usersReducer.loading,
   countries: state.dictionaryReducer.countries || [],
   dictLoading: state.dictionaryReducer.loading,
+  markups :state.markupsReducer.markups || [],
+  transactionFeeGroups: state.transactionFeeGroupReducer.transactionFeeGroups || [],
+  feeGroups : state.feeGroupReducer.feeGroups || []
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(ClientDetails));
