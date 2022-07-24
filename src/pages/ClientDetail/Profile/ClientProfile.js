@@ -903,7 +903,7 @@ function ClientDetails(props) {
                         </div>
                       </CardHeader>
                       <CardBody >
-                        {declarations && declarations.map(declaration=>{
+                        {declarations && declarations.length > 0 &&  declarations.map(declaration=>{
                           return <div className="d-flex gap-3 align-items-start" key={declaration}>
                             <input type="checkbox" className="d-block" checked={true}/>
                   
