@@ -893,7 +893,7 @@ function ClientDetails(props) {
                 </Col>
 
 
-                { declarations && <Row>
+                { declarations && declarations.length > 0 && <Row>
                   <Col  md="6" sm="12" xs="12">
                     
                     <Card>
