@@ -16,7 +16,9 @@ import {
   fetchClientStagesEnd,
   assignAgentToClientSuccess,
   updateEmploymentStatusSuccess,
-  updateFinancialInfoSuccess
+  updateFinancialInfoSuccess,
+  updateEmploymentInfoFail,
+  updateFinancialInfoFail
 } from "./actions";
 import { 
   ADD_NEW_CLIENT, 
@@ -114,7 +116,8 @@ function * updateClientFinancialInfo ({ payload }){
       yield put(showSuccessNotification("Financial Info of the client has been updated"));
     }
   } catch (error){
-    yield put(showErrorNotification("Error happened while updating client"));
+    yield put(updateFinancialInfoFail());
+    yield put(showErrorNotification("Error happened while updating financial info"));
   }
 }
 function * updateClientEmploymentInfo ({ payload }){
@@ -128,6 +131,7 @@ function * updateClientEmploymentInfo ({ payload }){
       yield put(showSuccessNotification("Employpment Info has been updated successfully"));
     }
   } catch (error){
+    yield put(updateEmploymentInfoFail());
     yield put(showErrorNotification("Error happened while updating employment info"));
   }
 }

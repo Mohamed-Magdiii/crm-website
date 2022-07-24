@@ -21,7 +21,9 @@ import {
   UPDATE_EMPLOYMENT_INFO_START,
   UPDATE_EMPLOYMENT_INFO_SUCCESS,
   UPDATE_FINANCIAL_INFO_START,
-  UPDATE_FINANCIAL_INFO_SUCCESS
+  UPDATE_FINANCIAL_INFO_SUCCESS,
+  UPDATE_EMPLOYMENT_INFO_FAIL,
+  UPDATE_FINANCIAL_INFO_FAIL
 } from "./actionsType";
 
 export const fetchClientsStart = (params = {})=>{
@@ -159,5 +161,15 @@ export const updateEmploymentStatusSuccess = (data)=>{
   return {
     type:UPDATE_EMPLOYMENT_INFO_SUCCESS,
     payload:data
+  };
+};
+export const updateEmploymentInfoFail = ()=>{
+  return {
+    type:UPDATE_EMPLOYMENT_INFO_FAIL
+  };
+};
+export const updateFinancialInfoFail = ()=>{
+  return {
+    type: UPDATE_FINANCIAL_INFO_FAIL
   };
 };

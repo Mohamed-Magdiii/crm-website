@@ -12,7 +12,9 @@ import {
   UPDATE_FINANCIAL_INFO_START,
   UPDATE_EMPLOYMENT_INFO_START,
   UPDATE_EMPLOYMENT_INFO_SUCCESS,
-  UPDATE_FINANCIAL_INFO_SUCCESS
+  UPDATE_FINANCIAL_INFO_SUCCESS,
+  UPDATE_FINANCIAL_INFO_FAIL,
+  UPDATE_EMPLOYMENT_INFO_FAIL
 } from "./actionsType";
 
 const initalState = {
@@ -172,10 +174,22 @@ export const clientReducer = (state = initalState, action)=>{
         employmentInfoUpdating:true
       };
       break;
+    case UPDATE_EMPLOYMENT_INFO_FAIL:
+      state = {
+        ...state,
+        employmentInfoUpdating:false
+      };
+      break;
     case UPDATE_FINANCIAL_INFO_START:
       state = {
         ...state,
         financialInfoUpdating:true
+      };
+      break;
+    case UPDATE_FINANCIAL_INFO_FAIL:
+      state = {
+        ...state,
+        financialInfoUpdating:false
       };
       break;
     case EDIT_CLIENT_DETAILS_SUCCESS:
@@ -187,6 +201,7 @@ export const clientReducer = (state = initalState, action)=>{
         updating: false
       };
       break;
+
     // TODO check the error message with the backend
     case EDIT_CLIENT_DETAILS_FAIL:
       state = { 
