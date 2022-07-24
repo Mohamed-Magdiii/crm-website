@@ -9,6 +9,8 @@ import {
   EDIT_CLIENT_DETAILS_FAIL,
   EDIT_CLIENT_DETAILS_CLEAR,
   FETCH_CLIENT_STAGES_END,
+  UPDATE_FINANCIAL_INFO_START,
+  UPDATE_EMPLOYMENT_INFO_START,
   UPDATE_EMPLOYMENT_INFO_SUCCESS,
   UPDATE_FINANCIAL_INFO_SUCCESS
 } from "./actionsType";
@@ -95,7 +97,8 @@ export const clientReducer = (state = initalState, action)=>{
             return client;
           }
 
-        })
+        }),
+        financialInfoUpdating:false
       };
       break;
     case UPDATE_EMPLOYMENT_INFO_SUCCESS:
@@ -111,7 +114,9 @@ export const clientReducer = (state = initalState, action)=>{
           else {
             return client;
           }
-        })
+        }),
+        employmentInfoUpdating:false
+       
       };
       break;
     // fetch client details
@@ -158,6 +163,19 @@ export const clientReducer = (state = initalState, action)=>{
       state = {
         ...state,
         updating: true
+      };
+
+      break;
+    case UPDATE_EMPLOYMENT_INFO_START:
+      state = {
+        ...state,
+        employmentInfoUpdating:true
+      };
+      break;
+    case UPDATE_FINANCIAL_INFO_START:
+      state = {
+        ...state,
+        financialInfoUpdating:true
       };
       break;
     case EDIT_CLIENT_DETAILS_SUCCESS:
