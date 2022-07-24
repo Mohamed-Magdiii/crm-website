@@ -53,7 +53,7 @@ const leadReducer = (state = initialState, action)=>{
         totalDocs:action.payload.newLead ? state.totalDocs + 1 : state.totalDocs,
         leads: action.payload.newLead ? [{ 
           createdAt:new Date().toLocaleDateString(), 
-          language:"en-gb",
+          language:"en",
           source:"REGISTER_DEMO",
           ...action.payload.newLead 
         },

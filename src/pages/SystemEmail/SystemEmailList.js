@@ -83,7 +83,7 @@ function SystemEmailsList(props){
     {
       dataField: "content",
       text: props.t("Default Subject"),
-      formatter: (val) => {return val.content["en-gb"] && val.content["en-gb"].subject || " "}
+      formatter: (val) => {return val.content["en"] && val.content["en"].subject || " "}
     },
     {
       dataField: "isActive",

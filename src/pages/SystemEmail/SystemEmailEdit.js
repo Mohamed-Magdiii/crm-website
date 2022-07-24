@@ -30,8 +30,8 @@ function SystemEmailEdit(props){
   const [isContentChanged, setIsContentChanged] = useState(false);
   const [backConfirmationModalState, setBackConfirmationModalState] = useState(false);
   const readableLanguages = {
-    "en-gb": "English",
-    "ar-ae": "Arabic"
+    "en": "English",
+    "ar": "Arabic"
   };
   // props.systemEmail if it's coming from add modal (systemEmail = newly added system email)
   // props.role if it's coming from an edit call (pre existing system email)
@@ -47,7 +47,7 @@ function SystemEmailEdit(props){
     );
   });
   const languageInitialValue = availableLanguageSelect.find((item) => (
-    item.value === "en-gb"
+    item.value === "en"
   ));
   const [selectedLanguage, setSelectedLanguage] = useState(languageInitialValue);
   const languageChangeHanlder = (selectedLanguageVar) => {

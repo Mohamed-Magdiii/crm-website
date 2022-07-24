@@ -6,7 +6,8 @@ import {
   ModalBody,
   UncontrolledAlert,
   Col,
-  Row
+  Row, 
+  Label
 } from "reactstrap";
 
 import { Link } from "react-router-dom";
@@ -211,6 +212,7 @@ function AssestForm(props){
               />
             </div>
             <div className="mb-3">
+              <Label>Asset Image</Label>
               <AvField
                 name="image"
                 type="file"
