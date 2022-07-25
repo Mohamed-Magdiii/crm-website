@@ -1,9 +1,7 @@
-import * as ordersApi from "../../../apis/orders";
-
-// const optionsPerPage = 3;
+import * as ordersApi from "../../../../apis/orders";
 
 const loadOptions = async (search, page) => {
-  //   await sleep(1000);
+  
 
   let output = [];
 
@@ -18,7 +16,6 @@ const loadOptions = async (search, page) => {
         },
       })
       .then((results) => {
-        //do any results transformations
         return results;
       });
     data.docs?.map(function (item) {
@@ -44,7 +41,6 @@ const loadOptions = async (search, page) => {
         return results;
       });
     data.docs?.map(function (item) {
-      // output[item] = obj[item]['value']
       output.push({
         value: item.pairName,
         label: item.pairName,

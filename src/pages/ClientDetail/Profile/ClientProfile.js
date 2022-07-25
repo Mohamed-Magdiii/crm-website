@@ -27,7 +27,8 @@ import professions from "common/profession";
 import annualIncome from "common/annualIncome";
 import sourceOfFunds from "common/souceOfFunds";
 import { TITLES, YESNO } from "common/data/dropdowns";
-
+import OrderAddModal from "./QuickActions/Order";
+import ResetPassword from "./QuickActions/resetPassword";
 function ClientDetails(props) {
   const clientId = props.clientId;
   const dispatch = useDispatch();
@@ -567,9 +568,7 @@ function ClientDetails(props) {
                           <button type="button" className="btn btn-primary waves-effect waves-light w-100">
                             Portal Access
                           </button>
-                          <button type="button" className="btn btn-primary waves-effect waves-light w-100">
-                            Portal password
-                          </button>
+                          <ResetPassword/>
                         </div>
                       </CardBody>
                       <CardBody className="quick-actions-card">
@@ -578,9 +577,7 @@ function ClientDetails(props) {
                           <button type="button" className="btn btn-primary waves-effect waves-light w-100">
                             Create wallet
                           </button>
-                          <button type="button" className="btn btn-primary waves-effect waves-light w-100">
-                            Open order
-                          </button>
+                          <OrderAddModal/>
                         </div>
                       </CardBody>
                       <CardBody className="quick-actions-card">

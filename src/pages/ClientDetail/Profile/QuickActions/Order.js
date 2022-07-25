@@ -15,8 +15,8 @@ import Select from "react-select";
 
 import { AsyncPaginate } from "react-select-async-paginate";
 
-import loadOptions from "../Profile/QuickActions/loadOptions";
-import { getPricing } from "./../../../apis/orders";
+import loadOptions from "./loadOptions";
+import { getPricing } from "apis/orders";
 
 function OrdersAddModal(props) {
   const [addModal, setAddOrderModal] = useState(false);
@@ -122,8 +122,8 @@ function OrdersAddModal(props) {
 
   return (
     <React.Fragment>
-      <Link to="#" className="btn btn-light" onClick={toggleAddModal}>
-        <i className="bx bx-plus me-1"></i> Add New
+      <Link to="#" className="btn btn-primary" onClick={toggleAddModal}>
+        <i className="bx  me-1"></i> Open Order
       </Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
@@ -157,7 +157,7 @@ function OrdersAddModal(props) {
             <div className="mb-3">
               <label htmlFor="choices-single-default" className="form-label font-size-13 text-muted">Type</label>
               <Select
-                // value={selectedGroup}
+                
                 onChange={(val) => {
                   typehandler(val);
                 }}
@@ -180,7 +180,7 @@ function OrdersAddModal(props) {
             <div className="mb-3">
               <label htmlFor="choices-single-default" className="form-label font-size-13 text-muted">Side</label>
               <Select
-                // value={selectedGroup}
+                
                 onChange={(val) => {
                   sidehandler(val);
                 }}
@@ -268,7 +268,6 @@ const mapStateToProps = (state) => ({
   addErrorDetails: state.ordersReducer.addErrorDetails,
   addSuccess: state.ordersReducer.addSuccess,
   addError: state.ordersReducer.addError,
-  // managersData: state.ordersReducer.managersData,
   clearingCounter: state.ordersReducer.clearingCounter,
 });
 export default connect(mapStateToProps, null)(OrdersAddModal);
