@@ -74,6 +74,7 @@ function * addSystemEmail(params){
     const { result } = data;
     yield put(addSystemEmailSuccess(result));
     yield put(showSuccessNotification("System email added successfully"));
+    yield delay(1000);
     yield put(addSystemEmailClear());
   } catch (error){
     yield put(addSystemEmailFail(error));

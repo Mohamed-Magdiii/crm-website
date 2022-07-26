@@ -18,7 +18,6 @@ import htmlToDraft from "html-to-draftjs";
 import Select from "react-select";
 import { useHistory, useParams } from "react-router-dom";
 
-
 // i18n
 import { withTranslation } from "react-i18next"; 
 import BackConfirmationModal from "components/Common/BackConfirmationModal";
@@ -38,8 +37,8 @@ function SystemEmailEdit(props){
   const [isContentChanged, setIsContentChanged] = useState(false);
   const [backConfirmationModalState, setBackConfirmationModalState] = useState(false);
   const readableLanguages = {
-    "en-gb": "English",
-    "ar-ae": "Arabic"
+    "en": "English",
+    "ar": "Arabic"
   };
   // props.systemEmail if it's coming from add modal (systemEmail = newly added system email)
   // props.role if it's coming from an edit call (pre existing system email)
@@ -55,7 +54,7 @@ function SystemEmailEdit(props){
     );
   });
   const languageInitialValue = availableLanguageSelect.find((item) => (
-    item.value === "en-gb"
+    item.value === "en"
   ));
   const [selectedLanguage, setSelectedLanguage] = useState(languageInitialValue);
   const languageChangeHanlder = (selectedLanguageVar) => {
@@ -105,30 +104,30 @@ function SystemEmailEdit(props){
   };
 
   // content temp value handler
-  const contentTempInitialValues = availableLanguages.map((item) => (
-    {
-      language: item,
-      tempContent: ""
-    }
-  ));
-  const [contentTempValue, setContentempValue] = useState(contentTempInitialValues);
-  const contentTempValueHandler = (e) => {
-    const blocksFromHTML = htmlToDraft(`<p>${e.blocks[0].text}</p>`);
-    const { contentBlocks, entityMap } = blocksFromHTML;
-    const tempContentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
-    const tempEditorState = EditorState.createWithContent(tempContentState); 
-    const updatedTempContent = [];
-    for (let item of contentTempValue){
-      if (item.language === selectedLanguage.value){
-        item.tempContent = tempEditorState;
-        updatedTempContent.push(item);
-      } else {
-        updatedTempContent.push(item);
-      }
-    }
-    setIsContentChanged(true);
-    setContentempValue(updatedTempContent);
-  };
+  // const contentTempInitialValues = availableLanguages.map((item) => (
+  //   {
+  //     language: item,
+  //     tempContent: ""
+  //   }
+  // ));
+  // const [contentTempValue, setContentempValue] = useState(contentTempInitialValues);
+  // const contentTempValueHandler = (e) => {
+  //   const blocksFromHTML = htmlToDraft(`<p>${e.blocks[0].text}</p>`);
+  //   const { contentBlocks, entityMap } = blocksFromHTML;
+  //   const tempContentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+  //   const tempEditorState = EditorState.createWithContent(tempContentState); 
+  //   const updatedTempContent = [];
+  //   for (let item of contentTempValue){
+  //     if (item.language === selectedLanguage.value){
+  //       item.tempContent = tempEditorState;
+  //       updatedTempContent.push(item);
+  //     } else {
+  //       updatedTempContent.push(item);
+  //     }
+  //   }
+  //   setIsContentChanged(true);
+  //   setContentempValue(updatedTempContent);
+  // };
 
   // back button handler
   const history = useHistory();
@@ -221,14 +220,7 @@ function SystemEmailEdit(props){
                 type="text"
                 errorMessage={props.t("Enter Email Content")}
                 validate={{ required: { value: true } }}
-                value={
-                  draftToHtml(convertToRaw(editorState.getCurrentContent()))
-                  // editorState.getCurrentContent().hasText() 
-                  //   ?
-                  //   draftToHtml(convertToRaw(contentTempValue.find((item) => (item.language === selectedLanguage.value)).tempContent))
-                  //   :
-                  //   draftToHtml(convertToRaw(editorState.getCurrentContent()))
-                }
+                value={ draftToHtml(convertToRaw(editorState.getCurrentContent()))}
                 style={{
                   opacity: 0,
                   height: 0,
