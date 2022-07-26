@@ -58,7 +58,6 @@ const leadReducer = (state = initialState, action)=>{
           ...action.payload.newLead 
         },
         ...state.leads] : [...state.leads],
-        showAddSuccessMessage :true,
         disableAddButton :true
       
       };

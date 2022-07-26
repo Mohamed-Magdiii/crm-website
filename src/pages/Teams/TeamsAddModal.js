@@ -18,9 +18,10 @@ import loadOptions from "./loadOptions";
 function TeamsAddModal(props) {
   const [addModal, setAddTeamModal] = useState(false);
   const [managerValue, setManagerValue] = useState(null);
+  const [teamError, setTeamError] = useState(false);
 
   const dispatch = useDispatch();
- 
+
   // const { usersRoles } = props;
   // const [SearchInputValue, setSearchInputValue] = useState("hi");
   const { create } = props.teamsPermissions;
@@ -28,11 +29,19 @@ function TeamsAddModal(props) {
     setAddTeamModal(!addModal);
   };
   const handleAddTeam = (e, values) => {
-    values.managerId = managerValue?.value;
-    // console.log(managerValue);
-    // console.log(values);
-    dispatch(addTeam(values));
-    setManagerValue(null);
+    if (managerValue) {
+      values.managerId = managerValue?.value;
+      // console.log(managerValue);
+      // console.log(values);
+      dispatch(addTeam(values));
+      setManagerValue(null);
+    } else {
+      setTeamError(true);
+      setTimeout(() => {
+        setTeamError(false);
+      }, 2000);
+    }
+
   };
 
   useEffect(() => {
@@ -64,7 +73,7 @@ function TeamsAddModal(props) {
 
   return (
     <React.Fragment>
-      <Link to="#" className={`btn btn-light ${!create ? "d-none" : ""}`} onClick={toggleAddModal}>
+      <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}>
         <i className="bx bx-plus me-1"></i> Add New
       </Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
@@ -82,12 +91,12 @@ function TeamsAddModal(props) {
               <AvField
                 name="title"
                 label="Team Title  "
-                placeholder="Team Title"
+                placeholder="Enter Team Title"
                 type="text"
                 errorMessage="Enter Team Title"
                 validate={{ required: { value: true } }}
               />
-            </div> 
+            </div>
 
             <div className="mb-3">
               <label>Team Manager</label>
@@ -97,14 +106,19 @@ function TeamsAddModal(props) {
                 value={managerValue}
                 loadOptions={loadPageOptions}
                 onChange={setManagerValue}
+                placeholder="Select Team Manager" 
                 errorMessage="please select Team Manager"
                 validate={{ required: { value: true } }}
               />
+
+              {teamError && (
+                <p className="small text-danger ">please select Team Manager</p>
+              )}
             </div>
 
-            <div className="text-center p-5">
+            <div className="text-center ">
               <Button type="submit" color="primary" className="">
-                Add New User
+                Add
               </Button>
             </div>
           </AvForm>
@@ -133,6 +147,6 @@ const mapStateToProps = (state) => ({
   addError: state.teamsReducer.addError,
   // managersData: state.teamsReducer.managersData,
   clearingCounter: state.teamsReducer.clearingCounter,
-  teamsPermissions : state.Profile.teamsPermissions || {}
+  teamsPermissions: state.Profile.teamsPermissions || {}
 });
 export default connect(mapStateToProps, null)(TeamsAddModal);

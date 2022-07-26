@@ -29,6 +29,7 @@ import {
   rejectDeposit,
   getClientDeposits
 } from "apis/deposit";
+import { showSuccessNotification } from "store/notifications/actions";
 function * fetchDeposits(params){
   try {
     const data = yield call(getDeposits, params);
@@ -42,10 +43,10 @@ function * addDeposit({ payload:{ deposit } }){
   try {
     const data = yield call(makeDeposit, deposit);
     const { status, result } = data;
-  
     if (status === true){
       yield put(addDepositSuccess(result));
-      yield delay(2000);
+      yield put(showSuccessNotification(`Deposit has been ${result.status}`));
+      yield delay(1000);
       yield put(modalClear());
     }
       

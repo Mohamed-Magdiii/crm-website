@@ -8,7 +8,9 @@ import {
   ADD_USERS_START,
   EDIT_USERS_PASS_START,
   EDIT_USERS_START,
-  DELETE_USERS_START
+  DELETE_USERS_START,
+  GET_ASSIGNED_USERS_START,
+  ASSIGN_AGENT_START
 } from "./actionTypes";
 import {
   fetchUsersSuccess,
@@ -21,11 +23,14 @@ import {
   editUserDone,
   editUserError,
   editUserClear,
-  deleteUserDone
+  deleteUserDone,
+  getSalesAgentsSuccess,
+
 } from "./actions";
 import { showErrorNotification, showSuccessNotification } from "store/notifications/actions";
 
 //Include Both Helper File with needed methods
+
 import * as usersApi from "../../apis/users";
 
 function* fetchUsers(params) {
@@ -122,7 +127,27 @@ function* deleteUser(params) {
 
 
 }
-
+function * fetchSalesAgent(params){
+  try {
+    const data = yield call(usersApi.getAssignedUsers, params);
+    const { result } = data;
+    yield put(getSalesAgentsSuccess(result));
+  } catch (error){
+    yield put(showErrorNotification("Error happened while fetching sales agents"));
+  }
+}
+function * assignAgent(params){
+  try {
+    const data = yield call(usersApi.assignSalesAgent, params);
+    const { status } = data;
+    if (status){
+      
+      yield put(showSuccessNotification("Sales Agent has been assigned to the client successfully"));
+    }
+  } catch (error){
+    yield put(showErrorNotification("Error happened while assigning agent to clients"));
+  }
+}
 function* usersSaga() {
   yield takeEvery(FETCH_USERS_START, fetchUsers);
   yield takeEvery(FETCH_USERS_ROLES_START, fetchRoles);
@@ -130,6 +155,8 @@ function* usersSaga() {
   yield takeEvery(EDIT_USERS_START, editUser);
   yield takeEvery(EDIT_USERS_PASS_START, editUserPass);
   yield takeEvery(DELETE_USERS_START, deleteUser);
+  yield takeEvery(GET_ASSIGNED_USERS_START, fetchSalesAgent);
+  yield takeEvery(ASSIGN_AGENT_START, assignAgent);
 }
 
 export default usersSaga;

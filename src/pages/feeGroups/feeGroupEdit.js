@@ -90,7 +90,7 @@ function feeGroupAdd(props) {
                   <AvField
                     name="title"
                     label={props.t("Title")}
-                    placeholder={props.t("title")}
+                    placeholder={props.t("Enter title")}
                     type="text"
                     value = {selectedItem.title}
                     errorMessage={props.t("Enter Valid title")}
@@ -108,7 +108,7 @@ function feeGroupAdd(props) {
                   <AvField
                     name="value"
                     label={props.t("Value")}
-                    placeholder={props.t("value")}
+                    placeholder={props.t("Enter value")}
                     type="text"
                     value={v ? v.$numberDecimal : ""}
                     validate = {{
@@ -128,7 +128,7 @@ function feeGroupAdd(props) {
                   <AvField
                     name="maxValue"
                     label={props.t("Max Value")}
-                    placeholder={props.t("Max Value")}
+                    placeholder={props.t("Enter Max")}
                     type="text"
                     value= {maxValue ? maxValue.$numberDecimal : ""}
                     onChange = {(e)=>setMaxAmount(e.target.value)}
@@ -148,7 +148,7 @@ function feeGroupAdd(props) {
                   <AvField
                     name="minValue"
                     label={props.t("Min Value")}
-                    placeholder={props.t("min value")}
+                    placeholder={props.t("Enter Min")}
                     type="text"
                     value={ minValue ? minValue.$numberDecimal : ""}
                     onChange = {(e)=>setMinAmount(e.target.value)}
@@ -270,7 +270,7 @@ function feeGroupAdd(props) {
             </Col>
             <div className='text-center pt-3 p-2'>
               <Button  disabled={disabled} type="submit" color="primary" className="">
-                {props.t("Update Fee Group")}
+                {props.t("Edit")}
               </Button>
             </div>
           </AvForm>
@@ -282,14 +282,7 @@ function feeGroupAdd(props) {
               </UncontrolledAlert>
             )
           }
-          {
-            props.showEditSuccessMessage && (
-              <UncontrolledAlert color="success">
-                <i className="mdi mdi-check-all me-2"/>
-                {props.t("Fees Group is updated successfully !!!")}
-              </UncontrolledAlert>
-            )
-          }
+        
         </ModalBody>
       </Modal>
     </React.Fragment>
