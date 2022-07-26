@@ -29,6 +29,9 @@ import sourceOfFunds from "common/souceOfFunds";
 import { TITLES, YESNO } from "common/data/dropdowns";
 import OrderAddModal from "./QuickActions/Order";
 import ResetPassword from "./QuickActions/resetPassword";
+import ClientAddBankAccountModal from "../Bank/ClientAddBankAccountModal";
+import Transaction from "./QuickActions/Transaction";
+import ConvertWallet from "./QuickActions/Wallet";
 function ClientDetails(props) {
   const clientId = props.clientId;
   const dispatch = useDispatch();
@@ -568,15 +571,13 @@ function ClientDetails(props) {
                           <button type="button" className="btn btn-primary waves-effect waves-light w-100">
                             Portal Access
                           </button>
-                          <ResetPassword/>
+                          <ResetPassword clientId = {clientId}/>
                         </div>
                       </CardBody>
                       <CardBody className="quick-actions-card">
                         <p className="quick-actions-heading">Crypto Trading</p>
                         <div className="btn-container">
-                          <button type="button" className="btn btn-primary waves-effect waves-light w-100">
-                            Create wallet
-                          </button>
+                          <ConvertWallet clientId = {clientId}/>
                           <OrderAddModal/>
                         </div>
                       </CardBody>
@@ -594,15 +595,11 @@ function ClientDetails(props) {
                           <button type="button" className="btn btn-primary waves-effect waves-light w-100">
                             Add Note
                           </button>
-                          <button type="button" className="btn btn-primary waves-effect waves-light w-100">
-                            Add bank
-                          </button>
+                          <ClientAddBankAccountModal buttonText="Open Bank"/>
                           <button type="button" className="btn btn-primary waves-effect waves-light w-100">
                             Print application
                           </button>
-                          <button type="button" className="btn btn-primary waves-effect waves-light w-100">
-                          Add transaction
-                          </button>
+                          <Transaction/>
                         </div>
                       </CardBody>                      
                     </CardBody>
