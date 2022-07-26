@@ -28,8 +28,9 @@ import {
   EDIT_CLIENT_DETAILS_REQUESTED,
   ASSIGN_AGENT_START,
   UPDATE_EMPLOYMENT_INFO_START,
-  UPDATE_FINANCIAL_INFO_START
-} from "./actionsType";
+  UPDATE_FINANCIAL_INFO_START,
+  CHANGE_PASSWORD_START
+} from "./actionsType"; 
 import { showSuccessNotification, showErrorNotification } from "store/notifications/actions";
 function *fetchClients(params) {
   try {
@@ -135,6 +136,14 @@ function * updateClientEmploymentInfo ({ payload }){
     yield put(showErrorNotification("Error happened while updating employment info"));
   }
 }
+function * changePassword({ payload }){
+  try {
+    const data =  yield call(clientApi.resetPassowrd, payload);
+
+  } catch (error){
+    yield put(showErrorNotification("Error Happend while changing password"));
+  }
+}
 function * clientSaga() {
   yield takeEvery(FETCH_CLIENTS_START, fetchClients);
   yield takeEvery(ADD_NEW_CLIENT, addNewClient);
@@ -144,6 +153,7 @@ function * clientSaga() {
   yield takeEvery(ASSIGN_AGENT_START, assignAgent);
   yield takeEvery(UPDATE_FINANCIAL_INFO_START, updateClientFinancialInfo);
   yield takeEvery(UPDATE_EMPLOYMENT_INFO_START, updateClientEmploymentInfo);
+  yield takeEvery(CHANGE_PASSWORD_START, changePassword);
 }
 
 export default clientSaga;
