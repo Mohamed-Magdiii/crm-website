@@ -1,22 +1,28 @@
-import React, {useEffect, useState} from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch, connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   Modal,
   Button,
   ModalHeader,
   ModalBody,
-  UncontrolledAlert,  
 } from "reactstrap";
 import { AvForm, AvField } from "availity-reactstrap-validation";
+import { resetPasswordStart } from "store/client/actions";
 
-
-function resetPassword(){
+function resetPassword(props){
   const [addModal, setAddModal] = useState(false);
+  const { clientId } = props;
   const toggleAddModal = ()=>{
     setAddModal(!addModal);
   };
   const dispatch = useDispatch();
+  const handleChangePassword = (e, values)=>{
+    dispatch(resetPasswordStart({
+      id:clientId,
+      values
+    }));
+  };
   return (
     <React.Fragment>
       <Link to="#" className="btn btn-primary" onClick={toggleAddModal}>
@@ -30,11 +36,11 @@ function resetPassword(){
           <AvForm
             className="p-4"
             onValidSubmit={ (e, v) => {
-              
+              handleChangePassword(e, v);
             }}
           >
-            <AvField type="text" label = "Old Password" name="oldPassword"/>
-            <AvField type="text" label="New Password" name="newPassword"/>
+            
+            <AvField type="password" label="New Password" name="password"/>
             <Button className="btn btn-primary">Reset Password</Button>
           </AvForm>
         </ModalBody>
