@@ -13,6 +13,7 @@ import { addBankAccount } from "store/bankAccount/actions";
 import { withTranslation } from "react-i18next";
 
 function ClientAddBankAccountModal(props){
+  const {buttonText} = props;
   const { id } = useParams();
   const [addModal, setAddModal] = useState(false);
   const dispatch = useDispatch();
@@ -31,7 +32,7 @@ function ClientAddBankAccountModal(props){
   return (
     <React.Fragment >
       <Link to="#" className="btn btn-primary" onClick={toggleAddModal}>
-        <i className="bx bx-plus me-1"></i> {props.t("Add New Bank Account")} 
+        <i className={`bx ${!buttonText ? "bx-plus" : ""} me-1`}></i> {props.t(`${buttonText ? buttonText : "Add New Bank Account"}`)} 
       </Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
