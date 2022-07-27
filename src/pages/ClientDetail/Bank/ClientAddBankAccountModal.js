@@ -13,11 +13,13 @@ import { addBankAccount } from "store/bankAccount/actions";
 import { withTranslation } from "react-i18next";
 
 function ClientAddBankAccountModal(props){
-  const {buttonText} = props;
+  const { buttonText } = props;
   const { id } = useParams();
+  const { clientId } = props;
   const [addModal, setAddModal] = useState(false);
   const dispatch = useDispatch();
   const addBankAccountHandler = (e, values) => {
+    values.customerId = clientId;
     dispatch(addBankAccount(values));
   };
   const toggleAddModal = () => {

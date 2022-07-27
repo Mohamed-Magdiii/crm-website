@@ -27,7 +27,7 @@ import professions from "common/profession";
 import annualIncome from "common/annualIncome";
 import sourceOfFunds from "common/souceOfFunds";
 import { TITLES, YESNO } from "common/data/dropdowns";
-import OrderAddModal from "./QuickActions/Order";
+import OrdersAddModal from "../orders/OrdersAddModal";
 import ResetPassword from "./QuickActions/resetPassword";
 import ClientAddBankAccountModal from "../Bank/ClientAddBankAccountModal";
 import Transaction from "./QuickActions/Transaction";
@@ -578,14 +578,14 @@ function ClientDetails(props) {
                         <p className="quick-actions-heading">Crypto Trading</p>
                         <div className="btn-container">
                           <ConvertWallet clientId = {clientId}/>
-                          <OrderAddModal/>
+                          <OrdersAddModal buttonText = "Open Order"/>
                         </div>
                       </CardBody>
                       <CardBody className="quick-actions-card">
                         <p className="quick-actions-heading">Communication</p>
                         <div className="btn-container">
                           <button type="button" className="btn btn-primary waves-effect waves-light w-100">
-                            Send Email
+                            Send Email 
                           </button>
                         </div>
                       </CardBody>
