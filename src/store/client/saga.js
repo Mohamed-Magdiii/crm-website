@@ -18,7 +18,8 @@ import {
   updateEmploymentStatusSuccess,
   updateFinancialInfoSuccess,
   updateEmploymentInfoFail,
-  updateFinancialInfoFail
+  updateFinancialInfoFail,
+  resetPasswordClear
 } from "./actions";
 import { 
   ADD_NEW_CLIENT, 
@@ -139,7 +140,12 @@ function * updateClientEmploymentInfo ({ payload }){
 function * changePassword({ payload }){
   try {
     const data =  yield call(clientApi.resetPassowrd, payload);
-
+    const { status } = data;
+    if (status){
+      yield put(showSuccessNotification("Password has been updated successfully"));
+      yield delay(2000);
+      yield put(resetPasswordClear());
+    }
   } catch (error){
     yield put(showErrorNotification("Error Happend while changing password"));
   }

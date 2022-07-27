@@ -56,10 +56,8 @@ export const updateClientFinancialInfo = async (payload)=>{
   return data;
 };
 export const resetPassowrd = async (payload)=>{
-  const { id, values} = payload;
-  console.log(values);
+  const { id, values } = payload;
   const data = await axiosHelper.post(`/clients/${id}/reset-password`, values);
-  console.log(data);
   const { isError } = data;
   if (isError){
     throw new Error("Error happened while reseting password");

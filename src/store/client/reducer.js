@@ -14,7 +14,9 @@ import {
   UPDATE_EMPLOYMENT_INFO_SUCCESS,
   UPDATE_FINANCIAL_INFO_SUCCESS,
   UPDATE_FINANCIAL_INFO_FAIL,
-  UPDATE_EMPLOYMENT_INFO_FAIL
+  UPDATE_EMPLOYMENT_INFO_FAIL,
+  RESET_PASSWORD_CLEAR,
+  CHANGE_PASSWORD_START
 } from "./actionsType";
 
 const initalState = {
@@ -199,6 +201,20 @@ export const clientReducer = (state = initalState, action)=>{
         editSuccess: true,
         error: false,
         updating: false
+      };
+      break;
+    case CHANGE_PASSWORD_START:
+      state = {
+        ...state,
+        clearResetPasswordModal:false,
+        disableResetPasswordButton: true
+      };
+      break;
+    case RESET_PASSWORD_CLEAR:
+      state = {
+        ...state,
+        clearResetPasswordModal:true,
+        disableResetPasswordButton:false
       };
       break;
 

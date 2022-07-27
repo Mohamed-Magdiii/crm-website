@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, connect } from "react-redux";
 import {
   Modal,
   Button,
@@ -23,6 +23,11 @@ function resetPassword(props){
       values
     }));
   };
+  useEffect(()=>{
+    if (props.clearResetPasswordModal && addModal){
+      setAddModal(false);
+    }
+  }, [props.clearResetPasswordModal]);
   return (
     <React.Fragment>
       <Link to="#" className="btn btn-primary" onClick={toggleAddModal}>
@@ -41,7 +46,10 @@ function resetPassword(props){
           >
             
             <AvField type="password" label="New Password" name="password"/>
-            <Button className="btn btn-primary">Reset Password</Button>
+            <div className="text-center p-2">
+              <Button type="submit" disabled= {props.disableResetPasswordButton} className="btn btn-primary">Reset Password</Button>
+            </div>
+           
           </AvForm>
         </ModalBody>
       </Modal>
@@ -49,5 +57,12 @@ function resetPassword(props){
     
   );
 }
-
-export default resetPassword;
+const mapStateToProps = (state)=>(
+  {
+    clearResetPasswordModal: state.clientReducer.clearResetPasswordModal,
+    disableResetPasswordButton : state.clientReducer.disableResetPasswordButton
+  }
+)
+  
+;
+export default connect(mapStateToProps, null)(resetPassword);

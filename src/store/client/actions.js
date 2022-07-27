@@ -25,7 +25,7 @@ import {
   UPDATE_EMPLOYMENT_INFO_FAIL,
   UPDATE_FINANCIAL_INFO_FAIL,
   CHANGE_PASSWORD_START,
-  CHANGE_PASSWORD_SUCCESS
+  RESET_PASSWORD_CLEAR
 } from "./actionsType";
 
 export const fetchClientsStart = (params = {})=>{
@@ -181,9 +181,9 @@ export const resetPasswordStart = (params)=>{
     payload:params
   };
 };
-export const resetPasswordSuccess = (data)=>{
+
+export const resetPasswordClear = ()=>{
   return {
-    type:CHANGE_PASSWORD_SUCCESS,
-    payload:data
+    type:RESET_PASSWORD_CLEAR
   };
 };
