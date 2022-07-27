@@ -19,6 +19,7 @@ import loadOptions from "../Profile/QuickActions/loadOptions";
 import { getPricing } from "./../../../apis/orders";
 
 function OrdersAddModal(props) {
+  const { buttonText } = props;
   const [addModal, setAddOrderModal] = useState(false);
   const [symbolValue, setSymbolValue] = useState(null);
   const [clientId] = useState(props?.clientId);
@@ -122,8 +123,8 @@ function OrdersAddModal(props) {
 
   return (
     <React.Fragment>
-      <Link to="#" className="btn btn-light" onClick={toggleAddModal}>
-        <i className="bx bx-plus me-1"></i> Add New
+      <Link to="#" className="btn btn-primary" onClick={toggleAddModal}>
+        <i className={`bx ${!buttonText ? "bx-plus" : ""} me-1`}></i> {`${buttonText ? buttonText : "Add New"}`}
       </Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
