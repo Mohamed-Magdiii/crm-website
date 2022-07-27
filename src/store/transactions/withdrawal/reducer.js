@@ -39,7 +39,7 @@ const withdrawalReducer = (state = { initalState }, action)=>{
     case "MAKE_WITHDRAWAL_START":
       state = {
         ...state,
-        modalClear:false,
+        withdrawalModalClear:false,
         disableWithdrawalButton: true
       };
       break;
@@ -76,7 +76,7 @@ const withdrawalReducer = (state = { initalState }, action)=>{
     case "MODAL_CLEAR":
       state = {
         ...state,
-        modalClear:true,
+        withdrawalModalClear:true,
         withdrawResponseMessage:"",
         disableWithdrawalButton: false
       };

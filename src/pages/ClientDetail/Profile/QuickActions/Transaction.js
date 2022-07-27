@@ -10,7 +10,6 @@ import {
   Col
   
 } from "reactstrap";
-import AvFieldSelect from "components/Common/AvFieldSelect";
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
@@ -21,26 +20,42 @@ import { fetchClientsStart } from "store/client/actions";
 import { withTranslation } from "react-i18next";
 import Select from "react-select";
 import transactions from "common/data/transactions";
+import { makeWithdrawalStart } from "store/transactions/withdrawal/action";
 function TransactionForm(props){
   
   const [addModal, setDepositModal] = useState(false);
-  
+  const [type, setType] = useState("");
   const [selectedClient, setSelectedClient] = useState("");
   const [selectedWalletId, setSelectedWalletId] = useState("");
   const [gateway, setGateway] = useState("");
   const dispatch = useDispatch();
   const { create } = props.depositsPermissions;
   const [searchInput, setSearchInput]  = useState("");
-  const handleAddDeposit = (event, values) => {
+  
+  const handleTransaction = (event, values) => {
+    delete values.type;
     event.preventDefault();
-    dispatch(addDepositStart({
-      customerId:selectedClient,
-      walletId: selectedWalletId,
-      gateway,
-      ...values
-    }));
-    setSearchInput("");
-    dispatch(clearWallets());
+    if (type == "Deposit"){
+      dispatch(addDepositStart({
+        customerId:selectedClient,
+        walletId: selectedWalletId,
+        gateway,
+        ...values
+      }));
+      setSearchInput("");
+      dispatch(clearWallets());
+    }
+    else if (type === "Withdrawal"){
+      dispatch(makeWithdrawalStart({
+        customerId:selectedClient,
+        walletId:selectedWalletId,
+        gateway,
+        ...values
+      }));
+      setSearchInput("");
+      dispatch(clearWallets());
+    }
+  
   }; 
   
   const toggleAddModal = () => {
@@ -59,25 +74,27 @@ function TransactionForm(props){
     }
   
   }, [searchInput]);
-
+  
   useEffect(() => {
     if (props.modalClear && open ){
       setDepositModal(false);
     }
-  }, [props.modalClear]);
-  
+    if (props.withdrawalModalClear && open){
+      setDepositModal(false);
+    }
+  }, [props.modalClear, props.withdrawalModalClear]);
   const selectClient = (id)=>{
     setSelectedClient(id);
     dispatch(fetchWalletStart({
       belongsTo:id
     }));
-     
+       
   };
   
   return (
     <React.Fragment >
       <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx me-1"></i> {props.t("Add Transaction")}</Link>
-      <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
+-      <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
           {props.t("Make Transaction")}
         </ModalHeader>
@@ -86,12 +103,13 @@ function TransactionForm(props){
           <AvForm
             className='p-4'
             onValidSubmit={(e, v) => {
-              handleAddDeposit(e, v);
+              handleTransaction(e, v);
             }}
           >
             <Row className="mb-3">
               <Col md="6">
-                <AvFieldSelect
+                <Label>{props.t("Type")}</Label>
+                <Select
                   name="type" 
                   label="Type"
                   options= {transactions.map(transaction=>{
@@ -101,6 +119,8 @@ function TransactionForm(props){
                     };
                   }
                   )}
+
+                  onChange = {(e)=>setType(e.value)}
                 />
               </Col>
               <Col md="6">
@@ -191,7 +211,7 @@ function TransactionForm(props){
                 name="amount"
                 label={props.t("Amount")}
                 placeholder={props.t("enter amount")}
-                type="text"
+                type="number"
                 errorMessage={props.t("Enter Valid Amount")}
                 validate = {{
                   required :{ value:true },
@@ -239,6 +259,7 @@ const mapStateToProps = (state) => ({
   clients:state.clientReducer.clients || [],
   wallets:state.walletReducer.wallets || [],
   depositsPermissions : state.Profile.depositsPermissions || {}, 
-  disableAddButton : state.depositReducer.disableAddButton
+  disableAddButton : state.depositReducer.disableAddButton,
+  withdrawalModalClear : state.withdrawalReducer.withdrawalModalClear
 });
 export default connect(mapStateToProps, null)(withTranslation()(TransactionForm));

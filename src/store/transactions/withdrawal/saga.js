@@ -46,7 +46,7 @@ function * makeWithdrawal({ payload:{ withdrawal } }){
     const { status, result } = data;
     
     if (status){
-      
+      console.log("Inside withdrawal");
       yield put(makeWithdrawalSuccess(result));
       yield put(showSuccessNotification(`Withdrawal has been ${result.status}`));
       yield delay(1000);

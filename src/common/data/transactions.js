@@ -1,2 +1,2 @@
-const transactions = ["Deposit", "Withdrawals"];
+const transactions = ["Deposit", "Withdrawal"];
 export default transactions;
