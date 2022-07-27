@@ -19,7 +19,8 @@ import {
   updateFinancialInfoSuccess,
   updateEmploymentInfoFail,
   updateFinancialInfoFail,
-  resetPasswordClear
+  resetPasswordClear,
+  editClientDetailsFail
 } from "./actions";
 import { 
   ADD_NEW_CLIENT, 
@@ -82,7 +83,7 @@ function * editClientDetails(params){
     // yield put(editClientDetailsClear());
   } catch (error){
     yield put(showErrorNotification(error.message || "Error updating client"));
-    // yield put(editClientDetailsFail({ error: error.message }));
+    yield put(editClientDetailsFail({ errror:error.message }));
   }
 }
 function * assignAgent (params){
