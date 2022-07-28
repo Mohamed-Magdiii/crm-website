@@ -86,11 +86,13 @@ function TransactionForm(props){
     if (props.modalClear && transactionModal ){
       setTransactionModal(false);
     }
+   
+  }, [props.modalClear]);
+  useEffect(()=>{
     if (props.withdrawalModalClear && transactionModal){
       setTransactionModal(false);
     }
-  }, [props.modalClear, props.withdrawalModalClear]);
-
+  }, [props.withdrawalModalClear]);
   const selectClient = (id)=>{
     setSelectedClient(id);
     dispatch(fetchWalletStart({
@@ -115,7 +117,7 @@ function TransactionForm(props){
             }}
           >
             <Row className="mb-3">
-              <Col md="6">
+              <Col md="12">
                 <Label>{props.t("Type")}</Label>
                 <Select
                   name="type" 
@@ -131,7 +133,7 @@ function TransactionForm(props){
                   onChange = {(e)=>setType(e.value)}
                 />
               </Col>
-              <Col md="6">
+              <Col className="mt-2" md="12">
                 <Label>{props.t("Client")}</Label>
                 
                 
@@ -158,7 +160,7 @@ function TransactionForm(props){
                   />
                 </div>
               </Col>
-              <Col md="6">
+              <Col className="mt-2" md="12">
                 <Label>{props.t("Wallet")}</Label>
                 <div>
                   <Select 
