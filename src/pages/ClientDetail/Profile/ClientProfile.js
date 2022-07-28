@@ -32,7 +32,6 @@ import ResetPassword from "./QuickActions/resetPassword";
 import ClientAddBankAccountModal from "../Bank/ClientAddBankAccountModal";
 import Transaction from "./QuickActions/Transaction";
 import ConvertWallet from "./QuickActions/Wallet";
-import { FETCH_WITHDRAWALS_SUCCESS } from "store/transactions/withdrawal/actionTypes";
 function ClientDetails(props) {
   const clientId = props.clientId;
   const dispatch = useDispatch();
