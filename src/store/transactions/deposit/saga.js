@@ -21,6 +21,7 @@ import {
 
   fetchClientDepositsSuccess,
   fetchClientDepositsFail,
+  errorClear,
 } from "./action";
 import {
   makeDeposit, 
@@ -52,7 +53,9 @@ function * addDeposit({ payload:{ deposit } }){
       
   } catch (error){
     
-    yield  put(depositError("Deposit has failed.Please check your credentials"));
+    yield  put(depositError(error));
+    yield delay(1000);
+    yield put(errorClear());
   }
   
 }
