@@ -16,7 +16,6 @@ import {
   FETCH_WITHDRAWALS_START, 
   WITHDRAW_APPROVE, 
   WITHDRAW_REJECT,
-  
   FETCH_CLIENT_WITHDRAWALS_REQUESTED
 } from "./actionTypes";
 import { 
@@ -27,7 +26,8 @@ import {
   withdrawStatusChangeSuccess,
 
   fetchClientWithdrawalsSuccess,
-  fetchClientWithdrawalsFail 
+  fetchClientWithdrawalsFail, 
+  errorClear
 } from "./action";
 import { showSuccessNotification } from "store/notifications/actions";
 function *fetchWithdrawals(params){
@@ -46,7 +46,6 @@ function * makeWithdrawal({ payload:{ withdrawal } }){
     const { status, result } = data;
     
     if (status){
-      console.log("Inside withdrawal");
       yield put(makeWithdrawalSuccess(result));
       yield put(showSuccessNotification(`Withdrawal has been ${result.status}`));
       yield delay(1000);
@@ -54,7 +53,9 @@ function * makeWithdrawal({ payload:{ withdrawal } }){
     }
     
   } catch (error){
-    yield put(withdrawalError("An error happened.Please try again"));
+    yield put(withdrawalError(error.message));
+    yield delay(1000);
+    yield put(errorClear());
   }
 
 }

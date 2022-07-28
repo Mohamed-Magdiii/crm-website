@@ -64,10 +64,10 @@ function WithdrawForm(props){
   
   }, [searchInput]);
   useEffect(() => {
-    if (props.modalClear && open){
+    if (props.withdrawalModalClear && open){
       setWithdrawalModal(false);
     }
-  }, [props.modalClear]);
+  }, [props.withdrawalModalClear]);
   
   
   return (
@@ -223,7 +223,7 @@ const mapStateToProps = (state) => ({
   gateways:state.gatewayReducer.gateways || [],
   error: state.withdrawalReducer.error,
   withdrawResponseMessage:state.withdrawalReducer.withdrawResponseMessage,
-  modalClear:state.withdrawalReducer.modalClear,
+  withdrawalModalClear:state.withdrawalReducer.withdrawalModalClear,
   clients:state.clientReducer.clients || [],
   wallets:state.walletReducer.wallets || [],
   withdrawalsPermissions: state.Profile.withdrawalsPermissions || {}, 

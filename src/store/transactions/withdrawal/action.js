@@ -12,6 +12,7 @@ import {
   FETCH_CLIENT_WITHDRAWALS_REQUESTED,
   FETCH_CLIENT_WITHDRAWALS_SUCCESS,
   FETCH_CLIENT_WITHDRAWALS_FAIL,
+  ERROR_CLEAR
 } from "./actionTypes";
 export const fetchWithdrawalsStart = (params)=>{
   return {
@@ -86,5 +87,10 @@ export const fetchClientWithdrawalsFail = (error) => {
   return {
     type: FETCH_CLIENT_WITHDRAWALS_FAIL,
     payload: { error }
+  };
+};
+export const errorClear = ()=>{
+  return {
+    type:ERROR_CLEAR
   };
 };

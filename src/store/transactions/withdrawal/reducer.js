@@ -84,10 +84,16 @@ const withdrawalReducer = (state = { initalState }, action)=>{
     case "WITHDRAWAL_ERROR": 
       state = {
         ...state,
-        error:action.payload.error
+        error:action.payload.error,
+        disableWithdrawalButton:false
       };
       break;
-
+    case "ERROR_CLEAR":
+      state = {
+        ...state,
+        error:""
+      };
+      break;
     // fetch client withdrawals 
     case FETCH_CLIENT_WITHDRAWALS_REQUESTED:
       state = {
