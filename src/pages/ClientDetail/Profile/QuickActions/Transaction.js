@@ -14,16 +14,16 @@ import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { fetchGatewaysStart } from "store/gateway/action";
-import { addDepositStart } from "store/transactions/deposit/action";
+import { addDepositStart, fetchDepositsStart } from "store/transactions/deposit/action";
 import { fetchWalletStart, clearWallets } from "store/wallet/action";
 import { fetchClientsStart } from "store/client/actions";
 import { withTranslation } from "react-i18next";
 import Select from "react-select";
 import transactions from "common/data/transactions";
-import { makeWithdrawalStart } from "store/transactions/withdrawal/action";
+import { makeWithdrawalStart, fetchWithdrawalsStart } from "store/transactions/withdrawal/action";
+
 function TransactionForm(props){
-  
-  const [addModal, setDepositModal] = useState(false);
+  const [transactionModal, setTransactionModal] = useState(false);
   const [type, setType] = useState("");
   const [selectedClient, setSelectedClient] = useState("");
   const [selectedWalletId, setSelectedWalletId] = useState("");
@@ -31,7 +31,6 @@ function TransactionForm(props){
   const dispatch = useDispatch();
   const { create } = props.depositsPermissions;
   const [searchInput, setSearchInput]  = useState("");
-  
   const handleTransaction = (event, values) => {
     delete values.type;
     event.preventDefault();
@@ -59,10 +58,18 @@ function TransactionForm(props){
   }; 
   
   const toggleAddModal = () => {
-    setDepositModal(!addModal);
+    setTransactionModal(!transactionModal);
   };
   useEffect(()=>{
     dispatch(fetchClientsStart({
+      page:1,
+      limit:10
+    }));
+    dispatch(fetchDepositsStart({
+      page:1,
+      limit:10
+    }));
+    dispatch(fetchWithdrawalsStart({
       page:1,
       limit:10
     }));
@@ -76,13 +83,14 @@ function TransactionForm(props){
   }, [searchInput]);
   
   useEffect(() => {
-    if (props.modalClear && open ){
-      setDepositModal(false);
+    if (props.modalClear && transactionModal ){
+      setTransactionModal(false);
     }
-    if (props.withdrawalModalClear && open){
-      setDepositModal(false);
+    if (props.withdrawalModalClear && transactionModal){
+      setTransactionModal(false);
     }
   }, [props.modalClear, props.withdrawalModalClear]);
+
   const selectClient = (id)=>{
     setSelectedClient(id);
     dispatch(fetchWalletStart({
@@ -94,7 +102,7 @@ function TransactionForm(props){
   return (
     <React.Fragment >
       <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx me-1"></i> {props.t("Add Transaction")}</Link>
--      <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
+-      <Modal isOpen={transactionModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
           {props.t("Make Transaction")}
         </ModalHeader>
@@ -238,12 +246,16 @@ function TransactionForm(props){
             </div>
     
             <div className='text-center pt-3 p-2'>
-              <Button disabled = {props.disableAddButton} type="submit" color="primary" className="">
+              <Button disabled = {props.disableAddButton || props.disableWithdrawalButton} type="submit" color="primary" className="">
                 {props.t("Add")}
               </Button>
             </div>
           </AvForm>
-          {props.error && <UncontrolledAlert color="danger">
+          { props.depositError && <UncontrolledAlert color="danger">
+            <i className="mdi mdi-block-helper me-2"></i>
+            {props.t(props.depositError)}
+          </UncontrolledAlert>}
+          { props.error && <UncontrolledAlert color="danger">
             <i className="mdi mdi-block-helper me-2"></i>
             {props.t(props.error)}
           </UncontrolledAlert>}
@@ -260,6 +272,9 @@ const mapStateToProps = (state) => ({
   wallets:state.walletReducer.wallets || [],
   depositsPermissions : state.Profile.depositsPermissions || {}, 
   disableAddButton : state.depositReducer.disableAddButton,
-  withdrawalModalClear : state.withdrawalReducer.withdrawalModalClear
+  withdrawalModalClear : state.withdrawalReducer.withdrawalModalClear,
+  error: state.withdrawalReducer.error,
+  depositError:state.depositReducer.depositError,
+  disableWithdrawalButton: state.withdrawalReducer.disableWithdrawalButton
 });
 export default connect(mapStateToProps, null)(withTranslation()(TransactionForm));
