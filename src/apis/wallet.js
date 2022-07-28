@@ -42,3 +42,10 @@ export const changeStatusWallet = async ({ payload }) => {
   }
   return data;
 };
+export const convertWallet = async (payload)=>{
+  const data = await axiosHelper.post("/convert", payload, { crypto:true });
+  if (data.isError){
+    throw new Error(data.message);
+  }
+  return data;
+};
