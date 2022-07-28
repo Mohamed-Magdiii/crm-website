@@ -595,7 +595,7 @@ function ClientDetails(props) {
                           <button type="button" className="btn btn-primary waves-effect waves-light w-100">
                             Add Note
                           </button>
-                          <ClientAddBankAccountModal buttonText="Open Bank"/>
+                          <ClientAddBankAccountModal clientId={clientId} buttonText="Open Bank"/>
                           <button type="button" className="btn btn-primary waves-effect waves-light w-100">
                             Print application
                           </button>
