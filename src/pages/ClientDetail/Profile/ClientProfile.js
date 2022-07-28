@@ -32,6 +32,7 @@ import ResetPassword from "./QuickActions/resetPassword";
 import ClientAddBankAccountModal from "../Bank/ClientAddBankAccountModal";
 import Transaction from "./QuickActions/Transaction";
 import ConvertWallet from "./QuickActions/Wallet";
+import { FETCH_WITHDRAWALS_SUCCESS } from "store/transactions/withdrawal/actionTypes";
 function ClientDetails(props) {
   const clientId = props.clientId;
   const dispatch = useDispatch();
@@ -568,7 +569,12 @@ function ClientDetails(props) {
                       <CardBody className="quick-actions-card">
                         <p className="quick-actions-heading">Client</p>
                         <div className="btn-container">
-                          <button type="button" className="btn btn-primary waves-effect waves-light w-100">
+                          <button type="button" onClick = {()=>{
+                            dispatch(editClientDetails({
+                              values:{ isActive:"false" },
+                              id:clientId
+                            }));
+                          }} className="btn btn-primary waves-effect waves-light w-100">
                             Portal Access
                           </button>
                           <ResetPassword clientId = {clientId}/>
