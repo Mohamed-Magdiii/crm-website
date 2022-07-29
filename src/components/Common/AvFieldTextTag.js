@@ -9,7 +9,7 @@ function AvFieldSelecvt(props) {
   const ref1 = useRef();
   const [state, setState] = React.useState(null);
   const onFieldChange = (e) => {
-    setState(e.value);
+    setState(e);
   };
   const { label, ...params } = props;
   let options = props.options || [];
@@ -22,22 +22,24 @@ function AvFieldSelecvt(props) {
       ...options
     ];
   }
-
-  // React.useEffect(()=>{
-  //   setState(params.value);
-  // }, [props]);
+  let defArr = props.value || [];
+  let defaultValue = options.filter(obj => defArr.indexOf(obj.value) > -1);
+  
   return (<React.Fragment>
     <label>{label}</label>
     <Select
       ref={ref1}
-      defaultValue={options.find(obj => obj.value === props.value) || {}}
+      defaultValue={defaultValue}
       options={options} 
       onChange={onFieldChange}
+      className="basic-multi-select"
+      isMulti
+      classNamePrefix="select"
     />
     <AvField
       {...params}
       type="select"
-      value={state === null ? props.value : state}
+      value={state === null ? defaultValue : state}
       style={{
         opacity: 0,
         height: 0,

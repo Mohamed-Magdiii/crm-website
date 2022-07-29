@@ -12,6 +12,10 @@ import { AvForm, AvField } from "availity-reactstrap-validation";
 import { withTranslation } from "react-i18next";
 import {  addSystemEmail } from "store/systemEmail/actions";
 import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
+import AvFieldSelect from "components/Common/AvFieldSelect";
+import { capitalToReadable } from "common/utils/manipulateString";
+import AvFieldTextTag from "components/Common/AvFieldTextTag";
+import { EMAIL_FIELDS } from "common/data/dropdowns";
 
 function SystemEmailAdd(props){
   const [addModal, setAddModal] = useState(false);
@@ -46,6 +50,7 @@ function SystemEmailAdd(props){
           <AvForm
             className='p-4'
             onValidSubmit={(e, v) => {
+              v.fields = v.fields && v.fields.map(obj => obj.value) || [];
               handleAddSystemEmail(e, v);
             }}
           >
@@ -60,13 +65,31 @@ function SystemEmailAdd(props){
               />
             </div>
             <div className="mb-3">
-              <AvField
+              <AvFieldSelect 
                 name="action"
                 label={props.t("Action")}
-                placeholder={props.t("Enter Action")}
+                placeholder={props.t("Please Select Action")}
+                value=""
                 type="text"
                 errorMessage={props.t("Enter Action")}
                 validate={{ required: { value: true } }}
+
+                options={props.actions.map((action)=>{
+                  return ({
+                    label: capitalToReadable(action),
+                    value: action
+                  });
+                })}
+              />
+            </div>
+            <div className="mb-3">
+              <AvFieldTextTag
+                name="fields"
+                label={props.t("Fields")}
+                value={[]}
+                type="text"
+                options={EMAIL_FIELDS}
+
               />
             </div>
             <div className='text-center pt-3 p-2'>
@@ -104,7 +127,8 @@ const mapStateToProps = (state) => ({
   clearingCounter: state.systemEmailsReducer.clearingCounter,
   activeComponentProp: state.systemEmailsReducer.activeComponentProp,
   systemEmail: state.systemEmailsReducer.systemEmail,
-  systemEmailsPermissions: state.Profile.systemEmailsPermissions || {}
+  systemEmailsPermissions: state.Profile.systemEmailsPermissions || {},
+  actions :state.dictionaryReducer.actions || [],
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(SystemEmailAdd));
