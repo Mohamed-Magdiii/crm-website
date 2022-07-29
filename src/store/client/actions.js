@@ -17,7 +17,13 @@ import {
   EDIT_CLIENT_DETAILS_CLEAR,
   ADD_MODAL_CLEAR,
   ASSIGN_AGENT_START,
-  ASSIGN_AGENT_SUCCESS
+  ASSIGN_AGENT_SUCCESS,
+  UPDATE_EMPLOYMENT_INFO_START,
+  UPDATE_EMPLOYMENT_INFO_SUCCESS,
+  UPDATE_FINANCIAL_INFO_START,
+  UPDATE_FINANCIAL_INFO_SUCCESS,
+  UPDATE_EMPLOYMENT_INFO_FAIL,
+  UPDATE_FINANCIAL_INFO_FAIL
 } from "./actionsType";
 
 export const fetchClientsStart = (params = {})=>{
@@ -131,5 +137,39 @@ export const editClientDetailsClear = (data) => {
 export const addModalClear = ()=>{
   return {
     type:ADD_MODAL_CLEAR
+  };
+};
+export const updateFinancialInfoStart = (params)=>{
+  return {
+    type:UPDATE_FINANCIAL_INFO_START,
+    payload:params
+  };
+};
+export const  updateFinancialInfoSuccess = (data)=>{
+  return {
+    type:UPDATE_FINANCIAL_INFO_SUCCESS,
+    payload:data
+  };
+};
+export const updateEmploymentStatusStart = (params)=>{
+  return {
+    type:UPDATE_EMPLOYMENT_INFO_START,
+    payload:params
+  };
+};
+export const updateEmploymentStatusSuccess = (data)=>{
+  return {
+    type:UPDATE_EMPLOYMENT_INFO_SUCCESS,
+    payload:data
+  };
+};
+export const updateEmploymentInfoFail = ()=>{
+  return {
+    type:UPDATE_EMPLOYMENT_INFO_FAIL
+  };
+};
+export const updateFinancialInfoFail = ()=>{
+  return {
+    type: UPDATE_FINANCIAL_INFO_FAIL
   };
 };
