@@ -18,4 +18,5 @@ export const EMAIL_FIELDS = [
   { label: "Last Name", value: "lastName", },
   { label: "Email", value: "email" },
   { label: "Amount", value: "amount" },
+  { label: "Currency", value: "currency" },
 ];

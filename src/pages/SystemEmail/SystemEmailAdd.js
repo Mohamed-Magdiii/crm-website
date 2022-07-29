@@ -74,7 +74,7 @@ function SystemEmailAdd(props){
                 errorMessage={props.t("Enter Action")}
                 validate={{ required: { value: true } }}
 
-                options={props.actions.map((action)=>{
+                options={props.actions.filter(n => !props.actionsUsed.includes(n)).map((action)=>{
                   return ({
                     label: capitalToReadable(action),
                     value: action
@@ -129,6 +129,7 @@ const mapStateToProps = (state) => ({
   systemEmail: state.systemEmailsReducer.systemEmail,
   systemEmailsPermissions: state.Profile.systemEmailsPermissions || {},
   actions :state.dictionaryReducer.actions || [],
+  actionsUsed :state.systemEmailsReducer.actionsUsed || [],
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(SystemEmailAdd));
