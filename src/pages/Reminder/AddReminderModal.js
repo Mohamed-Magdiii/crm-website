@@ -24,6 +24,7 @@ function AddReminderModal(props) {
   const [clientError, setClientError] = useState(false);
   const [submitState, setSubmitState] = useState(false);
   const [dateCheck, setDateCheck] = useState(0);
+  const [dateFlag, setDateFlag] = useState(0);
 
   const [errorMassage, seterrorMassage] = useState("");
   const [errorAlert, setErrorAlertMassage] = useState(false);
@@ -31,32 +32,37 @@ function AddReminderModal(props) {
   const [alertmsg, setAlertMsg] = useState("");
 
   const handleValidEventSubmit = (e, values) => {
-    const newEvent = {
-      customerId: clientValue?.value,
-      note: values.note,
-      // time: values.time,
-      type: values.type,
-      timeEnd: values.timeEnd,
-    };
-    if (clientValue) {
-      setSubmitState(true);
-      addNewEvent(newEvent)
-        .then(() => {
-          showAlert(false, true);
-        }
-        )
-        .catch((e) => {
-          seterrorMassage(e.toString());
-          showAlert(true, false);
-        });
-      setTimeout(() => {
-        setSubmitState(false);
-      }, 2500);
+    if (dateFlag) {
+      const newEvent = {
+        customerId: clientValue?.value,
+        note: values.note,
+        // time: values.time,
+        type: values.type,
+        timeEnd: values.timeEnd,
+      };
+      if (clientValue) {
+        setSubmitState(true);
+        addNewEvent(newEvent)
+          .then(() => {
+            showAlert(false, true);
+          }
+          )
+          .catch((e) => {
+            seterrorMassage(e.toString());
+            showAlert(true, false);
+          });
+        setTimeout(() => {
+          setSubmitState(false);
+        }, 2500);
+      } else {
+        setClientError(true);
+        setTimeout(() => {
+          setClientError(false);
+        }, 2000);
+      }
+
     } else {
-      setClientError(true);
-      setTimeout(() => {
-        setClientError(false);
-      }, 2000);
+      setDateCheck(0);
     }
 
   };
@@ -95,6 +101,7 @@ function AddReminderModal(props) {
   };
 
   const checkDate = (v) => {
+    setDateFlag(1);
     if (v.target?.value > new Date().toISOString()) {
       setDateCheck(90);
     } else {
