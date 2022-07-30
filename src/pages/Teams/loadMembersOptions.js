@@ -1,5 +1,5 @@
 import * as teamsApi from "../../apis/teams";
- 
+
 // const optionsPerPage = 3;
 
 const loadMembersOptions = async (search, page) => {
@@ -19,15 +19,19 @@ const loadMembersOptions = async (search, page) => {
       .then((results) => {
         //do any results transformations
         return results;
-      }).catch((e)=>{
+      }).catch((e) => {
         return [];
       });
     data.docs?.map(function (item) {
+      console.log(item);
       // output[item] = obj[item]['value']
-      output.push({
-        value: item._id,
-        label: item.firstName + " " + item.lastName,
-      });
+      if (item?.isActive) {
+        output.push({
+          value: item._id,
+          label: item.firstName + " " + item.lastName,
+        });
+      }
+
     });
     filteredOptions = output;
   } else {
@@ -42,23 +46,31 @@ const loadMembersOptions = async (search, page) => {
           searchText: search,
         },
       })
-      .then((results) => { 
+      .then((results) => {
         return results;
-      }).catch((e)=>{
+      }).catch((e) => {
         return [];
       });
-    data.docs?.map(function (item) { 
-      output.push({
-        value: item._id,
-        label: item.firstName + " " + item.lastName,
-      });
+    data.docs?.map(function (item) {
+      // output.push({
+      //   value: item._id,
+      //   label: item.firstName + " " + item.lastName,
+      // });
+      if (item?.isActive) {
+        output.push({
+          value: item._id,
+          label: item.firstName + " " + item.lastName,
+        });
+      }
+
     });
+
     // member.firstName + " " + member.lastName
     filteredOptions = output;
     // filteredOptions = options.filter(({ label }) =>
     //   label.toLowerCase().includes(searchLower)
     // );
-  } 
+  }
   return {
     options: filteredOptions,
     hasMore: data.hasNextPage,

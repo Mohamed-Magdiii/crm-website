@@ -20,14 +20,21 @@ const loadOptions = async (search, page) => {
       .then((results) => {
         //do any results transformations
         return results;
-      }).catch((e)=>{
+      }).catch((e) => {
         return [];
       });
     data.docs?.map(function (item) {
-      output.push({
-        value: item._id,
-        label: item.firstName + " " + item.lastName,
-      });
+      // output.push({
+      //   value: item._id,
+      //   label: item.firstName + " " + item.lastName,
+      // });
+      if (item?.isActive) {
+        output.push({
+          value: item._id,
+          label: item.firstName + " " + item.lastName,
+        });
+      }
+
     });
     filteredOptions = output;
   } else {
@@ -44,15 +51,22 @@ const loadOptions = async (search, page) => {
       .then((results) => {
         //do any results transformations
         return results;
-      }).catch((e)=>{
+      }).catch((e) => {
         return [];
       });
     data.docs?.map(function (item) {
       // output[item] = obj[item]['value']
-      output.push({
-        value: item._id,
-        label: item.firstName + " " + item.lastName,
-      });
+      // output.push({
+      //   value: item._id,
+      //   label: item.firstName + " " + item.lastName,
+      // });
+      if (item?.isActive) {
+        output.push({
+          value: item._id,
+          label: item.firstName + " " + item.lastName,
+        });
+      }
+
     });
 
     filteredOptions = output;
