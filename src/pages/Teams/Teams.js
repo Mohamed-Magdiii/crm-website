@@ -115,7 +115,7 @@ function Teams() {
       editable: false,
       text: "Action",
       formatter: (team) => (
-        <div className="d-flex gap-3">
+        <div className="text-center">
           <Link className={`text-success ${!update ? "d-none" : ""}`} to="#">
             <i
               className="mdi mdi-pencil font-size-18"
@@ -235,7 +235,7 @@ function Teams() {
                             )}
                           </Tr>
                         </Thead>
-                        <Tbody>
+                        <Tbody className="text-center">
                           {loading && <TableLoader colSpan={6} />}
                           {!loading && docs.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
