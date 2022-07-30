@@ -74,7 +74,7 @@ function TeamsAddModal(props) {
   return (
     <React.Fragment>
       <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}>
-        <i className="bx bx-plus me-1"></i> Add New
+        <i className="bx bx-plus me-1"></i>  Add New Team
       </Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">

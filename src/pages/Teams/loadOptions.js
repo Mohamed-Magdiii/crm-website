@@ -20,6 +20,8 @@ const loadOptions = async (search, page) => {
       .then((results) => {
         //do any results transformations
         return results;
+      }).catch((e)=>{
+        return [];
       });
     data.docs?.map(function (item) {
       output.push({
@@ -42,6 +44,8 @@ const loadOptions = async (search, page) => {
       .then((results) => {
         //do any results transformations
         return results;
+      }).catch((e)=>{
+        return [];
       });
     data.docs?.map(function (item) {
       // output[item] = obj[item]['value']

@@ -19,6 +19,8 @@ const loadMembersOptions = async (search, page) => {
       .then((results) => {
         //do any results transformations
         return results;
+      }).catch((e)=>{
+        return [];
       });
     data.docs?.map(function (item) {
       // output[item] = obj[item]['value']
@@ -42,6 +44,8 @@ const loadMembersOptions = async (search, page) => {
       })
       .then((results) => { 
         return results;
+      }).catch((e)=>{
+        return [];
       });
     data.docs?.map(function (item) { 
       output.push({
