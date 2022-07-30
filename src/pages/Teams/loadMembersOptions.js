@@ -23,7 +23,6 @@ const loadMembersOptions = async (search, page) => {
         return [];
       });
     data.docs?.map(function (item) {
-      console.log(item);
       // output[item] = obj[item]['value']
       if (item?.isActive) {
         output.push({

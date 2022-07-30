@@ -101,7 +101,7 @@ function UsersEditModal(props) {
               </AvField>
             </div>
             <div className='text-center  '>
-              <Button type="submit" color="primary" className="">
+              <Button type="submit" color="primary" className="" disabled={props?.editLoading}>
                 Edit
               </Button>
             </div>
@@ -122,6 +122,7 @@ function UsersEditModal(props) {
 
 
 const mapStateToProps = (state) => ({
+  editLoading: state.usersReducer.editLoading,
   addLoading: state.usersReducer.addLoading,
   editResult: state.usersReducer.editResult,
   editError: state.usersReducer.editError,
