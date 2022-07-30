@@ -116,7 +116,7 @@ function UsersAddModal(props) {
                 errorMessage="please select role"
                 validate={{ required: { value: true } }}
               >
-                <option value="">select</option>
+                <option value="">select Role</option>
                 {usersRoles?.map((row) => {
                   return (<option key={row._id} value={row._id}>{row.title}</option>);
                 })}

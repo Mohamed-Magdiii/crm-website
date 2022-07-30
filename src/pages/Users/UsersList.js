@@ -95,7 +95,7 @@ function UsersList() {
       formatter: (user) => (
         <>
           {user.roleId ? (
-            <div className="d-flex gap-3">
+            <div className="  text-center">
               {user.roleId.title}
             </div>
           ) : (
@@ -112,7 +112,7 @@ function UsersList() {
       text: "Status",
       sort: true,
       formatter: (user) => (
-        <div className="d-flex gap-3">
+        <div className="text-center">
           <Input type="checkbox" id={user.id} switch="none" checked={user.isActive} onChange={() => { setSelectedUser(user); statusUser(user) }} />
           <Label className="me-1" htmlFor={user.id} data-on-label="" data-off-label=""></Label>
         </div>
@@ -124,7 +124,7 @@ function UsersList() {
       editable: false,
       text: "Action",
       formatter: (user) => (
-        <div className="d-flex gap-3">
+        <div className="text-center">
           <Link className="text-success" to="#">
             <i
               className={`mdi mdi-pencil font-size-18 ${!update ? "d-none" : ""}`}
