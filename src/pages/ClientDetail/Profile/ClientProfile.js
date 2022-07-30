@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, connect } from "react-redux";
 import {
   Row, Col, Button, CardBody, CardHeader, CardTitle, Card
@@ -32,7 +32,9 @@ import ResetPassword from "./QuickActions/resetPassword";
 import ClientAddBankAccountModal from "../Bank/ClientAddBankAccountModal";
 import Transaction from "./QuickActions/Transaction";
 import ConvertWallet from "./QuickActions/Wallet";
+import DeleteModal from "components/Common/DeleteModal";
 function ClientDetails(props) {
+  const [deleteModal, setDeleteModal] = useState(false);
   const clientId = props.clientId;
   const dispatch = useDispatch();
   const { experience, financialInfo, tradingFeeId, markupId, transactionFeeId, declarations } = props.clientDetails;
@@ -84,7 +86,11 @@ function ClientDetails(props) {
   useEffect(() => {
   }, [props.clientDetails]);
 
-
+  useEffect(()=>{
+    if (!props.showPortalAccessModal && deleteModal){
+      setDeleteModal(false);
+    }
+  },  [props.showPortalAccessModal]);
   return (
     <React.Fragment>
       {(props.clientProfileloading || props.usersLoading || props.dictLoading) && 
@@ -568,14 +574,26 @@ function ClientDetails(props) {
                       <CardBody className="quick-actions-card">
                         <p className="quick-actions-heading">Client</p>
                         <div className="btn-container">
-                          <button type="button" onClick = {()=>{
-                            dispatch(editClientDetails({
-                              values:{ isActive:"false" },
-                              id:clientId
-                            }));
-                          }} className="btn btn-primary waves-effect waves-light w-100">
+                          <button type="button" 
+                            onClick = {()=>{
+                              setDeleteModal(true);
+                            }} 
+                            className="btn btn-primary waves-effect waves-light w-100"
+                            // disabled={!props.clientDetails.isActive ? true : false}
+                          >
                             Portal Access
                           </button>
+                          {<DeleteModal 
+                            show={deleteModal} 
+                            buttonText="Yes"
+                            bodyText="Are you sure that you want to make this client unactive?"
+                            onDeleteClick={()=>dispatch(editClientDetails({
+                              values:{ isActive:"false" },
+                              id:clientId
+                            }))}
+                            onCloseClick={()=>setDeleteModal(false)}
+                            loading={props.updating}
+                          />}
                           <ResetPassword clientId = {clientId}/>
                         </div>
                       </CardBody>
@@ -926,7 +944,8 @@ const mapStateToProps = (state) => ({
   transactionFeeGroups: state.transactionFeeGroupReducer.transactionFeeGroups || [],
   feeGroups : state.feeGroupReducer.feeGroups || [],
   employmentInfoUpdating : state.clientReducer.employmentInfoUpdating,
-  financialInfoUpdating : state.clientReducer.financialInfoUpdating
+  financialInfoUpdating : state.clientReducer.financialInfoUpdating,
+  showPortalAccessModal : state.clientReducer.showPortalAccessModal
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(ClientDetails));

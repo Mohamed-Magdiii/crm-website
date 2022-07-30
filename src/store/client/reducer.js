@@ -166,7 +166,8 @@ export const clientReducer = (state = initalState, action)=>{
     case EDIT_CLIENT_DETAILS_REQUESTED:
       state = {
         ...state,
-        updating: true
+        updating: true,
+        showPortalAccessModal:true
       };
 
       break;
@@ -200,7 +201,8 @@ export const clientReducer = (state = initalState, action)=>{
         updatedClientDetails: action.payload.result,
         editSuccess: true,
         error: false,
-        updating: false
+        updating: false,
+        showPortalAccessModal:false
       };
       break;
     case CHANGE_PASSWORD_START:
