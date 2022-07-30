@@ -47,7 +47,7 @@ function resetPassword(props){
             
             <AvField type="password" label="New Password" name="password"/>
             <div className="text-center p-2">
-              <Button type="submit" disabled= {props.disableResetPasswordButton} className="btn btn-primary">Reset Password</Button>
+              <Button type="submit" disabled= {props.disableResetPasswordButton} color="primary">Reset Password</Button>
             </div>
            
           </AvForm>

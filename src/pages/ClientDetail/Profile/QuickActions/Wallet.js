@@ -76,33 +76,38 @@ function ConvertWallet(props){
                 setFromAssetId(e.value.id);
               }}
             />
-            <Label>To Asset</Label>
-            <Select 
+            <div className="mt-2">
+              <Label>To Asset</Label>
+              <Select 
               
-              type="text" 
-              label="To Asset" 
-              name="fromAsset"
-              options = {props.docs && props.docs.map(wallet=>{
-                return {
-                  label:`${wallet.asset} (${wallet.amount})`,
-                  value: {
-                    id:wallet._id, 
-                    asset:wallet.asset
-                  }
-                };
+                type="text" 
+                label="To Asset" 
+                name="fromAsset"
+                options = {props.docs && props.docs.map(wallet=>{
+                  return {
+                    label:`${wallet.asset} (${wallet.amount})`,
+                    value: {
+                      id:wallet._id, 
+                      asset:wallet.asset
+                    }
+                  };
                 
-              })}
-              onChange={e=>{
-                setToAssetId(e.value.id);
-                setToAsset(e.value.asset);
-              }}
-            />
-            <AvField 
-              label="Amount"
-              name="amount"
-              type="number"/>
-            <div className="mt-2 m-auto">
-              <Button className="btn btn-primary">Convert Wallet</Button>
+                })}
+                onChange={e=>{
+                  setToAssetId(e.value.id);
+                  setToAsset(e.value.asset);
+                }}
+              />
+            </div>
+            <div className="mt-2">
+              <AvField 
+                label="Amount"
+                name="amount"
+                type="number"/>
+            </div>
+           
+            <div className="mt-2 text-center">
+              <Button color="primary">Convert Wallet</Button>
             </div>
            
           </AvForm>
