@@ -96,6 +96,11 @@ const Reminder = () => {
   const handleEventClick = (arg) => {
 
     const eventData = arg.event;
+    let dat = new Date(eventData.extendedProps?.timeEnd);
+    dat?.setHours(dat.getHours() + 2);
+    dat = dat.toISOString().replace(/.000Z/, "");
+    // console.log(d?.setHours(d.getHours() + 2));
+    // console.log(d?.setHours(d.getHours() + 2).toISOString().replace(/.000Z/, ""));
     setEvent({
       id: eventData.id,
       title: eventData.title,
@@ -103,7 +108,8 @@ const Reminder = () => {
       client: eventData.extendedProps?.customerId,
       status: eventData.extendedProps?.status,
       type: eventData.extendedProps?.type,
-      timeEnd: eventData.extendedProps?.timeEnd.replace(/.000Z/, ""),
+      // timeEnd: eventData.extendedProps?.timeEnd.replace(/.000Z/, ""),
+      timeEnd: dat,
       // differentStartReminderAndNow: dateDifference(new Date(eventData.extendedProps?.timeStart), new Date()),
       differentEndReminderAndNow: dateDifference(new Date(eventData.extendedProps?.timeEnd), new Date()),
     });
@@ -123,7 +129,7 @@ const Reminder = () => {
   /**
    * On calendar drop event
    */
-  const onDrop = ( ) => { 
+  const onDrop = () => {
     // console.log("modifiedData"); 
   };
   const showNotification = (message = "", err) => {
