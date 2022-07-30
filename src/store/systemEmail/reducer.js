@@ -65,6 +65,7 @@ const systemEmailsReducer = (state = initialState, action) => {
         hasNextPage: action.payload.hasNextPage,
         hasPrevPage: action.payload.hasPrevPage,
         limit: action.payload.limit,
+        actionsUsed: action.payload.actionsUsed || state.actionsUsed,
         nextPage: action.payload.nextPage,
         page: action.payload.page,
         pagingCounter: action.payload.pagingCounter,

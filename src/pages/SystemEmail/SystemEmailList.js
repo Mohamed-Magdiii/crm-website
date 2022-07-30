@@ -11,6 +11,7 @@ import {
   Table, Thead, Tbody, Tr, Th, Td
 } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
+import { capitalToReadable } from "common/utils/manipulateString";
 
 // i18n
 import { withTranslation } from "react-i18next";
@@ -78,7 +79,8 @@ function SystemEmailsList(props){
     },
     {
       dataField: "action",
-      text: props.t("Action Type")
+      text: props.t("Action Type"),
+      formatter: (val) => { return capitalToReadable(val.action) }
     }, 
     {
       dataField: "content",
