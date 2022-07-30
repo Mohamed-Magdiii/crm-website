@@ -61,7 +61,7 @@ function ConvertWallet(props){
             <Select
               type="text" 
               label = "From Asset"
-              name="toAsset"
+              name="fromAsset"
               options = {props.docs && props.docs.map((wallet)=>{
                 return {
                   label:`${wallet.asset} (${wallet.amount})`,
@@ -79,10 +79,10 @@ function ConvertWallet(props){
             <div className="mt-2">
               <Label>To Asset</Label>
               <Select 
-              
+                placehoder = "Select to asset"
                 type="text" 
                 label="To Asset" 
-                name="fromAsset"
+                name="toAsset"
                 options = {props.docs && props.docs.map(wallet=>{
                   return {
                     label:`${wallet.asset} (${wallet.amount})`,
