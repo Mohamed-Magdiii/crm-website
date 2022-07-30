@@ -242,7 +242,10 @@ function UsersList() {
                             )}
                           </Tr>
                         </Thead>
-                        <Tbody>
+                        <Tbody className="text-center" style={{ 
+                          fontSize: "13px",
+                           
+                        }}>
                           {loading && <TableLoader colSpan={6} />}
                           {!loading && docs.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
