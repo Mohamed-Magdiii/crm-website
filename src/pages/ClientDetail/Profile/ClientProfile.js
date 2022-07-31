@@ -32,7 +32,7 @@ import ResetPassword from "./QuickActions/resetPassword";
 import ClientAddBankAccountModal from "../Bank/ClientAddBankAccountModal";
 import Transaction from "./QuickActions/Transaction";
 import ConvertWallet from "./QuickActions/Wallet";
-import DeleteModal from "components/Common/DeleteModal";
+import PortalAccess from "./QuickActions/portalAccess";
 function ClientDetails(props) {
   const [deleteModal, setDeleteModal] = useState(false);
   const clientId = props.clientId;
@@ -574,26 +574,7 @@ function ClientDetails(props) {
                       <CardBody className="quick-actions-card">
                         <p className="quick-actions-heading">Client</p>
                         <div className="btn-container">
-                          <button type="button" 
-                            onClick = {()=>{
-                              setDeleteModal(true);
-                            }} 
-                            className="btn btn-primary waves-effect waves-light w-100"
-                            // disabled={!props.clientDetails.isActive ? true : false}
-                          >
-                            Portal Access
-                          </button>
-                          {<DeleteModal 
-                            show={deleteModal} 
-                            buttonText="Yes"
-                            bodyText="Are you sure that you want to make this client unactive?"
-                            onDeleteClick={()=>dispatch(editClientDetails({
-                              values:{ isActive:"false" },
-                              id:clientId
-                            }))}
-                            onCloseClick={()=>setDeleteModal(false)}
-                            loading={props.updating}
-                          />}
+                          <PortalAccess clientDetails={props.clientDetails} clientId={clientId}/>
                           <ResetPassword clientId = {clientId}/>
                         </div>
                       </CardBody>
