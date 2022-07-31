@@ -89,9 +89,9 @@ function TeamsAddModal(props) {
         <ModalBody>
           <AvForm
             className="p-4"
-            onValidSubmit={(e, v) => {
-              // handleAddTeam(e, v);
-            }}
+            // onValidSubmit={(e, v) => {
+            //   // handleAddTeam(e, v);
+            // }}
           >
             <div className="mb-3">
               <AvField

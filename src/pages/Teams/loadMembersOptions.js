@@ -19,7 +19,7 @@ const loadMembersOptions = async (search, page) => {
       .then((results) => {
         //do any results transformations
         return results;
-      }).catch((e) => {
+      }).catch(() => {
         return [];
       });
     data.docs?.map(function (item) {
@@ -47,7 +47,7 @@ const loadMembersOptions = async (search, page) => {
       })
       .then((results) => {
         return results;
-      }).catch((e) => {
+      }).catch(() => {
         return [];
       });
     data.docs?.map(function (item) {

@@ -20,7 +20,7 @@ const loadOptions = async (search, page) => {
       .then((results) => {
         //do any results transformations
         return results;
-      }).catch((e) => {
+      }).catch(() => {
         return [];
       });
     data.docs?.map(function (item) {
@@ -51,7 +51,7 @@ const loadOptions = async (search, page) => {
       .then((results) => {
         //do any results transformations
         return results;
-      }).catch((e) => {
+      }).catch(() => {
         return [];
       });
     data.docs?.map(function (item) {
