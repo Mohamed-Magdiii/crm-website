@@ -43,9 +43,24 @@ function resetPassword(props){
             onValidSubmit={ (e, v) => {
               handleChangePassword(e, v);
             }}
+            
           >
             
-            <AvField type="password" label="New Password" name="password"/>
+            <AvField 
+              type="password" 
+              label="New Password"
+              name="password"
+              validate= {{
+                required: { value : true },
+                pattern :{ 
+                  // eslint-disable-next-line no-useless-escape
+                  value:"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$",
+                  errorMessage :"Must contain at least eight characters, at least one number and both lower and uppercase letters and special characters"
+                }
+                
+              }
+              }
+            />
             <div className="text-center p-2">
               <Button type="submit" disabled= {props.disableResetPasswordButton} color="primary">Reset Password</Button>
             </div>
