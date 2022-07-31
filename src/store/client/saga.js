@@ -75,8 +75,10 @@ function * fetchClientDetails(params){
 
 function * editClientDetails(params){
   try {
-    const data = yield call(clientApi.updateClientDetails, params);
-    yield put(editClientDetailsSuccess(data));
+    yield call(clientApi.updateClientDetails, params);
+    const { payload } = params;
+    const { values } = payload;
+    yield put(editClientDetailsSuccess(values));
     yield put(showSuccessNotification("Client updated sucessfully!"));
 
     // yield delay(2000);

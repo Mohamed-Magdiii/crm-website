@@ -198,7 +198,10 @@ export const clientReducer = (state = initalState, action)=>{
     case EDIT_CLIENT_DETAILS_SUCCESS:
       state = { 
         ...state, 
-        updatedClientDetails: action.payload.result,
+        clientDetails: {
+          ...state.clientDetails,
+          ...action.payload
+        },
         editSuccess: true,
         error: false,
         updating: false,
