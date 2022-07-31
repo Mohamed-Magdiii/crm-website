@@ -15,7 +15,7 @@ import Select from "react-select";
 
 import { AsyncPaginate } from "react-select-async-paginate";
 
-import loadOptions from "../Profile/QuickActions/loadOptions";
+import loadOptions from "./loadOptions";
 import { getPricing } from "./../../../apis/orders";
 
 function OrdersAddModal(props) {
