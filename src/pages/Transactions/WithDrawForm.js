@@ -46,7 +46,7 @@ function WithdrawForm(props){
     setSelectedClient(id);
     dispatch(fetchWalletStart({
       belongsTo:id,
-      type
+      customerId:id,
     }));
   };
   const selectType = (type)=>{
@@ -54,7 +54,7 @@ function WithdrawForm(props){
     if (selectedClient.length > 0)
       dispatch(fetchWalletStart({
         belongsTo:selectedClient,
-        type
+        customerId:selectedClient,
       }));
   };
   const toggleAddModal = () => {

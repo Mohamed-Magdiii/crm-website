@@ -74,7 +74,7 @@ function DepositForm(props){
     setSelectedClient(id);
     dispatch(fetchWalletStart({
       belongsTo:id,
-      type
+      customerId:id,
     }));
   };
 
@@ -83,7 +83,7 @@ function DepositForm(props){
     if (selectedClient.length > 0)
       dispatch(fetchWalletStart({
         belongsTo:selectedClient,
-        type
+        customerId:selectedClient,
       }));
   };
 
