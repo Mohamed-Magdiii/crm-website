@@ -30,7 +30,7 @@ const walletReducer = (state = initState, action) => {
     case "FETCH_WALLET_SUCCESS":
       state = {
         ...state,
-        wallets: [...action.payload.result.docs],
+        wallets: action.payload.result.docs ?  [...action.payload.result.docs] : [],
         loading: false
       };
       break;

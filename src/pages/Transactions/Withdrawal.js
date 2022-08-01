@@ -3,7 +3,7 @@ import React, {
 } from "react";
 import { useDispatch, connect } from "react-redux";
 import {
-  Row, Col, Card, CardBody, CardHeader, CardTitle
+  Row, Col, Card, CardBody, CardHeader, CardTitle, Dropdown, DropdownToggle, DropdownMenu, DropdownItem
 } from "reactstrap";
 import TableLoader from "components/Common/Loader";
 import CustomPagination from "components/Common/CustomPagination";
@@ -30,9 +30,12 @@ function Withdrawal(props){
   const [showNotication, setShowNotifaction] = useState(false);
   const [detailsModal, setDetailsModal] = useState(false);
   const [selectedContent, setSelectedContent] = useState("");
+  const [selected, setSelected] = useState("LIVE");
+  const [btnprimary1, setBtnprimary1] = useState(false);
+
   useEffect(()=>{
     loadWithdrawals(1, sizePerPage);
-  }, [sizePerPage, 1]);
+  }, [sizePerPage, 1, selected]);
   
   const handleSearchInput = (e)=>{
   
@@ -135,7 +138,8 @@ function Withdrawal(props){
   const loadWithdrawals = (page, limit)=>{
     dispatch(fetchWithdrawalsStart({
       page,
-      limit
+      limit,
+      type:selected
     }));
   };
   const withdrawApprove = (id)=>{
@@ -168,9 +172,23 @@ function Withdrawal(props){
                     <CardTitle>{props.t(`Withdrawals(${props.totalDocs})`)}</CardTitle>
                     <WithDrawForm />
                   </div>
-                  
-                  <SearchBar handleSearchInput={handleSearchInput} placeholder={props.t("Search for withdrawals")}/>
-                      
+                  <div className="d-flex justify-content-between align-items-center">
+                    <SearchBar handleSearchInput={handleSearchInput} placeholder={props.t("Search for withdrawals")}/>
+                    <div>
+                      <Dropdown
+                        isOpen={btnprimary1}
+                        toggle={() => setBtnprimary1(!btnprimary1)}
+                      >
+                        <DropdownToggle tag="button" className="btn btn-primary">
+                          {selected} <i className="mdi mdi-chevron-down" />
+                        </DropdownToggle>
+                        <DropdownMenu>
+                          <DropdownItem value="LIVE" onClick={(e)=>{setSelected(e.target.value)}}>LIVE</DropdownItem>
+                          <DropdownItem value="DEMO" onClick={(e)=>{setSelected(e.target.value)}}>DEMO</DropdownItem>
+                        </DropdownMenu>
+                      </Dropdown>
+                    </div>
+                  </div>
                 </CardHeader>
           
                 <CardBody>

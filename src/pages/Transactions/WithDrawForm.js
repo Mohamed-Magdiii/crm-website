@@ -26,6 +26,8 @@ function WithdrawForm(props){
   const [selectedClient, setSelectedClient] = useState("");
   const [selectedWalletId, setSelectedWalletId] = useState("");
   const [gateway, setGateway] = useState("");
+  const [type, setType] = useState("LIVE");
+
   const dispatch = useDispatch();
   const { create } = props.withdrawalsPermissions;
   const handleWithdraw = (event, values) => {
@@ -43,26 +45,37 @@ function WithdrawForm(props){
   const selectClient = (id)=>{
     setSelectedClient(id);
     dispatch(fetchWalletStart({
-      belongsTo:id
+      belongsTo:id,
+      type
     }));
-     
+  };
+  const selectType = (type)=>{
+    setType(type);
+    if (selectedClient.length > 0)
+      dispatch(fetchWalletStart({
+        belongsTo:selectedClient,
+        type
+      }));
   };
   const toggleAddModal = () => {
     setWithdrawalModal(!open);
   };
+
   useEffect(()=>{
     dispatch(fetchClientsStart({
       page:1,
-      limit:10
+      limit:10,
+      type
     }));
     dispatch(fetchGatewaysOfWithdrawalsStart());
     if (searchInput.length >= 3){
       dispatch(fetchClientsStart({
-        searchText:searchInput
+        searchText:searchInput,
+        type
       }));
     }
-  
-  }, [searchInput]);
+  }, [searchInput, type]);
+
   useEffect(() => {
     if (props.modalClear && open){
       setWithdrawalModal(false);
@@ -118,6 +131,32 @@ function WithdrawForm(props){
               
               </Col>
               <Col md="6">
+                <Label>{props.t("Type")}</Label>
+                
+                
+                <div>
+                  <Select 
+                    defaultValue={{
+                      label:"Live",
+                      value:"LIVE" 
+                    }}
+                    onChange={(e) => {
+                      selectType(e.value);   
+                    }}
+                    options={[{
+                      label:"Live",
+                      value:"LIVE" 
+                    },
+                    {
+                      label:"Demo",
+                      value:"DEMO"
+                    }]}
+                    classNamePrefix="select2-selection"
+                    placeholder = "choose a type for deposit"
+                  />
+                </div>
+              </Col>
+              <Col md="12">
                 <Label>{props.t("Wallet")}</Label>
                 <div>
                   <Select 

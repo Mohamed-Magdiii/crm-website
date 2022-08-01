@@ -3,7 +3,7 @@ import React, {
 } from "react";
 import { useDispatch, connect } from "react-redux";
 import {
-  Row, Col, Card, CardBody, CardHeader, CardTitle
+  Row, Col, Card, CardBody, CardHeader, CardTitle, Dropdown, DropdownToggle, DropdownMenu, DropdownItem
 } from "reactstrap";
 
 import AddDepositForm from "./AddDepositForm";
@@ -31,6 +31,8 @@ function Deposit(props){
   const [detailsModal, setDetailsModal] = useState(false);
   const [selectedContent, setSelectedContent] = useState("");
   const [sizePerPage, setSizePerPage] = useState(10);
+  const [btnprimary1, setBtnprimary1] = useState(false);
+  const [selected, setSelected] = useState("LIVE");
   const columns = [
     {
       dataField:"checkbox",
@@ -124,7 +126,7 @@ function Deposit(props){
   
   useEffect(()=>{
     loadDeposits(1, sizePerPage);
-  }, [sizePerPage, 1, searchInput]);
+  }, [sizePerPage, 1, searchInput, selected]);
   
   const handleSearchInput = (e)=>{
   
@@ -134,10 +136,10 @@ function Deposit(props){
   
   
   const loadDeposits = (page, limit)=>{
-    
     dispatch(fetchDepositsStart({
       limit, 
-      page
+      page,
+      type:selected
     }));
     
     
@@ -175,7 +177,23 @@ function Deposit(props){
                     <AddDepositForm />
                   </div>
                   
-                  <SearchBar handleSearchInput={handleSearchInput} placeholder={props.t("Search for deposits")}/>
+                  <div className="d-flex justify-content-between align-items-center">
+                    <SearchBar handleSearchInput={handleSearchInput} placeholder={props.t("Search for deposits")}/>
+                    <div>
+                      <Dropdown
+                        isOpen={btnprimary1}
+                        toggle={() => setBtnprimary1(!btnprimary1)}
+                      >
+                        <DropdownToggle tag="button" className="btn btn-primary">
+                          {selected} <i className="mdi mdi-chevron-down" />
+                        </DropdownToggle>
+                        <DropdownMenu>
+                          <DropdownItem value="LIVE" onClick={(e)=>{setSelected(e.target.value)}}>LIVE</DropdownItem>
+                          <DropdownItem value="DEMO" onClick={(e)=>{setSelected(e.target.value)}}>DEMO</DropdownItem>
+                        </DropdownMenu>
+                      </Dropdown>
+                    </div>
+                  </div>
                  
                 </CardHeader>
                 
