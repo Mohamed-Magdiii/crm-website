@@ -130,31 +130,31 @@ function SystemEmailEdit(props){
   //   setIsContentChanged(true);
   //   setContentempValue(updatedTempContent);
   // };
-  const contentTempInitialValues = availableLanguages.map((item) => (
-    {
-      language: item,
-      tempContent: ""
-    }
-  ));
-  const [contentTempValue, setContentempValue] = useState(contentTempInitialValues);
-  const contentTempValueHandler = (e) => {
-    const blocksFromHTML = htmlToDraft(`<p>${e.blocks[0].text}</p>`);
-    const { contentBlocks, entityMap } = blocksFromHTML;
-    const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
-    const editorState = EditorState.createWithContent(contentState); 
+  // const contentTempInitialValues = availableLanguages.map((item) => (
+  //   {
+  //     language: item,
+  //     tempContent: ""
+  //   }
+  // ));
+  // const [contentTempValue, setContentempValue] = useState(contentTempInitialValues);
+  // const contentTempValueHandler = (e) => {
+  //   const blocksFromHTML = htmlToDraft(`<p>${e.blocks[0].text}</p>`);
+  //   const { contentBlocks, entityMap } = blocksFromHTML;
+  //   const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+  //   const editorState = EditorState.createWithContent(contentState); 
     
-    const updatedTempContent = [];
-    for (let item of contentTempValue){
-      if (item.language === selectedLanguage.value){
-        item.tempContent = editorState;
-        updatedTempContent.push(item);
-      } else {
-        updatedTempContent.push(item);
-      }
-    }
-    setIsContentChanged(true);
-    setContentempValue(updatedTempContent);
-  };
+  //   const updatedTempContent = [];
+  //   for (let item of contentTempValue){
+  //     if (item.language === selectedLanguage.value){
+  //       item.tempContent = editorState;
+  //       updatedTempContent.push(item);
+  //     } else {
+  //       updatedTempContent.push(item);
+  //     }
+  //   }
+  //   setIsContentChanged(true);
+  //   setContentempValue(updatedTempContent);
+  // };
 
   // back button handler
   const history = useHistory();

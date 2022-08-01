@@ -101,7 +101,7 @@ function * editSystemEmailContent(params){
     const data = yield call(systemEmailApi.editSystemEmailContent, params);
     yield put(editSystemEmailContentSuccess({
       data,
-      id: params.id
+      id: params.payload.id
     }));
     yield put(editSystemEmailContentClear());
     yield put(showSuccessNotification("System email updated successsfully"));
