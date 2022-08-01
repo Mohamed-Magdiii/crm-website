@@ -32,4 +32,12 @@ const languages = {
   },
 };
 
+
+export const LANGUAGES = Object.keys(languages).map(obj => {
+  return {
+    value: obj,
+    label: languages[obj].label
+  };
+});
+
 export default languages;

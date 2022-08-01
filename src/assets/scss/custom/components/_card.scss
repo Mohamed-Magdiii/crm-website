@@ -5,8 +5,9 @@
 .card {
   margin-bottom: $grid-gutter-width;
   // border-radius: 10px;
-  box-shadow: $box-shadow-sm;
+  box-shadow: $box-shadow;
   border-radius: $border-radius-mu;
+  overflow: hidden;
 }
 .card-animate {
   transition: all .4s;

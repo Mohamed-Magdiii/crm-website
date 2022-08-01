@@ -29,16 +29,12 @@ function * fetchAsset(params){
 }
 function * addNewAsset({ payload :{ newSymbol } }){
   try {
-
     const data = yield call(addNewSymbol, newSymbol);
     const { status } = data;
-    const { result:{ _id } } = data;
+    const { result } = data;
     
     if (status){
-      yield put(addNewSymbolSuccess({
-        id:_id, 
-        ...newSymbol
-      }));
+      yield put(addNewSymbolSuccess(result ));
       yield put(showSuccessNotification("Asset has been added successfully!"));
       yield delay(1000);
       yield put(addAssetModalClear());
@@ -54,14 +50,22 @@ function * addNewAsset({ payload :{ newSymbol } }){
 }
 function * editAsset(params){
   const { payload } = params;
-  const { id, values } = payload;
-  
+  const { id,  jsonData } = payload;
   try {
-    yield call(updateSymbol, params);
-    yield put(editSymbolSuccess({
-      id,
-      values
-    }));
+    const returnedData = yield call(updateSymbol, payload);
+    const { status } = returnedData;
+ 
+    if (status){
+      const { result } = returnedData;
+      const { data } = result;
+      const { image } = data;
+      yield put(editSymbolSuccess({
+        id,
+        jsonData,
+        image
+      }));
+    }
+    
     yield put(showSuccessNotification("Asset has been updated successfully!"));
     yield delay(1000);
     yield put(assetEditModalClear());

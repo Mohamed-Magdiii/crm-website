@@ -122,7 +122,7 @@ function feeGroupAdd(props) {
                       required: { value: true },
                       pattern:{
                         // eslint-disable-next-line no-useless-escape
-                        value : "/^[+]?([0-9]+\.?[0-9]*|\.[0-9]+)$/",
+                        value : "^[0-9]+(\\.([0-9]{1,4}))?$",
                         errorMessage : "Value must be a number"
                       }
                     }}
@@ -142,7 +142,7 @@ function feeGroupAdd(props) {
                       required: { value: true },
                       pattern:{
                         // eslint-disable-next-line no-useless-escape
-                        value: "/^[+]?([0-9]+\.?[0-9]*|\.[0-9]+)$/",
+                        value: "^[0-9]+(\\.([0-9]{1,4}))?$",
                         errorMessage :"Max Amount must be number"
                       }
                     }}
@@ -162,7 +162,7 @@ function feeGroupAdd(props) {
                       required: { value: true },
                       pattern:{
                         // eslint-disable-next-line no-useless-escape
-                        value:"/^[+]?([0-9]+\.?[0-9]*|\.[0-9]+)$/",
+                        value:"^[0-9]+(\\.([0-9]{1,4}))?$",
                         errorMessage :"Min Value must be number"
                       }
                     }}
@@ -219,7 +219,7 @@ function feeGroupAdd(props) {
                                       required :{ value:true },
                                       pattern : {
                                         // eslint-disable-next-line no-useless-escape
-                                        value :"/^[+]?([0-9]+\.?[0-9]*|\.[0-9]+)$/",
+                                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
                                         errorMessage : "Value must be a number"
                                       }
                                     }} 
@@ -234,7 +234,7 @@ function feeGroupAdd(props) {
                                       required :{ value:true },
                                       pattern : {
                                         // eslint-disable-next-line no-useless-escape
-                                        value :"/^[+]?([0-9]+\.?[0-9]*|\.[0-9]+)$/",
+                                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
                                         errorMessage : "Max value must be a number"
                                       }
                                     }} 
@@ -250,7 +250,7 @@ function feeGroupAdd(props) {
                                       required :{ value:true },
                                       pattern : {
                                         // eslint-disable-next-line no-useless-escape
-                                        value :"/^[+]?([0-9]+\.?[0-9]*|\.[0-9]+)$/",
+                                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
                                         errorMessage : "Min Value must be a number"
                                       }
                                     }} 

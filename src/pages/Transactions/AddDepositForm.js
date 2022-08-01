@@ -179,12 +179,12 @@ function DepositForm(props){
                 placeholder={props.t("enter amount")}
                 type="text"
                 errorMessage={props.t("Enter Valid Amount")}
-                validate={{ 
-                  required: { value: true },
+                validate = {{
+                  required :{ value:true },
                   pattern : {
                     // eslint-disable-next-line no-useless-escape
-                    value : "/[+]?[1-9]+[,.]?[0-9]*([\/][0-9]+[,.]?[0-9]*)*/g",
-                    errorMessage :"Amount must be positve number"
+                    value :"^[0-9]+(\\.([0-9]{1,4}))?$",
+                    errorMessage : "Amount is not valid"
                   }
                 }}
               />

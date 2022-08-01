@@ -5,6 +5,8 @@ import {
   Button,
   UncontrolledAlert,
 } from "reactstrap";
+import map from "lodash/map";
+
 import {
   AvForm, AvField, AvInput
 } from "availity-reactstrap-validation";
@@ -128,6 +130,31 @@ function SystemEmailEdit(props){
   //   setIsContentChanged(true);
   //   setContentempValue(updatedTempContent);
   // };
+  const contentTempInitialValues = availableLanguages.map((item) => (
+    {
+      language: item,
+      tempContent: ""
+    }
+  ));
+  const [contentTempValue, setContentempValue] = useState(contentTempInitialValues);
+  const contentTempValueHandler = (e) => {
+    const blocksFromHTML = htmlToDraft(`<p>${e.blocks[0].text}</p>`);
+    const { contentBlocks, entityMap } = blocksFromHTML;
+    const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+    const editorState = EditorState.createWithContent(contentState); 
+    
+    const updatedTempContent = [];
+    for (let item of contentTempValue){
+      if (item.language === selectedLanguage.value){
+        item.tempContent = editorState;
+        updatedTempContent.push(item);
+      } else {
+        updatedTempContent.push(item);
+      }
+    }
+    setIsContentChanged(true);
+    setContentempValue(updatedTempContent);
+  };
 
   // back button handler
   const history = useHistory();
@@ -151,11 +178,41 @@ function SystemEmailEdit(props){
     handleSystemEmailFetchById(e, id);
   }, []);
 
+  const copyToClipboard = (str) => {
+    const el = document.createElement("textarea");
+    el.value = str;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand("copy");
+    document.body.removeChild(el);
+  };
+  
   return (
     <React.Fragment >
       <div className="page-content">
         <div className="container-fluid">
           <h2>{props.t("Advanced edit")}</h2>
+          <div className="row">
+            <div className="col-sm-1">
+              <p> Fields </p>
+            </div>
+            <div className="col-sm-11">
+              {map(role.fields, (val) => (
+                <p
+                  className="m-2 mt-0 mb-0"
+                  style={{
+                    cursor: "pointer",
+                    display: "inline-block" 
+                  }}
+                  onClick={() => {
+                    copyToClipboard("_" + val + "_");
+                  }}>
+                    _{val}_
+                </p>
+              ))}
+            </div>
+            
+          </div>
           <AvForm
             onValidSubmit={(e, v) => {
               handleSystemEmailEdit(e, v);

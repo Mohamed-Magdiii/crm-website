@@ -46,7 +46,10 @@ function AgentForm(props){
   return (
     <React.Fragment >
       
-      <div style={{ minWidth:"200px" }}>
+      <div style={{
+        minWidth:"200px",
+        paddingInlineEnd: "1rem" 
+      }} className="w-100">
         <Select   
           classNamePrefix="select2-selection"
           placeholder="Select a sales agent"

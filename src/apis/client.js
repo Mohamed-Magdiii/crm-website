@@ -37,3 +37,21 @@ export const updateClientDetails = async ({ payload }) => {
 
   return data;
 };
+export const updateClientEmploymentStatus = async (payload )=>{
+  const { id, values } = payload;
+  const data = await axiosHelper.patch(`/clients/${id}/experience`, { experience:{ ...values } });
+  const {  isError } = data;
+  if (isError){
+    throw new Error("An Error Happened while updating employment Info");
+  }
+  return data;
+};
+export const updateClientFinancialInfo = async (payload)=>{
+  const { id, values } = payload;
+  const data = await axiosHelper.patch(`/clients/${id}/financial-info`, { financialInfo : { ...values } });
+  const { isError } = data;
+  if (isError){
+    throw new Error("Error Happened while updating financial Info");
+  }
+  return data;
+};

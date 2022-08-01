@@ -13,6 +13,11 @@ import {
   AvForm, AvField, AvInput
 } from "availity-reactstrap-validation";
 
+import { capitalToReadable } from "common/utils/manipulateString";
+import AvFieldSelect from "components/Common/AvFieldSelect";
+import AvFieldTextTag from "components/Common/AvFieldTextTag";
+import { EMAIL_FIELDS } from "common/data/dropdowns";
+
 import { editSystemEmail } from "store/systemEmail/actions";
 // i18n
 import { withTranslation } from "react-i18next";
@@ -47,6 +52,7 @@ function SystemEmailEditModal(props){
           <AvForm
             className='p-4'
             onValidSubmit={(e, v) => {
+              v.fields = v.fields && v.fields.map(obj => obj.value) || [];
               handleEditSystemEmail(e, v);
               props.systemEmailUpdatedHandler();
             }}
@@ -64,14 +70,31 @@ function SystemEmailEditModal(props){
             </div>
 
             <div className="mb-3">
-              <AvField
+              <AvFieldSelect 
                 name="action"
                 label={props.t("Action")}
-                placeholder={props.t("Enter Action")}
-                type="text"
+                placeholder={props.t("Please Select Action")}
                 value={role.action}
+                type="text"
                 errorMessage={props.t("Enter Action")}
                 validate={{ required: { value: true } }}
+
+                options={props.actions.map((action)=>{
+                  return ({
+                    label: capitalToReadable(action),
+                    value: action
+                  });
+                })}
+              />
+            </div>
+            <div className="mb-3">
+              <AvFieldTextTag
+                name="fields"
+                label={props.t("Fields")}
+                value={role.fields}
+                type="text"
+                options={EMAIL_FIELDS}
+
               />
             </div>
             {role.permissions && Object.keys(role.permissions).map((permKey, permInd) =>
@@ -112,7 +135,8 @@ const mapStateToProps = (state) => ({
   addLoading: state.systemEmailsReducer.addLoading,
   editResult: state.systemEmailsReducer.editResult,
   editError: state.systemEmailsReducer.editError,
-  editClearingCounter: state.systemEmailsReducer.editClearingCounter
+  editClearingCounter: state.systemEmailsReducer.editClearingCounter,
+  actions :state.dictionaryReducer.actions || [],
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(SystemEmailEditModal));

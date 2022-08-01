@@ -62,8 +62,8 @@ function Withdrawal(props){
           <div>
             <Link 
               to = {{
-                pathname :`/clients/${val.customerId._id}/profile`,
-                state : { clientId : val.customerId._id }
+                pathname :val.customerId ? `/clients/${val.customerId._id}/profile` : "",
+                state : { clientId : val.customerId ? val.customerId._id : "" }
               }}
             
             >
@@ -181,9 +181,9 @@ function Withdrawal(props){
                     >
                       <Table
                         id="tech-companies-1"
-                        className="table "
+                        className="table  table-hover "
                       >
-                        <Thead>
+                        <Thead className="text-center table-light" >
                           <Tr>
                             {columns.map((column, index) =>
                               <Th data-priority={index} key={index}>{column.text}</Th>

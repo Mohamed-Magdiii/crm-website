@@ -23,9 +23,9 @@ function MainNavigation(props){
     <React.Fragment>
       <div className="navbar-header mb-3">
         <div className="container-fluid">
-          <ul className="nav-tabs-custom nav-justified nav nav-tabs">
+          <ul className="nav-tabs-custom nav-justified nav nav-tabs page-menues">
             {tabsArr.map((obj, index) =>
-              <li className="nav-item" key={index}>
+              <li className={"nav-item " + `item-${index}`} key={index}>
                 <NavLink 
                   to={obj.url}
                   className={isActive =>

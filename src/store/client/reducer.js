@@ -8,12 +8,18 @@ import {
   EDIT_CLIENT_DETAILS_SUCCESS,
   EDIT_CLIENT_DETAILS_FAIL,
   EDIT_CLIENT_DETAILS_CLEAR,
-  FETCH_CLIENT_STAGES_END
+  FETCH_CLIENT_STAGES_END,
+  UPDATE_FINANCIAL_INFO_START,
+  UPDATE_EMPLOYMENT_INFO_START,
+  UPDATE_EMPLOYMENT_INFO_SUCCESS,
+  UPDATE_FINANCIAL_INFO_SUCCESS,
+  UPDATE_FINANCIAL_INFO_FAIL,
+  UPDATE_EMPLOYMENT_INFO_FAIL
 } from "./actionsType";
 
 const initalState = {
   error:"",
-  loading:true,
+  loading:false,
   clients:[],
   successMessage:"",
   clientDetails: {},
@@ -79,7 +85,42 @@ export const clientReducer = (state = initalState, action)=>{
         error:action.payload.error
       };
       break;
+    case UPDATE_FINANCIAL_INFO_SUCCESS:
+      state = {
+        ...state,
+        clients : state.clients.map((client)=>{
+          if (client._id === action.payload.id){
+            return {
+              ...client, 
+              financialInfo: { ...action.payload.financialInfo }
+            };
+          }
+          else {
+            return client;
+          }
 
+        }),
+        financialInfoUpdating:false
+      };
+      break;
+    case UPDATE_EMPLOYMENT_INFO_SUCCESS:
+      state = {
+        ...state,
+        clients: state.clients.map((client)=>{
+          if (client._id === action.payload.id){
+            return {
+              ...client,
+              experience:{ ...action.payload.values }
+            };
+          }
+          else {
+            return client;
+          }
+        }),
+        employmentInfoUpdating:false
+       
+      };
+      break;
     // fetch client details
     case FETCH_CLIENT_DETAILS_REQUESTED:
       state = {
@@ -123,7 +164,32 @@ export const clientReducer = (state = initalState, action)=>{
     case EDIT_CLIENT_DETAILS_REQUESTED:
       state = {
         ...state,
-        loading: true
+        updating: true
+      };
+
+      break;
+    case UPDATE_EMPLOYMENT_INFO_START:
+      state = {
+        ...state,
+        employmentInfoUpdating:true
+      };
+      break;
+    case UPDATE_EMPLOYMENT_INFO_FAIL:
+      state = {
+        ...state,
+        employmentInfoUpdating:false
+      };
+      break;
+    case UPDATE_FINANCIAL_INFO_START:
+      state = {
+        ...state,
+        financialInfoUpdating:true
+      };
+      break;
+    case UPDATE_FINANCIAL_INFO_FAIL:
+      state = {
+        ...state,
+        financialInfoUpdating:false
       };
       break;
     case EDIT_CLIENT_DETAILS_SUCCESS:
@@ -132,9 +198,10 @@ export const clientReducer = (state = initalState, action)=>{
         updatedClientDetails: action.payload.result,
         editSuccess: true,
         error: false,
-        loading: false
+        updating: false
       };
       break;
+
     // TODO check the error message with the backend
     case EDIT_CLIENT_DETAILS_FAIL:
       state = { 
@@ -142,7 +209,7 @@ export const clientReducer = (state = initalState, action)=>{
         success: false,
         editError: true,
         EditErrorDetails: action.payload.error,
-        loading: false
+        updating: false
       };
       break;
     case EDIT_CLIENT_DETAILS_CLEAR:

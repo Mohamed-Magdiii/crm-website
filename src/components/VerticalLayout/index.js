@@ -8,6 +8,7 @@ import {
   changeLayoutWidth,
   changelayoutMode,
 } from "../../store/actions";
+import { fetchDictionaryStart } from "store/dictionary/actions";
 
 // Layout Related Components
 import Header from "./Header";
@@ -70,6 +71,7 @@ const Layout = props => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    dispatch(fetchDictionaryStart());
   }, []);
 
   useEffect(() => {

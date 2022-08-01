@@ -12,11 +12,14 @@ import {
   fetchClientDetailsClear,
 
   editClientDetailsSuccess,
-  editClientDetailsFail,
-  editClientDetailsClear,
   addModalClear,
   fetchClientStagesEnd,
   assignAgentToClientSuccess,
+  updateEmploymentStatusSuccess,
+  updateFinancialInfoSuccess,
+  updateEmploymentInfoFail,
+  updateFinancialInfoFail,
+  editClientDetailsFail
 } from "./actions";
 import { 
   ADD_NEW_CLIENT, 
@@ -24,7 +27,9 @@ import {
   FETCH_CLIENT_STAGES_START,
   FETCH_CLIENT_DETAILS_REQUESTED,
   EDIT_CLIENT_DETAILS_REQUESTED,
-  ASSIGN_AGENT_START
+  ASSIGN_AGENT_START,
+  UPDATE_EMPLOYMENT_INFO_START,
+  UPDATE_FINANCIAL_INFO_START
 } from "./actionsType";
 import { showSuccessNotification, showErrorNotification } from "store/notifications/actions";
 function *fetchClients(params) {
@@ -70,12 +75,13 @@ function * editClientDetails(params){
   try {
     const data = yield call(clientApi.updateClientDetails, params);
     yield put(editClientDetailsSuccess(data));
-    yield delay(2000);
-    yield put(editClientDetailsClear());
+    yield put(showSuccessNotification("Client updated sucessfully!"));
+
+    // yield delay(2000);
+    // yield put(editClientDetailsClear());
   } catch (error){
-    yield put(editClientDetailsFail({ error: error.message }));
-    yield delay(2000);
-    yield put(editClientDetailsClear());
+    yield put(showErrorNotification(error.message || "Error updating client"));
+    yield put(editClientDetailsFail({ errror:error.message }));
   }
 }
 function * assignAgent (params){
@@ -102,7 +108,34 @@ function * fetchClientStages(params){
     }
   } catch (error){ }
 }
+function * updateClientFinancialInfo ({ payload }){
+  try {
+    const data =  yield call(clientApi.updateClientFinancialInfo, payload);
+    const { status } = data;
+    if (status){
+      yield put(updateFinancialInfoSuccess(payload));
+      yield put(showSuccessNotification("Financial Info of the client has been updated"));
+    }
+  } catch (error){
+    yield put(updateFinancialInfoFail());
+    yield put(showErrorNotification("Error happened while updating financial info"));
+  }
+}
+function * updateClientEmploymentInfo ({ payload }){
+  try {
 
+    const data =  yield call(clientApi.updateClientEmploymentStatus, payload);
+    
+    const { status } = data;
+    if (status) {
+      yield put(updateEmploymentStatusSuccess(payload));
+      yield put(showSuccessNotification("Employpment Info has been updated successfully"));
+    }
+  } catch (error){
+    yield put(updateEmploymentInfoFail());
+    yield put(showErrorNotification("Error happened while updating employment info"));
+  }
+}
 function * clientSaga() {
   yield takeEvery(FETCH_CLIENTS_START, fetchClients);
   yield takeEvery(ADD_NEW_CLIENT, addNewClient);
@@ -110,7 +143,8 @@ function * clientSaga() {
   yield takeEvery(EDIT_CLIENT_DETAILS_REQUESTED, editClientDetails);
   yield takeEvery(FETCH_CLIENT_STAGES_START, fetchClientStages);
   yield takeEvery(ASSIGN_AGENT_START, assignAgent);
-  
+  yield takeEvery(UPDATE_FINANCIAL_INFO_START, updateClientFinancialInfo);
+  yield takeEvery(UPDATE_EMPLOYMENT_INFO_START, updateClientEmploymentInfo);
 }
 
 export default clientSaga;

@@ -11,6 +11,7 @@ import {
   Table, Thead, Tbody, Tr, Th, Td
 } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
+import { capitalToReadable } from "common/utils/manipulateString";
 
 // i18n
 import { withTranslation } from "react-i18next";
@@ -79,12 +80,13 @@ function SystemEmailsList(props){
     },
     {
       dataField: "action",
-      text: props.t("Action Type")
+      text: props.t("Action Type"),
+      formatter: (val) => { return capitalToReadable(val.action) }
     }, 
     {
       dataField: "content",
       text: props.t("Default Subject"),
-      formatter: (val) => {return val.content["en-gb"] && val.content["en-gb"].subject || " "}
+      formatter: (val) => {return val.content["en"] && val.content["en"].subject || " "}
     },
     {
       dataField: "isActive",
@@ -198,9 +200,9 @@ function SystemEmailsList(props){
                     >
                       <Table
                         id="tech-companies-1"
-                        className="table "
+                        className="table  table-hover "
                       >
-                        <Thead>
+                        <Thead className="text-center table-light" >
                           <Tr>
                             {columns.map((column, index) =>
                               <Th data-priority={index} key={index}>{column.text}</Th>

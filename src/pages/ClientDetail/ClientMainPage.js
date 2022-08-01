@@ -14,9 +14,9 @@ import ClientTransactions from "./Transactions/ClientTransactions";
 import ClientWallets from "./Wallets/ClientWallets";
 import OrderList from "./orders/OrdersList";
 import Documents from "./Documents/Documents";
-import Loader from "components/Common/Loader";
 import ClientDetailsHeader from "./ClientDetailsHeader";
 import { fetchClientDetails } from "store/client/actions";
+import { fetchDictionaryStart } from "store/dictionary/actions";
 
 function ClientMainPage(props) {
   const pathParams = useParams();
@@ -27,7 +27,8 @@ function ClientMainPage(props) {
 
   // getting client details to check if client exists using their Id
   const getClientDetails = async(clientId) => {
-    dispatch(fetchClientDetails(clientId)); 
+    dispatch(fetchClientDetails(clientId));
+     
   };
 
   const tabsArr = [
@@ -42,24 +43,20 @@ function ClientMainPage(props) {
   ];
   useEffect(()=>{
     getClientDetails(clientId);
+    dispatch(fetchDictionaryStart());
   }, []);
 
   return (
     <React.Fragment>
-      {props.clientProfileloading && 
+      {/* {props.clientProfileloading && 
         <>
-          <div className="page-content">
-            <div className="container-fluid">
-              {/* TODO make this loader centered */}
-              <Loader />
-            </div>
-          </div>
+          <Loader />
         </>
-      }
+      } */}
       {props.clientDetails && 
         <div className="page-content">
-          <ClientDetailsHeader clientId={clientId} clientDetails={props.clientDetails} />
           <div className="container-fluid">
+            <ClientDetailsHeader clientId={clientId} clientDetails={props.clientDetails} />
             {/* components to switch from one to the other
               1-details (default) 2-bank 3-transactions 4-wallets 
               and so on 
