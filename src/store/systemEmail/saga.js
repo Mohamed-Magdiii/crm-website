@@ -88,6 +88,7 @@ function * editSystemEmail(params){
       data,
       id: params.id
     }));
+    yield delay(2000);
     yield put(editSystemEmailClear());
     yield put(showSuccessNotification("System email updated successsfully"));
   } catch (error){
@@ -141,7 +142,7 @@ function * changeSystemEmailStatus(params) {
       id: params.payload.id,
       index: params.payload.index,
     }));
-    yield put(showSuccessNotification("System email updated successfully"));
+    yield put(showSuccessNotification("System email status updated successfully"));
   }
   catch (error){
     yield put(changeSystemEmailStatusDone({
