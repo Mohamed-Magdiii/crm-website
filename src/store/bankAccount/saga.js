@@ -1,5 +1,5 @@
 import {
-  call, put, takeEvery, delay
+  call, put, takeEvery
 } from "redux-saga/effects";
 import * as clientApi from "apis/bankAccount";
 import {
@@ -59,7 +59,7 @@ function * editBankAccount(params){
   try {
     const data = yield call(clientApi.updateBankAccount, params);
     yield put(editBankAccountSuccess(data));
-    yield delay(2000);
+    yield put(showSuccessNotification("Bank account updated successfully"));
     yield put(editBankAccountClear());
   } catch (error){
     yield put(editBankAccountFail({ error: error.message }));

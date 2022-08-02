@@ -76,7 +76,18 @@ function ClientAddBankAccountModal(props){
                 placeholder={props.t("Enter Account Number")}
                 type="text"
                 errorMessage={props.t("Enter Account Number")}
-                validate={{ required: { value: true } }}
+                validate={
+                  { 
+                    required: { 
+                      value: true, 
+                      errorMessage: "Enter account number" 
+                    },
+                    number: {
+                      value: true,
+                      errorMessage: "Account number must be a number"
+                    }
+                  }
+                }
               />
             </div>
 
@@ -135,10 +146,6 @@ function ClientAddBankAccountModal(props){
             <i className="mdi mdi-block-helper me-2"></i>
             {/* TODO this needs to be handled in translation */}
             {props.t(JSON.stringify(props.addErrorDetails))}
-          </UncontrolledAlert>}
-          {props.addSuccess && <UncontrolledAlert color="success">
-            <i className="mdi mdi-check-all me-2"></i>
-            {props.t("Bank account added successfully")} !!!
           </UncontrolledAlert>}
         </ModalBody>
       </Modal>
