@@ -25,7 +25,8 @@ import {
   UPDATE_EMPLOYMENT_INFO_FAIL,
   UPDATE_FINANCIAL_INFO_FAIL,
   CHANGE_PASSWORD_START,
-  RESET_PASSWORD_CLEAR
+  RESET_PASSWORD_CLEAR,
+  SEND_EMAIL_TO_RESET_PASSWORD_START, 
 } from "./actionsType";
 
 export const fetchClientsStart = (params = {})=>{
@@ -185,5 +186,11 @@ export const resetPasswordStart = (params)=>{
 export const resetPasswordClear = ()=>{
   return {
     type:RESET_PASSWORD_CLEAR
+  };
+};
+export const emailToResetPasswordStart = (email)=>{
+  return {
+    type:SEND_EMAIL_TO_RESET_PASSWORD_START,
+    payload:email
   };
 };

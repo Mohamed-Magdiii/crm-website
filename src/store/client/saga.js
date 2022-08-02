@@ -31,7 +31,8 @@ import {
   ASSIGN_AGENT_START,
   UPDATE_EMPLOYMENT_INFO_START,
   UPDATE_FINANCIAL_INFO_START,
-  CHANGE_PASSWORD_START
+  CHANGE_PASSWORD_START,
+  SEND_EMAIL_TO_RESET_PASSWORD_START
 } from "./actionsType"; 
 import { showSuccessNotification, showErrorNotification } from "store/notifications/actions";
 function *fetchClients(params) {
@@ -153,6 +154,17 @@ function * changePassword({ payload }){
     yield put(showErrorNotification("Error Happend while changing password"));
   }
 }
+function * sendEmail({ payload }){
+  try {
+    const data = yield call(clientApi.sendingEmailWithPasswordResetLink, payload);
+    const { status } = data;
+    if (status){
+      yield put(showSuccessNotification("Email has been sent successfully"));
+    }
+  } catch (error){
+    yield put(showErrorNotification("Error happened while sending mail"));
+  }
+}
 function * clientSaga() {
   yield takeEvery(FETCH_CLIENTS_START, fetchClients);
   yield takeEvery(ADD_NEW_CLIENT, addNewClient);
@@ -163,6 +175,7 @@ function * clientSaga() {
   yield takeEvery(UPDATE_FINANCIAL_INFO_START, updateClientFinancialInfo);
   yield takeEvery(UPDATE_EMPLOYMENT_INFO_START, updateClientEmploymentInfo);
   yield takeEvery(CHANGE_PASSWORD_START, changePassword);
+  yield takeEvery(SEND_EMAIL_TO_RESET_PASSWORD_START, sendEmail);
 }
 
 export default clientSaga;

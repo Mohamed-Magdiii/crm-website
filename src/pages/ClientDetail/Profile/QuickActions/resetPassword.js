@@ -8,20 +8,16 @@ import {
   ModalBody,
 } from "reactstrap";
 import { AvForm, AvField } from "availity-reactstrap-validation";
-import { resetPasswordStart } from "store/client/actions";
+import { emailToResetPasswordStart } from "store/client/actions";
 
 function resetPassword(props){
   const [addModal, setAddModal] = useState(false);
-  const { clientId } = props;
   const toggleAddModal = ()=>{
     setAddModal(!addModal);
   };
   const dispatch = useDispatch();
   const handleChangePassword = (e, values)=>{
-    dispatch(resetPasswordStart({
-      id:clientId,
-      values
-    }));
+    dispatch(emailToResetPasswordStart(values));
   };
   useEffect(()=>{
     if (props.clearResetPasswordModal && addModal){
@@ -47,22 +43,16 @@ function resetPassword(props){
           >
             
             <AvField 
-              type="password" 
-              label="New Password"
-              name="password"
+              type="email" 
+              label="Client Email"
+              name="email"
               validate= {{
-                required: { value : true },
-                pattern :{ 
-                  // eslint-disable-next-line no-useless-escape
-                  value:"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$",
-                  errorMessage :"Must contain at least eight characters, at least one number and both lower and uppercase letters and special characters"
-                }
-                
+                required: { value : true }, 
               }
               }
             />
             <div className="text-center p-2">
-              <Button type="submit" disabled= {props.disableResetPasswordButton} color="primary">Reset Password</Button>
+              <Button type="submit" disabled= {props.disableResetPasswordButton} color="primary">Send Email</Button>
             </div>
            
           </AvForm>
