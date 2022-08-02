@@ -27,6 +27,7 @@ import {
   CHANGE_PASSWORD_START,
   RESET_PASSWORD_CLEAR,
   SEND_EMAIL_TO_RESET_PASSWORD_START, 
+  SEND_EMAIL_MODAL_CLEAR
 } from "./actionsType";
 
 export const fetchClientsStart = (params = {})=>{
@@ -192,5 +193,10 @@ export const emailToResetPasswordStart = (email)=>{
   return {
     type:SEND_EMAIL_TO_RESET_PASSWORD_START,
     payload:email
+  };
+};
+export const sendEmailModalClear = ()=>{
+  return {
+    type:SEND_EMAIL_MODAL_CLEAR
   };
 };

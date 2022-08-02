@@ -20,7 +20,8 @@ import {
   updateEmploymentInfoFail,
   updateFinancialInfoFail,
   resetPasswordClear,
-  editClientDetailsFail
+  editClientDetailsFail,
+  sendEmailModalClear
 } from "./actions";
 import { 
   ADD_NEW_CLIENT, 
@@ -160,6 +161,8 @@ function * sendEmail({ payload }){
     const { status } = data;
     if (status){
       yield put(showSuccessNotification("Email has been sent successfully"));
+      delay(2000);
+      yield put(sendEmailModalClear());
     }
   } catch (error){
     yield put(showErrorNotification("Error happened while sending mail"));

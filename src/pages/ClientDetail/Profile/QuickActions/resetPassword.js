@@ -52,7 +52,7 @@ function resetPassword(props){
               }
             />
             <div className="text-center p-2">
-              <Button type="submit" disabled= {props.disableResetPasswordButton} color="primary">Send Email</Button>
+              <Button type="submit" disabled= {props.disableSendEmailButton} color="primary">Send Email</Button>
             </div>
            
           </AvForm>
@@ -65,7 +65,7 @@ function resetPassword(props){
 const mapStateToProps = (state)=>(
   {
     clearResetPasswordModal: state.clientReducer.clearResetPasswordModal,
-    disableResetPasswordButton : state.clientReducer.disableResetPasswordButton
+    disableSendEmailButton : state.clientReducer.disableSendEmailButton
   }
 )
   

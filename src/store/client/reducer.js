@@ -16,7 +16,9 @@ import {
   UPDATE_FINANCIAL_INFO_FAIL,
   UPDATE_EMPLOYMENT_INFO_FAIL,
   RESET_PASSWORD_CLEAR,
-  CHANGE_PASSWORD_START
+  CHANGE_PASSWORD_START,
+  SEND_EMAIL_TO_RESET_PASSWORD_START,
+  SEND_EMAIL_MODAL_CLEAR
 } from "./actionsType";
 
 const initalState = {
@@ -219,10 +221,24 @@ export const clientReducer = (state = initalState, action)=>{
       state = {
         ...state,
         clearResetPasswordModal:true,
-        disableResetPasswordButton:false
+        disableResetPasButton:false
       };
       break;
-
+    case SEND_EMAIL_TO_RESET_PASSWORD_START:
+      state = { 
+        ...state,
+        disableSendEmailButton:true,
+        clearResetPasswordModal:false,
+      };
+      
+      break;
+    case SEND_EMAIL_MODAL_CLEAR:
+      state = {
+        ...state,
+        disableSendEmailButton:false,
+        clearResetPasswordModal:true
+      };
+      break;
     // TODO check the error message with the backend
     case EDIT_CLIENT_DETAILS_FAIL:
       state = { 
