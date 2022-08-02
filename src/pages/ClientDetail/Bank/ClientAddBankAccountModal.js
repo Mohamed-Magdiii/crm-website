@@ -97,8 +97,22 @@ function ClientAddBankAccountModal(props){
                 label={props.t("Swift code")}
                 placeholder={props.t("Enter Swift Code")}
                 type="text"
-                errorMessage={props.t("Enter Swift Code")}
-                validate={{ required: { value: true } }}
+                validate={
+                  { 
+                    required: { 
+                      value: true,
+                      errorMessage: "Enter swift code" 
+                    },
+                    minLength: {
+                      value: 8,
+                      errorMessage: "Invalid swift code"
+                    },
+                    pattern: {
+                      value: "([^0-9]|[^A-Z])+",
+                      errorMessage: "Invalid swift code"
+                    }
+                  }
+                }
               />
             </div>
 
