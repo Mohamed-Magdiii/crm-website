@@ -128,7 +128,11 @@ function ClientAddBankAccountModal(props){
                     pattern: {
                       value: "^[A-Z][A-Z]", 
                       errorMessage: "Invalid IBAN"
-                    } 
+                    },
+                    minLength: {
+                      value: 13,
+                      errorMessage: "Invalid IBAN"
+                    }
                   }
                 }
               />
