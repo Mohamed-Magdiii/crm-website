@@ -84,7 +84,7 @@ function ClientAddBankAccountModal(props){
                     },
                     number: {
                       value: true,
-                      errorMessage: "Account number must be a number"
+                      errorMessage: "Invalid account number"
                     }
                   }
                 }
