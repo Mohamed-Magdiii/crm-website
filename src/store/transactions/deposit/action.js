@@ -49,16 +49,16 @@ export const modalClear = (data)=>{
     payload:data
   };
 };
-export const depositApproveStart = (id)=>{
+export const depositApproveStart = (payload)=>{
   return {
     type:DEPOSIT_APPROVE,
-    payload:{ id }
+    payload:payload
   };
 };
-export const depositRejectStart = (id)=>{
+export const depositRejectStart = (payload)=>{
   return {
     type:DEPOSIT_REJECT,
-    payload: { id }
+    payload: payload
   };
 };
 export const transactionStateChange = (data)=>{

@@ -50,16 +50,16 @@ export const modalClear = (data)=>{
     payload:data
   };
 };
-export const withdrawApproveStart = (id)=>{
+export const withdrawApproveStart = (payload)=>{
   return {
     type:WITHDRAW_APPROVE,
-    payload:{ id }
+    payload:payload 
   };
 };
-export const withdrawRejectStart = (id)=>{
+export const withdrawRejectStart = (payload)=>{
   return {
     type:WITHDRAW_REJECT,
-    payload:{ id }
+    payload: payload 
   };
 };
 export const withdrawStatusChangeSuccess = (data)=>{

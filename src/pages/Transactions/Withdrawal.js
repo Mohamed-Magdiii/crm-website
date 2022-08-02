@@ -142,12 +142,18 @@ function Withdrawal(props){
       type:selected
     }));
   };
-  const withdrawApprove = (id)=>{
-    dispatch(withdrawApproveStart(id));
+  const withdrawApprove = (withdraw)=>{
+    dispatch(withdrawApproveStart({
+      id:withdraw._id,
+      customerId:withdraw.customerId._id 
+    }));
     setShowNotifaction(true);
   };
-  const withdrawReject = (id)=>{
-    dispatch(withdrawRejectStart(id));
+  const withdrawReject = (withdraw)=>{
+    dispatch(withdrawRejectStart({
+      id:withdraw._id,
+      customerId:withdraw.customerId._id 
+    }));
     setShowNotifaction(true);
   };
   const closeNotifaction = () => {
@@ -216,7 +222,7 @@ function Withdrawal(props){
                                 <Td key={`${rowIndex}-${index}`} className = "pt-4">
                                   { column.dataField === "checkbox" ? <input className= "withdraw-checkbox"  type="checkbox"/> : ""}
                                   { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
-                                  {column.dataField === "dropdown" ? <CustomDropdown permission={props.withdrawalsPermissions.actions ? true : false} id={row._id} status={row.status} approve={withdrawApprove} reject={withdrawReject}/> : ""}
+                                  {column.dataField === "dropdown" ? <CustomDropdown permission={props.withdrawalsPermissions.actions ? true : false} id={row._id} status={row.status} approve={()=>{withdrawApprove(row)}} reject={()=>{withdrawReject(row)}}/> : ""}
                                 </Td>
                               )}
                             </Tr>

@@ -56,9 +56,9 @@ function * addDeposit({ payload:{ deposit } }){
   }
   
 }
-function* depositApprove({ payload:{ id } }){
+function* depositApprove({ payload:{ id, customerId } }){
   try  {
-    const data = yield call(aprroveDeposit, id);
+    const data = yield call(aprroveDeposit, id, customerId);
     const { result } = data;
     yield put(transactionStateChange(result));
   } catch (error){
@@ -67,9 +67,9 @@ function* depositApprove({ payload:{ id } }){
  
  
 }
-function * depositReject({ payload: { id } }){
+function * depositReject({ payload:{ id, customerId } }){
   
-  const data = yield call(rejectDeposit, id);
+  const data = yield call(rejectDeposit, id, customerId);
   const { result } = data;
   yield put(transactionStateChange(result));
  

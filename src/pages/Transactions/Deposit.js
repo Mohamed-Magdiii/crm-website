@@ -145,12 +145,18 @@ function Deposit(props){
     
     
   };
-  const depositApprove = (id)=>{
-    dispatch(depositApproveStart(id));
+  const depositApprove = (deposit)=>{
+    dispatch(depositApproveStart({
+      id:deposit._id,
+      customerId:deposit.customerId._id 
+    }));
     setShowNotifaction(true);
   };
-  const depositReject = (id)=>{
-    dispatch(depositRejectStart(id));
+  const depositReject = (deposit)=>{
+    dispatch(depositRejectStart({
+      id:deposit._id,
+      customerId:deposit.customerId._id 
+    }));
     setShowNotifaction(true);
   };
   const closeNotifaction = () => {
@@ -226,7 +232,8 @@ function Deposit(props){
                                 <Td key={`${rowIndex}-${index}`} className= "pt-4">
                                   { column.dataField === "checkbox" ? <input className = "deposit-checkbox" type="checkbox"/> : ""}
                                   { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
-                                  {column.dataField === "dropdown" ? <CustomDropdown  permission={props.depositsPermissions.actions ? true : false} id={row._id} status={row.status} approve={depositApprove} reject={depositReject} /> : ""}
+                                  {column.dataField === "dropdown" ? <CustomDropdown  permission={props.depositsPermissions.actions ? true : false}
+                                    id={row._id} status={row.status} approve={()=>{depositApprove(row)}} reject={()=>{depositReject(row)}} /> : ""}
                                 </Td>
                               )}
                             </Tr>

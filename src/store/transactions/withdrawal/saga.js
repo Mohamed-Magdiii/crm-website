@@ -58,9 +58,9 @@ function * makeWithdrawal({ payload:{ withdrawal } }){
   }
 
 }
-function * WithdrawReject ({ payload : { id } }){
+function * WithdrawReject ({ payload : { id, customerId } }){
   try {
-    const data = yield call(rejectWithdrawal, id);
+    const data = yield call(rejectWithdrawal, id, customerId);
     const { result } = data;
     yield put(withdrawStatusChangeSuccess(result));
   } catch (error){
@@ -68,11 +68,11 @@ function * WithdrawReject ({ payload : { id } }){
   }
 
 }
-function * withdrawApprove({ payload : { id } }){
+function * withdrawApprove({ payload : { id, customerId } }){
   try {
     
-    const data = yield call(approveWithdrawal, id);
-    
+    const data = yield call(approveWithdrawal, id, customerId);
+  
     const { result } = data;
     yield put(withdrawStatusChangeSuccess(result));
   } catch (error){
