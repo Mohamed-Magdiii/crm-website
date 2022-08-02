@@ -64,3 +64,10 @@ export const resetPassowrd = async (payload)=>{
   }
   return data;
 };
+export const sendingEmailWithPasswordResetLink = async(payload)=>{
+  const data = await axiosHelper.post("/clients/send-mail", payload);
+  if (data.message == "Error Sending email"){
+    throw new Error("Error Sending Email");
+  }
+  return data;
+};
