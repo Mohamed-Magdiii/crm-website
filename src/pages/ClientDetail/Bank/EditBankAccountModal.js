@@ -76,7 +76,7 @@ function BankAccountEditModal(props){
                       errorMessage: "Invalid swift code"
                     },
                     pattern: {
-                      value: "([^0-9]|[^A-Z])+",
+                      value: "([A-Z][0-9])",
                       errorMessage: "Invalid swift code"
                     }
                   }

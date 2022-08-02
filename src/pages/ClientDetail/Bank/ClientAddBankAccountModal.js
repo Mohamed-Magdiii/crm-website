@@ -107,8 +107,12 @@ function ClientAddBankAccountModal(props){
                       value: 8,
                       errorMessage: "Invalid swift code"
                     },
+                    maxLength: {
+                      value: 8,
+                      errorMessage: "Invalid seift code"
+                    },
                     pattern: {
-                      value: "([^0-9]|[^A-Z])+",
+                      value: "([A-Z][0-9])",
                       errorMessage: "Invalid swift code"
                     }
                   }
