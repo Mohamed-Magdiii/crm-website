@@ -12,6 +12,7 @@ import { emailToResetPasswordStart } from "store/client/actions";
 
 function resetPassword(props){
   const [addModal, setAddModal] = useState(false);
+  const { clientDetails } = props;
   const toggleAddModal = ()=>{
     setAddModal(!addModal);
   };
@@ -46,6 +47,7 @@ function resetPassword(props){
               type="email" 
               label="Client Email"
               name="email"
+              value={clientDetails?.email ? clientDetails.email : ""}
               validate= {{
                 required: { value : true }, 
               }

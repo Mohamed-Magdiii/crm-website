@@ -575,7 +575,7 @@ function ClientDetails(props) {
                         <p className="quick-actions-heading">Client</p>
                         <div className="btn-container">
                           <PortalAccess clientDetails={props.clientDetails} clientId={clientId}/>
-                          <ResetPassword clientId = {clientId}/>
+                          <ResetPassword clientDetails = {props.clientDetails} clientId = {clientId}/>
                         </div>
                       </CardBody>
                       <CardBody className="quick-actions-card">
