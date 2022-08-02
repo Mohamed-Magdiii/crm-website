@@ -13,9 +13,9 @@ import {
   AvForm, AvField
 } from "availity-reactstrap-validation";
 
-import { editBankAccount } from "store/bankAccount/actions";
 // i18n
 import { withTranslation } from "react-i18next";
+import { editBankAccount } from "store/bankAccount/actions";
 
 function BankAccountEditModal(props){
   const { open, selectedBankAccount = {}, onClose } = props;
@@ -76,7 +76,7 @@ function BankAccountEditModal(props){
                 label={props.t("IBAN")}
                 placeholder={props.t("Enter IBAN")}
                 type="text"
-                value={selectedBankAccount.swiftCode}
+                value={selectedBankAccount.iban}
                 errorMessage={props.t("Enter IBAN")}
                 validate={
                   { 

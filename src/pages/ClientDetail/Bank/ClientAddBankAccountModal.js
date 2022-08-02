@@ -119,8 +119,18 @@ function ClientAddBankAccountModal(props){
                 label={props.t("IBAN")}
                 placeholder={props.t("Enter IBAN")}
                 type="text"
-                errorMessage={props.t("Enter IBAN")}
-                validate={{ required: { value: true } }}
+                validate={
+                  { 
+                    required: { 
+                      value: true,
+                      errorMessage: "Enter IBAN"
+                    },
+                    pattern: {
+                      value: "^[A-Z][A-Z]", 
+                      errorMessage: "Invalid IBAN"
+                    } 
+                  }
+                }
               />
             </div>
 
