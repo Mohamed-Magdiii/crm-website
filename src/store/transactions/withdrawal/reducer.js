@@ -46,8 +46,8 @@ const withdrawalReducer = (state = { initalState }, action)=>{
     case "MAKE_WITHDRWAL_SUCCESS":
       state = {
         ...state,
-        withdrawals:[{ ...action.payload.withdrawal }, ...state.withdrawals],
-        totalDocs:state.totalDocs + 1,
+        // withdrawals:[{ ...action.payload.withdrawal }, ...state.withdrawals],
+        // totalDocs:state.totalDocs + 1,
         withdrawResponseMessage:action.payload.withdrawal.status,
 
       };

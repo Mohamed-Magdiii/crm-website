@@ -35,7 +35,7 @@ function Withdrawal(props){
 
   useEffect(()=>{
     loadWithdrawals(1, sizePerPage);
-  }, [sizePerPage, 1, selected]);
+  }, [sizePerPage, 1, selected, props.withdrawResponseMessage]);
   
   const handleSearchInput = (e)=>{
   
@@ -256,7 +256,8 @@ const mapStateToProps = (state)=>({
   nextPage: state.withdrawalReducer.nextPage,
   pagingCounter: state.withdrawalReducer.pagingCounter,
   prevPage: state.withdrawalReducer.prevPage,
-  withdrawalsPermissions: state.Profile.withdrawalsPermissions || {}
+  withdrawalsPermissions: state.Profile.withdrawalsPermissions || {},
+  withdrawResponseMessage:state.withdrawalReducer.withdrawResponseMessage
 }
 );
 export default connect(mapStateToProps, null)(withTranslation()(Withdrawal));

@@ -125,8 +125,9 @@ function Deposit(props){
   ];
   
   useEffect(()=>{
-    loadDeposits(1, sizePerPage);
-  }, [sizePerPage, 1, searchInput, selected]);
+    if (!detailsModal)
+      loadDeposits(1, sizePerPage);
+  }, [sizePerPage, 1, searchInput, selected, props.depositResponseMessage]);
   
   const handleSearchInput = (e)=>{
   
@@ -265,6 +266,7 @@ const mapStateToProps = (state) => ({
   nextPage: state.depositReducer.nextPage,
   pagingCounter: state.depositReducer.pagingCounter,
   prevPage: state.depositReducer.prevPage,
-  depositsPermissions : state.Profile.depositsPermissions || {}
+  depositsPermissions : state.Profile.depositsPermissions || {},
+  depositResponseMessage:state.depositReducer.depositResponseMessage
 });
 export default connect(mapStateToProps, null)(withTranslation()(Deposit));

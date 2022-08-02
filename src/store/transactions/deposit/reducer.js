@@ -39,14 +39,15 @@ const depositReducer = (state = { initalState }, action)=>{
         ...state,
         disableAddButton: true,
         modalClear:false,
+        depositResponseMessage:""
       };
       break;
     case "ADD_DEPOSIT_SUCCESS":
       
       state = {
         ...state,
-        deposits:[{ ...action.payload.deposit }, ...state.deposits],
-        totalDocs:state.totalDocs + 1,
+        // deposits:[{ ...action.payload.deposit }, ...state.deposits],
+        // totalDocs:state.totalDocs + 1,
         depositResponseMessage:action.payload.deposit.status, 
       }; 
       break;
