@@ -48,7 +48,7 @@ function OrderProfitList(props) {
     {
       dataField: "amount",
       text: props.t("amount"),
-      formatter:(val)=>(val?.amount?.$numberDecimal)
+      formatter:(val)=>(val?.amount?.$numberDecimal ? val.amount.$numberDecimal : val.amount)
     },
     {
       dataField: "profit",
@@ -63,12 +63,12 @@ function OrderProfitList(props) {
     {
       dataField: "price",
       text: props.t("price"),
-      formatter:(val)=>(`${val.price.$numberDecimal}`)
+      formatter:(val)=>(`${val?.price?.$numberDecimal ? val.price.$numberDecimal : val.price}`)
     },
     {
       dataField: "mPrice",
       text: props.t("M Price"),
-      formatter:(val)=>(`${val.mPrice.$numberDecimal}`)
+      formatter:(val)=>(`${val?.mPrice?.$numberDecimal ? val.mPrice.$numberDecimal : val.mPrice}`)
     },
   ];
 
