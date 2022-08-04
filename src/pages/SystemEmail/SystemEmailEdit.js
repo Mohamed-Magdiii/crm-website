@@ -18,8 +18,7 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
 import Select from "react-select";
-import { useHistory } from "react-router-dom";
-
+import { useHistory, useParams } from "react-router-dom";
 
 // i18n
 import { withTranslation } from "react-i18next"; 
@@ -27,6 +26,14 @@ import BackConfirmationModal from "components/Common/BackConfirmationModal";
 import { editSystemEmailContent, fetchSystemEmailById } from "store/systemEmail/actions";
 
 function SystemEmailEdit(props){
+  const { id } = useParams();
+  const dispatch = useDispatch();
+
+  // fetch system email by id handler to show new updates with every new successful update call 
+  const handleSystemEmailFetchById = (e, systemEmailId) => {
+    dispatch(fetchSystemEmailById(systemEmailId));
+  };
+
   // two states used to check if subject or content were changed
   const [isSubjectChanged, setIsSubjectChanged] = useState(false);
   const [isContentChanged, setIsContentChanged] = useState(false);
@@ -56,17 +63,11 @@ function SystemEmailEdit(props){
     setSelectedLanguage(selectedLanguageVar);
   };
   
-  const dispatch = useDispatch();
   const handleSystemEmailEdit = (e, values) => {
     dispatch(editSystemEmailContent({
       id: role._id,
       values
     }));
-  };
-
-  // fetch system email by id handler to show new updates with every new successful update call 
-  const handleSystemEmailFetchById = (e, systemEmailId) => {
-    dispatch(fetchSystemEmailById(systemEmailId));
   };
 
   // rich editor handler 
@@ -105,31 +106,55 @@ function SystemEmailEdit(props){
   };
 
   // content temp value handler
-  const contentTempInitialValues = availableLanguages.map((item) => (
-    {
-      language: item,
-      tempContent: ""
-    }
-  ));
-  const [contentTempValue, setContentempValue] = useState(contentTempInitialValues);
-  const contentTempValueHandler = (e) => {
-    const blocksFromHTML = htmlToDraft(`<p>${e.blocks[0].text}</p>`);
-    const { contentBlocks, entityMap } = blocksFromHTML;
-    const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
-    const editorState = EditorState.createWithContent(contentState); 
+  // const contentTempInitialValues = availableLanguages.map((item) => (
+  //   {
+  //     language: item,
+  //     tempContent: ""
+  //   }
+  // ));
+  // const [contentTempValue, setContentempValue] = useState(contentTempInitialValues);
+  // const contentTempValueHandler = (e) => {
+  //   const blocksFromHTML = htmlToDraft(`<p>${e.blocks[0].text}</p>`);
+  //   const { contentBlocks, entityMap } = blocksFromHTML;
+  //   const tempContentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+  //   const tempEditorState = EditorState.createWithContent(tempContentState); 
+  //   const updatedTempContent = [];
+  //   for (let item of contentTempValue){
+  //     if (item.language === selectedLanguage.value){
+  //       item.tempContent = tempEditorState;
+  //       updatedTempContent.push(item);
+  //     } else {
+  //       updatedTempContent.push(item);
+  //     }
+  //   }
+  //   setIsContentChanged(true);
+  //   setContentempValue(updatedTempContent);
+  // };
+  // const contentTempInitialValues = availableLanguages.map((item) => (
+  //   {
+  //     language: item,
+  //     tempContent: ""
+  //   }
+  // ));
+  // const [contentTempValue, setContentempValue] = useState(contentTempInitialValues);
+  // const contentTempValueHandler = (e) => {
+  //   const blocksFromHTML = htmlToDraft(`<p>${e.blocks[0].text}</p>`);
+  //   const { contentBlocks, entityMap } = blocksFromHTML;
+  //   const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+  //   const editorState = EditorState.createWithContent(contentState); 
     
-    const updatedTempContent = [];
-    for (let item of contentTempValue){
-      if (item.language === selectedLanguage.value){
-        item.tempContent = editorState;
-        updatedTempContent.push(item);
-      } else {
-        updatedTempContent.push(item);
-      }
-    }
-    setIsContentChanged(true);
-    setContentempValue(updatedTempContent);
-  };
+  //   const updatedTempContent = [];
+  //   for (let item of contentTempValue){
+  //     if (item.language === selectedLanguage.value){
+  //       item.tempContent = editorState;
+  //       updatedTempContent.push(item);
+  //     } else {
+  //       updatedTempContent.push(item);
+  //     }
+  //   }
+  //   setIsContentChanged(true);
+  //   setContentempValue(updatedTempContent);
+  // };
 
   // back button handler
   const history = useHistory();
@@ -148,6 +173,10 @@ function SystemEmailEdit(props){
   const modalBackConfirmationButton = () => {
     history.push("/system-emails");
   };
+
+  useEffect((e) => {
+    handleSystemEmailFetchById(e, id);
+  }, []);
 
   const copyToClipboard = (str) => {
     const el = document.createElement("textarea");
@@ -237,13 +266,10 @@ function SystemEmailEdit(props){
                 toolbarClassName="toolbarClassName"
                 wrapperClassName="wrapperClassName"
                 editorClassName="editorClassName"
-                editorState={
-                  editorState || 
-                  contentTempValue.find((item) => (item.language === selectedLanguage.value)).tempContent
-                }
+                editorState={ editorState }
                 onEditorStateChange={setEditorState}
                 placeholder={props.t("Enter Email Content")}
-                onChange={contentTempValueHandler}
+                // onChange={contentTempValueHandler}
               />
               <AvField
                 name="body"
@@ -251,7 +277,7 @@ function SystemEmailEdit(props){
                 type="text"
                 errorMessage={props.t("Enter Email Content")}
                 validate={{ required: { value: true } }}
-                value={draftToHtml(convertToRaw(editorState.getCurrentContent()))}
+                value={ draftToHtml(convertToRaw(editorState.getCurrentContent()))}
                 style={{
                   opacity: 0,
                   height: 0,

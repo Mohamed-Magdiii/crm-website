@@ -58,6 +58,7 @@ function SystemEmailHTMLModal(props){
 
   useEffect(() => {
     handlefetchSystemEmailHTML();
+
   }, [selectedLanguage]);
 
   return (
@@ -110,7 +111,6 @@ function SystemEmailHTMLModal(props){
                 dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(props.systemEmailHtml && props.systemEmailHtml) }}
               />  
             </div>
-          
             {role.permissions && Object.keys(role.permissions).map((permKey, permInd) =>
               <div className="mb-3" key={permInd}>
                 <h6 className="text-capitalize">{permKey}</h6>

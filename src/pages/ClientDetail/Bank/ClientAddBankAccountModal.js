@@ -76,7 +76,18 @@ function ClientAddBankAccountModal(props){
                 placeholder={props.t("Enter Account Number")}
                 type="text"
                 errorMessage={props.t("Enter Account Number")}
-                validate={{ required: { value: true } }}
+                validate={
+                  { 
+                    required: { 
+                      value: true, 
+                      errorMessage: "Enter account number" 
+                    },
+                    number: {
+                      value: true,
+                      errorMessage: "Invalid account number"
+                    }
+                  }
+                }
               />
             </div>
 
@@ -86,8 +97,26 @@ function ClientAddBankAccountModal(props){
                 label={props.t("Swift code")}
                 placeholder={props.t("Enter Swift Code")}
                 type="text"
-                errorMessage={props.t("Enter Swift Code")}
-                validate={{ required: { value: true } }}
+                validate={
+                  { 
+                    required: { 
+                      value: true,
+                      errorMessage: "Enter swift code" 
+                    },
+                    minLength: {
+                      value: 8,
+                      errorMessage: "Invalid swift code"
+                    },
+                    maxLength: {
+                      value: 8,
+                      errorMessage: "Invalid seift code"
+                    },
+                    pattern: {
+                      value: "([A-Z][0-9])",
+                      errorMessage: "Invalid swift code"
+                    }
+                  }
+                }
               />
             </div>
 
@@ -108,8 +137,22 @@ function ClientAddBankAccountModal(props){
                 label={props.t("IBAN")}
                 placeholder={props.t("Enter IBAN")}
                 type="text"
-                errorMessage={props.t("Enter IBAN")}
-                validate={{ required: { value: true } }}
+                validate={
+                  { 
+                    required: { 
+                      value: true,
+                      errorMessage: "Enter IBAN"
+                    },
+                    pattern: {
+                      value: "^[A-Z][A-Z]", 
+                      errorMessage: "Invalid IBAN"
+                    },
+                    minLength: {
+                      value: 13,
+                      errorMessage: "Invalid IBAN"
+                    }
+                  }
+                }
               />
             </div>
 
@@ -135,10 +178,6 @@ function ClientAddBankAccountModal(props){
             <i className="mdi mdi-block-helper me-2"></i>
             {/* TODO this needs to be handled in translation */}
             {props.t(JSON.stringify(props.addErrorDetails))}
-          </UncontrolledAlert>}
-          {props.addSuccess && <UncontrolledAlert color="success">
-            <i className="mdi mdi-check-all me-2"></i>
-            {props.t("Bank account added successfully")} !!!
           </UncontrolledAlert>}
         </ModalBody>
       </Modal>
