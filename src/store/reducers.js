@@ -43,6 +43,8 @@ import MarketPricing from "./marketPricing/reducer";
 import { reducer as notifications } from "react-notification-system-redux";
 import transactionFeeGroupReducer from "./transactionFeeGroups/reducer";
 import documentsReducer from "./documents/reducer";
+import ordersProfitsReducer from "./ordersProfit/reducer";
+import transactionsProfitsReducer from "./transactionsProfit/reducer";
 
 const rootReducer = combineReducers({
   // public
@@ -76,6 +78,8 @@ const rootReducer = combineReducers({
   MarketPricing,
   transactionFeeGroupReducer,
   documentsReducer,
+  ordersProfitsReducer,
+  transactionsProfitsReducer
 });
 
 export default rootReducer;

@@ -219,18 +219,31 @@ const SidebarContent = (props) => {
                   <Link to="/currency-pairs" className={`${!getCurrencyPair ? "d-none" : ""}`}>{props.t("Currency Pairs")}</Link>
                 </li>   
                 <li>
+                  <Link to="/markups" className={`${!getMarkups ? "d-none" : ""}`}>{props.t("Markups")}</Link>
+                </li>   
+
+              </ul>
+            </li> 
+            <li>
+              <Link to="/risk-management" className="has-arrow">
+                <FeatherIcon icon="alert-circle" />
+                <span>{props.t("Risk Management")}</span>
+              </Link>
+              <ul className="sub-menu">
+                <li>
                   <Link to="/fee-groups" className={`${!getFeeGroup ? "d-none" : ""}`}>{props.t("Trading Fee Groups")}</Link>
                 </li>
                 <li>
-                  <Link to="/markups" className={`${!getMarkups ? "d-none" : ""}`}>{props.t("Markups")}</Link>
-                </li>   
-                <li>
-                  {/* <Link to="/transaction-fee-groups" className={`${!getTransactionFeeGroup ? "d-none" : ""}`}>{props.t("Transaction Fee Groups")}</Link> */}
                   <Link to="/transaction-fee-groups" >{props.t("Transaction Fee Groups")}</Link>
-                </li>      
+                </li>
+                <li>
+                  <Link to="/orders-profit" >{props.t("Order Profit")}</Link>
+                </li>    
+                <li>
+                  <Link to="/transactions-profit" >{props.t("Transaction Profit")}</Link>
+                </li>          
               </ul>
-            </li> 
-
+            </li>
             
           </ul> 
         </div>
