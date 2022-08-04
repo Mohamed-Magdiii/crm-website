@@ -20,6 +20,7 @@ import { Link } from "react-router-dom";
 // import { getClientById } from "../../apis/client";
 import { deleteEvent, updateEvent } from "../../apis/reminder";
 import DeleteModal from "components/Common/DeleteModal";
+import { getClientById } from "apis/client";
 
 function EditReminderModal(props) {
   const [errorMassage, seterrorMassage] = useState("");
@@ -31,32 +32,33 @@ function EditReminderModal(props) {
   const [dateCheck, setDateCheck] = useState(90);
   const [deleteModal, setDeleteModal] = useState(false);
   const [reminderId, setReminderId] = useState("");
+  const [clientName, setclientName] = useState("");
 
   const { openEdit, eventReminder = {}, onClose } = props;
   // const [clientName, setclientName] = useState("");
-  const { id, title, createdBy,  status, timeEnd, differentEndReminderAndNow, type } = eventReminder;
+  const { id, title, createdBy, client, status, timeEnd, differentEndReminderAndNow, type } = eventReminder;
   let ReminderEnd = "";
   if (differentEndReminderAndNow < 0) {
     ReminderEnd = differentEndReminderAndNow * -1 + " days ago";
   } else {
     ReminderEnd = "After " + differentEndReminderAndNow + " days";
   }
-  useEffect(() => {  
-    setEditFlag(false);  
+  useEffect(() => {
+    setEditFlag(false);
   }, [openEdit]);
-  // useEffect(() => {
-  //   const clientId = { payload: client };
-  //   getClientById(clientId)
-  //     .then(response => {
-  //       setclientName(response.result?.firstName + " " + response.result?.lastName);
-  //     }
-  //     )
-  //     .catch(() => {
-  //       seterrorMassage("fetch client error");
-  //       showAlert(true, false);
-  //     });
+  useEffect(() => {
+    const clientId = { payload: client };
+    getClientById(clientId)
+      .then(response => {
+        setclientName(response.result?.firstName + " " + response.result?.lastName);
+      }
+      )
+      .catch(() => {
+        seterrorMassage("fetch client error");
+        showAlert(true, false);
+      });
 
-  // }, [client]);
+  }, [client]);
 
 
   const handleValidUpdateSubmit = (e, values) => {
@@ -129,6 +131,7 @@ function EditReminderModal(props) {
                 <Row>
                   <Col className="col-10">
                     <div className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-3">
+                      <h6>{clientName}</h6>
                     </div>
                   </Col>
                   <Col className="col-2">
@@ -216,13 +219,13 @@ function EditReminderModal(props) {
                     label="Status"
                     type="select"
                     name="status"
-                    value={status} 
+                    value={status}
                     validate={{
                       required: {
                         value: true
                       },
-                    }} 
-                  > 
+                    }}
+                  >
                     <option>open</option>
                     <option>ongoing</option>
                     <option>completed</option>

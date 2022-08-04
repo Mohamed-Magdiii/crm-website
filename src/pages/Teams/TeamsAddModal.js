@@ -19,6 +19,7 @@ function TeamsAddModal(props) {
   const [addModal, setAddTeamModal] = useState(false);
   const [managerValue, setManagerValue] = useState(null);
   const [teamError, setTeamError] = useState(false);
+  const [title, setTitle] = useState("");
 
   const dispatch = useDispatch();
 
@@ -28,9 +29,10 @@ function TeamsAddModal(props) {
   const toggleAddModal = () => {
     setAddTeamModal(!addModal);
   };
-  const handleAddTeam = (e, values) => {
+  const handleAddTeam = (e, values = {}) => {
     if (managerValue) {
       values.managerId = managerValue?.value;
+      values.title = title;
       // console.log(managerValue);
       // console.log(values);
       dispatch(addTeam(values));
@@ -51,6 +53,10 @@ function TeamsAddModal(props) {
       }, 1000);
     }
   }, [props.addSuccess]);
+
+  // useEffect(() => {
+  //   console.log(title);
+  // }, [title]);
 
   // const [selectedGroup, setselectedGroup] = useState(null);
 
@@ -74,7 +80,7 @@ function TeamsAddModal(props) {
   return (
     <React.Fragment>
       <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}>
-        <i className="bx bx-plus me-1"></i> Add New
+        <i className="bx bx-plus me-1"></i>  Add New Team
       </Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
@@ -83,9 +89,9 @@ function TeamsAddModal(props) {
         <ModalBody>
           <AvForm
             className="p-4"
-            onValidSubmit={(e, v) => {
-              handleAddTeam(e, v);
-            }}
+            // onValidSubmit={(e, v) => {
+            //   // handleAddTeam(e, v);
+            // }}
           >
             <div className="mb-3">
               <AvField
@@ -93,6 +99,7 @@ function TeamsAddModal(props) {
                 label="Team Title  "
                 placeholder="Enter Team Title"
                 type="text"
+                onChange={(e)=>setTitle(e.target.value)}
                 errorMessage="Enter Team Title"
                 validate={{ required: { value: true } }}
               />
@@ -106,7 +113,7 @@ function TeamsAddModal(props) {
                 value={managerValue}
                 loadOptions={loadPageOptions}
                 onChange={setManagerValue}
-                placeholder="Select Team Manager" 
+                placeholder="Select Team Manager"
                 errorMessage="please select Team Manager"
                 validate={{ required: { value: true } }}
               />
@@ -117,7 +124,7 @@ function TeamsAddModal(props) {
             </div>
 
             <div className="text-center ">
-              <Button type="submit" color="primary" className="">
+              <Button type="submit" onClick={handleAddTeam} color="primary" className="">
                 Add
               </Button>
             </div>

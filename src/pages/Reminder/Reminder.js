@@ -32,6 +32,7 @@ import { showSuccessNotification, showErrorNotification } from "store/notificati
 import { useSelector, useDispatch } from "react-redux";
 import EditReminderModal from "./EditReminderModal";
 import AddReminderModal from "./AddReminderModal";
+import Confirm from "components/Common/Confirm";
 
 const Reminder = () => {
   const dispatch = useDispatch();
@@ -48,7 +49,9 @@ const Reminder = () => {
   // ################################
   const [editModal, setEditReminderModal] = useState(false);
   const [addModal, setAddReminderModal] = useState(false);
+  const [confirmModal, setConfirmModal] = useState(false);
   const [editLoad, setEditLoad] = useState(0);
+  const [eventData, setEventData] = useState({});
 
   // ################################
 
@@ -96,6 +99,11 @@ const Reminder = () => {
   const handleEventClick = (arg) => {
 
     const eventData = arg.event;
+    let dat = new Date(eventData.extendedProps?.timeEnd);
+    dat?.setHours(dat.getHours() + 2);
+    dat = dat.toISOString().replace(/.000Z/, "");
+    // console.log(d?.setHours(d.getHours() + 2));
+    // console.log(d?.setHours(d.getHours() + 2).toISOString().replace(/.000Z/, ""));
     setEvent({
       id: eventData.id,
       title: eventData.title,
@@ -103,7 +111,8 @@ const Reminder = () => {
       client: eventData.extendedProps?.customerId,
       status: eventData.extendedProps?.status,
       type: eventData.extendedProps?.type,
-      timeEnd: eventData.extendedProps?.timeEnd.replace(/.000Z/, ""),
+      // timeEnd: eventData.extendedProps?.timeEnd.replace(/.000Z/, ""),
+      timeEnd: dat,
       // differentStartReminderAndNow: dateDifference(new Date(eventData.extendedProps?.timeStart), new Date()),
       differentEndReminderAndNow: dateDifference(new Date(eventData.extendedProps?.timeEnd), new Date()),
     });
@@ -123,7 +132,7 @@ const Reminder = () => {
   /**
    * On calendar drop event
    */
-  const onDrop = ( ) => { 
+  const onDrop = () => {
     // console.log("modifiedData"); 
   };
   const showNotification = (message = "", err) => {
@@ -134,18 +143,18 @@ const Reminder = () => {
       dispatch(showSuccessNotification(message));
     }
   };
-  const handleEventReceive = (event) => {
+  const update = () => {
     // console.log(event.event._def);
-    const v = new Date(event.event._def.extendedProps.timeEnd);
+    const v = new Date(eventData.event?._def.extendedProps.timeEnd);
     //  console.log(new Date(new Date(event.event._def.extendedProps.timeEnd).setDate(v.getDate() + event.delta.days)).toISOString());
     const newDate = {
-      timeEnd: new Date(new Date(event.event._def.extendedProps.timeEnd).setDate(v.getDate() + event.delta.days)).toISOString(),
-      note: event.event._def.title,
-      status: event.event._def.extendedProps.status,
-      type: event.event._def.extendedProps.type,
+      timeEnd: new Date(new Date(eventData.event?._def.extendedProps.timeEnd).setDate(v.getDate() + eventData.delta.days)).toISOString(),
+      note: eventData.event?._def.title,
+      status: eventData.event?._def.extendedProps.status,
+      type: eventData.event?._def.extendedProps.type,
 
     };
-    updateEvent(event.event._def.publicId, newDate)
+    updateEvent(eventData.event._def.publicId, newDate)
       .then(() => {
         showNotification("date updated successfully");
       }
@@ -154,6 +163,30 @@ const Reminder = () => {
         showNotification("Date updated faild", true);
 
       });
+    setConfirmModal(false);
+  };
+  const handleEventReceive = (event) => {
+    setEventData(event);
+    setConfirmModal(true);
+    // // console.log(event.event._def);
+    // const v = new Date(event.event._def.extendedProps.timeEnd);
+    // //  console.log(new Date(new Date(event.event._def.extendedProps.timeEnd).setDate(v.getDate() + event.delta.days)).toISOString());
+    // const newDate = {
+    //   timeEnd: new Date(new Date(event.event._def.extendedProps.timeEnd).setDate(v.getDate() + event.delta.days)).toISOString(),
+    //   note: event.event._def.title,
+    //   status: event.event._def.extendedProps.status,
+    //   type: event.event._def.extendedProps.type,
+
+    // };
+    // updateEvent(event.event._def.publicId, newDate)
+    //   .then(() => {
+    //     showNotification("date updated successfully");
+    //   }
+    //   )
+    //   .catch(() => {
+    //     showNotification("Date updated faild", true);
+
+    //   });
   };
   return (
     <React.Fragment>
@@ -197,10 +230,16 @@ const Reminder = () => {
                 eventClick={handleEventClick}
                 eventDrop={handleEventReceive}
                 drop={onDrop}
+
               />
             </CardBody>
           </Card>
         </Container>
+        <Confirm
+          onYesClick={update}
+          show={confirmModal}
+          onCloseClick={() => { setConfirmModal(false); setEditLoad(editLoad + 1) }}
+        ></Confirm>
       </div>
     </React.Fragment>
   );

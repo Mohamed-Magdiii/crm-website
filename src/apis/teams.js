@@ -6,11 +6,19 @@ export const getTeams = async ({ payload }) => {
 };
 export const getManagers = async ({ payload }) => {
   const data = await axiosHelper.get(`/users/managers?${qs.stringify(payload)}`);
+  if (data.isError) {
+    throw new Error(data.message);
+  }
+  // return data;
   return data.result;
 };
 
 export const getMembers = async ({ payload }) => {
   const data = await axiosHelper.get(`/users/members?${qs.stringify(payload)}`);
+  if (data.isError) {
+    throw new Error(data.message);
+  }
+  // return data;
   return data.result;
 };
 export const addTeam = async ({ payload }) => {
