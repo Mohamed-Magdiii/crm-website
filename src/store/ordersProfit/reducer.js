@@ -7,7 +7,6 @@ import {
 const initialState = {
   error: "",
   loading: false,
-  orders: [],
 };
   
 const ordersReducer = (state = initialState, action) => {

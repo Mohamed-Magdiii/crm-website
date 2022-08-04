@@ -135,7 +135,7 @@ function OrderProfitList(props) {
                           </Tr>
                         </Thead>
                         <Tbody style={{ fontSize: "13px" }}>
-                          {/* {props.loading && <TableLoader colSpan={4} />}
+                          {props.loading && <TableLoader colSpan={4} />}
                           {!props.loading && props.ordersProfits.map((row, rowIndex) => <Tr key={rowIndex}>
                             {columns.map((column, index) =>
                               <Td key={`${rowIndex}-${index}`}>
@@ -144,7 +144,7 @@ function OrderProfitList(props) {
                               </Td>
                             )}
                           </Tr>
-                          )} */}
+                          )}
                         </Tbody>
                       </Table>
                       <CustomPagination

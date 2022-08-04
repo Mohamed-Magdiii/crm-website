@@ -3,19 +3,15 @@ import {
   useDispatch, connect
 } from "react-redux";
 import {
-  Row, Col, Card, CardBody, CardTitle, CardHeader
+  Row, Col, Card, CardBody, CardTitle, CardHeader, Spinner
 } from "reactstrap";
 import {
   Table, Thead, Tbody, Tr, Th, Td
 } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
-import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
-import { Link } from "react-router-dom";
 import { withTranslation } from "react-i18next";
-import { fetchTransactionFeeGroupStart, deleteTransactionFeeGroupStart } from "store/transactionFeeGroups/actions";
-import DeleteModal from "components/Common/DeleteModal";
-import { fetchOrdersProfits } from "store/ordersProfit/actions";
+
 import { fetchTransactionsProfitsStart } from "store/transactionsProfit/actions";
 
 
@@ -48,7 +44,8 @@ function TransactionProfitList(props) {
         <div className="container-fluid">
           <h2>{props.t("Transactions Profit")}</h2>
           <Row>
-            {props.transactionsProfits.map((transactionProfit, index)=><Col key={index} className="col-12">
+            {props.loading && <Spinner></Spinner>}
+            {!props.loading && props.transactionsProfits.map((transactionProfit, index)=><Col key={index} className="col-12">
               <Card>
                 <CardHeader className="d-flex flex-column gap-3">
                   <div className="d-flex justify-content-between  align-items-center">
@@ -68,7 +65,7 @@ function TransactionProfitList(props) {
                         <Tbody style={{ fontSize: "13px" }}>
                           {Object.keys(transactionProfit.balances).map((key, index) =>
                             <Tr key={index}>
-                              <Td className="d-flex align-items-center justify-content-around">
+                              <Td className="d-flex align-items-center justify-content-between">
                                 <div>
                                   {key}
                                 </div>
@@ -78,7 +75,6 @@ function TransactionProfitList(props) {
                               </Td>
                             </Tr>
                           )}
-                      
                         </Tbody>
                       </Table>
                     </div>
