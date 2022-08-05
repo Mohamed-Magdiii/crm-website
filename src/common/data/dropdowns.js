@@ -19,4 +19,5 @@ export const EMAIL_FIELDS = [
   { label: "Email", value: "email" },
   { label: "Amount", value: "amount" },
   { label: "Currency", value: "currency" },
+  { label: "Reset Link", value: "resetLink" },
 ];

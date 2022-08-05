@@ -18,7 +18,9 @@ import {
   RESET_PASSWORD_CLEAR,
   CHANGE_PASSWORD_START,
   SEND_EMAIL_TO_RESET_PASSWORD_START,
-  SEND_EMAIL_MODAL_CLEAR
+  SEND_EMAIL_MODAL_CLEAR,
+  CLIENT_FORGOT_PASSWORD_START,
+  CLIENT_FORGOT_PASSWORD_CLEAR,
 } from "./actionsType";
 
 const initalState = {
@@ -224,19 +226,19 @@ export const clientReducer = (state = initalState, action)=>{
         disableResetPasButton:false
       };
       break;
-    case SEND_EMAIL_TO_RESET_PASSWORD_START:
+    case CLIENT_FORGOT_PASSWORD_START:
       state = { 
         ...state,
-        disableSendEmailButton:true,
-        clearResetPasswordModal:false,
+        disableSendEmailButton: true,
+        clearResetPasswordModal: false,
       };
       
       break;
-    case SEND_EMAIL_MODAL_CLEAR:
+    case CLIENT_FORGOT_PASSWORD_CLEAR:
       state = {
         ...state,
-        disableSendEmailButton:false,
-        clearResetPasswordModal:true
+        disableSendEmailButton: false,
+        clearResetPasswordModal: true
       };
       break;
     // TODO check the error message with the backend

@@ -21,7 +21,7 @@ import {
   updateFinancialInfoFail,
   resetPasswordClear,
   editClientDetailsFail,
-  sendEmailModalClear
+  clientForgotPasswordClear
 } from "./actions";
 import { 
   ADD_NEW_CLIENT, 
@@ -33,7 +33,8 @@ import {
   UPDATE_EMPLOYMENT_INFO_START,
   UPDATE_FINANCIAL_INFO_START,
   CHANGE_PASSWORD_START,
-  SEND_EMAIL_TO_RESET_PASSWORD_START
+  SEND_EMAIL_TO_RESET_PASSWORD_START,
+  CLIENT_FORGOT_PASSWORD_START
 } from "./actionsType"; 
 import { showSuccessNotification, showErrorNotification } from "store/notifications/actions";
 function *fetchClients(params) {
@@ -157,14 +158,28 @@ function * changePassword({ payload }){
 }
 function * sendEmail({ payload }){
   try {
-    const data = yield call(clientApi.sendingEmailWithPasswordResetLink, payload);
+    // const data = yield call(clientApi.sendingEmailWithPasswordResetLink, payload);
+    // const { status } = data;
+    // if (status){
+    //   yield put(showSuccessNotification("Email has been sent successfully"));
+    //   delay(2000);
+    //   yield put(sendEmailModalClear());
+    // }
+  } catch (error){
+    yield put(showErrorNotification("Error happened while sending mail"));
+  }
+}
+function * forgotPassword({ payload }){
+  try {
+    const data = yield call(clientApi.forgotPassword, payload);
     const { status } = data;
     if (status){
-      yield put(showSuccessNotification("Email has been sent successfully"));
+      yield put(showSuccessNotification("Reset email has been sent successfully"));
       delay(2000);
-      yield put(sendEmailModalClear());
+      yield put(clientForgotPasswordClear());
     }
   } catch (error){
+    yield put(clientForgotPasswordClear());
     yield put(showErrorNotification("Error happened while sending mail"));
   }
 }
@@ -179,6 +194,7 @@ function * clientSaga() {
   yield takeEvery(UPDATE_EMPLOYMENT_INFO_START, updateClientEmploymentInfo);
   yield takeEvery(CHANGE_PASSWORD_START, changePassword);
   yield takeEvery(SEND_EMAIL_TO_RESET_PASSWORD_START, sendEmail);
+  yield takeEvery(CLIENT_FORGOT_PASSWORD_START, forgotPassword);
 }
 
 export default clientSaga;

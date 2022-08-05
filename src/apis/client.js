@@ -64,8 +64,9 @@ export const resetPassowrd = async (payload)=>{
   }
   return data;
 };
-export const sendingEmailWithPasswordResetLink = async(payload)=>{
-  const data = await axiosHelper.post("/clients/send-mail", payload);
+export const forgotPassword = async(payload)=>{
+  const { id, email } = payload;
+  const data = await axiosHelper.post(`/clients/${id}/forgot-password`, { email });
   if (data.message == "Error Sending email"){
     throw new Error("Error Sending Email");
   }

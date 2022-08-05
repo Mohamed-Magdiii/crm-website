@@ -8,7 +8,7 @@ import {
   ModalBody,
 } from "reactstrap";
 import { AvForm, AvField } from "availity-reactstrap-validation";
-import { emailToResetPasswordStart } from "store/client/actions";
+import { clientForgotPasswordStart } from "store/client/actions";
 
 function resetPassword(props){
   const [addModal, setAddModal] = useState(false);
@@ -18,7 +18,12 @@ function resetPassword(props){
   };
   const dispatch = useDispatch();
   const handleChangePassword = (e, values)=>{
-    dispatch(emailToResetPasswordStart(values));
+    // eslint-disable-next-line no-debugger
+    debugger;
+    dispatch(clientForgotPasswordStart({
+      ...values,
+      id: clientDetails._id
+    }));
   };
   useEffect(()=>{
     if (props.clearResetPasswordModal && addModal){
@@ -40,9 +45,7 @@ function resetPassword(props){
             onValidSubmit={ (e, v) => {
               handleChangePassword(e, v);
             }}
-            
           >
-            
             <AvField 
               type="email" 
               label="Client Email"
@@ -50,11 +53,10 @@ function resetPassword(props){
               value={clientDetails?.email ? clientDetails.email : ""}
               validate= {{
                 required: { value : true }, 
-              }
-              }
+              }}
             />
             <div className="text-center p-2">
-              <Button type="submit" disabled= {props.disableSendEmailButton} color="primary">Send Email</Button>
+              <Button type="submit" disabled={props.disableSendEmailButton} color="primary">Send Email</Button>
             </div>
            
           </AvForm>
