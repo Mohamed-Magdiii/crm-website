@@ -55,7 +55,7 @@ function BankAccountEditModal(props){
                 value={selectedBankAccount.bankName}
                 errorMessage={props.t("Enter Bank Name")}
                 validate={{ required: { value: true } }}
-              />
+              />``
             </div>
 
             <div className="mb-3">
