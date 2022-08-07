@@ -35,6 +35,8 @@ const SidebarContent = (props) => {
   const { get: getTeams } = props.teamsPermissions;
   const { get: getSymbols } = props.symbolsPermissions;
   const { get :getCurrencyPair } = props.currencyPairsPermissions;
+  const { get :getOrderProfit } = props.orderProfitPermissions;
+  const { get :getTransactionProfit } = props.transactionProfitPermissions;
   const activateParentDropdown = useCallback(item => {
     item.classList.add("active");
     const parent = item.parentElement;
@@ -237,10 +239,10 @@ const SidebarContent = (props) => {
                   <Link to="/transaction-fee-groups" >{props.t("Transaction Fee Groups")}</Link>
                 </li>
                 <li>
-                  <Link to="/orders-profit" >{props.t("Order Profit")}</Link>
+                  <Link to="/orders-profit" className={`${!getOrderProfit ? "d-none" : ""}`}>{props.t("Order Profit")}</Link>
                 </li>    
                 <li>
-                  <Link to="/transactions-profit" >{props.t("Transaction Profit")}</Link>
+                  <Link to="/transactions-profit" className={`${!getTransactionProfit ? "d-none" : ""}`}>{props.t("Transaction Profit")}</Link>
                 </li>          
               </ul>
             </li>
@@ -270,7 +272,9 @@ const mapStateToProps = (state) => ({
   dictionariesPermissions : state.Profile.dictionariesPermissions || {},
   currencyPairsPermissions : state.Profile.currencyPairsPermissions || {},
   markupsPermissions : state.Profile.markupsPermissions || {},
-  transactionFeeGroupsPermissions : state.Profile.transactionFeeGroupsPermissions || {}
+  transactionFeeGroupsPermissions : state.Profile.transactionFeeGroupsPermissions || {},
+  orderProfitPermissions : state.Profile.orderProfitPermissions || {},
+  transactionProfitPermissions : state.Profile.transactionProfitPermissions || {}
 
 });
 export default withTranslation()(withRouter(connect(mapStateToProps, null) (SidebarContent)));
