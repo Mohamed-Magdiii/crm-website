@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, connect } from "react-redux";
 import {
   Row, Col, Button, CardBody, CardHeader, CardTitle, Card
@@ -27,8 +27,14 @@ import professions from "common/profession";
 import annualIncome from "common/annualIncome";
 import sourceOfFunds from "common/souceOfFunds";
 import { TITLES, YESNO } from "common/data/dropdowns";
-
+import OrdersAddModal from "../orders/OrdersAddModal";
+import ResetPassword from "./QuickActions/resetPassword";
+import ClientAddBankAccountModal from "../Bank/ClientAddBankAccountModal";
+import Transaction from "./QuickActions/Transaction";
+import ConvertWallet from "./QuickActions/Wallet";
+import PortalAccess from "./QuickActions/portalAccess";
 function ClientDetails(props) {
+  const [deleteModal, setDeleteModal] = useState(false);
   const clientId = props.clientId;
   const dispatch = useDispatch();
   const { experience, financialInfo, tradingFeeId, markupId, transactionFeeId, declarations } = props.clientDetails;
@@ -80,7 +86,11 @@ function ClientDetails(props) {
   useEffect(() => {
   }, [props.clientDetails]);
 
-
+  useEffect(()=>{
+    if (!props.showPortalAccessModal && deleteModal){
+      setDeleteModal(false);
+    }
+  },  [props.showPortalAccessModal]);
   return (
     <React.Fragment>
       {(props.clientProfileloading || props.usersLoading || props.dictLoading) && 
@@ -564,30 +574,22 @@ function ClientDetails(props) {
                       <CardBody className="quick-actions-card">
                         <p className="quick-actions-heading">Client</p>
                         <div className="btn-container">
-                          <button type="button" className="btn btn-primary waves-effect waves-light w-100">
-                            Portal Access
-                          </button>
-                          <button type="button" className="btn btn-primary waves-effect waves-light w-100">
-                            Portal password
-                          </button>
+                          <PortalAccess clientDetails={props.clientDetails} clientId={clientId}/>
+                          <ResetPassword clientDetails = {props.clientDetails} clientId = {clientId}/>
                         </div>
                       </CardBody>
                       <CardBody className="quick-actions-card">
                         <p className="quick-actions-heading">Crypto Trading</p>
                         <div className="btn-container">
-                          <button type="button" className="btn btn-primary waves-effect waves-light w-100">
-                            Create wallet
-                          </button>
-                          <button type="button" className="btn btn-primary waves-effect waves-light w-100">
-                            Open order
-                          </button>
+                          <ConvertWallet clientId = {clientId}/>
+                          <OrdersAddModal buttonText = "Open Order"/>
                         </div>
                       </CardBody>
                       <CardBody className="quick-actions-card">
                         <p className="quick-actions-heading">Communication</p>
                         <div className="btn-container">
                           <button type="button" className="btn btn-primary waves-effect waves-light w-100">
-                            Send Email
+                            Send Email 
                           </button>
                         </div>
                       </CardBody>
@@ -597,15 +599,11 @@ function ClientDetails(props) {
                           <button type="button" className="btn btn-primary waves-effect waves-light w-100">
                             Add Note
                           </button>
-                          <button type="button" className="btn btn-primary waves-effect waves-light w-100">
-                            Add bank
-                          </button>
+                          <ClientAddBankAccountModal clientId={clientId} buttonText="Open Bank"/>
                           <button type="button" className="btn btn-primary waves-effect waves-light w-100">
                             Print application
                           </button>
-                          <button type="button" className="btn btn-primary waves-effect waves-light w-100">
-                          Add transaction
-                          </button>
+                          <Transaction/>
                         </div>
                       </CardBody>                      
                     </CardBody>
@@ -927,7 +925,8 @@ const mapStateToProps = (state) => ({
   transactionFeeGroups: state.transactionFeeGroupReducer.transactionFeeGroups || [],
   feeGroups : state.feeGroupReducer.feeGroups || [],
   employmentInfoUpdating : state.clientReducer.employmentInfoUpdating,
-  financialInfoUpdating : state.clientReducer.financialInfoUpdating
+  financialInfoUpdating : state.clientReducer.financialInfoUpdating,
+  showPortalAccessModal : state.clientReducer.showPortalAccessModal
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(ClientDetails));

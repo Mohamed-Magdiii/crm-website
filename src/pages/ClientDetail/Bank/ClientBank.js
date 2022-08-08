@@ -42,7 +42,7 @@ function ClientBank(props) {
   useEffect(() => {
     loadClientBankDetails(1, sizePerPage);
 
-  }, [sizePerPage, 1, props.deleteClearingCounter, isBankAccountModified, props.addClearingCounter]);
+  }, [sizePerPage, 1, props.deleteClearingCounter, isBankAccountModified, props.addClearingCounter,  props.editResult]);
   useEffect(() => {
     if (props.deleteClearingCounter > 0 && deleteModal){
       setDeleteModal(false);
@@ -207,7 +207,8 @@ const mapStateToProps = (state) => ({
   clientBankAccounts: state.bankAccountReducer.clientBankAccounts || [],
   deleteLoading: state.bankAccountReducer.deleteLoading,
   deleteClearingCounter: state.bankAccountReducer.deleteClearingCounter,
-  addClearingCounter: state.bankAccountReducer.addClearingCounter
+  addClearingCounter: state.bankAccountReducer.addClearingCounter,
+  editResult: state.bankAccountReducer.editResult
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(ClientBank));

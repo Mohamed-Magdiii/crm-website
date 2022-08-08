@@ -200,19 +200,19 @@ export const fetchSystemEmailHTMLFail = (error) => {
 };
 
 // change system email status
-export const changeSystemEmailStatus = (params = {}) => {
+export const changeSystemEmailStatus = (id, index, status) => {
   return {
     type: CHANGE_SYSTEM_EMAIL_STATUS_REQUESTED,
-    payload: params
-  };
-};
-export const changeSystemEmailStatusDone = (id, index, status) => {
-  return {
-    type: CHANGE_SYSTEM_EMAIL_STATUS_DONE,
     payload: {
       id,
       status,
       index
     }
+  };
+};
+export const changeSystemEmailStatusDone = (params = {}) => {
+  return {
+    type: CHANGE_SYSTEM_EMAIL_STATUS_DONE,
+    payload: params
   };
 };

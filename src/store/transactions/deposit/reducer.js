@@ -2,6 +2,7 @@ import {
   FETCH_CLIENT_DEPOSITS_REQUESTED,
   FETCH_CLIENT_DEPOSITS_SUCCESS,
   FETCH_CLIENT_DEPOSITS_FAIL,
+  ERROR_CLEAR
 } from "./actionTypes";
 const initalState = {
   deposits:[],
@@ -43,7 +44,6 @@ const depositReducer = (state = { initalState }, action)=>{
       };
       break;
     case "ADD_DEPOSIT_SUCCESS":
-      
       state = {
         ...state,
         // deposits:[{ ...action.payload.deposit }, ...state.deposits],
@@ -74,7 +74,8 @@ const depositReducer = (state = { initalState }, action)=>{
     case "DEPOSIT_ERROR": 
       state = {
         ...state,
-        error:action.payload.error
+        disableAddButton:false,
+        depositError:action.payload.error
       };
       break;
     case "MODAL_CLEAR":
@@ -111,7 +112,12 @@ const depositReducer = (state = { initalState }, action)=>{
         errorDetails: action.payload.error
       };
       break;
-
+    case ERROR_CLEAR:
+      state = {
+        ...state,
+        depositError:""
+      };
+      break;
     default:
       state = { ...state };
 

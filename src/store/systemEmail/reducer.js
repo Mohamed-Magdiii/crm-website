@@ -44,7 +44,8 @@ const initialState = {
   editClearingCounter: 0,
   editContentClearingCounter: 0,
   activeComponentProp: "list component",
-  isBackButtonActive: true
+  isBackButtonActive: true,
+  docs: []
 };
 
 const systemEmailsReducer = (state = initialState, action) => {

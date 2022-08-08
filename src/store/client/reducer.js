@@ -14,7 +14,13 @@ import {
   UPDATE_EMPLOYMENT_INFO_SUCCESS,
   UPDATE_FINANCIAL_INFO_SUCCESS,
   UPDATE_FINANCIAL_INFO_FAIL,
-  UPDATE_EMPLOYMENT_INFO_FAIL
+  UPDATE_EMPLOYMENT_INFO_FAIL,
+  RESET_PASSWORD_CLEAR,
+  CHANGE_PASSWORD_START,
+  SEND_EMAIL_TO_RESET_PASSWORD_START,
+  SEND_EMAIL_MODAL_CLEAR,
+  CLIENT_FORGOT_PASSWORD_START,
+  CLIENT_FORGOT_PASSWORD_CLEAR,
 } from "./actionsType";
 
 const initalState = {
@@ -164,7 +170,8 @@ export const clientReducer = (state = initalState, action)=>{
     case EDIT_CLIENT_DETAILS_REQUESTED:
       state = {
         ...state,
-        updating: true
+        updating: true,
+        showPortalAccessModal:true
       };
 
       break;
@@ -195,13 +202,45 @@ export const clientReducer = (state = initalState, action)=>{
     case EDIT_CLIENT_DETAILS_SUCCESS:
       state = { 
         ...state, 
-        updatedClientDetails: action.payload.result,
+        clientDetails: {
+          ...state.clientDetails,
+          ...action.payload
+        },
         editSuccess: true,
         error: false,
-        updating: false
+        updating: false,
+        showPortalAccessModal:false
       };
       break;
-
+    case CHANGE_PASSWORD_START:
+      state = {
+        ...state,
+        clearResetPasswordModal:false,
+        disableResetPasswordButton: true
+      };
+      break;
+    case RESET_PASSWORD_CLEAR:
+      state = {
+        ...state,
+        clearResetPasswordModal:true,
+        disableResetPasButton:false
+      };
+      break;
+    case CLIENT_FORGOT_PASSWORD_START:
+      state = { 
+        ...state,
+        disableSendEmailButton: true,
+        clearResetPasswordModal: false,
+      };
+      
+      break;
+    case CLIENT_FORGOT_PASSWORD_CLEAR:
+      state = {
+        ...state,
+        disableSendEmailButton: false,
+        clearResetPasswordModal: true
+      };
+      break;
     // TODO check the error message with the backend
     case EDIT_CLIENT_DETAILS_FAIL:
       state = { 

@@ -6,9 +6,7 @@ import {
 import { AvForm, AvField } from "availity-reactstrap-validation";
 // i18n 
 import { withTranslation } from "react-i18next";
-import {
-  uploadDocsStart
-} from "store/documents/actions";
+import { uploadDocsStart } from "store/documents/actions";
 function UploadKYC (props) {
   const dispatch = useDispatch();
   const refForm = useRef();

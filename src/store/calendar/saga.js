@@ -27,10 +27,10 @@ import {
   updateEvent,
   deleteEvent,
   getCategories,
-} from "../../apis/reminder"; 
+} from "../../apis/reminder";
 function* fetchEvents(params) {
   try {
-    const response = yield call(getEvents, params);  
+    const response = yield call(getEvents, params);
     let output = [];
 
     response.result?.docs?.map(function (item) {
@@ -54,8 +54,8 @@ function* fetchEvents(params) {
       // }
       output.push({
         id: item._id,
-        title: item.note,
-        start: item.timeEnd, 
+        title: (item.note && item.note[0].toUpperCase() + item.note.slice(1)) || "",
+        start: item.timeEnd,
         timeEnd: item.timeEnd,
         className: classNam,
         customerId: item.customerId,

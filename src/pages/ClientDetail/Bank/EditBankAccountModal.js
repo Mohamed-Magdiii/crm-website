@@ -13,9 +13,9 @@ import {
   AvForm, AvField
 } from "availity-reactstrap-validation";
 
-import { editBankAccount } from "store/bankAccount/actions";
 // i18n
 import { withTranslation } from "react-i18next";
+import { editBankAccount } from "store/bankAccount/actions";
 
 function BankAccountEditModal(props){
   const { open, selectedBankAccount = {}, onClose } = props;
@@ -65,8 +65,22 @@ function BankAccountEditModal(props){
                 placeholder={props.t("Enter Swift Code")}
                 type="text"
                 value={selectedBankAccount.swiftCode}
-                errorMessage={props.t("Enter Swift Code")}
-                validate={{ required: { value: true } }}
+                validate={
+                  { 
+                    required: { 
+                      value: true,
+                      errorMessage: "Enter swift code" 
+                    },
+                    minLength: {
+                      value: 8,
+                      errorMessage: "Invalid swift code"
+                    },
+                    pattern: {
+                      value: "([A-Z][0-9])",
+                      errorMessage: "Invalid swift code"
+                    }
+                  }
+                }
               />
             </div>
 
@@ -76,9 +90,24 @@ function BankAccountEditModal(props){
                 label={props.t("IBAN")}
                 placeholder={props.t("Enter IBAN")}
                 type="text"
-                value={selectedBankAccount.swiftCode}
+                value={selectedBankAccount.iban}
                 errorMessage={props.t("Enter IBAN")}
-                validate={{ required: { value: true } }}
+                validate={
+                  { 
+                    required: { 
+                      value: true,
+                      errorMessage: "Enter IBAN"
+                    },
+                    pattern: {
+                      value: "^[A-Z][A-Z]", 
+                      errorMessage: "Invalid IBAN"
+                    },
+                    minLength: {
+                      value: 13,
+                      errorMessage: "Invalid IBAN"
+                    }
+                  }
+                }
               />
             </div>
 
@@ -90,7 +119,18 @@ function BankAccountEditModal(props){
                 type="text"
                 value={selectedBankAccount.accountNumber}
                 errorMessage={props.t("Enter Account Number")}
-                validate={{ required: { value: true } }}
+                validate={
+                  { 
+                    required: { 
+                      value: true, 
+                      errorMessage: "Enter account number" 
+                    },
+                    number: {
+                      value: true,
+                      errorMessage: "Invalid account number"
+                    }
+                  }
+                }
               />
             </div>
 
@@ -107,8 +147,8 @@ function BankAccountEditModal(props){
             </div>
             {/* submit button */}
             <div className='text-center pt-3 p-2'>
-              <Button disabled={props.addLoading} type="submit" color="primary">
-                {props.t("Update")}
+              <Button disabled={props.editResult} type="submit" color="primary">
+                {props.t("Edit")}
               </Button>
             </div>
           </AvForm>
@@ -116,10 +156,6 @@ function BankAccountEditModal(props){
             <i className="mdi mdi-block-helper me-2"></i>
             {/* TODO this needs to be handled in translation */}
             {props.t(JSON.stringify(props.editError))}
-          </UncontrolledAlert>}
-          {props.editResult && <UncontrolledAlert color="success">
-            <i className="mdi mdi-check-all me-2"></i>
-            {props.t("Bank account updated successfully")} !!!
           </UncontrolledAlert>}
         </ModalBody>
       </Modal>
@@ -129,7 +165,6 @@ function BankAccountEditModal(props){
 
 
 const mapStateToProps = (state) => ({
-  addLoading: state.bankAccountReducer.addLoading,
   editResult: state.bankAccountReducer.editResult,
   editError: state.bankAccountReducer.editError,
   bankAccountEditClearingCounter: state.bankAccountReducer.bankAccountEditClearingCounter

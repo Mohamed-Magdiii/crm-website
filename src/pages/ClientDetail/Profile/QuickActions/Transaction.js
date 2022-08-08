@@ -5,109 +5,143 @@ import {
   ModalHeader,
   ModalBody,
   UncontrolledAlert,
-  Col,
-  Row,
   Label,
+  Row,
+  Col
+  
 } from "reactstrap";
-
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
-import { makeWithdrawalStart } from "store/transactions/withdrawal/action";
-import { fetchGatewaysOfWithdrawalsStart } from "store/gateway/action";
+import { fetchGatewaysStart } from "store/gateway/action";
+import { addDepositStart, fetchDepositsStart } from "store/transactions/deposit/action";
 import { fetchWalletStart, clearWallets } from "store/wallet/action";
 import { fetchClientsStart } from "store/client/actions";
 import { withTranslation } from "react-i18next";
 import Select from "react-select";
-function WithdrawForm(props){
+import transactions from "common/data/transactions";
+import { makeWithdrawalStart, fetchWithdrawalsStart } from "store/transactions/withdrawal/action";
 
-  const [open, setWithdrawalModal] = useState(false);
-  const [searchInput, setSearchInput] = useState("");
+function TransactionForm(props){
+  const [transactionModal, setTransactionModal] = useState(false);
+  const [type, setType] = useState("");
   const [selectedClient, setSelectedClient] = useState("");
   const [selectedWalletId, setSelectedWalletId] = useState("");
   const [gateway, setGateway] = useState("");
-  const [type, setType] = useState("LIVE");
-
   const dispatch = useDispatch();
-  const { create } = props.withdrawalsPermissions;
-  const handleWithdraw = (event, values) => {
+  const { create } = props.depositsPermissions;
+  const [searchInput, setSearchInput]  = useState("");
+  const handleTransaction = (event, values) => {
+    delete values.type;
     event.preventDefault();
-    dispatch(makeWithdrawalStart({
-      customerId:selectedClient,
-      walletId: selectedWalletId,
-      gateway,
-      ...values
-    }));
-    setSearchInput("");
-    dispatch(clearWallets());
-    
-  }; 
-  const selectClient = (id)=>{
-    setSelectedClient(id);
-    dispatch(fetchWalletStart({
-      belongsTo:id,
-      customerId:id,
-    }));
-  };
-  const selectType = (type)=>{
-    setType(type);
-    if (selectedClient.length > 0)
-      dispatch(fetchWalletStart({
-        belongsTo:selectedClient,
+    if (type == "Deposit"){
+      dispatch(addDepositStart({
         customerId:selectedClient,
+        walletId: selectedWalletId,
+        gateway,
+        ...values
       }));
-  };
+      setSearchInput("");
+      dispatch(clearWallets());
+    }
+    else if (type === "Withdrawal"){
+      dispatch(makeWithdrawalStart({
+        customerId:selectedClient,
+        walletId:selectedWalletId,
+        gateway,
+        ...values
+      }));
+      setSearchInput("");
+      dispatch(clearWallets());
+    }
+  
+  }; 
+  
   const toggleAddModal = () => {
-    setWithdrawalModal(!open);
+    setTransactionModal(!transactionModal);
   };
-
   useEffect(()=>{
     dispatch(fetchClientsStart({
       page:1,
-      limit:10,
-      type
+      limit:10
     }));
-    dispatch(fetchGatewaysOfWithdrawalsStart());
+    dispatch(fetchDepositsStart({
+      page:1,
+      limit:10
+    }));
+    dispatch(fetchWithdrawalsStart({
+      page:1,
+      limit:10
+    }));
+    dispatch(fetchGatewaysStart());
     if (searchInput.length >= 3){
       dispatch(fetchClientsStart({
-        searchText:searchInput,
-        type
+        searchText:searchInput
       }));
     }
-  }, [searchInput, type]);
-
+  
+  }, [searchInput]);
+  
   useEffect(() => {
-    if (props.withdrawalModalClear && open){
-      setWithdrawalModal(false);
+    if (props.modalClear && transactionModal ){
+      setTransactionModal(false);
+    }
+   
+  }, [props.modalClear]);
+  useEffect(()=>{
+    if (props.withdrawalModalClear && transactionModal){
+      setTransactionModal(false);
     }
   }, [props.withdrawalModalClear]);
-  
+  const selectClient = (id)=>{
+    setSelectedClient(id);
+    dispatch(fetchWalletStart({
+      belongsTo:id
+    }));
+       
+  };
   
   return (
     <React.Fragment >
-      <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> {props.t("Make Withdraw")}</Link>
-      <Modal isOpen={open} toggle={toggleAddModal} centered={true}>
+      <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx me-1"></i> {props.t("Add Transaction")}</Link>
+-      <Modal isOpen={transactionModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
-          {props.t("Make Withdraw")}
+          {props.t("Make Transaction")}
         </ModalHeader>
         <ModalBody >
-
+    
           <AvForm
             className='p-4'
             onValidSubmit={(e, v) => {
-              handleWithdraw(e, v);
+              handleTransaction(e, v);
             }}
           >
-            
             <Row className="mb-3">
-              <Col md="6">
+              <Col md="12">
+                <Label>{props.t("Type")}</Label>
+                <Select
+                  name="type" 
+                  label="Type"
+                  options= {transactions.map(transaction=>{
+                    return {
+                      label:transaction,
+                      value:transaction
+                    };
+                  }
+                  )}
+
+                  onChange = {(e)=>setType(e.value)}
+                />
+              </Col>
+              <Col className="mt-2" md="12">
                 <Label>{props.t("Client")}</Label>
+                
+                
                 <div>
                   <Select 
                     onChange={(e) => {
-                    
                       selectClient(e.value.id);
-                    
+                      
                     }}
                     isSearchable = {true}
                     options={props.clients.map((item) => (
@@ -121,54 +155,23 @@ function WithdrawForm(props){
 
                     ))}
                     classNamePrefix="select2-selection"
-                    placeholder = "choose client name"
+                    placeholder = "choose a client name"
                     onInputChange = {(e)=>setSearchInput(e)}
-                    name = "clientId"
-                    
-                    isRequired = {true}
-                  />
-                </div>
-              
-              </Col>
-              <Col md="6">
-                <Label>{props.t("Type")}</Label>
-                
-                
-                <div>
-                  <Select 
-                    defaultValue={{
-                      label:"Live",
-                      value:"LIVE" 
-                    }}
-                    onChange={(e) => {
-                      selectType(e.value);   
-                    }}
-                    options={[{
-                      label:"Live",
-                      value:"LIVE" 
-                    },
-                    {
-                      label:"Demo",
-                      value:"DEMO"
-                    }]}
-                    classNamePrefix="select2-selection"
-                    placeholder = "choose a type for deposit"
                   />
                 </div>
               </Col>
-              <Col md="12">
+              <Col className="mt-2" md="12">
                 <Label>{props.t("Wallet")}</Label>
                 <div>
                   <Select 
                     onChange={(e) => {
-                    
                       setSelectedWalletId(e.value.id);
-                    
+                      
                     }}
                     isSearchable = {true}
                     options={props.wallets.map((wallet) => (
                       {
-                        label : `${wallet.asset} ${wallet.amount} ${wallet.asset}`,
+                        label : `${wallet.asset}-(Balance ${wallet.amount} ${wallet.asset})`,
                         value : {
                           id: `${wallet._id}`
                         }
@@ -177,47 +180,48 @@ function WithdrawForm(props){
                     ))}
                     classNamePrefix="select2-selection"
                     placeholder = "choose your wallet"
-
+                      
                   />
                 </div>
               
               </Col>
-      
-            </Row>  
+          
+            </Row>
+          
+        
             <div className="mb-3">
+              
               <Label>{props.t("Gateway")}</Label>
               <div>
                 <Select 
                   onChange={(e) => {
-                  
+                      
                     setGateway(e.value.gateway);
-                  
                   }}
                   isSearchable = {true}
                   options={Object.keys(props.gateways).map((key) => (
                     {
                       label : `${props.gateways[key]}`,
                       value : {
-                        gateway : `${props.gateways[key]}`
+                        gateway: `${props.gateways[key]}`
                       }
                     }
 
                   ))}
                   classNamePrefix="select2-selection"
                   placeholder = "choose a gateway"
-                 
+                      
                 />
               </div>
-            
             </div>
-            
+              
                
             <div className="mb-3">
               <AvField
                 name="amount"
                 label={props.t("Amount")}
                 placeholder={props.t("enter amount")}
-                type="text"
+                type="number"
                 errorMessage={props.t("Enter Valid Amount")}
                 validate = {{
                   required :{ value:true },
@@ -227,8 +231,6 @@ function WithdrawForm(props){
                     errorMessage : "Amount is not valid"
                   }
                 }}
-                
-
               />
             </div>
             <div className="mb-3">
@@ -238,34 +240,43 @@ function WithdrawForm(props){
                 placeholder={props.t("enter note")}
                 type="text"
                 errorMessage={props.t("Enter Valid Note")}
-                validate={{ required: { value: true } }}
+                validate={{ 
+                  required: { value: true },
+                  
+                }}
               />
             </div>
     
             <div className='text-center pt-3 p-2'>
-              <Button disabled = {props.disableWithdrawalButton} type="submit" color="primary" className="">
-                {props.t("Make Withdraw")}
+              <Button disabled = {props.disableAddButton || props.disableWithdrawalButton} type="submit" color="primary" className="">
+                {props.t("Add")}
               </Button>
             </div>
           </AvForm>
-          {props.error && <UncontrolledAlert color="danger">
+          { props.depositError && <UncontrolledAlert color="danger">
+            <i className="mdi mdi-block-helper me-2"></i>
+            {props.t(props.depositError)}
+          </UncontrolledAlert>}
+          { props.error && <UncontrolledAlert color="danger">
             <i className="mdi mdi-block-helper me-2"></i>
             {props.t(props.error)}
           </UncontrolledAlert>}
-
-        </ModalBody>
+        </ModalBody> 
       </Modal>
     </React.Fragment>
   );
 }
 const mapStateToProps = (state) => ({
   gateways:state.gatewayReducer.gateways || [],
-  error: state.withdrawalReducer.error,
-  withdrawResponseMessage:state.withdrawalReducer.withdrawResponseMessage,
-  withdrawalModalClear:state.withdrawalReducer.withdrawalModalClear,
+  modalClear:state.depositReducer.modalClear,
+  depositResponseMessage:state.depositReducer.depositResponseMessage,
   clients:state.clientReducer.clients || [],
   wallets:state.walletReducer.wallets || [],
-  withdrawalsPermissions: state.Profile.withdrawalsPermissions || {}, 
-  disableWithdrawalButton : state.withdrawalReducer.disableWithdrawalButton
+  depositsPermissions : state.Profile.depositsPermissions || {}, 
+  disableAddButton : state.depositReducer.disableAddButton,
+  withdrawalModalClear : state.withdrawalReducer.withdrawalModalClear,
+  error: state.withdrawalReducer.error,
+  depositError:state.depositReducer.depositError,
+  disableWithdrawalButton: state.withdrawalReducer.disableWithdrawalButton
 });
-export default connect(mapStateToProps, null)(withTranslation()(WithdrawForm));
+export default connect(mapStateToProps, null)(withTranslation()(TransactionForm));

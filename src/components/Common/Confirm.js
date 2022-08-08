@@ -4,7 +4,7 @@ import {
   Col, Modal, ModalBody, Row 
 } from "reactstrap";
 
-const DeleteModal = ({ show, onDeleteClick, onCloseClick, loading = false, buttonText, bodyText }) => {
+const Confirm = ({ show, onYesClick, onCloseClick, loading = false }) => {
   return (
     <Modal isOpen={show} toggle={onCloseClick} centered={true}>
       <ModalBody className="py-3 px-5">
@@ -12,14 +12,14 @@ const DeleteModal = ({ show, onDeleteClick, onCloseClick, loading = false, butto
           <Col lg={12}>
             <div className="text-center">
               <i
-                className="mdi mdi-alert-circle-outline"
+                className="mdi mdi-comment-alert-outline"
                 style={{
                   fontSize: "9em",
                   color: "orange" 
                 }}
               />
-              <h2>Are you sure?</h2>
-              <h4>{bodyText ? bodyText  : "You won't be able to revert this!"}</h4>
+              <h2>Are you sure to update date?</h2>
+              {/* <h4>{"You won't be able to revert this!"}</h4> */}
             </div>
           </Col>
         </Row>
@@ -30,9 +30,9 @@ const DeleteModal = ({ show, onDeleteClick, onCloseClick, loading = false, butto
                 disabled={loading}
                 type="button"
                 className="btn btn-success btn-lg ms-2"
-                onClick={onDeleteClick}
+                onClick={onYesClick}
               >
-                {buttonText ? buttonText : "Yes, delete it!"}
+                Yes, Update it!
               </button>
               <button
                 disabled={loading}
@@ -50,10 +50,10 @@ const DeleteModal = ({ show, onDeleteClick, onCloseClick, loading = false, butto
   );
 };
 
-DeleteModal.propTypes = {
+Confirm.propTypes = {
   onCloseClick: PropTypes.func,
   onDeleteClick: PropTypes.func,
   show: PropTypes.any
 };
 
-export default DeleteModal;
+export default Confirm;

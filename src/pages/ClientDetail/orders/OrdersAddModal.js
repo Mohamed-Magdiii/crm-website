@@ -19,6 +19,7 @@ import loadOptions from "./loadOptions";
 import { getPricing } from "./../../../apis/orders";
 
 function OrdersAddModal(props) {
+  const { buttonText } = props;
   const [addModal, setAddOrderModal] = useState(false);
   const [symbolValue, setSymbolValue] = useState(null);
   const [clientId] = useState(props?.clientId);
@@ -46,10 +47,6 @@ function OrdersAddModal(props) {
       }
     });
     showAlert(symbolValue, type, side);
-    // console.log("symbolValue, type, side");
-    // console.log(symbolValue + "kk" + type + "kk" + side);
-    // console.log("!symbolValue && !type && !side");
-    // console.log(!symbolValue + "kk" + !type + "kk" + !side);
     if (symbolValue && type && side) {
       dispatch(addOrder(values));
       setSymbolValue(null);
@@ -97,13 +94,6 @@ function OrdersAddModal(props) {
     setSymbolValue(val);
   };
   const typehandler = (val) => {
-    // console.log(val);
-
-    // Object.keys(val).forEach(key => {
-    //   if (val[key] === "") {
-    //     delete val[key];
-    //   }
-    // });
     if (val?.value == "market") {
       setPriceFlag(false);
     } else {
@@ -133,8 +123,8 @@ function OrdersAddModal(props) {
 
   return (
     <React.Fragment>
-      <Link to="#" className="btn btn-light" onClick={toggleAddModal}>
-        <i className="bx bx-plus me-1"></i> Add New
+      <Link to="#" className="btn btn-primary" onClick={toggleAddModal}>
+        <i className={`bx ${!buttonText ? "bx-plus" : ""} me-1`}></i> {`${buttonText ? buttonText : "Add New"}`}
       </Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">

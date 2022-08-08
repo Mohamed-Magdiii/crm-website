@@ -106,7 +106,7 @@ function TeamsEditModal(props) {
               />
             </div>
             <div className="text-center ">
-              <Button type="submit" color="primary" className="">
+              <Button type="submit" color="primary" className="" >
                 Edit 
               </Button>
             </div>
@@ -130,6 +130,7 @@ function TeamsEditModal(props) {
 }
 
 const mapStateToProps = (state) => ({
+  editLoading: state.teamsReducer.editLoading,
   addLoading: state.teamsReducer.addLoading,
   editResult: state.teamsReducer.editResult,
   editError: state.teamsReducer.editError,

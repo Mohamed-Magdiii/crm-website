@@ -91,21 +91,6 @@ function ClientWallets(props) {
       dataField: "active",
       text: props.t("Status"),
       formatter: (item, index) => (
-        // <div className="d-flex gap-3">
-        //   <Input
-        //     type="checkbox"
-        //     id={item.id}
-        //     switch="none"
-        //     defaultChecked={item.active}
-        //     onClick={() => { switchSelectedWalletStatus(item) }}
-        //   />
-        //   <Label
-        //     className="me-1"
-        //     htmlFor={item.id}
-        //     data-on-label={props.t("Active")}
-        //     data-off-label=""
-        //   />
-        // </div>
         <div className="d-flex gap-3">
           {(props.changeStatusLoading && props.changeStatusLoadingIndex === index) ? <React.Fragment>
             <Spinner className="ms-2" color="primary" />
@@ -116,8 +101,6 @@ function ClientWallets(props) {
               onChange={(e) => { updateStatus(e, item, index) }}
               id={item.id}
               switch="none"
-            // defaultChecked={item.isActive}
-            // onClick={() => {}}
             />
             <Label className="me-1" htmlFor={item.id} data-on-label="" data-off-label=""></Label>
           </React.Fragment>}

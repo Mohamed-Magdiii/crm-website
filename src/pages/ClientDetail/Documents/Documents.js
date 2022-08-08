@@ -46,6 +46,7 @@ function ClientDetails(props) {
 const mapStateToProps = (state) => ({
   loading: state.clientReducer.loading,
   clientDetails: state.clientReducer.clientDetails,
+  
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(ClientDetails));

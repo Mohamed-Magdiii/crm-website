@@ -115,7 +115,7 @@ function SystemEmailEditModal(props){
                 type="submit" 
                 color="primary"
               >
-                {props.t("Update")}
+                {props.t("Edit")}
               </Button>
             </div>
           </AvForm>
