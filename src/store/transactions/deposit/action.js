@@ -11,6 +11,7 @@ import {
   FETCH_CLIENT_DEPOSITS_REQUESTED,
   FETCH_CLIENT_DEPOSITS_SUCCESS,
   FETCH_CLIENT_DEPOSITS_FAIL,
+  ERROR_CLEAR
 } from "./actionTypes";
 export const fetchDepositsStart = (params = {})=>{
   return {
@@ -85,5 +86,10 @@ export const fetchClientDepositsFail = (error) => {
   return {
     type: FETCH_CLIENT_DEPOSITS_FAIL,
     payload: { error }
+  };
+};
+export const errorClear = ()=>{
+  return {
+    type:ERROR_CLEAR
   };
 };

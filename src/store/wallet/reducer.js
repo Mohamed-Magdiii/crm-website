@@ -9,7 +9,10 @@ import {
   ADD_CLIENT_WALLET_REQUESTED,
   ADD_CLIENT_WALLET_SUCCESS,
   ADD_CLIENT_WALLET_FAIL,
-  ADD_CLIENT_WALLET_CLEAR
+  ADD_CLIENT_WALLET_CLEAR,
+  CONVERT_WALLET_ERROR,
+  CONVERT_WALLET_START,
+  ERROR_CLEAR
 } from "./actionTypes";
 
 const initState = {
@@ -116,8 +119,25 @@ const walletReducer = (state = initState, action) => {
         changeStatusLoading: false,
       };
       break;
-
-
+    case CONVERT_WALLET_START:
+      state = {
+        ...state,
+        disableConvertWalletButton:true
+      };
+      break;
+    case CONVERT_WALLET_ERROR:
+      state = {
+        ...state,
+        disableConvertWalletButton:false,
+        convertWalletError: action.payload
+      };
+      break;
+    case ERROR_CLEAR:
+      state = {
+        ...state,
+        convertWalletError:""
+      };
+      break;
     default:
       state = { ...state };
   }

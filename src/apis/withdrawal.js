@@ -6,7 +6,7 @@ export const getWithdrawals = async ({ payload })=>{
 };
 export const addWithdrawal = async (values)=>{
   const result = await axiosHelper.post("/transactions/withdraw", values);
-  if (result.code == 422){
+  if (result.code == 500){
     throw new Error("Withdrawal has failed");
   }
   return result;

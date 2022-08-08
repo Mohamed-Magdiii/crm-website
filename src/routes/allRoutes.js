@@ -50,7 +50,9 @@ function userRoutes() {
     feeGroupsPermissions,
     currencyPairsPermissions,
     markupsPermissions,
-    transactionFeeGroupsPermissions
+    transactionFeeGroupsPermissions,
+    orderProfitPermissions,
+    transactionProfitPermissions
   } = object;
 
   return [
@@ -162,10 +164,12 @@ function userRoutes() {
     {
       path: "/orders-profit",
       component: OrderProfitList,
+      get : orderProfitPermissions.get
     },
     {
       path: "/transactions-profit",
       component: TransactionProfitList,
+      get : transactionProfitPermissions.get
     },
     {
       path: "/",
