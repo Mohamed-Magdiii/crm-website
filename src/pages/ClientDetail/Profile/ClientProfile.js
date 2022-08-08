@@ -94,8 +94,8 @@ function ClientDetails(props) {
             <div>
               <Row>
                 {/* input fields to the left side */}
-                <Col md="9" sm="12" xs="12">
-                  <Card>
+                <Col md="9" sm="12" xs="12" className="mb-3">
+                  <Card style={{ height: "100%" }}>
                     <CardHeader className="d-flex flex-column gap-3">
                       <div className="d-flex justify-content-between align-items-center">
                         <CardTitle>{props.t("General information")}</CardTitle>
@@ -610,88 +610,86 @@ function ClientDetails(props) {
                       </CardBody>                      
                     </CardBody>
                   </Card>
-                </Col>
-                <Col>
-                  <Row>
-                    <Col md="3">
-                      <Card>
-                        <CardTitle></CardTitle>
-                        <CardBody>
-                          <AvForm onValidSubmit = {(e, v)=>{
-                            dispatch(editClientDetails({
-                              id:clientId,
-                              values:{ ...v }
-                            }));
-                          }}>
-                            <Row>
-                              <Col md="12">
+                  <Card>
+                    <CardTitle></CardTitle>
+                    <CardBody>
+                      <AvForm onValidSubmit = {(e, v)=>{
+                        dispatch(editClientDetails({
+                          id:clientId,
+                          values:{ ...v }
+                        }));
+                      }}>
+                        <Row>
+                          <Col md="12">
                                 
-                                <AvFieldSelect
-                                  label =" Trading Fee" 
-                                  name="tradingFeeId"
-                                  value = {tradingFeeId ?._id ? tradingFeeId._id : ""}
-                                  validate = { { required : { value : true } }}
-                                  options = {props.feeGroups.map(feeGroup=>{
-                                    return {
-                                      label: feeGroup.title,
-                                      value : feeGroup._id
-                                    };
-                                  })}
+                            <AvFieldSelect
+                              label =" Trading Fee" 
+                              name="tradingFeeId"
+                              value = {tradingFeeId ?._id ? tradingFeeId._id : ""}
+                              validate = { { required : { value : true } }}
+                              options = {props.feeGroups.map(feeGroup=>{
+                                return {
+                                  label: feeGroup.title,
+                                  value : feeGroup._id
+                                };
+                              })}
                                 
-                                />
+                            />
                                 
-                              </Col>
-                              <Col md="12">
-                                <div className="mt-2">
-                                  <AvFieldSelect 
-                                    label="Transaction Fee"
-                                    name="transactionFeeId"
-                                    value = {transactionFeeId ?._id ? transactionFeeId._id : ""}
-                                    options = {props.transactionFeeGroups.map(transactionFeeGroup=>{
-                                      return {
-                                        label:transactionFeeGroup.title,
-                                        value:transactionFeeGroup._id
-                                      };
-                                    })}
+                          </Col>
+                          <Col md="12">
+                            <div className="mt-2">
+                              <AvFieldSelect 
+                                label="Transaction Fee"
+                                name="transactionFeeId"
+                                value = {transactionFeeId ?._id ? transactionFeeId._id : ""}
+                                options = {props.transactionFeeGroups.map(transactionFeeGroup=>{
+                                  return {
+                                    label:transactionFeeGroup.title,
+                                    value:transactionFeeGroup._id
+                                  };
+                                })}
                                     
-                                  />
-                                </div>
+                              />
+                            </div>
                            
-                              </Col>
-                              <Col md="12">
-                                <div className="mt-2">
-                                  <AvFieldSelect 
-                                    label="Markup"
-                                    name="markupId"
-                                    value = {markupId ?._id ?  markupId._id : ""}
-                                    options= {props.markups.map(markup=>{
-                                      return {
-                                        label:markup.title,
-                                        value:markup._id
-                                      };
-                                    })}
-                                  />
-                                </div>
+                          </Col>
+                          <Col md="12">
+                            <div className="mt-2">
+                              <AvFieldSelect 
+                                label="Markup"
+                                name="markupId"
+                                value = {markupId ?._id ?  markupId._id : ""}
+                                options= {props.markups.map(markup=>{
+                                  return {
+                                    label:markup.title,
+                                    value:markup._id
+                                  };
+                                })}
+                              />
+                            </div>
                              
-                              </Col>        
-                              <div className="d-flex justify-content-end">
-                                <div className="p-4">
-                                  <Button 
-                                    disabled={props.updating}  
-                                    type="submit" 
-                                    color="primary"
-                                  >
-                                    {props.t("Update")}
-                                  </Button>
-                                </div>
-                              </div>                    
-                            </Row>
+                          </Col>        
+                          <div className="d-flex justify-content-end">
+                            <div className="p-4">
+                              <Button 
+                                disabled={props.updating}  
+                                type="submit" 
+                                color="primary"
+                              >
+                                {props.t("Update")}
+                              </Button>
+                            </div>
+                          </div>                    
+                        </Row>
 
-                          </AvForm>
-                        </CardBody>
-                      </Card>
-                    </Col>
-                    <Col md="5">
+                      </AvForm>
+                    </CardBody>
+                  </Card>
+                </Col>
+                <Col  className="mt-2">
+                  <Row>
+                    <Col md="6" sm="12" xs="12">
                       <Card>
                         <CardHeader>
                           <CardTitle>Employment Info</CardTitle>
@@ -782,7 +780,7 @@ function ClientDetails(props) {
                      
                     </Col>
 
-                    <Col  md="4" sm="12" xs="12">
+                    <Col  md="6" sm="12" xs="12">
                       <Card>
                         <CardHeader>
                           <CardTitle>Finanical Info</CardTitle>

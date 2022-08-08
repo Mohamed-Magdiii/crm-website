@@ -54,7 +54,11 @@ function* fetchEvents(params) {
       // }
       output.push({
         id: item._id,
+        recordId: item.recordId,
         title: (item.note && item.note[0].toUpperCase() + item.note.slice(1)) || "",
+        createdAt: item.createdAt,
+        updatedAt: item.updatedAt,
+        note: item.note,
         start: item.timeEnd,
         timeEnd: item.timeEnd,
         className: classNam,

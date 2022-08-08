@@ -30,6 +30,7 @@ import transactionFeeGroupSaga from "./transactionFeeGroups/saga";
 import documentsSaga from "./documents/saga";
 import ordersProfitsSaga from "./ordersProfit/saga";
 import transactionsProfitsSaga from "./transactionsProfit/saga";
+import todosSaga from "./todos/saga";
 
 export default function* rootSaga() {
   yield all([
@@ -65,6 +66,7 @@ export default function* rootSaga() {
     fork(transactionFeeGroupSaga),
     fork(documentsSaga),
     fork(ordersProfitsSaga),
-    fork(transactionsProfitsSaga)
+    fork(transactionsProfitsSaga),
+    fork(todosSaga),
   ]);
 }

@@ -40,3 +40,21 @@ export const deleteEvent = async (id) => {
 };
 // get Categories
 export const getCategories = () => axiosHelper.get(url.GET_CATEGORIES);
+
+
+export const getTodos = async ({ payload }) => {
+  const data = await axiosHelper.get(`/todos?${qs.stringify(payload)}`);
+  if (data.isError){
+    throw new Error(data.isError);
+  }
+  return data.result;
+};
+
+export const addTodo = async (params) => {
+  // const { id, values } = payload;
+  const data = await axiosHelper.post("/todos", params);
+  if (data.isError) {
+    throw new Error(data.message);
+  }
+  return data.result;
+};
