@@ -13,7 +13,10 @@ import {
   ADD_CLIENT_WALLET_REQUESTED,
   ADD_CLIENT_WALLET_SUCCESS,
   ADD_CLIENT_WALLET_FAIL,
-  ADD_CLIENT_WALLET_CLEAR
+  ADD_CLIENT_WALLET_CLEAR,
+  CONVERT_WALLET_START,
+  CONVERT_WALLET_ERROR,
+  ERROR_CLEAR
 } from "./actionTypes";
 
 export const fetchWalletStart = (params) => {
@@ -95,5 +98,22 @@ export const changeStatusDone = (params = {}) => {
   return {
     type: CHANGE_STATUS_WALLET_END,
     payload: params
+  };
+};
+export const convertWalletStart = (values)=>{
+  return {
+    type:CONVERT_WALLET_START,
+    payload:values
+  };
+};
+export const convertWalletError = (error)=>{
+  return {
+    type:CONVERT_WALLET_ERROR,
+    payload:error
+  };
+};
+export const errorClear = ()=>{
+  return {
+    type:ERROR_CLEAR
   };
 };

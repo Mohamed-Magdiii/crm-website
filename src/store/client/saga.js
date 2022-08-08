@@ -19,7 +19,9 @@ import {
   updateFinancialInfoSuccess,
   updateEmploymentInfoFail,
   updateFinancialInfoFail,
-  editClientDetailsFail
+  resetPasswordClear,
+  editClientDetailsFail,
+  clientForgotPasswordClear
 } from "./actions";
 import { 
   ADD_NEW_CLIENT, 
@@ -29,8 +31,11 @@ import {
   EDIT_CLIENT_DETAILS_REQUESTED,
   ASSIGN_AGENT_START,
   UPDATE_EMPLOYMENT_INFO_START,
-  UPDATE_FINANCIAL_INFO_START
-} from "./actionsType";
+  UPDATE_FINANCIAL_INFO_START,
+  CHANGE_PASSWORD_START,
+  SEND_EMAIL_TO_RESET_PASSWORD_START,
+  CLIENT_FORGOT_PASSWORD_START
+} from "./actionsType"; 
 import { showSuccessNotification, showErrorNotification } from "store/notifications/actions";
 function *fetchClients(params) {
   try {
@@ -73,8 +78,10 @@ function * fetchClientDetails(params){
 
 function * editClientDetails(params){
   try {
-    const data = yield call(clientApi.updateClientDetails, params);
-    yield put(editClientDetailsSuccess(data));
+    yield call(clientApi.updateClientDetails, params);
+    const { payload } = params;
+    const { values } = payload;
+    yield put(editClientDetailsSuccess(values));
     yield put(showSuccessNotification("Client updated sucessfully!"));
 
     // yield delay(2000);
@@ -136,6 +143,46 @@ function * updateClientEmploymentInfo ({ payload }){
     yield put(showErrorNotification("Error happened while updating employment info"));
   }
 }
+function * changePassword({ payload }){
+  try {
+    const data =  yield call(clientApi.resetPassowrd, payload);
+    const { status } = data;
+    if (status){
+      yield put(showSuccessNotification("Password has been updated successfully"));
+      yield delay(2000);
+      yield put(resetPasswordClear());
+    }
+  } catch (error){
+    yield put(showErrorNotification("Error Happend while changing password"));
+  }
+}
+function * sendEmail({ payload }){
+  try {
+    // const data = yield call(clientApi.sendingEmailWithPasswordResetLink, payload);
+    // const { status } = data;
+    // if (status){
+    //   yield put(showSuccessNotification("Email has been sent successfully"));
+    //   delay(2000);
+    //   yield put(sendEmailModalClear());
+    // }
+  } catch (error){
+    yield put(showErrorNotification("Error happened while sending mail"));
+  }
+}
+function * forgotPassword({ payload }){
+  try {
+    const data = yield call(clientApi.forgotPassword, payload);
+    const { status } = data;
+    if (status){
+      yield put(showSuccessNotification("Reset email has been sent successfully"));
+      delay(2000);
+      yield put(clientForgotPasswordClear());
+    }
+  } catch (error){
+    yield put(clientForgotPasswordClear());
+    yield put(showErrorNotification("Error happened while sending mail"));
+  }
+}
 function * clientSaga() {
   yield takeEvery(FETCH_CLIENTS_START, fetchClients);
   yield takeEvery(ADD_NEW_CLIENT, addNewClient);
@@ -145,6 +192,9 @@ function * clientSaga() {
   yield takeEvery(ASSIGN_AGENT_START, assignAgent);
   yield takeEvery(UPDATE_FINANCIAL_INFO_START, updateClientFinancialInfo);
   yield takeEvery(UPDATE_EMPLOYMENT_INFO_START, updateClientEmploymentInfo);
+  yield takeEvery(CHANGE_PASSWORD_START, changePassword);
+  yield takeEvery(SEND_EMAIL_TO_RESET_PASSWORD_START, sendEmail);
+  yield takeEvery(CLIENT_FORGOT_PASSWORD_START, forgotPassword);
 }
 
 export default clientSaga;
