@@ -30,7 +30,7 @@ function * addTodo(params){
   try {
     const data = yield call(todosApi.addTodo, params.payload);  
     yield put(addTodosEnd({ data }));
-    yield put(showSuccessNotification("Role added successfully"));
+    yield put(showSuccessNotification("Todo added successfully"));
     yield put(addTodoClear());
 
   }

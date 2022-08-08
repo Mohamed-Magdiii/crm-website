@@ -16,23 +16,33 @@ import { withTranslation } from "react-i18next";
 import { addTodosStart } from "store/todos/actions";
 
 function TodoAdd (props) {
-  const [addModal, setAddUserModal] = useState(false);
+  const [addModal, setAddTodoModal] = useState(false);
   const dispatch = useDispatch();
   const { create = true } = props.todosPermissions;
   const toggleAddModal = () => {
-    setAddUserModal(!addModal);
+    setAddTodoModal(!addModal);
+    if (props.onClose) {
+      props.onClose();
+    }
   };
   const handleAddTodo = (e, values) => {
     dispatch(addTodosStart(values));
   };
   useEffect(()=>{
     if (props.clearingCounter > 0 && addModal) {
-      setAddUserModal(false);
+      setAddTodoModal(false);
     }
   }, [props.clearingCounter]);
+
+  useEffect(()=>{
+    setAddTodoModal(props.show);
+  }, [props.show]);
+
   return (
     <React.Fragment >
-      <Link to="#"  className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> Add New Todo</Link>
+      {!props.hidenAddButton &&
+        <Link to="#"  className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> Add New Todo</Link>
+      }
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
             Add New Todo

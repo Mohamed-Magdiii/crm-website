@@ -14,7 +14,7 @@ import { withTranslation } from "react-i18next";
 import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
 import { fetchTodosStart } from "store/actions";
-import TodoAdd from "./TodoAdd";
+import TodoAdd from "components/Common/TodoAdd";
 
 function Todos(props) {
 //   const clientId = props.clientId;

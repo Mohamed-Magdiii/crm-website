@@ -44,7 +44,7 @@ const Calendar = (state = INIT_STATE, action) => {
         addError: action.payload.error,
         list: {
           ...state.list,
-          docs: [ action.payload.data, ...state.list.docs ]
+          docs: state.list.docs ? [ action.payload.data, ...state.list.docs ] : [action.payload.data],
         },
 
       };
