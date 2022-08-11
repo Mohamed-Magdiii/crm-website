@@ -15,3 +15,4 @@ export * from "./invoices/actions";
 // contacts
 export * from "./contacts/actions";
 export * from "./todos/actions";
+export * from "./logs/actions";

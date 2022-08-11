@@ -6,6 +6,7 @@ import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 import { withTranslation } from "react-i18next";
 import Todos from "./Todos";
 import Stages from "./Stages";
+import Activities from "./Activities";
 
 function Logs(props) {
   const clientId = props.clientId;
@@ -14,6 +15,7 @@ function Logs(props) {
     <React.Fragment>
       <Stages clientId={clientId}/>
       <Todos clientId={clientId}/>
+      <Activities clientId={clientId}/>
     </React.Fragment>
   );
 }
