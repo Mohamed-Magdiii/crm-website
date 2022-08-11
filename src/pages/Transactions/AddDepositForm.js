@@ -20,21 +20,24 @@ import { fetchClientsStart } from "store/client/actions";
 import "./SearchableInputStyles.scss";
 import { withTranslation } from "react-i18next";
 import Select from "react-select";
+
 function DepositForm(props){
   
   const [addModal, setDepositModal] = useState(false);
-  
   const [selectedClient, setSelectedClient] = useState("");
   const [selectedWalletId, setSelectedWalletId] = useState("");
   const [gateway, setGateway] = useState("");
+  const [type, setType] = useState("LIVE");
   const dispatch = useDispatch();
   const { create } = props.depositsPermissions;
   const [searchInput, setSearchInput]  = useState("");
+
   const handleAddDeposit = (event, values) => {
     event.preventDefault();
     dispatch(addDepositStart({
       customerId:selectedClient,
       walletId: selectedWalletId,
+      type,
       gateway,
       ...values
     }));
@@ -48,16 +51,18 @@ function DepositForm(props){
   useEffect(()=>{
     dispatch(fetchClientsStart({
       page:1,
-      limit:10
+      limit:10,
+      type
     }));
     dispatch(fetchGatewaysStart());
     if (searchInput.length >= 3){
       dispatch(fetchClientsStart({
-        searchText:searchInput
+        searchText:searchInput,
+        type
       }));
     }
   
-  }, [searchInput]);
+  }, [searchInput, type]);
 
   useEffect(() => {
     if (props.modalClear && open ){
@@ -68,11 +73,20 @@ function DepositForm(props){
   const selectClient = (id)=>{
     setSelectedClient(id);
     dispatch(fetchWalletStart({
-      belongsTo:id
+      belongsTo:id,
+      customerId:id,
     }));
-     
   };
-  
+
+  const selectType = (type)=>{
+    setType(type);
+    if (selectedClient.length > 0)
+      dispatch(fetchWalletStart({
+        belongsTo:selectedClient,
+        customerId:selectedClient,
+      }));
+  };
+
   return (
     <React.Fragment >
       <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> {props.t("Add Deposit")}</Link>
@@ -117,6 +131,32 @@ function DepositForm(props){
                 </div>
               </Col>
               <Col md="6">
+                <Label>{props.t("Type")}</Label>
+                
+                
+                <div>
+                  <Select 
+                    defaultValue={{
+                      label:"Live",
+                      value:"LIVE" 
+                    }}
+                    onChange={(e) => {
+                      selectType(e.value);   
+                    }}
+                    options={[{
+                      label:"Live",
+                      value:"LIVE" 
+                    },
+                    {
+                      label:"Demo",
+                      value:"DEMO"
+                    }]}
+                    classNamePrefix="select2-selection"
+                    placeholder = "choose a type for deposit"
+                  />
+                </div>
+              </Col>
+              <Col md="12">
                 <Label>{props.t("Wallet")}</Label>
                 <div>
                   <Select 

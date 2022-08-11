@@ -1,4 +1,3 @@
-/* eslint-disable no-debugger */
 import React, { useState, useEffect } from "react";
 import { 
   BrowserRouter as Router, Redirect, Route, Switch, useParams, useHistory

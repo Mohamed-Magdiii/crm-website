@@ -20,7 +20,8 @@ import { withTranslation } from "react-i18next";
 import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
 import ClientForm from "./ClientAdd";
-import AddReminderToClientModal from "./AddReminderToClientModal";
+import TodoAdd from "components/Common/TodoAdd";
+
 import { fetchClientsStart } from "store/client/actions";
 import "./ClientList.styles.scss";
 import SearchBar from "components/Common/SearchBar";
@@ -215,11 +216,12 @@ function ClientsList(props) {
       <div className="page-content">
         <div className="container-fluid">
           {/* <h2>{props.t("Clients")}</h2> */}
-          { <AddReminderToClientModal 
-            openAdd={addModal} 
+          <TodoAdd
+            show={addModal} 
             selectedClient={selectedClient} 
-            onClose={() => { setAddReminderToClientModal(false) }} />
-          }
+            onClose={() => { setAddReminderToClientModal(false) }}
+            hidenAddButton={true}
+          />
           <Row>
             <Col className="col-12">
               <Card>

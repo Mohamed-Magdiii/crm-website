@@ -17,7 +17,9 @@ function usePermissions(){
     dictionariesPermissions,
     currencyPairsPermissions,
     markupsPermissions,
-    transactionFeeGroupsPermissions
+    transactionFeeGroupsPermissions,
+    orderProfitPermissions,
+    transactionProfitPermissions
   } = useSelector((state) => ({
     rolesPermissions: state.Profile.rolesPermissions || {},
     userPermissions :state.Profile.userPermissions || {}, 
@@ -32,7 +34,9 @@ function usePermissions(){
     dictionariesPermissions : state.Profile.dictionariesPermissions || {},
     currencyPairsPermissions : state.Profile.currencyPairsPermissions || {},
     markupsPermissions : state.Profile.markupsPermissions || {},
-    transactionFeeGroupsPermissions : state.Profile.transactionFeeGroupsPermissions || {}
+    transactionFeeGroupsPermissions : state.Profile.transactionFeeGroupsPermissions || {},
+    orderProfitPermissions:state.Profile.orderProfitPermissions || {},
+    transactionProfitPermissions:state.Profile.transactionProfitPermissions || {}
   }));
   useEffect(()=>{
     if (localStorage.getItem("authUser")){
@@ -54,7 +58,9 @@ function usePermissions(){
     dictionariesPermissions,
     currencyPairsPermissions,
     markupsPermissions,
-    transactionFeeGroupsPermissions
+    transactionFeeGroupsPermissions,
+    orderProfitPermissions,
+    transactionProfitPermissions
   };
 }
 export default usePermissions; 

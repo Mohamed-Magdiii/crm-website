@@ -3,7 +3,7 @@ import React, {
 } from "react";
 import { useDispatch, connect } from "react-redux";
 import {
-  Row, Col, Card, CardBody, CardHeader, CardTitle
+  Row, Col, Card, CardBody, CardHeader, CardTitle, Dropdown, DropdownToggle, DropdownMenu, DropdownItem
 } from "reactstrap";
 
 import AddDepositForm from "./AddDepositForm";
@@ -31,6 +31,8 @@ function Deposit(props){
   const [detailsModal, setDetailsModal] = useState(false);
   const [selectedContent, setSelectedContent] = useState("");
   const [sizePerPage, setSizePerPage] = useState(10);
+  const [btnprimary1, setBtnprimary1] = useState(false);
+  const [selected, setSelected] = useState("LIVE");
   const columns = [
     {
       dataField:"checkbox",
@@ -123,8 +125,9 @@ function Deposit(props){
   ];
   
   useEffect(()=>{
-    loadDeposits(1, sizePerPage);
-  }, [sizePerPage, 1, searchInput]);
+    if (!detailsModal)
+      loadDeposits(1, sizePerPage);
+  }, [sizePerPage, 1, searchInput, selected, props.depositResponseMessage]);
   
   const handleSearchInput = (e)=>{
   
@@ -134,20 +137,26 @@ function Deposit(props){
   
   
   const loadDeposits = (page, limit)=>{
-    
     dispatch(fetchDepositsStart({
       limit, 
-      page
+      page,
+      type:selected
     }));
     
     
   };
-  const depositApprove = (id)=>{
-    dispatch(depositApproveStart(id));
+  const depositApprove = (deposit)=>{
+    dispatch(depositApproveStart({
+      id:deposit._id,
+      customerId:deposit.customerId._id 
+    }));
     setShowNotifaction(true);
   };
-  const depositReject = (id)=>{
-    dispatch(depositRejectStart(id));
+  const depositReject = (deposit)=>{
+    dispatch(depositRejectStart({
+      id:deposit._id,
+      customerId:deposit.customerId._id 
+    }));
     setShowNotifaction(true);
   };
   const closeNotifaction = () => {
@@ -175,7 +184,23 @@ function Deposit(props){
                     <AddDepositForm />
                   </div>
                   
-                  <SearchBar handleSearchInput={handleSearchInput} placeholder={props.t("Search for deposits")}/>
+                  <div className="d-flex justify-content-between align-items-center">
+                    <SearchBar handleSearchInput={handleSearchInput} placeholder={props.t("Search for deposits")}/>
+                    <div>
+                      <Dropdown
+                        isOpen={btnprimary1}
+                        toggle={() => setBtnprimary1(!btnprimary1)}
+                      >
+                        <DropdownToggle tag="button" className="btn btn-primary">
+                          {selected} <i className="mdi mdi-chevron-down" />
+                        </DropdownToggle>
+                        <DropdownMenu>
+                          <DropdownItem value="LIVE" onClick={(e)=>{setSelected(e.target.value)}}>LIVE</DropdownItem>
+                          <DropdownItem value="DEMO" onClick={(e)=>{setSelected(e.target.value)}}>DEMO</DropdownItem>
+                        </DropdownMenu>
+                      </Dropdown>
+                    </div>
+                  </div>
                  
                 </CardHeader>
                 
@@ -207,7 +232,8 @@ function Deposit(props){
                                 <Td key={`${rowIndex}-${index}`} className= "pt-4">
                                   { column.dataField === "checkbox" ? <input className = "deposit-checkbox" type="checkbox"/> : ""}
                                   { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
-                                  {column.dataField === "dropdown" ? <CustomDropdown  permission={props.depositsPermissions.actions ? true : false} id={row._id} status={row.status} approve={depositApprove} reject={depositReject} /> : ""}
+                                  {column.dataField === "dropdown" ? <CustomDropdown  permission={props.depositsPermissions.actions ? true : false}
+                                    id={row._id} status={row.status} approve={()=>{depositApprove(row)}} reject={()=>{depositReject(row)}} /> : ""}
                                 </Td>
                               )}
                             </Tr>
@@ -247,6 +273,7 @@ const mapStateToProps = (state) => ({
   nextPage: state.depositReducer.nextPage,
   pagingCounter: state.depositReducer.pagingCounter,
   prevPage: state.depositReducer.prevPage,
-  depositsPermissions : state.Profile.depositsPermissions || {}
+  depositsPermissions : state.Profile.depositsPermissions || {},
+  depositResponseMessage:state.depositReducer.depositResponseMessage
 });
 export default connect(mapStateToProps, null)(withTranslation()(Deposit));

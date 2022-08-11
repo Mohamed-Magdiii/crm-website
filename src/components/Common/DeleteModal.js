@@ -4,7 +4,7 @@ import {
   Col, Modal, ModalBody, Row 
 } from "reactstrap";
 
-const DeleteModal = ({ show, onDeleteClick, onCloseClick, loading = false }) => {
+const DeleteModal = ({ show, onDeleteClick, onCloseClick, loading = false, buttonText, bodyText }) => {
   return (
     <Modal isOpen={show} toggle={onCloseClick} centered={true}>
       <ModalBody className="py-3 px-5">
@@ -19,7 +19,7 @@ const DeleteModal = ({ show, onDeleteClick, onCloseClick, loading = false }) => 
                 }}
               />
               <h2>Are you sure?</h2>
-              <h4>{"You won't be able to revert this!"}</h4>
+              <h4>{bodyText ? bodyText  : "You won't be able to revert this!"}</h4>
             </div>
           </Col>
         </Row>
@@ -32,7 +32,7 @@ const DeleteModal = ({ show, onDeleteClick, onCloseClick, loading = false }) => 
                 className="btn btn-success btn-lg ms-2"
                 onClick={onDeleteClick}
               >
-                Yes, delete it!
+                {buttonText ? buttonText : "Yes, delete it!"}
               </button>
               <button
                 disabled={loading}

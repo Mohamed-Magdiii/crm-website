@@ -11,6 +11,7 @@ import {
   FETCH_CLIENT_DEPOSITS_REQUESTED,
   FETCH_CLIENT_DEPOSITS_SUCCESS,
   FETCH_CLIENT_DEPOSITS_FAIL,
+  ERROR_CLEAR
 } from "./actionTypes";
 export const fetchDepositsStart = (params = {})=>{
   return {
@@ -49,16 +50,16 @@ export const modalClear = (data)=>{
     payload:data
   };
 };
-export const depositApproveStart = (id)=>{
+export const depositApproveStart = (payload)=>{
   return {
     type:DEPOSIT_APPROVE,
-    payload:{ id }
+    payload:payload
   };
 };
-export const depositRejectStart = (id)=>{
+export const depositRejectStart = (payload)=>{
   return {
     type:DEPOSIT_REJECT,
-    payload: { id }
+    payload: payload
   };
 };
 export const transactionStateChange = (data)=>{
@@ -85,5 +86,10 @@ export const fetchClientDepositsFail = (error) => {
   return {
     type: FETCH_CLIENT_DEPOSITS_FAIL,
     payload: { error }
+  };
+};
+export const errorClear = ()=>{
+  return {
+    type:ERROR_CLEAR
   };
 };

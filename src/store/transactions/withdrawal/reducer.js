@@ -39,15 +39,15 @@ const withdrawalReducer = (state = { initalState }, action)=>{
     case "MAKE_WITHDRAWAL_START":
       state = {
         ...state,
-        modalClear:false,
+        withdrawalModalClear:false,
         disableWithdrawalButton: true
       };
       break;
     case "MAKE_WITHDRWAL_SUCCESS":
       state = {
         ...state,
-        withdrawals:[{ ...action.payload.withdrawal }, ...state.withdrawals],
-        totalDocs:state.totalDocs + 1,
+        // withdrawals:[{ ...action.payload.withdrawal }, ...state.withdrawals],
+        // totalDocs:state.totalDocs + 1,
         withdrawResponseMessage:action.payload.withdrawal.status,
 
       };
@@ -76,7 +76,7 @@ const withdrawalReducer = (state = { initalState }, action)=>{
     case "MODAL_CLEAR":
       state = {
         ...state,
-        modalClear:true,
+        withdrawalModalClear:true,
         withdrawResponseMessage:"",
         disableWithdrawalButton: false
       };
@@ -84,10 +84,16 @@ const withdrawalReducer = (state = { initalState }, action)=>{
     case "WITHDRAWAL_ERROR": 
       state = {
         ...state,
-        error:action.payload.error
+        error:action.payload.error,
+        disableWithdrawalButton:false
       };
       break;
-
+    case "ERROR_CLEAR":
+      state = {
+        ...state,
+        error:""
+      };
+      break;
     // fetch client withdrawals 
     case FETCH_CLIENT_WITHDRAWALS_REQUESTED:
       state = {

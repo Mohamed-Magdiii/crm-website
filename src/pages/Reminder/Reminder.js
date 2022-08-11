@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import MetaTags from "react-meta-tags";
-import PropTypes from "prop-types";
-import { isEmpty } from "lodash";
 
 import {
   Card,
   CardBody,
   Container,
 } from "reactstrap";
+import { withTranslation } from "react-i18next";
+import {
+  useDispatch, connect,
+} from "react-redux";
 
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -16,155 +18,90 @@ import BootstrapTheme from "@fullcalendar/bootstrap";
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
+import TodoAdd from "components/Common/TodoAdd";
+// import Loader from "components/Common/Loader";
 
-import {
-  deleteEvent as onDeleteEvent,
-  getEvents as onGetEvents,
-} from "../../store/actions";
-
-import DeleteModal from "components/Common/DeleteModal";
-//css
 import "@fullcalendar/bootstrap/main.css";
-import { updateEvent } from "../../apis/reminder";
-import { showSuccessNotification, showErrorNotification } from "store/notifications/actions";
+import { fetchTodosStart } from "store/actions";
 
 //redux
-import { useSelector, useDispatch } from "react-redux";
-import EditReminderModal from "./EditReminderModal";
-import AddReminderModal from "./AddReminderModal";
+import ViewTodo from "./ViewTodo";
 
-const Reminder = () => {
+const Reminder = (props) => {
   const dispatch = useDispatch();
 
-  const { events } = useSelector((state) => ({
-    events: state.calendar.events,
-  }));
-  const [modal, setModal] = useState(false);
-  const [deleteModal, setDeleteModal] = useState(false);
-  const [event, setEvent] = useState({});
+  const [events, setEvents] = useState([]);
   const [selectedDay, setSelectedDay] = useState(0);
-  const [isEdit, setIsEdit] = useState(false);
-
-  // ################################
-  const [editModal, setEditReminderModal] = useState(false);
+  const [dateRange, setDateRange] = useState({
+    startStr: "",
+    endStr: "",
+  });
   const [addModal, setAddReminderModal] = useState(false);
-  const [editLoad, setEditLoad] = useState(0);
+  const [todoObj, setTodoObj] = useState({
+    note: "",
+    timeEnd: "",
+    type: "1",
+    _id: "",
+  });
+  const [showViewModal, setShowViewModal] = useState(false);
 
-  // ################################
-
-  useEffect(() => {
-    dispatch(onGetEvents({
-      page: 1,
-      limit: 200,
+  useEffect(()=>{
+    setEvents(props.todos.map(obj => {
+      return {
+        ...obj,
+        className: obj.type === 1 ? "bg-success text-white" : "bg-info text-white",
+        id: obj._id,
+        title: obj.note,
+        start: obj.timeEnd,
+        timeEnd: obj.timeEnd,
+      };
     }));
-  }, [dispatch, editLoad]);
+  }, [props.todos]);
 
-  /**
-   * Handling the modal state
-   */
-  const toggle = () => {
-    setModal(!modal);
-    if (!modal && !isEmpty(event) && !!isEdit) {
-      setTimeout(() => {
-        setEvent({});
-        setIsEdit(false);
-      }, 500);
-    }
-  };
-
-  /**
-   * Handling date click on calendar
-   */
   const handleDateClick = (arg) => {
-    const date = arg["date"];
-    var tomorrow = new Date(date);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    setSelectedDay(tomorrow.toISOString().replace(/00:00.000Z/, "01"));
+    var date = new Date(arg["date"]);
+    date.setDate(date.getDate() + 1);
+    setSelectedDay(date.toISOString());
     setAddReminderModal(true);
-
   };
 
-  /**
-   * Handling click on event on calendar
-   */
-  const dateDifference = (date2, date1) => {
-    const _MS_PER_DAY = 1000 * 60 * 60 * 24;
-    const utc1 = Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate());
-    const utc2 = Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate());
-    return Math.floor((utc2 - utc1) / _MS_PER_DAY);
-  };
   const handleEventClick = (arg) => {
-
-    const eventData = arg.event;
-    setEvent({
-      id: eventData.id,
-      title: eventData.title,
-      createdBy: eventData.extendedProps?.createdBy,
-      client: eventData.extendedProps?.customerId,
-      status: eventData.extendedProps?.status,
-      type: eventData.extendedProps?.type,
-      timeEnd: eventData.extendedProps?.timeEnd.replace(/.000Z/, ""),
-      // differentStartReminderAndNow: dateDifference(new Date(eventData.extendedProps?.timeStart), new Date()),
-      differentEndReminderAndNow: dateDifference(new Date(eventData.extendedProps?.timeEnd), new Date()),
+    setTodoObj({
+      ...arg.event.extendedProps,
+      _id: arg.event.id
     });
-    setEditReminderModal(true);
-
+    setShowViewModal(true);
   };
 
-
-  /**
-   * On delete event
-   */
-  const handleDeleteEvent = () => {
-    dispatch(onDeleteEvent(event));
-    setDeleteModal(false);
-    toggle();
-  };
-  /**
-   * On calendar drop event
-   */
-  const onDrop = ( ) => { 
-    // console.log("modifiedData"); 
-  };
-  const showNotification = (message = "", err) => {
-    if (err) {
-      dispatch(showErrorNotification(message));
-
-    } else {
-      dispatch(showSuccessNotification(message));
+  const dateRangeChange = (arg) => {
+    if (dateRange.startStr !== arg.startStr || dateRange.endStr !== arg.endStr) {
+      setDateRange({
+        ...dateRange,
+        ...arg,
+      });
+      dispatch(fetchTodosStart({
+        page: 1,
+        limit: 1000,
+        start: arg.startStr,
+        end: arg.endStr,
+      }));
     }
   };
-  const handleEventReceive = (event) => {
-    // console.log(event.event._def);
-    const v = new Date(event.event._def.extendedProps.timeEnd);
-    //  console.log(new Date(new Date(event.event._def.extendedProps.timeEnd).setDate(v.getDate() + event.delta.days)).toISOString());
-    const newDate = {
-      timeEnd: new Date(new Date(event.event._def.extendedProps.timeEnd).setDate(v.getDate() + event.delta.days)).toISOString(),
-      note: event.event._def.title,
-      status: event.event._def.extendedProps.status,
-      type: event.event._def.extendedProps.type,
 
-    };
-    updateEvent(event.event._def.publicId, newDate)
-      .then(() => {
-        showNotification("date updated successfully");
-      }
-      )
-      .catch(() => {
-        showNotification("Date updated faild", true);
-
-      });
-  };
   return (
     <React.Fragment>
-      <DeleteModal
-        show={deleteModal}
-        onDeleteClick={handleDeleteEvent}
-        onCloseClick={() => setDeleteModal(false)}
+      <TodoAdd
+        show={addModal} 
+        selectedDay={selectedDay} 
+        hidenAddButton={true}
+        selectedDate={selectedDay}
+        onClose={() => { setAddReminderModal(false)}}
       />
-      {<EditReminderModal openEdit={editModal} eventReminder={event} onClose={() => { setEditReminderModal(false); setEditLoad(editLoad + 1) }} />}
-      {<AddReminderModal openAdd={addModal} selectedDate={selectedDay} onClose={() => { setAddReminderModal(false); setEditLoad(editLoad + 1) }} />}
-
+      <ViewTodo
+        show={showViewModal}
+        data={todoObj}
+        onClose={() => { setShowViewModal(false) }}
+      />
       <div className="page-content">
         <MetaTags>
           <title>Reminders</title>
@@ -175,6 +112,7 @@ const Reminder = () => {
           <Card>
             <CardBody>
               {/* fullcalendar control */}
+              {/* {props.loading && <Loader />} */}
               <FullCalendar
                 plugins={[
                   BootstrapTheme,
@@ -191,12 +129,13 @@ const Reminder = () => {
                 }}
                 events={events}
                 editable={true}
-                droppable={true}
+                // droppable={true}
                 selectable={true}
                 dateClick={handleDateClick}
                 eventClick={handleEventClick}
-                eventDrop={handleEventReceive}
-                drop={onDrop}
+
+                datesSet={dateRangeChange}
+                
               />
             </CardBody>
           </Card>
@@ -206,15 +145,11 @@ const Reminder = () => {
   );
 };
 
-Reminder.propTypes = {
-  events: PropTypes.array,
-  categories: PropTypes.array,
-  className: PropTypes.string,
-  onGetEvents: PropTypes.func,
-  onAddNewEvent: PropTypes.func,
-  onUpdateEvent: PropTypes.func,
-  onDeleteEvent: PropTypes.func,
-  onGetCategories: PropTypes.func,
-};
+const mapStateToProps = (state) => ({
+  clientDetails: state.clientReducer.clientDetails || {},
+  todos: state.todosReducer.list && state.todosReducer.list.docs || [],
+  loading: state.todosReducer.loading,
+  deletingClearCounter: state.todosReducer.deletingClearCounter,
+});
 
-export default Reminder;
+export default connect(mapStateToProps, null)(withTranslation()(Reminder));

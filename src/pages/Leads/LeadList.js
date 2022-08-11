@@ -9,6 +9,8 @@ import {
   Table, Thead, Tbody, Tr, Th, Td
 } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
+import { Link } from "react-router-dom";
+
 import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
 import "./LeadList.scss";
@@ -33,7 +35,19 @@ function LeadsList(props) {
     {
       dataField: "name",
       text: props.t("Name"),
-      formatter: (val) => (captilazeFirstLetter(`${val.firstName} ${val.lastName}`)),
+      // formatter: (val) => (captilazeFirstLetter(`${val.firstName} ${val.lastName}`)),
+      formatter: (client) => (
+        <div className="d-flex gap-3">
+          <Link 
+            to={{
+              pathname: "/clients/" + client.id + "/profile",
+              state: { clientId: client.id }
+            }}
+          >
+            <strong className="text-capitalize">{client.firstName + " " + client.lastName}</strong>
+          </Link>
+        </div>
+      )
     },
     {
       dataField: "email",

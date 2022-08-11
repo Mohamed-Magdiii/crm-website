@@ -26,6 +26,8 @@ function WithdrawForm(props){
   const [selectedClient, setSelectedClient] = useState("");
   const [selectedWalletId, setSelectedWalletId] = useState("");
   const [gateway, setGateway] = useState("");
+  const [type, setType] = useState("LIVE");
+
   const dispatch = useDispatch();
   const { create } = props.withdrawalsPermissions;
   const handleWithdraw = (event, values) => {
@@ -43,31 +45,42 @@ function WithdrawForm(props){
   const selectClient = (id)=>{
     setSelectedClient(id);
     dispatch(fetchWalletStart({
-      belongsTo:id
+      belongsTo:id,
+      customerId:id,
     }));
-     
+  };
+  const selectType = (type)=>{
+    setType(type);
+    if (selectedClient.length > 0)
+      dispatch(fetchWalletStart({
+        belongsTo:selectedClient,
+        customerId:selectedClient,
+      }));
   };
   const toggleAddModal = () => {
     setWithdrawalModal(!open);
   };
+
   useEffect(()=>{
     dispatch(fetchClientsStart({
       page:1,
-      limit:10
+      limit:10,
+      type
     }));
     dispatch(fetchGatewaysOfWithdrawalsStart());
     if (searchInput.length >= 3){
       dispatch(fetchClientsStart({
-        searchText:searchInput
+        searchText:searchInput,
+        type
       }));
     }
-  
-  }, [searchInput]);
+  }, [searchInput, type]);
+
   useEffect(() => {
-    if (props.modalClear && open){
+    if (props.withdrawalModalClear && open){
       setWithdrawalModal(false);
     }
-  }, [props.modalClear]);
+  }, [props.withdrawalModalClear]);
   
   
   return (
@@ -118,6 +131,32 @@ function WithdrawForm(props){
               
               </Col>
               <Col md="6">
+                <Label>{props.t("Type")}</Label>
+                
+                
+                <div>
+                  <Select 
+                    defaultValue={{
+                      label:"Live",
+                      value:"LIVE" 
+                    }}
+                    onChange={(e) => {
+                      selectType(e.value);   
+                    }}
+                    options={[{
+                      label:"Live",
+                      value:"LIVE" 
+                    },
+                    {
+                      label:"Demo",
+                      value:"DEMO"
+                    }]}
+                    classNamePrefix="select2-selection"
+                    placeholder = "choose a type for deposit"
+                  />
+                </div>
+              </Col>
+              <Col md="12">
                 <Label>{props.t("Wallet")}</Label>
                 <div>
                   <Select 
@@ -223,7 +262,7 @@ const mapStateToProps = (state) => ({
   gateways:state.gatewayReducer.gateways || [],
   error: state.withdrawalReducer.error,
   withdrawResponseMessage:state.withdrawalReducer.withdrawResponseMessage,
-  modalClear:state.withdrawalReducer.modalClear,
+  withdrawalModalClear:state.withdrawalReducer.withdrawalModalClear,
   clients:state.clientReducer.clients || [],
   wallets:state.walletReducer.wallets || [],
   withdrawalsPermissions: state.Profile.withdrawalsPermissions || {}, 

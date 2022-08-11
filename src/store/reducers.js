@@ -9,8 +9,6 @@ import Account from "./auth/register/reducer";
 import ForgetPassword from "./auth/forgetpwd/reducer";
 import Profile from "./auth/profile/reducer";
 
-//Calendar
-import calendar from "./calendar/reducer";
 
 //chat
 import chat from "./chat/reducer";
@@ -43,6 +41,10 @@ import MarketPricing from "./marketPricing/reducer";
 import { reducer as notifications } from "react-notification-system-redux";
 import transactionFeeGroupReducer from "./transactionFeeGroups/reducer";
 import documentsReducer from "./documents/reducer";
+import ordersProfitsReducer from "./ordersProfit/reducer";
+import transactionsProfitsReducer from "./transactionsProfit/reducer";
+import todosReducer from "./todos/reducer";
+import logsReducer from "./logs/reducer";
 
 const rootReducer = combineReducers({
   // public
@@ -51,7 +53,6 @@ const rootReducer = combineReducers({
   Account,
   ForgetPassword,
   Profile,
-  calendar,
   chat,
   invoices,
   contacts,
@@ -76,6 +77,10 @@ const rootReducer = combineReducers({
   MarketPricing,
   transactionFeeGroupReducer,
   documentsReducer,
+  ordersProfitsReducer,
+  transactionsProfitsReducer,
+  todosReducer,
+  logsReducer,
 });
 
 export default rootReducer;

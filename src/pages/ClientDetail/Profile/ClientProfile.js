@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, connect } from "react-redux";
 import {
   Row, Col, Button, CardBody, CardHeader, CardTitle, Card
@@ -27,8 +27,14 @@ import professions from "common/profession";
 import annualIncome from "common/annualIncome";
 import sourceOfFunds from "common/souceOfFunds";
 import { TITLES, YESNO } from "common/data/dropdowns";
-
+import OrdersAddModal from "../orders/OrdersAddModal";
+import ResetPassword from "./QuickActions/resetPassword";
+import ClientAddBankAccountModal from "../Bank/ClientAddBankAccountModal";
+import Transaction from "./QuickActions/Transaction";
+import ConvertWallet from "./QuickActions/Wallet";
+import PortalAccess from "./QuickActions/portalAccess";
 function ClientDetails(props) {
+  const [deleteModal, setDeleteModal] = useState(false);
   const clientId = props.clientId;
   const dispatch = useDispatch();
   const { experience, financialInfo, tradingFeeId, markupId, transactionFeeId, declarations } = props.clientDetails;
@@ -80,7 +86,11 @@ function ClientDetails(props) {
   useEffect(() => {
   }, [props.clientDetails]);
 
-
+  useEffect(()=>{
+    if (!props.showPortalAccessModal && deleteModal){
+      setDeleteModal(false);
+    }
+  },  [props.showPortalAccessModal]);
   return (
     <React.Fragment>
       {(props.clientProfileloading || props.usersLoading || props.dictLoading) && 
@@ -94,8 +104,8 @@ function ClientDetails(props) {
             <div>
               <Row>
                 {/* input fields to the left side */}
-                <Col md="9" sm="12" xs="12">
-                  <Card>
+                <Col md="9" sm="12" xs="12" className="mb-3">
+                  <Card style={{ height: "100%" }}>
                     <CardHeader className="d-flex flex-column gap-3">
                       <div className="d-flex justify-content-between align-items-center">
                         <CardTitle>{props.t("General information")}</CardTitle>
@@ -564,30 +574,22 @@ function ClientDetails(props) {
                       <CardBody className="quick-actions-card">
                         <p className="quick-actions-heading">Client</p>
                         <div className="btn-container">
-                          <button type="button" className="btn btn-primary waves-effect waves-light w-100">
-                            Portal Access
-                          </button>
-                          <button type="button" className="btn btn-primary waves-effect waves-light w-100">
-                            Portal password
-                          </button>
+                          <PortalAccess clientDetails={props.clientDetails} clientId={clientId}/>
+                          <ResetPassword clientDetails = {props.clientDetails} clientId = {clientId}/>
                         </div>
                       </CardBody>
                       <CardBody className="quick-actions-card">
                         <p className="quick-actions-heading">Crypto Trading</p>
                         <div className="btn-container">
-                          <button type="button" className="btn btn-primary waves-effect waves-light w-100">
-                            Create wallet
-                          </button>
-                          <button type="button" className="btn btn-primary waves-effect waves-light w-100">
-                            Open order
-                          </button>
+                          <ConvertWallet clientId = {clientId}/>
+                          <OrdersAddModal buttonText = "Open Order"/>
                         </div>
                       </CardBody>
                       <CardBody className="quick-actions-card">
                         <p className="quick-actions-heading">Communication</p>
                         <div className="btn-container">
                           <button type="button" className="btn btn-primary waves-effect waves-light w-100">
-                            Send Email
+                            Send Email 
                           </button>
                         </div>
                       </CardBody>
@@ -597,101 +599,95 @@ function ClientDetails(props) {
                           <button type="button" className="btn btn-primary waves-effect waves-light w-100">
                             Add Note
                           </button>
-                          <button type="button" className="btn btn-primary waves-effect waves-light w-100">
-                            Add bank
-                          </button>
+                          <ClientAddBankAccountModal clientId={clientId} buttonText="Open Bank"/>
                           <button type="button" className="btn btn-primary waves-effect waves-light w-100">
                             Print application
                           </button>
-                          <button type="button" className="btn btn-primary waves-effect waves-light w-100">
-                          Add transaction
-                          </button>
+                          <Transaction/>
                         </div>
                       </CardBody>                      
                     </CardBody>
                   </Card>
-                </Col>
-                <Col>
-                  <Row>
-                    <Col md="3">
-                      <Card>
-                        <CardTitle></CardTitle>
-                        <CardBody>
-                          <AvForm onValidSubmit = {(e, v)=>{
-                            dispatch(editClientDetails({
-                              id:clientId,
-                              values:{ ...v }
-                            }));
-                          }}>
-                            <Row>
-                              <Col md="12">
+                  <Card>
+                    <CardTitle></CardTitle>
+                    <CardBody>
+                      <AvForm onValidSubmit = {(e, v)=>{
+                        dispatch(editClientDetails({
+                          id:clientId,
+                          values:{ ...v }
+                        }));
+                      }}>
+                        <Row>
+                          <Col md="12">
                                 
-                                <AvFieldSelect
-                                  label =" Trading Fee" 
-                                  name="tradingFeeId"
-                                  value = {tradingFeeId ?._id ? tradingFeeId._id : ""}
-                                  validate = { { required : { value : true } }}
-                                  options = {props.feeGroups.map(feeGroup=>{
-                                    return {
-                                      label: feeGroup.title,
-                                      value : feeGroup._id
-                                    };
-                                  })}
+                            <AvFieldSelect
+                              label =" Trading Fee" 
+                              name="tradingFeeId"
+                              value = {tradingFeeId ?._id ? tradingFeeId._id : ""}
+                              validate = { { required : { value : true } }}
+                              options = {props.feeGroups.map(feeGroup=>{
+                                return {
+                                  label: feeGroup.title,
+                                  value : feeGroup._id
+                                };
+                              })}
                                 
-                                />
+                            />
                                 
-                              </Col>
-                              <Col md="12">
-                                <div className="mt-2">
-                                  <AvFieldSelect 
-                                    label="Transaction Fee"
-                                    name="transactionFeeId"
-                                    value = {transactionFeeId ?._id ? transactionFeeId._id : ""}
-                                    options = {props.transactionFeeGroups.map(transactionFeeGroup=>{
-                                      return {
-                                        label:transactionFeeGroup.title,
-                                        value:transactionFeeGroup._id
-                                      };
-                                    })}
+                          </Col>
+                          <Col md="12">
+                            <div className="mt-2">
+                              <AvFieldSelect 
+                                label="Transaction Fee"
+                                name="transactionFeeId"
+                                value = {transactionFeeId ?._id ? transactionFeeId._id : ""}
+                                options = {props.transactionFeeGroups.map(transactionFeeGroup=>{
+                                  return {
+                                    label:transactionFeeGroup.title,
+                                    value:transactionFeeGroup._id
+                                  };
+                                })}
                                     
-                                  />
-                                </div>
+                              />
+                            </div>
                            
-                              </Col>
-                              <Col md="12">
-                                <div className="mt-2">
-                                  <AvFieldSelect 
-                                    label="Markup"
-                                    name="markupId"
-                                    value = {markupId ?._id ?  markupId._id : ""}
-                                    options= {props.markups.map(markup=>{
-                                      return {
-                                        label:markup.title,
-                                        value:markup._id
-                                      };
-                                    })}
-                                  />
-                                </div>
+                          </Col>
+                          <Col md="12">
+                            <div className="mt-2">
+                              <AvFieldSelect 
+                                label="Markup"
+                                name="markupId"
+                                value = {markupId ?._id ?  markupId._id : ""}
+                                options= {props.markups.map(markup=>{
+                                  return {
+                                    label:markup.title,
+                                    value:markup._id
+                                  };
+                                })}
+                              />
+                            </div>
                              
-                              </Col>        
-                              <div className="d-flex justify-content-end">
-                                <div className="p-4">
-                                  <Button 
-                                    disabled={props.updating}  
-                                    type="submit" 
-                                    color="primary"
-                                  >
-                                    {props.t("Update")}
-                                  </Button>
-                                </div>
-                              </div>                    
-                            </Row>
+                          </Col>        
+                          <div className="d-flex justify-content-end">
+                            <div className="p-4">
+                              <Button 
+                                disabled={props.updating}  
+                                type="submit" 
+                                color="primary"
+                              >
+                                {props.t("Update")}
+                              </Button>
+                            </div>
+                          </div>                    
+                        </Row>
 
-                          </AvForm>
-                        </CardBody>
-                      </Card>
-                    </Col>
-                    <Col md="5">
+                      </AvForm>
+                    </CardBody>
+                  </Card>
+                </Col>
+                <Col  className="mt-2">
+                  <Row>
+                    <Col md="6" sm="12" xs="12">
                       <Card>
                         <CardHeader>
                           <CardTitle>Employment Info</CardTitle>
@@ -782,7 +778,7 @@ function ClientDetails(props) {
                      
                     </Col>
 
-                    <Col  md="4" sm="12" xs="12">
+                    <Col  md="6" sm="12" xs="12">
                       <Card>
                         <CardHeader>
                           <CardTitle>Finanical Info</CardTitle>
@@ -927,7 +923,8 @@ const mapStateToProps = (state) => ({
   transactionFeeGroups: state.transactionFeeGroupReducer.transactionFeeGroups || [],
   feeGroups : state.feeGroupReducer.feeGroups || [],
   employmentInfoUpdating : state.clientReducer.employmentInfoUpdating,
-  financialInfoUpdating : state.clientReducer.financialInfoUpdating
+  financialInfoUpdating : state.clientReducer.financialInfoUpdating,
+  showPortalAccessModal : state.clientReducer.showPortalAccessModal
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(ClientDetails));

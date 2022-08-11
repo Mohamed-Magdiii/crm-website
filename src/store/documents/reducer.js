@@ -1,4 +1,3 @@
-/* eslint-disable no-debugger */
 
 import {
   UPLOAD_DOC_START,

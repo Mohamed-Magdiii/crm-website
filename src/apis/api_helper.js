@@ -1,4 +1,3 @@
-/* eslint-disable no-debugger */
 import axios from "axios";
 import * as url from "./url_helper";
 
@@ -46,7 +45,7 @@ export async function get(url, config = {}) {
 }
 
 export async function post(url, data, config = {}) {
-  const path = config.crypto ? `/crm${url}` : `/crm${url}`;
+  const path = config.crypto ? `/cp${url}` : `/crm${url}`;
   return axiosApi
     .post(path, { ...data }, { ...config })
     .then(response => {

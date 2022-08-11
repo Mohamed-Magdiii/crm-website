@@ -12,6 +12,7 @@ import {
   FETCH_CLIENT_WITHDRAWALS_REQUESTED,
   FETCH_CLIENT_WITHDRAWALS_SUCCESS,
   FETCH_CLIENT_WITHDRAWALS_FAIL,
+  ERROR_CLEAR
 } from "./actionTypes";
 export const fetchWithdrawalsStart = (params)=>{
   return {
@@ -50,16 +51,16 @@ export const modalClear = (data)=>{
     payload:data
   };
 };
-export const withdrawApproveStart = (id)=>{
+export const withdrawApproveStart = (payload)=>{
   return {
     type:WITHDRAW_APPROVE,
-    payload:{ id }
+    payload:payload 
   };
 };
-export const withdrawRejectStart = (id)=>{
+export const withdrawRejectStart = (payload)=>{
   return {
     type:WITHDRAW_REJECT,
-    payload:{ id }
+    payload: payload 
   };
 };
 export const withdrawStatusChangeSuccess = (data)=>{
@@ -86,5 +87,10 @@ export const fetchClientWithdrawalsFail = (error) => {
   return {
     type: FETCH_CLIENT_WITHDRAWALS_FAIL,
     payload: { error }
+  };
+};
+export const errorClear = ()=>{
+  return {
+    type:ERROR_CLEAR
   };
 };
