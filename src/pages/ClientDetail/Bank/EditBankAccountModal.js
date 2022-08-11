@@ -108,7 +108,11 @@ function BankAccountEditModal(props){
                     },
                     minLength: {
                       value: 13,
-                      errorMessage: "IBAN must contain at least 13 characters"
+                      errorMessage: "IBAN must contain 13 characters/digits at least"
+                    },
+                    maxLength: {
+                      value: 16,
+                      errorMessage: "IBAN must contain 16 characters/digits at most"
                     }
                   }
                 }
