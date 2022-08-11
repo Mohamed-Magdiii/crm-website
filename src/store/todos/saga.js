@@ -49,7 +49,6 @@ function * addTodo(params){
 
 function * deleteTodo(params){
   try {
-    // eslint-disable-next-line no-debugger
     yield call(todosApi.deleteTodo, params.payload);  
     yield put(deleteTodosEnd({ id: params.payload }));
     yield put(showSuccessNotification("Todo deletd successfully"));

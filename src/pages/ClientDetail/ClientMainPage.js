@@ -1,5 +1,4 @@
 /* eslint-disable object-property-newline */
-/* eslint-disable no-debugger */
 import React, { useEffect } from "react";
 import { 
   BrowserRouter as Router, Redirect, Route, Switch, useParams,

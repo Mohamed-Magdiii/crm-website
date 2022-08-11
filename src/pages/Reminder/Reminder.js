@@ -1,4 +1,3 @@
-/* eslint-disable no-debugger */
 import React, { useEffect, useState } from "react";
 import MetaTags from "react-meta-tags";
 

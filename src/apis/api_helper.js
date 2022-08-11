@@ -1,4 +1,3 @@
-/* eslint-disable no-debugger */
 import axios from "axios";
 import * as url from "./url_helper";
 

@@ -18,8 +18,6 @@ function resetPassword(props){
   };
   const dispatch = useDispatch();
   const handleChangePassword = (e, values)=>{
-    // eslint-disable-next-line no-debugger
-    debugger;
     dispatch(clientForgotPasswordStart({
       ...values,
       id: clientDetails._id

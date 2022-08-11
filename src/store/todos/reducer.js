@@ -42,8 +42,6 @@ const Calendar = (state = INIT_STATE, action) => {
       };
   
     case ADD_TODO_END:
-      // eslint-disable-next-line no-debugger
-      debugger;
       if (action.payload.id) {
         docs = docs.map(obj => {
           if (obj._id === action.payload.id) {
