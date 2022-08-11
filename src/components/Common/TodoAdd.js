@@ -69,6 +69,7 @@ function TodoAdd (props) {
   useEffect(()=>{
     if (props.clearingCounter > 0 && addModal) {
       setAddTodoModal(false);
+      props.onClose();
     }
   }, [props.clearingCounter]);
 
