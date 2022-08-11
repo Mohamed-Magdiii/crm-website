@@ -51,8 +51,31 @@ export const getTodos = async ({ payload }) => {
 };
 
 export const addTodo = async (params) => {
+  const { id, ...obj } = params;
+  let data;
+  if (id) {
+    data = data = await axiosHelper.patch(`/todos/${id}`, obj);
+  } else {
+    data = await axiosHelper.post("/todos", obj);
+  }
+  if (data.isError) {
+    throw new Error(data.message);
+  }
+  return data.result;
+};
+
+export const updateTodo = async (id, params) => {
   // const { id, values } = payload;
   const data = await axiosHelper.post("/todos", params);
+  if (data.isError) {
+    throw new Error(data.message);
+  }
+  return data.result;
+};
+
+export const deleteTodo = async (id) => {
+  // const { id, values } = payload;
+  const data = await axiosHelper.del("/todos/" + id);
   if (data.isError) {
     throw new Error(data.message);
   }

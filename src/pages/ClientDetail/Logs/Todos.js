@@ -8,18 +8,21 @@ import {
   Table, Thead, Tbody, Tr, Th, Td
 } from "react-super-responsive-table";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
+import { Link } from "react-router-dom";
 
 // i18n
 import { withTranslation } from "react-i18next";
 import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
-import { fetchTodosStart } from "store/actions";
+import { fetchTodosStart, deleteTodosStart } from "store/actions";
 import TodoAdd from "components/Common/TodoAdd";
+import DeleteModal from "components/Common/DeleteModal";
 
 function Todos(props) {
-//   const clientId = props.clientId;
-// const dispatch = useDispatch();
   const [sizePerPage, setSizePerPage] = useState(10);
+  const [todoObj, setTodoObj] = useState();
+  const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const columns = [
     {
@@ -46,8 +49,8 @@ function Todos(props) {
       formatter: (val) => (new Date(val.timeEnd).toUTCString())
     }, 
     {
-      dataField: "reminder",
-      text: props.t("Reminder"),
+      dataField: "type",
+      text: props.t("Type"),
       formatter: (val) => (val.type === 0 ? "Todo" : "Reminder")
     },
     // {
@@ -60,10 +63,30 @@ function Todos(props) {
       text: props.t("Status"),
       
     },
-    // {
-    //   dataField: "completed",
-    //   text: props.t("Completed")
-    // },
+    {
+      dataField: "",
+      isDummyField: true,
+      editable: false,
+      text: props.t("Action"),
+      formatter: (obj) => (
+        <div className="">
+          <Link className="p-2 text-success" to="#">
+            <i
+              className={"mdi mdi-pencil font-size-18"}
+              id="edittooltip"
+              onClick={() => { setTodoObj(obj); setShowModal(true) }}
+            ></i>
+          </Link>
+          <Link className="p-2 text-danger" to="#">
+            <i
+              className={"mdi mdi-delete font-size-18"}
+              id="deletetooltip"
+              onClick={() => { setTodoObj(obj); setShowDeleteModal(true)}}
+            ></i>
+          </Link>
+        </div>
+      ),
+    },
   ];
 
   const dispatch = useDispatch();
@@ -82,6 +105,16 @@ function Todos(props) {
     fetchData(1);
   }, [sizePerPage, 1]);
 
+  const deleteRole = () => {
+    dispatch(deleteTodosStart(todoObj._id));
+  };
+
+  useEffect(()=>{
+    if (props.deletingClearCounter > 0 && showDeleteModal) {
+      setShowDeleteModal(false);
+    }
+  }, [props.deletingClearCounter]);
+
   return (
     <React.Fragment>
       <div className="">
@@ -94,6 +127,18 @@ function Todos(props) {
                     {props.t("Todos")} / {props.t("Reminders")}
                   </CardTitle>
                   <TodoAdd selectedClient={props.selectedClient} />
+                  <TodoAdd
+                    show={showModal} 
+                    data={todoObj} 
+                    onClose={() => { setShowModal(false) }}
+                    hidenAddButton={true}
+                  />
+                  <DeleteModal
+                    loading={props.deleteLoading}
+                    onDeleteClick={deleteRole}
+                    show={showDeleteModal }
+                    onCloseClick={()=>{setShowDeleteModal(false)}}
+                  />
                 </CardHeader>
                 <CardBody>
                   <div className="table-rep-plugin">
@@ -160,6 +205,7 @@ const mapStateToProps = (state) => ({
   pagination: state.todosReducer.list || {},
   loading: state.todosReducer.loading,
   selectedClient: state.clientReducer.clientDetails || {},
+  deletingClearCounter: state.todosReducer.deletingClearCounter,
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(Todos));

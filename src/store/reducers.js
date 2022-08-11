@@ -9,8 +9,6 @@ import Account from "./auth/register/reducer";
 import ForgetPassword from "./auth/forgetpwd/reducer";
 import Profile from "./auth/profile/reducer";
 
-//Calendar
-import calendar from "./calendar/reducer";
 
 //chat
 import chat from "./chat/reducer";
@@ -54,7 +52,6 @@ const rootReducer = combineReducers({
   Account,
   ForgetPassword,
   Profile,
-  calendar,
   chat,
   invoices,
   contacts,
