@@ -65,7 +65,7 @@ function DepositForm(props){
   }, [searchInput, type]);
 
   useEffect(() => {
-    if (props.modalClear && open ){
+    if (!props.disableAddButton && open ){
       setDepositModal(false);
     }
   }, [props.modalClear]);
@@ -217,7 +217,7 @@ function DepositForm(props){
                 name="amount"
                 label={props.t("Amount")}
                 placeholder={props.t("enter amount")}
-                type="text"
+                type="number"
                 errorMessage={props.t("Enter Valid Amount")}
                 validate = {{
                   required :{ value:true },
@@ -244,7 +244,12 @@ function DepositForm(props){
             </div>
     
             <div className='text-center pt-3 p-2'>
-              <Button disabled = {props.disableAddButton} type="submit" color="primary" className="">
+              <Button 
+                disabled = {props.disableAddButton && !props.modalClear} 
+                type="submit" 
+                color="primary" 
+                className=""
+              >
                 {props.t("Add")}
               </Button>
             </div>
@@ -265,6 +270,6 @@ const mapStateToProps = (state) => ({
   clients:state.clientReducer.clients || [],
   wallets:state.walletReducer.wallets || [],
   depositsPermissions : state.Profile.depositsPermissions || {}, 
-  disableAddButton : state.depositReducer.disableAddButton
+  disableAddButton : state.depositReducer.disableAddButton,
 });
 export default connect(mapStateToProps, null)(withTranslation()(DepositForm));

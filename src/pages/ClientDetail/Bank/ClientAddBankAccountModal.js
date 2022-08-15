@@ -42,7 +42,7 @@ function ClientAddBankAccountModal(props){
         </ModalHeader>
         <ModalBody >
           <AvForm
-            className='p-4' 
+            className="p-4" 
             onValidSubmit={(e, v) => {
               v.customerId = id;
               addBankAccountHandler(e, v);
@@ -75,8 +75,7 @@ function ClientAddBankAccountModal(props){
                 name="accountNumber"
                 label={props.t("Account number")}
                 placeholder={props.t("Enter Account Number")}
-                type="text"
-                errorMessage={props.t("Enter Account Number")}
+                type="number"
                 validate={
                   { 
                     required: { 
@@ -167,7 +166,7 @@ function ClientAddBankAccountModal(props){
                 validate={{ required: { value: true } }}
               />
             </div>
-            <div className='text-center pt-3 p-2'>
+            <div className="text-center pt-3 p-2">
               {/* on clicking this button it switches from the list component to the edit component if 
                   submission is valid but it adds the new system email to the db onValidSubmit above */}
               <Button disabled={props.addLoading} type="submit" color="primary">

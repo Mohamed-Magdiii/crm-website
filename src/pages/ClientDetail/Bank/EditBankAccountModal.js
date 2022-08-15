@@ -55,7 +55,7 @@ function BankAccountEditModal(props){
                 value={selectedBankAccount.bankName}
                 errorMessage={props.t("Enter Bank Name")}
                 validate={{ required: { value: true } }}
-              />``
+              />
             </div>
 
             <div className="mb-3">
@@ -109,10 +109,6 @@ function BankAccountEditModal(props){
                     minLength: {
                       value: 13,
                       errorMessage: "IBAN must contain 13 characters/digits at least"
-                    },
-                    maxLength: {
-                      value: 16,
-                      errorMessage: "IBAN must contain 16 characters/digits at most"
                     }
                   }
                 }
