@@ -9,7 +9,7 @@ const LeadsStats = () => {
         <CardBody>
           <CardTitle>Leads</CardTitle>
 
-          <Row classNamke="col-card-same-height mt-5">
+          <Row className="col-card-same-height mt-5">
             <Col sm={5} xs={12} className="col d-flex align-items-center justify-content-center">
               <div className="">
                 <p className="m-0"><b>44</b></p>
