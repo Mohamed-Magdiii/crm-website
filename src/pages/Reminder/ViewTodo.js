@@ -100,7 +100,9 @@ function EditReminderModal(props) {
                 </Col>
               </Row>
               <div className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-3">
-                Reminder At :<span> &nbsp; </span>{todoObj.timeEnd}
+                Reminder At :<span> &nbsp; </span>{
+                  new Date(todoObj.timeEnd).toLocaleDateString("en-US", { timeZone: "UTC" }) + "," + " " + new Date(todoObj.timeEnd).toLocaleTimeString("en-US", { timeZone: "UTC" })
+                }
               </div>
               <div className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-3">
                 Created By :<span> &nbsp; </span> {todoObj.createdBy.firstName + " " + todoObj.createdBy.lastName}

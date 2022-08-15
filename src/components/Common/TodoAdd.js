@@ -184,8 +184,7 @@ function TodoAdd (props) {
                 <AvField
                   type="datetime-local"
                   name="timeEnd"
-                  // value="testing"
-                  // value={todoObj.timeEnd.slice(0, -5) || new Date().toISOString().slice(0, -5)}
+                  value={todoObj.timeEnd.slice(0, -5) || new Date().toISOString().slice(0, -5)}
                   label={props.t("Reminder")}
                   errorMessage={props.t("Invalid Reminder Note")}
                 >
