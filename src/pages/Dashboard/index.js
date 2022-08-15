@@ -27,6 +27,7 @@ import Clients from "./Clients";
 import KYC from "./KYC";
 import Transactions from "./Transactions";
 import SalesTarget from "./SalesTarget";
+import Assets from "./Assets";
 
 
 const Dashboard = () => {
@@ -56,14 +57,19 @@ const Dashboard = () => {
               <Reminders />
             </Col>
           </Row>
-          <Row className="col-card-same-height">
+          <Row>
+            <Col sm={12} xs={12} className="col mb-4">
+              <Assets />
+            </Col>
+          </Row>
+          {/* <Row className="col-card-same-height">
             <Col sm={6} xs={12} className="col mb-4">
               <Sales />
             </Col>
             <Col sm={6} xs={12} className="col mb-4">
               <Referrals />
             </Col>
-          </Row>
+          </Row> */}
           <Row className="col-card-same-height">
             <Col sm={6} xs={12} className="col mb-4">
               <Requests />
@@ -83,11 +89,11 @@ const Dashboard = () => {
               <KYC />
             </Col>
           </Row>
-          <Row>
+          {/* <Row>
             <Col sm={12} xs={12} className="col mb-4">
               <SalesTarget />
             </Col>
-          </Row>
+          </Row> */}
         </Container>
       </div>
     </React.Fragment>
