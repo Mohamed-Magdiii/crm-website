@@ -1,9 +1,17 @@
-import React from "react";
+/* eslint-disable object-property-newline */
+import React, { useEffect } from "react";
 import MetaTags from "react-meta-tags";
+import { useDispatch, connect } from "react-redux";
+import { withTranslation } from "react-i18next";
 
 //import Breadcrumbs
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import * as content from "content";
+import {
+  fetchCustomerCountriesStart,
+  fetchTodosStart,
+  fetchCustomerStatsStart,
+} from "store/actions";
 
 import {
   Container, Row, Col 
@@ -22,6 +30,15 @@ import SalesTarget from "./SalesTarget";
 
 
 const Dashboard = () => {
+  const dispatch = useDispatch();
+
+  useEffect(()=>{
+    dispatch(fetchTodosStart({ page: 1, limit: 3, }));
+    dispatch(fetchCustomerCountriesStart({}));
+    dispatch(fetchCustomerStatsStart({}));
+
+  }, []);
+
   return (
     <React.Fragment>
       <div className="page-content">
@@ -77,4 +94,7 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+const mapStateToProps = () => ({
+});
+
+export default connect(mapStateToProps, null)(withTranslation()(Dashboard));

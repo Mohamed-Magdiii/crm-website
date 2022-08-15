@@ -3,40 +3,23 @@ import {
   Card, CardBody, CardTitle, Row, Col
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { withTranslation } from "react-i18next";
 
-const RemindersStats = () => {
-  const data = [{
-    note: "This is test note",
-    customerId: {
-      _id: "62e3b14d363c715ba8c9aff6",
-      firstName: "Lorem",
-      lastName: "Ipsum",
-    },
-    timeEnd: "07 28 2022"
-  }, {
-    note: "This is test note",
-    customerId: {
-      _id: "62e3b14d363c715ba8c9aff6",
-      firstName: "Lorem",
-      lastName: "Ipsum",
-    },
-    timeEnd: "07 28 2022"
-  }, {
-    note: "This is test note",
-    customerId: {
-      _id: "62e3b14d363c715ba8c9aff6",
-      firstName: "Lorem",
-      lastName: "Ipsum",
-    },
-    timeEnd: "07 28 2022"
-  }];
+import Loader from "components/Common/Loader";
+
+
+const RemindersStats = (props) => {
   return (
     <React.Fragment>
       <Card className="card-animate">
         <CardBody>
           <CardTitle>Reminders</CardTitle>
           <Row>
-            {data.map((obj, index) => <Row sm={12} className="note-row pb-2 pt-2" key={index}>
+            {props.loading && <Col sm={12}>
+              <Loader />
+            </Col>}
+            {!props.loading && props.todos.map((obj, index) => <Row sm={12} className="note-row pb-2 pt-2" key={index}>
               <Col sm={1} className="reminder-icon">
                 <i
                   className={"bx bx-message-alt-dots font-size-18"}
@@ -50,7 +33,7 @@ const RemindersStats = () => {
                     {obj.customerId.firstName} {" "} {obj.customerId.lastName}
                   </Link>
                 </p>
-                <small>{obj.timeEnd}</small>
+                <small>{new Date(obj.timeEnd).toUTCString()}</small>
               </Col>
             </Row>)}
 
@@ -67,4 +50,9 @@ const RemindersStats = () => {
   );
 };
 
-export default RemindersStats;
+const mapStateToProps = (state) => ({
+  todos: state.todosReducer.list && state.todosReducer.list.docs || [],
+  loading: state.todosReducer.loading || false,
+});
+
+export default connect(mapStateToProps, null)(withTranslation()(RemindersStats));

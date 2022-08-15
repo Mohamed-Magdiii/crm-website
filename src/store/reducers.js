@@ -45,6 +45,7 @@ import ordersProfitsReducer from "./ordersProfit/reducer";
 import transactionsProfitsReducer from "./transactionsProfit/reducer";
 import todosReducer from "./todos/reducer";
 import logsReducer from "./logs/reducer";
+import dashboardReducer from "./dashboard/reducer";
 
 const rootReducer = combineReducers({
   // public
@@ -81,6 +82,7 @@ const rootReducer = combineReducers({
   transactionsProfitsReducer,
   todosReducer,
   logsReducer,
+  dashboardReducer,
 });
 
 export default rootReducer;
