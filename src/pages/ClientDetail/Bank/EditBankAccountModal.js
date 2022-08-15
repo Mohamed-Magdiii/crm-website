@@ -55,7 +55,7 @@ function BankAccountEditModal(props){
                 value={selectedBankAccount.bankName}
                 errorMessage={props.t("Enter Bank Name")}
                 validate={{ required: { value: true } }}
-              />
+              />``
             </div>
 
             <div className="mb-3">
@@ -73,11 +73,15 @@ function BankAccountEditModal(props){
                     },
                     minLength: {
                       value: 8,
-                      errorMessage: "Invalid swift code"
+                      errorMessage: "Swift code must consist of 8 characters"
+                    },
+                    maxLength: {
+                      value: 8,
+                      errorMessage: "Swift code must consist of 8 characters"
                     },
                     pattern: {
-                      value: "([A-Z][0-9])",
-                      errorMessage: "Invalid swift code"
+                      value: "/^[A-Z]*$/",
+                      errorMessage: "Swift code can only contain uppercase characters"
                     }
                   }
                 }
@@ -100,11 +104,15 @@ function BankAccountEditModal(props){
                     },
                     pattern: {
                       value: "^[A-Z][A-Z]", 
-                      errorMessage: "Invalid IBAN"
+                      errorMessage: "IBAN must start with two uppercase charecters"
                     },
                     minLength: {
                       value: 13,
-                      errorMessage: "Invalid IBAN"
+                      errorMessage: "IBAN must contain 13 characters/digits at least"
+                    },
+                    maxLength: {
+                      value: 16,
+                      errorMessage: "IBAN must contain 16 characters/digits at most"
                     }
                   }
                 }
@@ -127,7 +135,7 @@ function BankAccountEditModal(props){
                     },
                     number: {
                       value: true,
-                      errorMessage: "Invalid account number"
+                      errorMessage: "Account number must be a number"
                     }
                   }
                 }

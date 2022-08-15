@@ -85,7 +85,7 @@ function ClientAddBankAccountModal(props){
                     },
                     number: {
                       value: true,
-                      errorMessage: "Invalid account number"
+                      errorMessage: "Account number must be a number"
                     }
                   }
                 }
@@ -106,15 +106,15 @@ function ClientAddBankAccountModal(props){
                     },
                     minLength: {
                       value: 8,
-                      errorMessage: "Invalid swift code"
+                      errorMessage: "Swift code must consist of 8 characters"
                     },
                     maxLength: {
                       value: 8,
-                      errorMessage: "Invalid seift code"
+                      errorMessage: "Swift code must consist of 8 characters"
                     },
                     pattern: {
-                      value: "([A-Z][0-9])",
-                      errorMessage: "Invalid swift code"
+                      value: "/^[A-Z]*$/",
+                      errorMessage: "Swift code can only contain uppercase characters"
                     }
                   }
                 }
@@ -146,11 +146,11 @@ function ClientAddBankAccountModal(props){
                     },
                     pattern: {
                       value: "^[A-Z][A-Z]", 
-                      errorMessage: "Invalid IBAN"
+                      errorMessage: "IBAN must start with two uppercase charecters"
                     },
                     minLength: {
                       value: 13,
-                      errorMessage: "Invalid IBAN"
+                      errorMessage: "IBAN must contain at least 13 characters"
                     }
                   }
                 }
