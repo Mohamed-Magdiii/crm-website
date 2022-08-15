@@ -5,7 +5,7 @@ import {
 const ClientsStats = () => {
   return (
     <React.Fragment>
-      <Card>
+      <Card className="card-animate">
         <CardBody>
           <CardTitle>Clients</CardTitle>
           <Row className="col-card-same-height mt-5">

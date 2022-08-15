@@ -5,7 +5,7 @@ import {
 const TransactionsStats = () => {
   return (
     <React.Fragment>
-      <Card>
+      <Card className="card-animate">
         <CardBody>
           <CardTitle>Transactions</CardTitle>
           <CardSubtitle className="mb-3">

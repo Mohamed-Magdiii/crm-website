@@ -49,7 +49,7 @@ const ReferralsStats = () => {
   };
   return (
     <React.Fragment>
-      <Card>
+      <Card className="card-animate">
         <CardBody>
           <CardTitle>Referrals</CardTitle>
           <CardSubtitle className="mb-3">

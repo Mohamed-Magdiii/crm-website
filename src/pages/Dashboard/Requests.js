@@ -5,7 +5,7 @@ import {
 const RequestsStats = () => {
   return (
     <React.Fragment>
-      <Card>
+      <Card className="card-animate">
         <CardBody>
           <CardTitle>Requests</CardTitle>
           <CardSubtitle className="mb-3">

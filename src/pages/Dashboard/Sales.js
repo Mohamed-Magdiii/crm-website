@@ -49,7 +49,7 @@ const SalesStats = () => {
   };
   return (
     <React.Fragment>
-      <Card>
+      <Card className="card-animate">
         <CardBody>
           <CardTitle>Sales</CardTitle>
           <CardSubtitle className="mb-3">

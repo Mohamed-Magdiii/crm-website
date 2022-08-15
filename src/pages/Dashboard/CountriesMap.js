@@ -15,7 +15,7 @@ const CountriesMap = () => {
 
   return (
     <React.Fragment>
-      <Card>
+      <Card className="card-animate">
         <CardBody>
           <CardTitle>World Map</CardTitle>
           <CardSubtitle className="mb-3">

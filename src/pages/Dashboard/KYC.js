@@ -5,7 +5,7 @@ import {
 const KycStats = () => {
   return (
     <React.Fragment>
-      <Card>
+      <Card className="card-animate">
         <CardBody>
           <CardTitle>Kyc Documents</CardTitle>
           <Row className="col-card-same-height mt-5">
