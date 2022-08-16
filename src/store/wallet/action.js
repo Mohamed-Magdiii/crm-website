@@ -25,12 +25,14 @@ export const fetchWalletStart = (params) => {
     payload: params
   };
 };
+
 export const fetchWalletSuccess = (data) => {
   return {
     type: FETCH_WALLET_SUCCESS,
     payload: data
   };
 };
+
 export const clearWallets = () => {
   return {
     type: CLEAR_WALLETS
@@ -44,12 +46,14 @@ export const fetchClientWallets = (params = {}) => {
     payload: params
   };
 };
+
 export const fetchClientWalletsSuccess = (data) => {
   return {
     type: FETCH_CLIENT_WALLETS_SUCCESS,
     payload: data
   };
 };
+
 export const fetchClientWalletsFail = (error) => {
   return {
     type: FETCH_CLIENT_WALLETS_FAIL,
@@ -64,18 +68,21 @@ export const addWallet = (params = {}) => {
     payload: params
   };
 };
+
 export const addWalletSuccess = (data) => {
   return {
     type: ADD_CLIENT_WALLET_SUCCESS,
     payload: data
   };
 };
+
 export const addWalletFail = (error) => {
   return {
     type: ADD_CLIENT_WALLET_FAIL,
     payload: { error }
   };
 };
+
 export const addWalletClear = (data) => {
   return {
     type: ADD_CLIENT_WALLET_CLEAR,
@@ -100,20 +107,23 @@ export const changeStatusDone = (params = {}) => {
     payload: params
   };
 };
+
 export const convertWalletStart = (values)=>{
   return {
-    type:CONVERT_WALLET_START,
-    payload:values
+    type: CONVERT_WALLET_START,
+    payload: values
   };
 };
+
 export const convertWalletError = (error)=>{
   return {
-    type:CONVERT_WALLET_ERROR,
-    payload:error
+    type: CONVERT_WALLET_ERROR,
+    payload: error
   };
 };
+
 export const errorClear = ()=>{
   return {
-    type:ERROR_CLEAR
+    type: ERROR_CLEAR
   };
 };

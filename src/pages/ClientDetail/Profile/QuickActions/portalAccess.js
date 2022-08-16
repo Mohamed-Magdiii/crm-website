@@ -20,9 +20,16 @@ function PortalAccess(props){
   };
   return (
     <React.Fragment>
-      <Link to="#" className="btn btn-primary" onClick={toggleModal}>
+      <button 
+        type="button" 
+        className="btn btn-primary waves-effect waves-light w-100 me-1"
+        onClick={toggleModal}
+      >
+        Portal Access
+      </button>
+      {/* <Link to="#" className="btn btn-primary" onClick={toggleModal}>
         <i className="bx me-1"> Portal Access</i>
-      </Link>
+      </Link> */}
       <Modal isOpen={open} toggle={toggleModal} >
         <ModalHeader toggle={toggleModal}>
              Portal Access

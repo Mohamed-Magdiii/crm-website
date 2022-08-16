@@ -30,9 +30,16 @@ function resetPassword(props){
   }, [props.clearResetPasswordModal]);
   return (
     <React.Fragment>
-      <Link to="#" className="btn btn-primary" onClick={toggleAddModal}>
+      <button 
+        type="button" 
+        className="btn btn-primary waves-effect waves-light w-100 me-1"
+        onClick={toggleAddModal}
+      >
+        Reset Password
+      </button>
+      {/* <Link to="#" className="btn btn-primary" onClick={toggleAddModal}>
         <i className="bx me-1"> Reset Password</i>
-      </Link>
+      </Link> */}
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
            Reset Password

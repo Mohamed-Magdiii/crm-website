@@ -69,12 +69,12 @@ function* changeStatusWallet(params) {
   }
 
 }
-function * convertWallet({  payload }){
+function * convertWallet({ payload }){
   try {
     const data = yield call(walletApi.convertWallet, payload);
     const { status } = data;
     if (status){
-      yield put(showSuccessNotification("Wallet has been converted successfully"));
+      yield put(showSuccessNotification(`${payload.fromAsset} has been converted to ${payload.toAsset} successfully`));
     }
   } catch (error){
   

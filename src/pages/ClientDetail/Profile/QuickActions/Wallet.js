@@ -14,26 +14,31 @@ import { fetchClientWallets, convertWalletStart } from "store/wallet/action";
 import { fetchAssetsStart } from "store/assests/actions";
 
 import Select from "react-select";
-function ConvertWallet(props){
+
+function ConvertWallet(props) {
   const [addModal, setAddModal] = useState(false);
   const [toAsset, setToAsset] = useState("");
   const [fromAsset, setFromAsset] = useState("");
   const [toAssetId, setToAssetId ] = useState("");
   const [fromAssetId, setFromAssetId] = useState("");
   const { clientId } = props;
+  const dispatch = useDispatch();
+  
   const toggleAddModal = ()=>{
     setAddModal(!addModal);
   };
-  const dispatch = useDispatch();
+
   const handleConvertWallet = (e, v)=>{
     dispatch(convertWalletStart({
       toAsset,
       fromAsset,
       fromAssetId,
       toAssetId,
-      amount:v.amount
+      amount: v.amount,
+      customerId: clientId,
     }));
   };
+
   useEffect(()=>{
     dispatch(fetchClientWallets(clientId));
     dispatch(fetchAssetsStart({
@@ -41,14 +46,19 @@ function ConvertWallet(props){
       limit:1000
     }));
   }, []);
+
   return (
     <React.Fragment>
-      <Link to="#" className="btn btn-primary" onClick={toggleAddModal}>
-        <i className="bx me-1"> Convert Wallet</i>
-      </Link>
+      <button 
+        type="button" 
+        className="btn btn-primary waves-effect waves-light w-100 me-1"
+        onClick={toggleAddModal}
+      >
+        Convert
+      </button>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
-            Convert Wallet
+            Convert
         </ModalHeader>
         <ModalBody>
           <AvForm
@@ -123,7 +133,7 @@ function ConvertWallet(props){
 const mapStateToProps = (state)=>({
   docs: state.walletReducer.docs || [],
   assets: state.assetReducer.assets || [],
-  convertWalletError : state.walletReducer.convertWalletError,
-  disableConvertWalletButton:state.walletReducer.disableConvertWalletButton
+  convertWalletError: state.walletReducer.convertWalletError,
+  disableConvertWalletButton: state.walletReducer.disableConvertWalletButton
 });
 export default connect(mapStateToProps, null)(ConvertWallet);

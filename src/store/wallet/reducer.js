@@ -122,13 +122,13 @@ const walletReducer = (state = initState, action) => {
     case CONVERT_WALLET_START:
       state = {
         ...state,
-        disableConvertWalletButton:true
+        disableConvertWalletButton: true
       };
       break;
     case CONVERT_WALLET_ERROR:
       state = {
         ...state,
-        disableConvertWalletButton:false,
+        disableConvertWalletButton: false,
         convertWalletError: action.payload
       };
       break;
