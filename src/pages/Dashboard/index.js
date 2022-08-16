@@ -19,15 +19,18 @@ import {
 
 import CountriesMap from "./CountriesMap";
 import Reminders from "./Reminders";
-import Sales from "./Sales";
-import Referrals from "./Referrals";
+// import Sales from "./Sales";
+// import Referrals from "./Referrals";
 import Requests from "./Requests";
 import Leads from "./Leads";
 import Clients from "./Clients";
 import KYC from "./KYC";
 import Transactions from "./Transactions";
-import SalesTarget from "./SalesTarget";
-import Assets from "./Assets";
+// import SalesTarget from "./SalesTarget";
+// import Assets from "./Assets";
+import WalletBalance from "./WalletBalance";
+import InvestedOverview from "./InvestedOverview";
+import HeaderStats from "./HeaderStats";
 
 
 const Dashboard = () => {
@@ -49,6 +52,11 @@ const Dashboard = () => {
         <Container fluid>
           {/* Render Breadcrumbs */}
           <Breadcrumbs title="Dashboard" breadcrumbItem="Dashboard" />
+          <Row>
+            <Col sm={12} xs={12} className="col mb-4">
+              <HeaderStats />
+            </Col>
+          </Row>
           <Row className="col-card-same-height">
             <Col sm={6} xs={12} className="col mb-4">
               <CountriesMap />
@@ -57,9 +65,12 @@ const Dashboard = () => {
               <Reminders />
             </Col>
           </Row>
-          <Row>
-            <Col sm={12} xs={12} className="col mb-4">
-              <Assets />
+          <Row className="col-card-same-height">
+            <Col sm={6} xs={12} className="col mb-4">
+              <WalletBalance />
+            </Col>
+            <Col sm={6} xs={12} className="col mb-4">
+              <InvestedOverview />
             </Col>
           </Row>
           {/* <Row className="col-card-same-height">
