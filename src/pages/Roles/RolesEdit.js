@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   useDispatch, connect
 } from "react-redux";
@@ -13,10 +13,40 @@ import {
 } from "availity-reactstrap-validation";
 import { editRole } from "store/roles/actions";
 
-
 function RolesAdd (props) {
-  const { open, role = {}, onClose } = props;
+  const { open, role = {}, onClose, isCheckedProp } = props;
   const dispatch = useDispatch();
+  const [isChecked, setIsChecked] = useState(isCheckedProp);
+  console.log(isChecked);
+
+  const checkboxModal = {};
+  role.permissions && Object.keys(role.permissions).map((permKey) => {
+    role.permissions[permKey] && Object.keys(role.permissions[permKey]).map((permission) => {
+      const objKey = `permissions.${permKey}.${permission}`;
+      const objValue = isChecked;
+      checkboxModal[objKey] = objValue;
+    });
+  });
+
+  const selectAllRolesHandler = () => {
+    isChecked 
+      ?
+      role.permissions && Object.keys(role.permissions).map((permKey) => {
+        role.permissions[permKey] && Object.keys(role.permissions[permKey]).map((permission) => {
+          const objKey = `permissions.${permKey}.${permission}`;
+          checkboxModal[objKey] = false;
+          setIsChecked(false);
+        });
+      })
+      :
+      role.permissions && Object.keys(role.permissions).map((permKey) => {
+        role.permissions[permKey] && Object.keys(role.permissions[permKey]).map((permission) => {
+          const objKey = `permissions.${permKey}.${permission}`;
+          checkboxModal[objKey] = true;
+          setIsChecked(true);
+        });
+      });
+  };
 
   const handleAddRole = (e, values) => {
     dispatch(editRole({
@@ -38,11 +68,14 @@ function RolesAdd (props) {
             Edit Role
         </ModalHeader>
         <ModalBody >
+          {console.log(isChecked)}
           <AvForm
             className='p-4'
             onValidSubmit={(e, v) => {
+              delete v.selectAllRoles;
               handleAddRole(e, v);
             }}
+            model={checkboxModal}
           >
             <div className="mb-3">
               <AvField
@@ -55,13 +88,29 @@ function RolesAdd (props) {
                 validate={{ required: { value: true } }}
               />
             </div>
+            <AvInput 
+              type="checkbox" 
+              name="selectAllRoles" 
+              className="mb-3"
+              onClick={selectAllRolesHandler}
+            />
+            <span className="p-2">
+              {
+                isChecked &&
+                "Unselect all roles"
+              }
+              {
+                !isChecked && 
+                "Select all roles"
+              }
+            </span>
             {role.permissions && Object.keys(role.permissions).map((permKey, permInd) =>
               <div className="mb-3" key={permInd}>
                 <h6 className="text-capitalize">{permKey}</h6>
                 {role.permissions[permKey] && Object.keys(role.permissions[permKey]).map((permission, permissionInd) =>
                   <React.Fragment key={permissionInd}>
-                    <AvInput type="checkbox" name={`permissions.${permKey}.${permission}`} value={role.permissions[permKey][permission]} />
-                    <span className="p-2" >{permission}</span>
+                    <AvInput trueValue={isChecked} type="checkbox" name={`permissions.${permKey}.${permission}`} value={role.permissions[permKey][permission]} />
+                    <span className="p-2">{permission}</span>
                   </React.Fragment>
                 )}                     
               </div>

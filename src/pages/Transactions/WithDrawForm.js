@@ -19,6 +19,8 @@ import { fetchWalletStart, clearWallets } from "store/wallet/action";
 import { fetchClientsStart } from "store/client/actions";
 import { withTranslation } from "react-i18next";
 import Select from "react-select";
+// import AvFieldSelect from "components/Common/AvFieldSelect";
+
 function WithdrawForm(props){
 
   const [open, setWithdrawalModal] = useState(false);
@@ -35,7 +37,7 @@ function WithdrawForm(props){
     dispatch(makeWithdrawalStart({
       customerId:selectedClient,
       walletId: selectedWalletId,
-      gateway,
+      // gateway,
       ...values
     }));
     setSearchInput("");
@@ -187,11 +189,23 @@ function WithdrawForm(props){
             <div className="mb-3">
               <Label>{props.t("Gateway")}</Label>
               <div>
+                {/* <AvFieldSelect
+                  name="gateway"
+                  type="text"
+                  value={Object.keys(props.gateways)[0]?.gateway}
+                  errorMessage={props.t("Choose gateway")}
+                  validate={{ required: { value: true } }}
+                  label={props.t("Gateway")}
+                  options={Object.keys(props.gateways).map((key) => (
+                    {
+                      label : `${props.gateways[key]}`,
+                      value : `${props.gateways[key]}`
+                    }
+                  ))}
+                /> */}
                 <Select 
                   onChange={(e) => {
-                  
                     setGateway(e.value.gateway);
-                  
                   }}
                   isSearchable = {true}
                   options={Object.keys(props.gateways).map((key) => (
@@ -201,14 +215,24 @@ function WithdrawForm(props){
                         gateway : `${props.gateways[key]}`
                       }
                     }
-
                   ))}
                   classNamePrefix="select2-selection"
-                  placeholder = "choose a gateway"
-                 
+                  placeholder = "Choose a gateway"
+                />
+                <AvField
+                  name="gateway"
+                  type="text"
+                  errorMessage={props.t("Choose a gateway")}
+                  validate={{ required: { value: true } }}
+                  value={gateway}
+                  style={{
+                    opacity: 0,
+                    height: 0,
+                    width: 0,
+                    margin: -10
+                  }}
                 />
               </div>
-            
             </div>
             
                
@@ -217,18 +241,20 @@ function WithdrawForm(props){
                 name="amount"
                 label={props.t("Amount")}
                 placeholder={props.t("enter amount")}
-                type="text"
+                type="number"
                 errorMessage={props.t("Enter Valid Amount")}
                 validate = {{
                   required :{ value:true },
-                  pattern : {
-                    // eslint-disable-next-line no-useless-escape
-                    value :"^[0-9]+(\\.([0-9]{1,4}))?$",
-                    errorMessage : "Amount is not valid"
+                  // pattern : {
+                  //   // eslint-disable-next-line no-useless-escape
+                  //   value :"^[0-9]+(\\.([0-9]{1,4}))?$",
+                  //   errorMessage : "Amount is not valid"
+                  // }
+                  min: {
+                    value: 0,
+                    errorMessage: "Amount must be more than zero"
                   }
                 }}
-                
-
               />
             </div>
             <div className="mb-3">

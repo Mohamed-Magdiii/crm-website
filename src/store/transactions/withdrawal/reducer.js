@@ -87,6 +87,7 @@ const withdrawalReducer = (state = { initalState }, action)=>{
         error:action.payload.error,
         disableWithdrawalButton:false
       };
+      console.log(action.payload);
       break;
     case "ERROR_CLEAR":
       state = {

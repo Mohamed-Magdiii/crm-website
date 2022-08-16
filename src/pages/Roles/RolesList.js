@@ -22,8 +22,8 @@ import DeleteModal from "components/Common/DeleteModal";
 import RolesAdd from "./RolesAdd";
 import RolesEdit from "./RolesEdit";
 function RolesList(props){
-  
   const [editModal, setEditUserModal] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
   const [deleteModal, setDeleteUserModal] = useState(false);
   const [selectedRole, setSelectedRole] = useState();
   const { update, delete:deleteRolePermission }  = props.rolesPermissions;
@@ -94,7 +94,7 @@ function RolesList(props){
   
   useEffect(()=>{
     loadRoles(1, sizePerPage);
-  }, [sizePerPage, 1]);
+  }, [sizePerPage, 1, props.editResult]);
 
   const loadRoles = (page, limit) => {
     dispatch(fetchRoles({
@@ -117,7 +117,6 @@ function RolesList(props){
       setDeleteUserModal(false);
     }
   }, [props.deleteClearingCounter]);
-  
 
   return (
     <React.Fragment>
@@ -175,7 +174,7 @@ function RolesList(props){
               </Card>
             </Col>
           </Row>
-          {<RolesEdit open={editModal}  role={selectedRole} onClose={()=>{setEditUserModal(false)}} />}
+          {<RolesEdit isCheckedProp={isChecked} open={editModal}  role={selectedRole} onClose={()=>{setEditUserModal(false)}} />}
           {<DeleteModal loading={props.deleteLoading} onDeleteClick={deleteRole} show={deleteModal } onCloseClick={()=>{setDeleteUserModal(false)}} />}
         </div>
       </div>
@@ -202,7 +201,8 @@ const mapStateToProps = (state) => ({
   prevPage: state.rolesReducer.prevPage,
   deleteLoading: state.rolesReducer.deleteLoading,
   deleteClearingCounter: state.rolesReducer.deleteClearingCounter,
-  rolesPermissions: state.Profile.rolesPermissions || {}
+  rolesPermissions: state.Profile.rolesPermissions || {},
+  editResult: state.rolesReducer.editResult
 
 });
 export default connect(mapStateToProps, null)(RolesList);

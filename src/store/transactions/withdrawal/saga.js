@@ -48,13 +48,13 @@ function * makeWithdrawal({ payload:{ withdrawal } }){
     if (status){
       yield put(makeWithdrawalSuccess(result));
       yield put(showSuccessNotification(`Withdrawal has been ${result.status}`));
-      yield delay(1000);
+      // yield delay(1000);
       yield put(modalClear());
     }
     
   } catch (error){
     yield put(withdrawalError(error.message));
-    yield delay(1000);
+    // yield delay(1000);
     yield put(errorClear());
   }
 
