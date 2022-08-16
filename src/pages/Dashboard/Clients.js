@@ -2,7 +2,10 @@ import React from "react";
 import {
   Card, CardBody, CardTitle, Row, Col
 } from "reactstrap";
-const ClientsStats = () => {
+import { connect } from "react-redux";
+import { withTranslation } from "react-i18next";
+
+const ClientsStats = (props) => {
   return (
     <React.Fragment>
       <Card className="card-animate">
@@ -11,7 +14,9 @@ const ClientsStats = () => {
           <Row className="col-card-same-height mt-5">
             <Col sm={5} xs={12} className="col d-flex align-items-center justify-content-center">
               <div className="">
-                <p className="m-0"><b>44</b></p>
+                <p className="m-0"><b>
+                  {props.clientsStats && props.clientsStats.assigned + props.clientsStats.unAssigned}  
+                </b></p>
                 <p className="m-0">All</p>
               </div>
             </Col>
@@ -19,13 +24,13 @@ const ClientsStats = () => {
               <Row>
                 <Col sm={12} className="">
                   <div className="circle-stat">
-                    40
+                    {props.clientsStats.assigned}
                   </div>
-                  New
+                  Assigned
                 </Col>
                 <Col sm={12} className="">
                   <div className="circle-stat">
-                    4
+                    {props.clientsStats.unAssigned}
                   </div>
                   Unassigned
                 </Col>
@@ -38,5 +43,8 @@ const ClientsStats = () => {
     </React.Fragment>
   );
 };
+const mapStateToProps = (state) => ({
+  clientsStats: state.dashboardReducer.clientsStats || {},
+});
 
-export default ClientsStats;
+export default connect(mapStateToProps, null)(withTranslation()(ClientsStats));

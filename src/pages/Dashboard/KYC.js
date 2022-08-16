@@ -11,49 +11,49 @@ const KycStats = () => {
           <Row className="col-card-same-height mt-5">
             <Col sm={4} xs={12} className="col p-0">
               <Row>
-                <Col sm={12} className="">
+                <Col sm={12} className="d-flex align-items-center">
                   <div className="circle-stat">
                     40
                   </div>
-                  New
+                  Pending Approval
                 </Col>
-                <Col sm={12} className="">
+                <Col sm={12} className="d-flex align-items-center">
                   <div className="circle-stat">
                     4
                   </div>
-                  Unassigned
+                  Missing KYC
                 </Col>
               </Row>
             </Col>
             <Col sm={4} xs={12} className="col p-0">
               <Row>
-                <Col sm={12} className="">
+                <Col sm={12} className="d-flex align-items-center">
                   <div className="circle-stat">
                     40
                   </div>
-                  New
+                  Approved (Unfunded)
                 </Col>
-                <Col sm={12} className="">
+                <Col sm={12} className="d-flex align-items-center">
                   <div className="circle-stat">
                     4
                   </div>
-                  Unassigned
+                  <div>No Kyc (Unfunded)</div>
                 </Col>
               </Row>
             </Col>
             <Col sm={4} xs={12} className="col p-0">
               <Row>
-                <Col sm={12} className="">
+                <Col sm={12} className="d-flex align-items-center">
                   <div className="circle-stat">
                     40
                   </div>
-                  New
+                  Rejected KYC
                 </Col>
-                <Col sm={12} className="">
+                <Col sm={12} className="d-flex align-items-center">
                   <div className="circle-stat">
                     4
                   </div>
-                  Unassigned
+                  Expired Documents
                 </Col>
               </Row>
             </Col>

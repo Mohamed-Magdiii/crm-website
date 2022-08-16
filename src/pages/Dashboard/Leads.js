@@ -2,7 +2,10 @@ import React from "react";
 import {
   Card, CardBody, CardTitle, Row, Col
 } from "reactstrap";
-const LeadsStats = () => {
+import { connect } from "react-redux";
+import { withTranslation } from "react-i18next";
+
+const LeadsStats = (props) => {
   return (
     <React.Fragment>
       <Card className="card-animate">
@@ -12,7 +15,9 @@ const LeadsStats = () => {
           <Row className="col-card-same-height mt-5">
             <Col sm={5} xs={12} className="col d-flex align-items-center justify-content-center">
               <div className="">
-                <p className="m-0"><b>44</b></p>
+                <p className="m-0"><b>
+                  {props.leadsStats && props.leadsStats.assigned + props.leadsStats.unAssigned}  
+                </b></p>
                 <p className="m-0">All</p>
               </div>
             </Col>
@@ -20,13 +25,13 @@ const LeadsStats = () => {
               <Row>
                 <Col sm={12} className="">
                   <div className="circle-stat">
-                    40
+                    {props.leadsStats.assigned}
                   </div>
-                  New
+                  Assigned
                 </Col>
                 <Col sm={12} className="">
                   <div className="circle-stat">
-                    4
+                    {props.leadsStats.unAssigned}
                   </div>
                   Unassigned
                 </Col>
@@ -39,5 +44,8 @@ const LeadsStats = () => {
     </React.Fragment>
   );
 };
+const mapStateToProps = (state) => ({
+  leadsStats: state.dashboardReducer.leadsStats || {},
+});
 
-export default LeadsStats;
+export default connect(mapStateToProps, null)(withTranslation()(LeadsStats));
