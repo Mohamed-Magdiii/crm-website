@@ -25,6 +25,9 @@ function ConvertWallet(props) {
   const dispatch = useDispatch();
   
   const toggleAddModal = ()=>{
+    if (!addModal) {
+      fetchData();
+    }
     setAddModal(!addModal);
   };
 
@@ -39,13 +42,20 @@ function ConvertWallet(props) {
     }));
   };
 
-  useEffect(()=>{
+  // useEffect(()=>{
+  //   dispatch(fetchClientWallets(clientId));
+  //   dispatch(fetchAssetsStart({
+  //     page:1,
+  //     limit:1000
+  //   }));
+  // }, []);
+  const fetchData = () => {
     dispatch(fetchClientWallets(clientId));
     dispatch(fetchAssetsStart({
       page:1,
       limit:1000
     }));
-  }, []);
+  };
 
   return (
     <React.Fragment>
