@@ -81,7 +81,7 @@ function TransactionFeeGroupAdd(props) {
     setcol1(!col1);
   };
   useEffect(() => {
-    if (!props.showAddSuccessMessage && addModal) { 
+    if (!props.showAddSuccessMessage && addModal) {
       setAddUserModal(false);
     }
   }, [props.showAddSuccessMessage]);
@@ -114,7 +114,7 @@ function TransactionFeeGroupAdd(props) {
                   <AvField
                     name="title"
                     label={props.t("Title")}
-                    placeholder={props.t("Title")}
+                    placeholder={props.t("Enter Title")}
                     type="text"
                     errorMessage={props.t("Enter Valid title")}
                     validate={{ required: { value: true } }}
@@ -141,10 +141,13 @@ function TransactionFeeGroupAdd(props) {
                   <AvField
                     name="value"
                     label={props.t("Value")}
-                    placeholder={props.t("value")}
+                    placeholder={props.t("Enter Value")}
                     type="number"
                     errorMessage={props.t("Enter valid fees group value")}
-                    validate={{ required: { value: true } }}
+                    validate={{
+                      required: { value: true },
+                      min: { value: 0 }
+                    }}
                     onChange={(e) => setValue(e.target.value)}
                   />
                 </Col>
@@ -152,10 +155,13 @@ function TransactionFeeGroupAdd(props) {
                   <AvField
                     name="minValue"
                     label={props.t("Min value")}
-                    placeholder={props.t("min value")}
+                    placeholder={props.t("Enter Min Value")}
                     type="number"
                     errorMessage={props.t("Enter valid min fees group value")}
-                    validate={{ required: { value: true } }}
+                    validate={{
+                      required: { value: true },
+                      min: { value: 0 }
+                    }}
                     onChange={(e) => setMinAmount(e.target.value)}
                   />
                 </Col>
@@ -163,10 +169,13 @@ function TransactionFeeGroupAdd(props) {
                   <AvField
                     name="maxValue"
                     label={props.t("Max Value")}
-                    placeholder={props.t("Max Value")}
+                    placeholder={props.t("Enter Max Value")}
                     type="number"
-                    errorMessage={props.t("Enter Valid max feees group value")}
-                    validate={{ required: { value: true } }}
+                    errorMessage={props.t("Enter Valid max fees group value")}
+                    validate={{
+                      required: { value: true },
+                      min: { value: 0 }
+                    }}
                     onChange={(e) => setMaxAmount(e.target.value)}
                   />
                 </Col>
@@ -238,7 +247,7 @@ function TransactionFeeGroupAdd(props) {
             </Col>
             <div className='text-center pt-3 p-2'>
               <Button disabled={props.addButtonDisabled} type="submit" color="primary" className="">
-                {props.t("Add New Transaction Fees Group")}
+                {props.t("Add")}
               </Button>
             </div>
           </AvForm>
@@ -247,14 +256,6 @@ function TransactionFeeGroupAdd(props) {
               <UncontrolledAlert color="danger">
                 <i className="mdi mdi-block-helper me-2" />
                 {props.t(props.error)}
-              </UncontrolledAlert>
-            )
-          }
-          {
-            props.showAddSuccessMessage && (
-              <UncontrolledAlert color="success">
-                <i className="mdi mdi-check-all me-2" />
-                {props.t("Transaction New Fees Group is added successfully !!!")}
               </UncontrolledAlert>
             )
           }
