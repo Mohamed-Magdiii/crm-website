@@ -36,7 +36,7 @@ function TransactionForm(props){
     event.preventDefault();
     if (type == "Deposit"){
       dispatch(addDepositStart({
-        customerId:selectedClient,
+        customerId: props.clientId,
         walletId: selectedWalletId,
         gateway,
         ...values
@@ -46,7 +46,7 @@ function TransactionForm(props){
     }
     else if (type === "Withdrawal"){
       dispatch(makeWithdrawalStart({
-        customerId:selectedClient,
+        customerId: props.clientId,
         walletId:selectedWalletId,
         gateway,
         ...values
@@ -88,23 +88,36 @@ function TransactionForm(props){
     }
    
   }, [props.modalClear]);
+
   useEffect(()=>{
     if (props.withdrawalModalClear && transactionModal){
       setTransactionModal(false);
     }
   }, [props.withdrawalModalClear]);
-  const selectClient = (id)=>{
-    setSelectedClient(id);
+
+  useEffect(()=>{
     dispatch(fetchWalletStart({
-      belongsTo:id
+      belongsTo: props.clientId
     }));
-       
+  }, [props.clientId]);
+  
+  const selectClient = (id)=> {
+    // dispatch(fetchWalletStart({
+    //   belongsTo: id
+    // }));
   };
   
   return (
     <React.Fragment >
-      <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx me-1"></i> {props.t("Add Transaction")}</Link>
--      <Modal isOpen={transactionModal} toggle={toggleAddModal} centered={true}>
+      <button 
+        type="button" 
+        className="btn btn-primary waves-effect waves-light w-100 me-1"
+        onClick={toggleAddModal}
+      >
+        {props.t("Add Transaction")}
+      </button>
+      {/* <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx me-1"></i> {props.t("Add Transaction")}</Link> */}
+      <Modal isOpen={transactionModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
           {props.t("Make Transaction")}
         </ModalHeader>
@@ -132,33 +145,6 @@ function TransactionForm(props){
 
                   onChange = {(e)=>setType(e.value)}
                 />
-              </Col>
-              <Col className="mt-2" md="12">
-                <Label>{props.t("Client")}</Label>
-                
-                
-                <div>
-                  <Select 
-                    onChange={(e) => {
-                      selectClient(e.value.id);
-                      
-                    }}
-                    isSearchable = {true}
-                    options={props.clients.map((item) => (
-                      {
-                        label : `${item.firstName} ${item.lastName}`,
-                        value : {
-                          name: `${item.firstName} ${item.lastName}`,
-                          id: `${item._id}`
-                        }
-                      }
-
-                    ))}
-                    classNamePrefix="select2-selection"
-                    placeholder = "choose a client name"
-                    onInputChange = {(e)=>setSearchInput(e)}
-                  />
-                </div>
               </Col>
               <Col className="mt-2" md="12">
                 <Label>{props.t("Wallet")}</Label>

@@ -37,6 +37,26 @@ function TransactionProfitList(props) {
     dispatch(fetchTransactionsProfitsStart());
   };
 
+  const columns = [
+    {
+      dataField: "symbol",
+      text: props.t("symbol"),
+    },
+    {
+      dataField: "profit",
+      text: props.t("Profit"),
+    },
+  ];
+
+  const getData = (balances) => {
+    return Object.keys(balances).map(key => {
+      return {
+        symbol: key,
+        profit: balances[key],
+      };
+    });
+  };
+
 
   return (
     <React.Fragment>
@@ -44,8 +64,7 @@ function TransactionProfitList(props) {
         <div className="container-fluid">
           <h2>{props.t("Transactions Profit")}</h2>
           <Row>
-            {props.loading && <Spinner></Spinner>}
-            {!props.loading && props.transactionsProfits.map((transactionProfit, index)=><Col key={index} className="col-12">
+            {props.transactionsProfits.map((transactionProfit, index)=><Col key={index} className="col-12">
               <Card>
                 <CardHeader className="d-flex flex-column gap-3">
                   <div className="d-flex justify-content-between  align-items-center">
@@ -62,18 +81,23 @@ function TransactionProfitList(props) {
                         id="tech-companies-1"
                         className="table  table-hover "
                       >
+                        <Thead className="text-center table-light" >
+                          <Tr>
+                            {columns.map((column, index) =>
+                              <Th data-priority={index} key={index}>{column.text}</Th>
+                            )}
+                          </Tr>
+                        </Thead>
+                        
                         <Tbody style={{ fontSize: "13px" }}>
-                          {Object.keys(transactionProfit.balances).map((key, index) =>
-                            <Tr key={index}>
-                              <Td className="d-flex align-items-center justify-content-between">
-                                <div>
-                                  {key}
-                                </div>
-                                <div>
-                                  {transactionProfit.balances[key]}
-                                </div>
+                          {props.loading && <TableLoader />}
+                          {!props.loading && getData(transactionProfit.balances).map((row, rowIndex) => <Tr key={rowIndex}>
+                            {columns.map((column, index) =>
+                              <Td className="text-center" key={`${rowIndex}-${index}`}>
+                                {column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
                               </Td>
-                            </Tr>
+                            )}
+                          </Tr>
                           )}
                         </Tbody>
                       </Table>
