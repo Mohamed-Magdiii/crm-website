@@ -43,7 +43,7 @@ function TransactionFeeGroupList(props) {
     {
       dataField: "isPercentage",
       text: props.t("isPercentage"),
-      formatter: (val) => (val.isPercentage ? "TRUE" : "FALSE"),
+      formatter: (val) => (val.isPercentage ? "True" : "False"),
     },
     {
       dataField: "value",
@@ -140,7 +140,7 @@ function TransactionFeeGroupList(props) {
                     >
                       <Table
                         id="tech-companies-1"
-                        className="table  table-hover "
+                        className="table table-hover "
                       >
                         <Thead className="text-center table-light" >
                           <Tr>
@@ -149,7 +149,11 @@ function TransactionFeeGroupList(props) {
                             )}
                           </Tr>
                         </Thead>
-                        <Tbody style={{ fontSize: "13px" }}>
+                        <Tbody style={{
+                          fontSize: "12px",
+                          textAlign: "center",
+                          textTransform: "capitalize"
+                        }}>
                           {props.loading && <TableLoader colSpan={4} />}
                           {!props.loading && props.transactionFeeGroups.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
