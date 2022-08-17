@@ -17,6 +17,7 @@ import { fetchTransactionFeeGroupStart, deleteTransactionFeeGroupStart } from "s
 import DeleteModal from "components/Common/DeleteModal";
 import TransactionFeeGroupEdit from "./TransactionFeeGroupEdit";
 import TransactionFeeGroupAdd from "./TransactionFeeGroupAdd";
+import { checkAllBoxes } from "common/utils/checkAllBoxes";
 
 function TransactionFeeGroupList(props) {
   const [deleteModal, setDeleteModal] = useState(false);
@@ -27,7 +28,7 @@ function TransactionFeeGroupList(props) {
   const columns = [
     {
       dataField: "checkbox",
-      text: <input type="checkbox" />
+      text: <input type="checkbox" id="check-all-fee-groups" onChange={()=>checkAllBoxes("check-all-fee-groups", ".fee-group-checkbox")}/>
     },
 
     {
@@ -154,7 +155,7 @@ function TransactionFeeGroupList(props) {
                             <Tr key={rowIndex}>
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`}>
-                                  {column.dataField === "checkbox" ? <input type="checkbox" /> : ""}
+                                  {column.dataField === "checkbox" ? <input className="fee-group-checkbox" type="checkbox" /> : ""}
                                   {column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
                                 </Td>
                               )}
