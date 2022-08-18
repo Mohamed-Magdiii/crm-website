@@ -67,7 +67,7 @@ function TransactionFeeGroupList(props) {
       editable: false,
       text: "Action",
       formatter: (item) => (
-        <div className="d-flex gap-3">
+        <div className="d-flex gap-3 justify-content-center">
           <Link className={`text-success ${!update ? "d-none" : ""}`} to="#">
             <i
               className="mdi mdi-pencil font-size-18"
@@ -127,7 +127,7 @@ function TransactionFeeGroupList(props) {
             <Col className="col-12">
               <Card>
                 <CardHeader className="d-flex flex-column gap-3">
-                  <div className="d-flex justify-content-between  align-items-center">
+                  <div className="d-flex justify-content-between align-items-center">
                     <CardTitle>{props.t("Transaction Fee Groups List")} ({props.totalDocs})</CardTitle>
                     <TransactionFeeGroupAdd />
                   </div>

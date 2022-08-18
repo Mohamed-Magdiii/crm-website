@@ -143,9 +143,10 @@ function TransactionFeeGroupAdd(props) {
                     label={props.t("Value")}
                     placeholder={props.t("Enter Value")}
                     type="number"
+                    min="0"
                     errorMessage={props.t("Enter valid fees group value")}
                     validate={{ required: { value: true } }}
-                    onKeyPress={(e) => { if (!/[0-9]/.test(e.key)) e.preventDefault(); }}
+                    onKeyPress={(e) => { if (!/^\d*\.?\d*$/.test(e.key)) e.preventDefault(); }}
                     onChange={(e) => setValue(e.target.value)}
                   />
                 </Col>
@@ -155,9 +156,10 @@ function TransactionFeeGroupAdd(props) {
                     label={props.t("Min value")}
                     placeholder={props.t("Enter Min Value")}
                     type="number"
+                    min="0"
                     errorMessage={props.t("Enter valid min fees group value")}
                     validate={{ required: { value: true } }}
-                    onKeyPress={(e) => { if (!/[0-9]/.test(e.key)) e.preventDefault(); }}
+                    onKeyPress={(e) => { if (!/^\d*\.?\d*$/.test(e.key)) e.preventDefault(); }}
                     onChange={(e) => setMinAmount(e.target.value)}
                   />
                 </Col>
@@ -167,9 +169,10 @@ function TransactionFeeGroupAdd(props) {
                     label={props.t("Max Value")}
                     placeholder={props.t("Enter Max Value")}
                     type="number"
+                    min="0"
                     errorMessage={props.t("Enter Valid max fees group value")}
                     validate={{ required: { value: true } }}
-                    onKeyPress={(e) => { if (!/[0-9]/.test(e.key)) e.preventDefault(); }}
+                    onKeyPress={(e) => { if (!/^\d*\.?\d*$/.test(e.key)) e.preventDefault(); }}
                     onChange={(e) => setMaxAmount(e.target.value)}
                   />
                 </Col>
@@ -208,7 +211,8 @@ function TransactionFeeGroupAdd(props) {
                                 value={value}
                                 placeholder={props.t("Enter Value")}
                                 type="number"
-                                onKeyPress={(e) => { if (!/[0-9]/.test(e.key)) e.preventDefault(); }}
+                                min="0"
+                                onKeyPress={(e) => { if (!/^\d*\.?\d*$/.test(e.key)) e.preventDefault(); }}
                               />
                             </Col>
                             <Col  >
@@ -218,7 +222,8 @@ function TransactionFeeGroupAdd(props) {
                                 label={props.t("Min value")}
                                 placeholder={props.t("Enter Min Value")}
                                 type="number"
-                                onKeyPress={(e) => { if (!/[0-9]/.test(e.key)) e.preventDefault(); }}
+                                min="0"
+                                onKeyPress={(e) => { if (!/^\d*\.?\d*$/.test(e.key)) e.preventDefault(); }}
                               />
                             </Col>
                             <Col >
@@ -228,7 +233,8 @@ function TransactionFeeGroupAdd(props) {
                                 label={props.t("Max value")}
                                 placeholder={props.t("Enter Max Value")}
                                 type="number"
-                                onKeyPress={(e) => { if (!/[0-9]/.test(e.key)) e.preventDefault(); }}
+                                min="0"
+                                onKeyPress={(e) => { if (!/^\d*\.?\d*$/.test(e.key)) e.preventDefault(); }}
                               />
                             </Col>
 
