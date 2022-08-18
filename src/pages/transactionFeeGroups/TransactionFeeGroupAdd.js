@@ -212,7 +212,7 @@ function TransactionFeeGroupAdd(props) {
                                 name={`value${index}`}
                                 label={props.t("Value")}
                                 value={value}
-                                placeholder={props.t("Value")}
+                                placeholder={props.t("Enter Value")}
                                 type="number"
                               />
                             </Col>
@@ -221,7 +221,7 @@ function TransactionFeeGroupAdd(props) {
                                 name={`minValue${index}`}
                                 value={minAmount}
                                 label={props.t("Min value")}
-                                placeholder={props.t("min value")}
+                                placeholder={props.t("Enter Min Value")}
                                 type="number"
                               />
                             </Col>
@@ -230,7 +230,7 @@ function TransactionFeeGroupAdd(props) {
                                 name={`maxValue${index}`}
                                 value={maxAmount}
                                 label={props.t("Max value")}
-                                placeholder={props.t("Max value")}
+                                placeholder={props.t("Enter Max Value")}
                                 type="number"
                               />
                             </Col>
