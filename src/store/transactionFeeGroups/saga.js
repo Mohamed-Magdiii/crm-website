@@ -27,6 +27,9 @@ import {
   editModalClear,
   deleteModalClear
 } from "./actions";
+
+import { showSuccessNotification } from "store/notifications/actions";
+
 function * getFeeGroups({ payload :{ params } }){
   try {
     const result = yield call(fetchFeeGroups, params);
@@ -42,6 +45,7 @@ function * addNewFeesGroup ({ payload }){
     const { status, result } = data;
     if (status === true){
       yield put(addTransactionFeeGroupSuccess(result));
+      yield put(showSuccessNotification("New Transaction Fees Group is added successfully!"));
       yield delay(2000);
       yield put(addModalClear());
     }
