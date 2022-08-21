@@ -49,7 +49,7 @@ const Reminder = (props) => {
     setEvents(props.todos.map(obj => {
       return {
         ...obj,
-        className: obj.type === 1 ? "bg-success text-white" : "bg-info text-white",
+        className: obj.type == 1 ? "bg-success text-white" : "bg-info text-white",
         id: obj._id,
         title: obj.note,
         start: obj.timeEnd,
@@ -60,7 +60,6 @@ const Reminder = (props) => {
 
   const handleDateClick = (arg) => {
     var date = new Date(arg["date"]);
-    date.setDate(date.getDate() + 1);
     setSelectedDay(date.toISOString());
     setAddReminderModal(true);
   };
@@ -133,9 +132,7 @@ const Reminder = (props) => {
                 selectable={true}
                 dateClick={handleDateClick}
                 eventClick={handleEventClick}
-
                 datesSet={dateRangeChange}
-                
               />
             </CardBody>
           </Card>
