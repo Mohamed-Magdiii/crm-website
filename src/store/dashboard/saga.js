@@ -1,4 +1,3 @@
-/* eslint-disable no-debugger */
 import {
   call, put, takeEvery
 } from "redux-saga/effects";
