@@ -50,7 +50,6 @@ function RolesAdd (props) {
       setIsChecked(true);
     }
   };
-  console.log(isChecked);
 
 
   const handleAddRole = (e, values) => {
