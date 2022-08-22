@@ -172,6 +172,13 @@ function ClientDetails(props) {
                                   placeholder={props.t("Enter Phone")}
                                   type="text"
                                   errorMessage={props.t("Phone is required")}
+                                  onKeyPress={(e)=>{
+                                    if (e.key == "+"){
+                                      return true;
+                                    }
+                                    if (!/[0-9]/.test(e.key))
+                                      e.preventDefault();
+                                  }}
                                   validate={
                                     { 
                                       required: { value: true },
@@ -195,8 +202,15 @@ function ClientDetails(props) {
                                 <AvField
                                   name="mobile"
                                   label={props.t("Mobile")}
-                                  placeholder={props.t("Mobile")}
+                                  placeholder={props.t("Enter Mobile")}
                                   type="text"
+                                  onKeyPress={(e)=>{
+                                    if (e.key == "+"){
+                                      return true;
+                                    }
+                                    if (!/[0-9]/.test(e.key))
+                                      e.preventDefault();
+                                  }}
                                   validate={
                                     { 
                                       pattern :{
@@ -215,7 +229,7 @@ function ClientDetails(props) {
                                 <AvField
                                   name="email"
                                   label={props.t("Email")}
-                                  placeholder={props.t("Email")}
+                                  placeholder={props.t("Enter Email")}
                                   type="text"
                                   errorMessage={props.t("Email is required")}
                                   validate={{ required: { value: true } }}
@@ -240,7 +254,7 @@ function ClientDetails(props) {
                               <div className="mt-2">
                                 <AvFieldSelect 
                                   name="nationality"
-                                  label={props.t("Nationality")}
+                                  label={props.t("Select Your Nationality")}
                                   errorMessage={props.t("Nationality is required")}
                                   validate={{ required: { value: true } }}
                                   value={props.clientDetails.nationality}
@@ -261,6 +275,7 @@ function ClientDetails(props) {
                               <div className="mt-2">
                                 <AvFieldSelect 
                                   name="country"
+                                  placeholder={props.t("Select Your Country")}
                                   label={props.t("Country")}
                                   errorMessage={props.t("Country is required")}
                                   validate={{ required: { value: true } }}
@@ -292,7 +307,7 @@ function ClientDetails(props) {
                                 <AvField
                                   name="address"
                                   label={props.t("Address")}
-                                  placeholder={props.t("Address")}
+                                  placeholder={props.t("Enter Your Address")}
                                   type="text"
                                   errorMessage={props.t("Address is required")}
                                   validate={{ required: { value: true } }}
@@ -305,7 +320,7 @@ function ClientDetails(props) {
                                 <AvField
                                   name="address2"
                                   label={props.t("Address Line 2")}
-                                  placeholder={props.t("Address Line 2")}
+                                  placeholder={props.t("Enter Your Address Line 2")}
                                   type="text"
                                   errorMessage={props.t("Address is required")}
                                   // validate={{ required: { value: true } }}
@@ -344,7 +359,7 @@ function ClientDetails(props) {
                                 <AvField
                                   name="zipCode"
                                   label={props.t("Postal Code")}
-                                  placeholder={props.t("Postal Code")}
+                                  placeholder={props.t("Enter Postal Code")}
                                   type="text"
                                   value={props.clientDetails.zipCode}
                                 />
@@ -355,7 +370,7 @@ function ClientDetails(props) {
                                 <AvFieldSelect
                                   name="language"
                                   label={props.t("Language")}
-                                  placeholder={props.t("Language")}
+                                  placeholder={props.t("Select Your Language")}
                                   type="text"
                                   errorMessage={props.t("Language is required")}
                                   validate={{ required: { value: true } }}
@@ -387,6 +402,7 @@ function ClientDetails(props) {
                                   name="usCitizen"
                                   type="text"
                                   label={props.t("US Citizen")}
+                                  placeholder={props.t("Select US Citizen")}
                                   errorMessage={props.t("US Citizen is required")}
                                   // validate={{ required: { value: true } }}
                                   value={props.clientDetails.usCitizen}
@@ -424,7 +440,7 @@ function ClientDetails(props) {
                                 <AvFieldSelect
                                   name="politicallyExposed"
                                   label={props.t("Politically exposed ?")}
-                                  placeholder={props.t("Politically exposed ?")}
+                                  placeholder={props.t("Are You Politically exposed ?")}
                                   type="text"
                                   errorMessage={props.t("Politically exposed is required")}
                                   // validate={{ required: { value: true } }}
@@ -444,6 +460,7 @@ function ClientDetails(props) {
                                   options={agentOptions}
                                   label={props.t("Agent")}
                                   errorMessage={props.t("Agent is required")}
+                                  placeholder={props.t("Select Your Agent")}
                                   // validate={{ required: { value: true } }}
                                   value={props.clientDetails.agent && props.clientDetails.agent._id || ""}
                                 />
@@ -454,7 +471,7 @@ function ClientDetails(props) {
                                 <AvFieldSelect
                                   name="callStatus"
                                   label={props.t("Call status")}
-                                  placeholder={props.t("Call status")}
+                                  placeholder={props.t("Select Call status")}
                                   errorMessage={props.t("Call status is required")}
                                   validate={{ required: { value: true } }}
                                   value={props.clientDetails.callStatus}
