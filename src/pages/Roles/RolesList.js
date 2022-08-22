@@ -23,7 +23,6 @@ import RolesAdd from "./RolesAdd";
 import RolesEdit from "./RolesEdit";
 function RolesList(props){
   const [editModal, setEditUserModal] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
   const [deleteModal, setDeleteUserModal] = useState(false);
   const [selectedRole, setSelectedRole] = useState();
   const { update, delete:deleteRolePermission }  = props.rolesPermissions;
@@ -174,7 +173,7 @@ function RolesList(props){
               </Card>
             </Col>
           </Row>
-          {<RolesEdit isCheckedProp={isChecked} open={editModal}  role={selectedRole} onClose={()=>{setEditUserModal(false)}} />}
+          {<RolesEdit open={editModal}  role={selectedRole} onClose={()=>{setEditUserModal(false)}} />}
           {<DeleteModal loading={props.deleteLoading} onDeleteClick={deleteRole} show={deleteModal } onCloseClick={()=>{setDeleteUserModal(false)}} />}
         </div>
       </div>

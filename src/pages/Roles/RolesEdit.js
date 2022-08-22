@@ -14,41 +14,55 @@ import {
 import { editRole } from "store/roles/actions";
 
 function RolesAdd (props) {
-  const { open, role = {}, onClose, isCheckedProp } = props;
+  const { open, role = {}, onClose } = props;
   const dispatch = useDispatch();
-  const [isChecked, setIsChecked] = useState(isCheckedProp);
-  console.log(isChecked);
+  const [isChecked, setIsChecked] = useState(false);
 
-  const checkboxModal = {};
+  const checkboxModel = {};
   role.permissions && Object.keys(role.permissions).map((permKey) => {
     role.permissions[permKey] && Object.keys(role.permissions[permKey]).map((permission) => {
-      const objKey = `permissions.${permKey}.${permission}`;
-      const objValue = isChecked;
-      checkboxModal[objKey] = objValue;
+      if (role.permissions && !role.permissions[permKey][permission]) {
+        const objKey = `permissions.${permKey}.${permission}`;
+        const objValue = isChecked;
+        checkboxModel[objKey] = objValue;
+      }
     });
   });
 
   const selectAllRolesHandler = () => {
-    isChecked 
-      ?
-      role.permissions && Object.keys(role.permissions).map((permKey) => {
-        role.permissions[permKey] && Object.keys(role.permissions[permKey]).map((permission) => {
+    if (isChecked) {
+      Object.keys(checkboxModel).map((permKey) => {
+        Object.keys(checkboxModel[permKey]).map((permission) => {
           const objKey = `permissions.${permKey}.${permission}`;
-          checkboxModal[objKey] = false;
-          setIsChecked(false);
-        });
-      })
-      :
-      role.permissions && Object.keys(role.permissions).map((permKey) => {
-        role.permissions[permKey] && Object.keys(role.permissions[permKey]).map((permission) => {
-          const objKey = `permissions.${permKey}.${permission}`;
-          checkboxModal[objKey] = true;
-          setIsChecked(true);
+          const objValue = false;
+          checkboxModel[objKey] = objValue;
         });
       });
+      setIsChecked(false);
+    } else { 
+      Object.keys(checkboxModel).map((permKey) => {
+        Object.keys(checkboxModel[permKey]).map((permission) => {
+          const objKey = `permissions.${permKey}.${permission}`;
+          const objValue = true;
+          checkboxModel[objKey] = objValue;
+        });
+      });
+      setIsChecked(true);
+    }
   };
+  console.log(isChecked);
+
 
   const handleAddRole = (e, values) => {
+    // if select all is checked then all roles are true when updating
+    if (isChecked) {
+      Object.keys(values.permissions).forEach((permission) => {
+        Object.keys(values.permissions[permission]).forEach((item) => {
+          values.permissions[permission][item] = true;
+        });
+      });
+    }
+
     dispatch(editRole({
       id: role._id,
       values
@@ -57,6 +71,7 @@ function RolesAdd (props) {
   useEffect(()=>{
     if (props.editClearingCounter > 0 && open) {
       onClose();
+      setIsChecked(false);
     }
   }, [props.editClearingCounter]);
 
@@ -68,14 +83,13 @@ function RolesAdd (props) {
             Edit Role
         </ModalHeader>
         <ModalBody >
-          {console.log(isChecked)}
           <AvForm
             className='p-4'
             onValidSubmit={(e, v) => {
               delete v.selectAllRoles;
               handleAddRole(e, v);
             }}
-            model={checkboxModal}
+            model={checkboxModel}
           >
             <div className="mb-3">
               <AvField
@@ -109,7 +123,7 @@ function RolesAdd (props) {
                 <h6 className="text-capitalize">{permKey}</h6>
                 {role.permissions[permKey] && Object.keys(role.permissions[permKey]).map((permission, permissionInd) =>
                   <React.Fragment key={permissionInd}>
-                    <AvInput trueValue={isChecked} type="checkbox" name={`permissions.${permKey}.${permission}`} value={role.permissions[permKey][permission]} />
+                    <AvInput type="checkbox" trueValue={!isChecked} name={`permissions.${permKey}.${permission}`} value={role.permissions[permKey][permission]} />
                     <span className="p-2">{permission}</span>
                   </React.Fragment>
                 )}                     
