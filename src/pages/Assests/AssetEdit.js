@@ -62,6 +62,7 @@ function AssetEdit (props) {
       }
     }));
   };
+
   useEffect(()=>{
     
     if (props.editClear) {
@@ -146,16 +147,12 @@ function AssetEdit (props) {
                     name="depositFee"
                     label={props.t("Desposit Fee")}
                     placeholder={props.t("Enter Desposit Fee")}
-                    type="text"
+                    type="number"
                     errorMessage={props.t("Enter valid deposit fee")}
                     value={depositFee}
+                    min="0"
                     validate = {{
-                      required :{ value:true },
-                      pattern : {
-                        // eslint-disable-next-line no-useless-escape
-                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
-                        errorMessage : "Deposit Fee must be a number"
-                      }
+                      required :{ value:true }
                     }}
                   />
                 </div>
@@ -166,16 +163,12 @@ function AssetEdit (props) {
                     name="withdrawFee"
                     label={props.t("Withdraw Fee")}
                     placeholder={props.t("Enter Withdrawal Fee")}
-                    type="text"
+                    type="number"
                     errorMessage={props.t("Enter valid withdraw fee")}
                     value={withdrawalFee}
+                    min="0"
                     validate = {{
-                      required :{ value:true },
-                      pattern : {
-                        // eslint-disable-next-line no-useless-escape
-                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
-                        errorMessage : "Withdraw Fee must be a number"
-                      }
+                      required :{ value:true }
                     }}
                   />
                 </div>
@@ -188,16 +181,12 @@ function AssetEdit (props) {
                     name="minDepositAmount"
                     label={props.t("Min Deposit Amount")}
                     placeholder={props.t("Enter Min Deposit Amount")}
-                    type="text"
+                    type="number"
+                    min="0"
                     errorMessage={props.t("Enter valid deposit amount")}
                     value={minDepositAmount}
                     validate = {{
-                      required :{ value:true },
-                      pattern : {
-                        // eslint-disable-next-line no-useless-escape
-                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
-                        errorMessage : "Min deposit Amount must be a number"
-                      }
+                      required :{ value:true }
                     }}
                   />
                 </div>
@@ -208,7 +197,8 @@ function AssetEdit (props) {
                     name="minWithdrawAmount"
                     label={props.t("Min Withdraw Amount")}
                     placeholder={props.t("Enter Min Withdrawal Amount")}
-                    type="text"
+                    type="number"
+                    min="0"
                     errorMessage={props.t("Enter valid withdraw amount")}
                     value={minWithdrawAmount}
                     validate = {{
