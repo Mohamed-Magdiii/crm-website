@@ -8,3 +8,5 @@ export const ADD_TODO_CLEAR = "ADD_TODO_CLEAR";
 
 export const DELETE_TODO_START = "DELETE_TODO_START";
 export const DELETE_TODO_END = "DELETE_TODO_END";
+
+export const MODAL_CLEAR_ERROR = "MODAL_CLEAR_ERROR";

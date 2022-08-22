@@ -6,7 +6,7 @@ import {
 import {
   Modal, ModalHeader,
   ModalBody,
-  Row, Col
+  Row, Col, UncontrolledAlert,
 } from "reactstrap";
 import {
   AvForm, AvField, AvRadio, AvRadioGroup
@@ -239,6 +239,14 @@ function TodoAdd(props) {
               </Col>
             </Row>
           </AvForm>
+          {
+            props.error && (
+              <UncontrolledAlert className="mt-4" color="danger">
+                <i className="mdi mdi-block-helper me-2" />
+                {props.t(props.error)}
+              </UncontrolledAlert>
+            )
+          }
         </ModalBody>
       </Modal>
     </React.Fragment>
@@ -247,6 +255,7 @@ function TodoAdd(props) {
 
 
 const mapStateToProps = (state) => ({
+  error: state.todosReducer.addError,
   todosPermissions: state.Profile.todosPermissions || {},
   clearingCounter: state.todosReducer.clearingCounter || 0,
 });

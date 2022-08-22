@@ -5,52 +5,60 @@ import {
   ADD_TODO_END,
   ADD_TODO_CLEAR,
   DELETE_TODO_START,
-  DELETE_TODO_END
+  DELETE_TODO_END,
+  MODAL_CLEAR_ERROR,
 } from "./actionTypes";
 
-export const fetchTodosStart = (params = {})=>{
+export const fetchTodosStart = (params = {}) => {
   return {
-    type:GET_TODOS_START,
+    type: GET_TODOS_START,
     payload: params
   };
 };
-export const fetchTodosEnd = (data)=>{
+export const fetchTodosEnd = (data) => {
   return {
-    type:GET_TODOS_END,
+    type: GET_TODOS_END,
     payload: data
   };
 };
 
-export const addTodosStart = (params = {})=>{
+export const addTodosStart = (params = {}) => {
   return {
-    type:ADD_TODO_START,
+    type: ADD_TODO_START,
     payload: params
   };
 };
-export const addTodosEnd = (data)=>{
+export const addTodosEnd = (data) => {
   return {
-    type:ADD_TODO_END,
+    type: ADD_TODO_END,
     payload: data
   };
 };
 
-export const addTodoClear = (data)=>{
+export const addTodoClear = (data) => {
   return {
-    type:ADD_TODO_CLEAR,
+    type: ADD_TODO_CLEAR,
     payload: data
   };
 };
 
-export const deleteTodosStart = (params = {})=>{
+export const deleteTodosStart = (params = {}) => {
   return {
-    type:DELETE_TODO_START,
+    type: DELETE_TODO_START,
     payload: params
   };
 };
 
-export const deleteTodosEnd = (data)=>{
+export const deleteTodosEnd = (data) => {
   return {
-    type:DELETE_TODO_END,
+    type: DELETE_TODO_END,
     payload: data
+  };
+};
+
+export const clearError = () => {
+  return {
+    type: MODAL_CLEAR_ERROR,
+    payload: ""
   };
 };
