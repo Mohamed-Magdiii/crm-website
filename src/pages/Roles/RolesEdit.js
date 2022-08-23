@@ -8,69 +8,74 @@ import {
   ModalBody,
   UncontrolledAlert,
 } from "reactstrap";
-import {
-  AvForm, AvField, AvInput
-} from "availity-reactstrap-validation";
+import { AvForm, AvField } from "availity-reactstrap-validation";
 import { editRole } from "store/roles/actions";
 
 function RolesAdd (props) {
   const { open, role = {}, onClose } = props;
   const dispatch = useDispatch();
-  const [isChecked, setIsChecked] = useState(false);
+  const [isCheckAll, setIsCheckAll] = useState(false);
+  const [isCheck, setIsCheck] = useState([]);
 
-  const checkboxModel = {};
+  // initially setting pre checked roles to true
+  useEffect(() => {
+    const checkedRoles = [];
+    role.permissions && Object.keys(role.permissions).map((permKey) => {
+      role.permissions[permKey] && Object.keys(role.permissions[permKey]).map((permission) => {
+        if (role.permissions[permKey][permission]){
+          checkedRoles.push(`permissions.${permKey}.${permission}`);
+        }
+      });
+    });
+
+    setIsCheck([...checkedRoles]);
+  }, [role.permissions]);
+
+  // setting the list (contains all permissions for a selected role) 
+  const allRoles = [];
   role.permissions && Object.keys(role.permissions).map((permKey) => {
     role.permissions[permKey] && Object.keys(role.permissions[permKey]).map((permission) => {
-      if (role.permissions && !role.permissions[permKey][permission]) {
-        const objKey = `permissions.${permKey}.${permission}`;
-        const objValue = isChecked;
-        checkboxModel[objKey] = objValue;
-      }
+      allRoles.push({ name: `permissions.${permKey}.${permission}` });
     });
   });
+  
+  useEffect(() => {
+    setIsCheck(allRoles.map((item) => item.name));
+    !isCheckAll && setIsCheck([]);
 
-  const selectAllRolesHandler = () => {
-    if (isChecked) {
-      Object.keys(checkboxModel).map((permKey) => {
-        Object.keys(checkboxModel[permKey]).map((permission) => {
-          const objKey = `permissions.${permKey}.${permission}`;
-          const objValue = false;
-          checkboxModel[objKey] = objValue;
-        });
-      });
-      setIsChecked(false);
-    } else { 
-      Object.keys(checkboxModel).map((permKey) => {
-        Object.keys(checkboxModel[permKey]).map((permission) => {
-          const objKey = `permissions.${permKey}.${permission}`;
-          const objValue = true;
-          checkboxModel[objKey] = objValue;
-        });
-      });
-      setIsChecked(true);
+  }, [isCheckAll]);
+
+  // select any item handler
+  const handleClick = e => {
+    const { name, checked } = e.target;
+    setIsCheck([...isCheck, name]);
+    if (!checked) {
+      setIsCheck(isCheck.filter(item => item !== name));
     }
   };
-
-
+  
   const handleAddRole = (e, values) => {
-    // if select all is checked then all roles are true when updating
-    if (isChecked) {
-      Object.keys(values.permissions).forEach((permission) => {
-        Object.keys(values.permissions[permission]).forEach((item) => {
-          values.permissions[permission][item] = true;
-        });
+    // assigning checked and unchecked check boxes before submitting
+    role.permissions && Object.keys(role.permissions).map((permKey) => {
+      role.permissions[permKey] && Object.keys(role.permissions[permKey]).map((permission) => {
+        if (isCheck.includes(`permissions.${permKey}.${permission}`)) {
+          role.permissions[permKey][permission] = true;
+        } else {
+          role.permissions[permKey][permission] = false;
+        }
       });
-    }
+    });
+    values.permissions = role.permissions;
 
     dispatch(editRole({
       id: role._id,
       values
     }));
   };
+
   useEffect(()=>{
     if (props.editClearingCounter > 0 && open) {
       onClose();
-      setIsChecked(false);
     }
   }, [props.editClearingCounter]);
 
@@ -88,7 +93,6 @@ function RolesAdd (props) {
               delete v.selectAllRoles;
               handleAddRole(e, v);
             }}
-            model={checkboxModel}
           >
             <div className="mb-3">
               <AvField
@@ -101,28 +105,27 @@ function RolesAdd (props) {
                 validate={{ required: { value: true } }}
               />
             </div>
-            <AvInput 
-              type="checkbox" 
-              name="selectAllRoles" 
-              className="mb-3"
-              onClick={selectAllRolesHandler}
+            <input 
+              type="checkbox"
+              name="selectAll"
+              id="selectAll"
+              onChange={() => {setIsCheckAll(!isCheckAll)}}
+              checked={isCheckAll}
             />
             <span className="p-2">
-              {
-                isChecked &&
-                "Unselect all roles"
-              }
-              {
-                !isChecked && 
-                "Select all roles"
-              }
+              Select all roles
             </span>
             {role.permissions && Object.keys(role.permissions).map((permKey, permInd) =>
               <div className="mb-3" key={permInd}>
                 <h6 className="text-capitalize">{permKey}</h6>
                 {role.permissions[permKey] && Object.keys(role.permissions[permKey]).map((permission, permissionInd) =>
                   <React.Fragment key={permissionInd}>
-                    <AvInput type="checkbox" trueValue={!isChecked} name={`permissions.${permKey}.${permission}`} value={role.permissions[permKey][permission]} />
+                    <input 
+                      type="checkbox" 
+                      name={`permissions.${permKey}.${permission}`} 
+                      checked={isCheck.includes(`permissions.${permKey}.${permission}`)}
+                      onChange={handleClick}
+                    />
                     <span className="p-2">{permission}</span>
                   </React.Fragment>
                 )}                     
