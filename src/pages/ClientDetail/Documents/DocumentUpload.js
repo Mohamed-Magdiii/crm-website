@@ -63,9 +63,11 @@ function UploadKYC (props) {
     const extensions = ["png", "jpg", "jpeg", "pdf"];
     const extension = value.split(".")[1];
     if (extensions.includes(extension) || !value){
-      if (!value || memFiles[input.props.name]?.size <= 5120){
+      console.log("memFiles[input.props.name]?.size: ", memFiles[input.props.name]?.size);
+
+      if (!value || memFiles[input.props.name]?.size <= 2097152){
         cb(true);
-      } else cb("5mb Maximum size");
+      } else cb("2mb maximum size");
     } else cb("Only images or PDF can be uploaded");    
   };
 
@@ -216,10 +218,10 @@ function UploadAdditionalDocs (props) {
     // eslint-disable-next-line no-debugger
     // debugger;
     if (extensions.includes(extension) || !value){
-      if (!value || memFiles[input.props.name]?.size <= 5120){    
+      if (!value || memFiles[input.props.name]?.size <= 2097152){    
         cb(true);
         return;
-      } else cb("5mb Maximum size");
+      } else cb("2mb maximum size");
     } else cb("Only images or PDF can be uploaded");    
   };
 
