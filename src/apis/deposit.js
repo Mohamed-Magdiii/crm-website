@@ -13,12 +13,12 @@ export const makeDeposit = async (values)=>{
   }
   return result ;
 };
-export const aprroveDeposit = async (id)=>{
-  const result = await axiosHelper.patch(`/transactions/deposit/${id}/approve`);
+export const aprroveDeposit = async (id, customerId)=>{
+  const result = await axiosHelper.patch(`/transactions/deposit/${id}/approve`, { customerId });
   return result;
 };
-export const rejectDeposit = async (id)=>{
-  const result = await axiosHelper.patch(`/transactions/deposit/${id}/reject`);
+export const rejectDeposit = async (id, customerId)=>{
+  const result = await axiosHelper.patch(`/transactions/deposit/${id}/reject`, { customerId });
   return result;
 };
 

@@ -13,6 +13,7 @@ import { addBankAccount } from "store/bankAccount/actions";
 import { withTranslation } from "react-i18next";
 
 function ClientAddBankAccountModal(props){
+  const { buttonText } = props;
   const { id } = useParams();
   const { clientId } = props;
   const [addModal, setAddModal] = useState(false);
@@ -33,7 +34,7 @@ function ClientAddBankAccountModal(props){
   return (
     <React.Fragment >
       <Link to="#" className="btn btn-primary" onClick={toggleAddModal}>
-        <i className="bx bx-plus me-1"></i> {props.t("Add New Bank Account")} 
+        <i className={`bx ${!buttonText ? "bx-plus" : ""} me-1`}></i> {props.t(`${buttonText ? buttonText : "Add New Bank Account"}`)} 
       </Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
@@ -76,7 +77,18 @@ function ClientAddBankAccountModal(props){
                 placeholder={props.t("Enter Account Number")}
                 type="text"
                 errorMessage={props.t("Enter Account Number")}
-                validate={{ required: { value: true } }}
+                validate={
+                  { 
+                    required: { 
+                      value: true, 
+                      errorMessage: "Enter account number" 
+                    },
+                    number: {
+                      value: true,
+                      errorMessage: "Account number must be a number"
+                    }
+                  }
+                }
               />
             </div>
 
@@ -86,8 +98,26 @@ function ClientAddBankAccountModal(props){
                 label={props.t("Swift code")}
                 placeholder={props.t("Enter Swift Code")}
                 type="text"
-                errorMessage={props.t("Enter Swift Code")}
-                validate={{ required: { value: true } }}
+                validate={
+                  { 
+                    required: { 
+                      value: true,
+                      errorMessage: "Enter swift code" 
+                    },
+                    minLength: {
+                      value: 8,
+                      errorMessage: "Swift code must consist of 8 characters"
+                    },
+                    maxLength: {
+                      value: 8,
+                      errorMessage: "Swift code must consist of 8 characters"
+                    },
+                    pattern: {
+                      value: "/^[A-Z]*$/",
+                      errorMessage: "Swift code can only contain uppercase characters"
+                    }
+                  }
+                }
               />
             </div>
 
@@ -108,8 +138,22 @@ function ClientAddBankAccountModal(props){
                 label={props.t("IBAN")}
                 placeholder={props.t("Enter IBAN")}
                 type="text"
-                errorMessage={props.t("Enter IBAN")}
-                validate={{ required: { value: true } }}
+                validate={
+                  { 
+                    required: { 
+                      value: true,
+                      errorMessage: "Enter IBAN"
+                    },
+                    pattern: {
+                      value: "^[A-Z][A-Z]", 
+                      errorMessage: "IBAN must start with two uppercase charecters"
+                    },
+                    minLength: {
+                      value: 13,
+                      errorMessage: "IBAN must contain at least 13 characters"
+                    }
+                  }
+                }
               />
             </div>
 
@@ -135,10 +179,6 @@ function ClientAddBankAccountModal(props){
             <i className="mdi mdi-block-helper me-2"></i>
             {/* TODO this needs to be handled in translation */}
             {props.t(JSON.stringify(props.addErrorDetails))}
-          </UncontrolledAlert>}
-          {props.addSuccess && <UncontrolledAlert color="success">
-            <i className="mdi mdi-check-all me-2"></i>
-            {props.t("Bank account added successfully")} !!!
           </UncontrolledAlert>}
         </ModalBody>
       </Modal>

@@ -16,6 +16,9 @@ const initialState = {
   symbolsPermissions : { },
   currencyPairsPermissions : { },
   markupsPermissions : {},
+  orderProfitPermissions: {},
+  transactionProfitPermissions: {},
+  exchangeBalancePermissions: {},
   error: "",
   success: "",
 };
@@ -60,6 +63,9 @@ const profile = (state = initialState, action) => {
         currencyPairsPermissions : { ...action.payload.currencyPairs },
         markupsPermissions : { ...action.payload.markups },
         transactionFeeGroupsPermissions : { ...action.payload.transactionFeeGroups },
+        exchangeBalancePermissions : { ...action.payload.exchangeBalance },
+        orderProfitPermissions : { ...action.payload.orderProfit },
+        transactionProfitPermissions : { ...action.payload.transactionProfit },
       };
       break;
     case "CLEAR_PROFILE":
@@ -78,6 +84,8 @@ const profile = (state = initialState, action) => {
         symbolsPermissions : { },
         currencyPairsPermissions : { },
         markupsPermissions : {},
+        orderProfitPermissions : {},
+        transactionProfitPermissions : {},
       };
       break;
     default:

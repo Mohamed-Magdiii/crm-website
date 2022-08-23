@@ -5,7 +5,8 @@ import {
   FETCH_WALLET_START,
   CHANGE_STATUS_WALLET_START,
   FETCH_CLIENT_WALLETS_REQUESTED,
-  ADD_CLIENT_WALLET_REQUESTED
+  ADD_CLIENT_WALLET_REQUESTED,
+  CONVERT_WALLET_START
 } from "./actionTypes";
 import {
   fetchWalletSuccess,
@@ -14,7 +15,9 @@ import {
   addWalletSuccess, 
   changeStatusDone,
   addWalletFail,
-  addWalletClear
+  addWalletClear,
+  convertWalletError,
+  errorClear
 } from "./action";
 import * as walletApi from "apis/wallet";
 import { showErrorNotification, showSuccessNotification } from "store/notifications/actions";
@@ -66,12 +69,26 @@ function* changeStatusWallet(params) {
   }
 
 }
+function * convertWallet({ payload }){
+  try {
+    const data = yield call(walletApi.convertWallet, payload);
+    const { status } = data;
+    if (status){
+      yield put(showSuccessNotification(`${payload.fromAsset} has been converted to ${payload.toAsset} successfully`));
+    }
+  } catch (error){
+  
+    yield put(convertWalletError(error.message));
+    yield delay(1000);
+    yield put(errorClear());
+  }
+}
 function* walletSaga() {
   yield takeEvery(FETCH_WALLET_START, fetchWallet);
   yield takeEvery(FETCH_CLIENT_WALLETS_REQUESTED, fetchClientWallet);
   yield takeEvery(ADD_CLIENT_WALLET_REQUESTED, addClientWallet);
   yield takeEvery(CHANGE_STATUS_WALLET_START, changeStatusWallet);
-
+  yield takeEvery(CONVERT_WALLET_START, convertWallet);
 }
 
 export default walletSaga;

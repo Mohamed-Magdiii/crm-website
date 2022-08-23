@@ -3,7 +3,7 @@ import React, {
 } from "react";
 import { useDispatch, connect } from "react-redux";
 import {
-  Row, Col, Card, CardBody, CardHeader, CardTitle
+  Row, Col, Card, CardBody, CardHeader, CardTitle, Dropdown, DropdownToggle, DropdownMenu, DropdownItem
 } from "reactstrap";
 import TableLoader from "components/Common/Loader";
 import CustomPagination from "components/Common/CustomPagination";
@@ -30,9 +30,12 @@ function Withdrawal(props){
   const [showNotication, setShowNotifaction] = useState(false);
   const [detailsModal, setDetailsModal] = useState(false);
   const [selectedContent, setSelectedContent] = useState("");
+  const [selected, setSelected] = useState("LIVE");
+  const [btnprimary1, setBtnprimary1] = useState(false);
+
   useEffect(()=>{
     loadWithdrawals(1, sizePerPage);
-  }, [sizePerPage, 1]);
+  }, [sizePerPage, 1, selected, props.withdrawResponseMessage]);
   
   const handleSearchInput = (e)=>{
   
@@ -135,15 +138,22 @@ function Withdrawal(props){
   const loadWithdrawals = (page, limit)=>{
     dispatch(fetchWithdrawalsStart({
       page,
-      limit
+      limit,
+      type:selected
     }));
   };
-  const withdrawApprove = (id)=>{
-    dispatch(withdrawApproveStart(id));
+  const withdrawApprove = (withdraw)=>{
+    dispatch(withdrawApproveStart({
+      id:withdraw._id,
+      customerId:withdraw.customerId._id 
+    }));
     setShowNotifaction(true);
   };
-  const withdrawReject = (id)=>{
-    dispatch(withdrawRejectStart(id));
+  const withdrawReject = (withdraw)=>{
+    dispatch(withdrawRejectStart({
+      id:withdraw._id,
+      customerId:withdraw.customerId._id 
+    }));
     setShowNotifaction(true);
   };
   const closeNotifaction = () => {
@@ -168,9 +178,23 @@ function Withdrawal(props){
                     <CardTitle>{props.t(`Withdrawals(${props.totalDocs})`)}</CardTitle>
                     <WithDrawForm />
                   </div>
-                  
-                  <SearchBar handleSearchInput={handleSearchInput} placeholder={props.t("Search for withdrawals")}/>
-                      
+                  <div className="d-flex justify-content-between align-items-center">
+                    <SearchBar handleSearchInput={handleSearchInput} placeholder={props.t("Search for withdrawals")}/>
+                    <div>
+                      <Dropdown
+                        isOpen={btnprimary1}
+                        toggle={() => setBtnprimary1(!btnprimary1)}
+                      >
+                        <DropdownToggle tag="button" className="btn btn-primary">
+                          {selected} <i className="mdi mdi-chevron-down" />
+                        </DropdownToggle>
+                        <DropdownMenu>
+                          <DropdownItem value="LIVE" onClick={(e)=>{setSelected(e.target.value)}}>LIVE</DropdownItem>
+                          <DropdownItem value="DEMO" onClick={(e)=>{setSelected(e.target.value)}}>DEMO</DropdownItem>
+                        </DropdownMenu>
+                      </Dropdown>
+                    </div>
+                  </div>
                 </CardHeader>
           
                 <CardBody>
@@ -198,7 +222,7 @@ function Withdrawal(props){
                                 <Td key={`${rowIndex}-${index}`} className = "pt-4">
                                   { column.dataField === "checkbox" ? <input className= "withdraw-checkbox"  type="checkbox"/> : ""}
                                   { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
-                                  {column.dataField === "dropdown" ? <CustomDropdown permission={props.withdrawalsPermissions.actions ? true : false} id={row._id} status={row.status} approve={withdrawApprove} reject={withdrawReject}/> : ""}
+                                  {column.dataField === "dropdown" ? <CustomDropdown permission={props.withdrawalsPermissions.actions ? true : false} id={row._id} status={row.status} approve={()=>{withdrawApprove(row)}} reject={()=>{withdrawReject(row)}}/> : ""}
                                 </Td>
                               )}
                             </Tr>
@@ -238,7 +262,8 @@ const mapStateToProps = (state)=>({
   nextPage: state.withdrawalReducer.nextPage,
   pagingCounter: state.withdrawalReducer.pagingCounter,
   prevPage: state.withdrawalReducer.prevPage,
-  withdrawalsPermissions: state.Profile.withdrawalsPermissions || {}
+  withdrawalsPermissions: state.Profile.withdrawalsPermissions || {},
+  withdrawResponseMessage:state.withdrawalReducer.withdrawResponseMessage
 }
 );
 export default connect(mapStateToProps, null)(withTranslation()(Withdrawal));

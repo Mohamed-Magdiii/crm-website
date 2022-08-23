@@ -35,6 +35,8 @@ const SidebarContent = (props) => {
   const { get: getTeams } = props.teamsPermissions;
   const { get: getSymbols } = props.symbolsPermissions;
   const { get :getCurrencyPair } = props.currencyPairsPermissions;
+  const { get :getOrderProfit } = props.orderProfitPermissions;
+  const { get :getTransactionProfit } = props.transactionProfitPermissions;
   const activateParentDropdown = useCallback(item => {
     item.classList.add("active");
     const parent = item.parentElement;
@@ -219,18 +221,31 @@ const SidebarContent = (props) => {
                   <Link to="/currency-pairs" className={`${!getCurrencyPair ? "d-none" : ""}`}>{props.t("Currency Pairs")}</Link>
                 </li>   
                 <li>
+                  <Link to="/markups" className={`${!getMarkups ? "d-none" : ""}`}>{props.t("Markups")}</Link>
+                </li>   
+
+              </ul>
+            </li> 
+            <li>
+              <Link to="/risk-management" className="has-arrow">
+                <FeatherIcon icon="alert-circle" />
+                <span>{props.t("Risk Management")}</span>
+              </Link>
+              <ul className="sub-menu">
+                <li>
                   <Link to="/fee-groups" className={`${!getFeeGroup ? "d-none" : ""}`}>{props.t("Trading Fee Groups")}</Link>
                 </li>
                 <li>
-                  <Link to="/markups" className={`${!getMarkups ? "d-none" : ""}`}>{props.t("Markups")}</Link>
-                </li>   
-                <li>
-                  {/* <Link to="/transaction-fee-groups" className={`${!getTransactionFeeGroup ? "d-none" : ""}`}>{props.t("Transaction Fee Groups")}</Link> */}
                   <Link to="/transaction-fee-groups" >{props.t("Transaction Fee Groups")}</Link>
-                </li>      
+                </li>
+                <li>
+                  <Link to="/orders-profit" className={`${!getOrderProfit ? "d-none" : ""}`}>{props.t("Order Profit")}</Link>
+                </li>    
+                <li>
+                  <Link to="/transactions-profit" className={`${!getTransactionProfit ? "d-none" : ""}`}>{props.t("Transaction Profit")}</Link>
+                </li>          
               </ul>
-            </li> 
-
+            </li>
             
           </ul> 
         </div>
@@ -257,7 +272,9 @@ const mapStateToProps = (state) => ({
   dictionariesPermissions : state.Profile.dictionariesPermissions || {},
   currencyPairsPermissions : state.Profile.currencyPairsPermissions || {},
   markupsPermissions : state.Profile.markupsPermissions || {},
-  transactionFeeGroupsPermissions : state.Profile.transactionFeeGroupsPermissions || {}
+  transactionFeeGroupsPermissions : state.Profile.transactionFeeGroupsPermissions || {},
+  orderProfitPermissions : state.Profile.orderProfitPermissions || {},
+  transactionProfitPermissions : state.Profile.transactionProfitPermissions || {}
 
 });
 export default withTranslation()(withRouter(connect(mapStateToProps, null) (SidebarContent)));

@@ -1,5 +1,5 @@
 import {
-  call, put, takeEvery, delay
+  call, put, takeEvery
 } from "redux-saga/effects";
 import * as clientApi from "apis/bankAccount";
 import {
@@ -23,6 +23,7 @@ import {
   DELETE_BANK_ACCOUNT_REQUESTED,
   EDIT_BANK_ACCOUNT_REQUESTED
 } from "./actionTypes";
+import { showSuccessNotification } from "store/notifications/actions";
  
 function * fetchClientBankAccount(params){
   try {
@@ -38,7 +39,7 @@ function * addBankAccount(params){
     const data = yield call(clientApi.postBankAccount, params);
     const { result } = data;
     yield put(addBankAccountSuccess(result));
-    yield delay(2000);
+    yield put(showSuccessNotification("Bank account created successfully"));
     yield put(addBankAccountClear());
   } catch (error){
     yield put(addBankAccountFail({ error: error.message }));
@@ -46,7 +47,6 @@ function * addBankAccount(params){
 }
   
 function * deleteBankAccount(params){
-  // id = params
   try {
     const data = yield call(clientApi.deleteBankAccount, params);
     yield put(deleteBankAccountSuccess(data));
@@ -59,7 +59,7 @@ function * editBankAccount(params){
   try {
     const data = yield call(clientApi.updateBankAccount, params);
     yield put(editBankAccountSuccess(data));
-    yield delay(2000);
+    yield put(showSuccessNotification("Bank account updated successfully"));
     yield put(editBankAccountClear());
   } catch (error){
     yield put(editBankAccountFail({ error: error.message }));

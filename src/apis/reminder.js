@@ -1,42 +1,42 @@
 import * as axiosHelper from "./api_helper";
-import * as url from "../helpers/url_helper";
 import qs from "qs";
 
-// get Events 
-export const getEvents = async ({ payload }) => {
+export const getTodos = async ({ payload }) => {
   const data = await axiosHelper.get(`/todos?${qs.stringify(payload)}`);
   if (data.isError){
     throw new Error(data.isError);
   }
-  return data;
+  return data.result;
+};
 
-};
-// add Events 
-export const addNewEvent = async (event) => {
-  // const { id, values } = payload;
-  const data = await axiosHelper.post("/todos", event);
+export const addTodo = async (params) => {
+  const { id, ...obj } = params;
+  let data;
+  if (id) {
+    data = data = await axiosHelper.patch(`/todos/${id}`, obj);
+  } else {
+    data = await axiosHelper.post("/todos", obj);
+  }
   if (data.isError) {
     throw new Error(data.message);
   }
-  return data;
+  return data.result;
 };
-// update Event
-export const updateEvent = async (id, values) => {
+
+export const updateTodo = async (id, params) => {
   // const { id, values } = payload;
-  const data = await axiosHelper.patch(`/todos/${id}`, values);
+  const data = await axiosHelper.post("/todos", params);
   if (data.isError) {
     throw new Error(data.message);
   }
-  return data;
+  return data.result;
 };
-// delete Event
-export const deleteEvent = async (id) => {
+
+export const deleteTodo = async (id) => {
   // const { id, values } = payload;
-  const data = await axiosHelper.del(`/todos/${id}`);
+  const data = await axiosHelper.del("/todos/" + id);
   if (data.isError) {
     throw new Error(data.message);
   }
-  return data;
+  return data.result;
 };
-// get Categories
-export const getCategories = () => axiosHelper.get(url.GET_CATEGORIES);

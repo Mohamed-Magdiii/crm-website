@@ -74,6 +74,7 @@ function * addSystemEmail(params){
     const { result } = data;
     yield put(addSystemEmailSuccess(result));
     yield put(showSuccessNotification("System email added successfully"));
+    yield delay(1000);
     yield put(addSystemEmailClear());
   } catch (error){
     yield put(addSystemEmailFail(error));
@@ -87,6 +88,7 @@ function * editSystemEmail(params){
       data,
       id: params.id
     }));
+    yield delay(2000);
     yield put(editSystemEmailClear());
     yield put(showSuccessNotification("System email updated successsfully"));
   } catch (error){
@@ -99,7 +101,7 @@ function * editSystemEmailContent(params){
     const data = yield call(systemEmailApi.editSystemEmailContent, params);
     yield put(editSystemEmailContentSuccess({
       data,
-      id: params.id
+      id: params.payload.id
     }));
     yield put(editSystemEmailContentClear());
     yield put(showSuccessNotification("System email updated successsfully"));
@@ -140,7 +142,7 @@ function * changeSystemEmailStatus(params) {
       id: params.payload.id,
       index: params.payload.index,
     }));
-    yield put(showSuccessNotification("System email updated successfully"));
+    yield put(showSuccessNotification("System email status updated successfully"));
   }
   catch (error){
     yield put(changeSystemEmailStatusDone({

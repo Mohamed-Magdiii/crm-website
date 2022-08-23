@@ -14,7 +14,7 @@ export const addNewMarketAPI = async (values)=>{
     active:values.active,
     fee:values.fee,
     minAmount:values.minAmount
-  }, { crypto:true }
+  },
   );
   if (data.code === 500){
     throw new Error("Please Enter Valid data");

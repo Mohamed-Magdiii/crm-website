@@ -6,9 +6,6 @@ export * from "./auth/login/actions";
 export * from "./auth/forgetpwd/actions";
 export * from "./auth/profile/actions";
 
-//Calendar
-export * from "./calendar/actions";
-
 //chat
 export * from "./chat/actions";
 
@@ -17,3 +14,6 @@ export * from "./invoices/actions";
 
 // contacts
 export * from "./contacts/actions";
+export * from "./todos/actions";
+export * from "./logs/actions";
+export * from "./dashboard/actions";

@@ -6,17 +6,17 @@ export const getWithdrawals = async ({ payload })=>{
 };
 export const addWithdrawal = async (values)=>{
   const result = await axiosHelper.post("/transactions/withdraw", values);
-  if (result.code == 422){
+  if (result.code == 500){
     throw new Error("Withdrawal has failed");
   }
   return result;
 };
-export const approveWithdrawal = async (id)=>{
-  const result = await axiosHelper.patch(`/transactions/withdraw/${id}/approve`);
+export const approveWithdrawal = async (id, customerId)=>{
+  const result = await axiosHelper.patch(`/transactions/withdraw/${id}/approve`, { customerId });
   return result;
 };
-export const rejectWithdrawal = async (id)=>{
-  const result = await axiosHelper.patch(`/transactions/withdraw/${id}/reject`);
+export const rejectWithdrawal = async (id, customerId)=>{
+  const result = await axiosHelper.patch(`/transactions/withdraw/${id}/reject`, { customerId });
   return result;
 };
 

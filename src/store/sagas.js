@@ -4,7 +4,6 @@ import AuthSaga from "./auth/login/saga";
 import ForgetSaga from "./auth/forgetpwd/saga";
 import ProfileSaga from "./auth/profile/saga";
 import LayoutSaga from "./layout/saga";
-import calendarSaga from "./calendar/saga";
 import chatSaga from "./chat/saga";
 import invoiceSaga from "./invoices/saga";
 import contactsSaga from "./contacts/saga";
@@ -28,6 +27,11 @@ import markupSaga from "./markups/saga";
 import marketPricingSaga from "./marketPricing/saga";
 import transactionFeeGroupSaga from "./transactionFeeGroups/saga";
 import documentsSaga from "./documents/saga";
+import ordersProfitsSaga from "./ordersProfit/saga";
+import transactionsProfitsSaga from "./transactionsProfit/saga";
+import todosSaga from "./todos/saga";
+import logsSaga from "./logs/saga";
+import dashboardSaga from "./dashboard/saga";
 
 export default function* rootSaga() {
   yield all([
@@ -37,7 +41,6 @@ export default function* rootSaga() {
     fork(ForgetSaga),
     fork(ProfileSaga),
     fork(LayoutSaga),
-    fork(calendarSaga),
     fork(chatSaga),
     fork(invoiceSaga),
     fork(contactsSaga),
@@ -62,5 +65,10 @@ export default function* rootSaga() {
     fork(feeGroupSaga),
     fork(transactionFeeGroupSaga),
     fork(documentsSaga),
+    fork(ordersProfitsSaga),
+    fork(transactionsProfitsSaga),
+    fork(todosSaga),
+    fork(logsSaga),
+    fork(dashboardSaga),
   ]);
 }
