@@ -75,7 +75,7 @@ function ClientAddBankAccountModal(props){
                 name="accountNumber"
                 label={props.t("Account number")}
                 placeholder={props.t("Enter Account Number")}
-                type="number"
+                type="text"
                 validate={
                   { 
                     required: { 
