@@ -218,6 +218,7 @@ function DepositForm(props){
                 label={props.t("Amount")}
                 placeholder={props.t("enter amount")}
                 type="number"
+                min="0"
                 errorMessage={props.t("Enter Valid Amount")}
                 validate = {{
                   required :{ value:true },

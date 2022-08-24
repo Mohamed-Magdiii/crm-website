@@ -242,18 +242,10 @@ function WithdrawForm(props){
                 label={props.t("Amount")}
                 placeholder={props.t("enter amount")}
                 type="number"
+                min="0"
                 errorMessage={props.t("Enter Valid Amount")}
                 validate = {{
-                  required :{ value:true },
-                  // pattern : {
-                  //   // eslint-disable-next-line no-useless-escape
-                  //   value :"^[0-9]+(\\.([0-9]{1,4}))?$",
-                  //   errorMessage : "Amount is not valid"
-                  // }
-                  min: {
-                    value: 0,
-                    errorMessage: "Amount must be more than zero"
-                  }
+                  required :{ value:true }
                 }}
               />
             </div>
