@@ -124,7 +124,7 @@ function BankAccountEditModal(props){
                 value={selectedBankAccount.accountNumber}
                 errorMessage={props.t("Enter Account Number")}
                 onKeyPress={(e) => {
-                  if (!isNaN(e.target.value) && e.target.value.length > 0){
+                  if (!isNaN(e.key) && e.target.value.length > 0){
                     return true;
                   }
                   if (!/[0-9]/.test(e.key)) {
