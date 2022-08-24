@@ -246,7 +246,7 @@ function DepositForm(props){
     
             <div className='text-center pt-3 p-2'>
               <Button 
-                disabled = {props.disableAddButton && !props.modalClear} 
+                disabled = {props.disableAddButton} 
                 type="submit" 
                 color="primary" 
                 className=""
