@@ -110,6 +110,13 @@ function LeadForm(props) {
                     placeholder={props.t("Enter Phone")}
                     type="text"
                     errorMessage={props.t("Enter valid phone")}
+                    onKeyPress={(e) => {
+                      if (/^[+]?\d+$/.test(e.key) || (e.key === "+" && e.target?.value?.length === 0) ) {
+                        return true;
+                      } else {
+                        e.preventDefault();
+                      }
+                    }}
                     validate={
                       { 
                         required: { value: true },
