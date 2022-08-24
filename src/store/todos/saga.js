@@ -31,12 +31,12 @@ function * fetchTodos(params){
 
 function * addTodo(params){
   try {
-    const data = yield call(todosApi.addTodo, params.payload);  
+    const data = yield call(todosApi.addTodo, params.payload);
     yield put(addTodosEnd({ data : params.payload.id ? params.payload : data, id: params.payload.id }));
     if (params.payload.id) {
-      yield put(showSuccessNotification("Todo updated successfully"));
+      yield put(showSuccessNotification(`${params.payload.type === 1 ? "Reminder" : "Todo" } updated successfully`));
     } else {
-      yield put(showSuccessNotification("Todo added successfully"));
+      yield put(showSuccessNotification(`${params.payload.type === 1 ? "Reminder" : "Todo" } added successfully`));
     }
     yield put(addTodoClear());
 
@@ -51,7 +51,7 @@ function * deleteTodo(params){
   try {
     yield call(todosApi.deleteTodo, params.payload);  
     yield put(deleteTodosEnd({ id: params.payload }));
-    yield put(showSuccessNotification("Todo deletd successfully"));
+    yield put(showSuccessNotification(`${params.payload.type === 1 ? "Reminder" : "Todo" } deleted successfully`));
   }
   catch (error){
     yield put(deleteTodosEnd({ error }));
