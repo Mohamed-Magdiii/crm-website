@@ -176,9 +176,11 @@ function TodoAdd(props) {
               </Col>}
               <Col className="col-12 mb-3">
                 <AvField
+                  className="form-control"
                   name="note"
                   label={props.t("Note")}
-                  type="text"
+                  type="textarea"
+                  rows="4"
                   value={todoObj.note}
                   placeholder={props.t("Enter Your Note")}
                   errorMessage={props.t("Invalid Note")}
@@ -192,9 +194,12 @@ function TodoAdd(props) {
                   type="datetime-local"
                   name="timeEnd"
                   // value="testing"
-                  // value={todoObj.timeEnd.slice(0, -5) || new Date().toISOString().slice(0, -5)}
-                  label={props.t("Reminder")}
-                  errorMessage={props.t("Invalid Reminder Note")}
+                  value={todoObj?.timeEnd ? String(moment(todoObj.timeEnd).format("YYYY-MM-DDTHH:mm")) : ""}
+                  label={props.t("Date")}
+                  errorMessage={props.t("Invalid Date")}
+                  validate={{
+                    required: { value: true },
+                  }}
                 >
                 </AvField>
               </Col>
@@ -230,6 +235,7 @@ function TodoAdd(props) {
                   <button
                     type="submit"
                     className="btn btn-success save-event"
+                    disabled={props.adding}
                   >
                     {(todoObj._id ? props.t("Edit") : props.t("Add"))}
                   </button>
@@ -254,6 +260,8 @@ function TodoAdd(props) {
 
 const mapStateToProps = (state) => ({
   error: state.todosReducer.addError,
+  adding: state.todosReducer.adding,
+  loading: state.todosReducer.loading,
   todosPermissions: state.Profile.todosPermissions || {},
   clearingCounter: state.todosReducer.clearingCounter || 0,
 });

@@ -101,8 +101,8 @@ const Reminder = (props) => {
         timeEnd:args.event.start, 
         note: todo.note,
         time: todo.createAt,
-        type: 0,
-        status: "open"
+        type: todo.type,
+        status: todo.status
       }));
   };
 

@@ -36,9 +36,9 @@ function* addTodo(params) {
     const data = yield call(todosApi.addTodo, params.payload);
     yield put(addTodosEnd({ data: params.payload.id ? params.payload : data, id: params.payload.id }));
     if (params.payload.id) {
-      yield put(showSuccessNotification("Todo updated successfully"));
+      yield put(showSuccessNotification(`${params.payload.type == 1 ? "Reminder" : "Todo"} updated successfully`));
     } else {
-      yield put(showSuccessNotification("Todo added successfully"));
+      yield put(showSuccessNotification(`${params.payload.type == 1 ? "Reminder" : "Todo"} added successfully`));
     }
     yield put(addTodoClear());
 
