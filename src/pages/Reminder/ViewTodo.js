@@ -63,7 +63,10 @@ function EditReminderModal(props) {
   }, [props.deletingClearCounter]);
 
   const deleteRole = () => {
-    dispatch(deleteTodosStart(todoObj._id, todoObj.type));
+    dispatch(deleteTodosStart({
+      id: todoObj._id, 
+      type: todoObj.type
+    }));
   };
   
   return (

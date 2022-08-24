@@ -155,7 +155,7 @@ function SystemEmailsList(props){
     }
   ];
 
-  const [sizePerPage, setSizePerPage] = useState(5);
+  const [sizePerPage, setSizePerPage] = useState(10);
   const dispatch = useDispatch();
   const loadSystemEmailsFunction = (page, limit) => {
     dispatch(fetchSystemEmails({
@@ -180,6 +180,7 @@ function SystemEmailsList(props){
     }
   }, [props.deleteClearingCounter]);
 
+  console.log(props.limit);
   return (
     <React.Fragment>
       <div className="page-content">
