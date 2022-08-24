@@ -79,6 +79,14 @@ function CountriesAdd(props){
                 placeholder={props.t("Enter Calling Code")}
                 type="text"
                 errorMessage={props.t("Enter valid calling code")}
+                onKeyPress={(e) => {
+                  if (!isNaN(e.key) && e.target.value.length > 0){
+                    return true;
+                  }
+                  if (!/[0-9]/.test(e.key)) {
+                    e.preventDefault();
+                  }
+                }}
                 validate={{
                   
                   required: { value: true },
