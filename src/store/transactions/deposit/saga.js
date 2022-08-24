@@ -1,8 +1,7 @@
 import {
   call,
   put,
-  takeEvery,
-  delay
+  takeEvery
 } from "redux-saga/effects";
 import { 
   ADD_DEPOSIT_START, 
@@ -48,12 +47,11 @@ function * addDeposit({ payload:{ deposit } }){
     const { status, result } = data;
     if (status === true){
       yield put(addDepositSuccess(result));
-      yield put(showSuccessNotification(`Deposit has been ${result.status}`));
       yield put(modalClear());
+      yield put(showSuccessNotification(`Deposit has been ${result.status}`));
     }
   } catch (error){
-    yield  put(depositError(error));
-    yield delay(1000);
+    yield put(depositError(error));
     yield put(errorClear());
   } 
 }

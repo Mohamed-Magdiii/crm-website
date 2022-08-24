@@ -1,8 +1,7 @@
 import {
   call,
   put,
-  takeEvery,
-  delay
+  takeEvery
 } from "redux-saga/effects";
 import { 
   addWithdrawal, 
@@ -47,14 +46,12 @@ function * makeWithdrawal({ payload:{ withdrawal } }){
     
     if (status){
       yield put(makeWithdrawalSuccess(result));
-      yield put(showSuccessNotification(`Withdrawal has been ${result.status}`));
-      // yield delay(1000);
       yield put(modalClear());
+      yield put(showSuccessNotification(`Withdrawal has been ${result.status}`));
     }
     
   } catch (error){
     yield put(withdrawalError(error.message));
-    // yield delay(1000);
     yield put(errorClear());
   }
 
