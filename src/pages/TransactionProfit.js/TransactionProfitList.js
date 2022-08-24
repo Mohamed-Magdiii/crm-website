@@ -62,7 +62,7 @@ function TransactionProfitList(props) {
     <React.Fragment>
       <div className="page-content">
         <div className="container-fluid">
-          <h2>{props.t("Transactions Profit")}</h2>
+          <h2>{props.t("Exchange Balances")}</h2>
           <Row>
             {props.transactionsProfits.map((transactionProfit, index)=><Col key={index} className="col-12">
               <Card>
