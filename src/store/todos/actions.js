@@ -5,7 +5,9 @@ import {
   ADD_TODO_END,
   ADD_TODO_CLEAR,
   DELETE_TODO_START,
-  DELETE_TODO_END
+  DELETE_TODO_END,
+  EDIT_TODO_START,
+  EDIT_TODO_END
 } from "./actionTypes";
 
 export const fetchTodosStart = (params = {})=>{
@@ -52,5 +54,19 @@ export const deleteTodosEnd = (data)=>{
   return {
     type:DELETE_TODO_END,
     payload: data
+  };
+};
+
+export const editTodoStart = (params = {})=>{
+  return {
+    type:EDIT_TODO_START,
+    payload:params
+  };
+};
+
+export const editTodoEnd = (params = {})=>{
+  return {
+    type:EDIT_TODO_END,
+    payload:params
   };
 };

@@ -22,14 +22,16 @@ import TodoAdd from "components/Common/TodoAdd";
 // import Loader from "components/Common/Loader";
 
 import "@fullcalendar/bootstrap/main.css";
-import { fetchTodosStart } from "store/actions";
+import { editTodoStart, fetchTodosStart } from "store/actions";
 
 //redux
 import ViewTodo from "./ViewTodo";
+import moment from "moment";
+import Confirm from "components/Common/Confirm";
 
 const Reminder = (props) => {
   const dispatch = useDispatch();
-
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [events, setEvents] = useState([]);
   const [selectedDay, setSelectedDay] = useState(0);
   const [dateRange, setDateRange] = useState({
@@ -88,6 +90,23 @@ const Reminder = (props) => {
     }
   };
 
+  const handleDrop  = (args) => {
+    const todo = args.oldEvent._def.extendedProps;
+    const end = moment(args.event.start);
+    const now = moment();
+    if (now.diff(end) > 0){
+      args.revert();
+    } else 
+      dispatch(editTodoStart({
+        id:todo._id,
+        timeEnd:args.event.start, 
+        note: todo.note,
+        time: todo.createAt,
+        type: 0,
+        status: "open"
+      }));
+  };
+
   return (
     <React.Fragment>
       <TodoAdd
@@ -133,13 +152,15 @@ const Reminder = (props) => {
                 selectable={true}
                 dateClick={handleDateClick}
                 eventClick={handleEventClick}
-
+                eventDrop={handleDrop}
                 datesSet={dateRangeChange}
-                
               />
             </CardBody>
           </Card>
         </Container>
+        <Confirm
+          show={showConfirmationModal}
+        ></Confirm>
       </div>
     </React.Fragment>
   );

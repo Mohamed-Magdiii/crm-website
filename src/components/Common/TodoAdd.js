@@ -172,10 +172,11 @@ function TodoAdd (props) {
               <Col className="col-12 mb-3">
                 <AvField
                   name="note"
-                  label={props.t("Reminder Note")}
+                  label={props.t("Note")}
                   type="text"
                   value={todoObj.note}
-                  errorMessage={props.t("Invalid Reminder Note")}
+                  placeholder={props.t("Enter Your Note")}
+                  errorMessage={props.t("Invalid Note")}
                   validate={{
                     required: { value: true },
                   }}
@@ -188,8 +189,8 @@ function TodoAdd (props) {
                   name="timeEnd"
                   // value="testing"
                   // value={todoObj.timeEnd.slice(0, -5) || new Date().toISOString().slice(0, -5)}
-                  label={props.t("Reminder")}
-                  errorMessage={props.t("Invalid Reminder Note")}
+                  label={props.t("date")}
+                  errorMessage={props.t("Invalid date Note")}
                 >
                 </AvField>
               </Col>
@@ -200,7 +201,7 @@ function TodoAdd (props) {
                   value={todoObj.type}
                   label={props.t("Type")}
                   required
-                  errorMessage={props.t("Invalid Reminder type")}
+                  errorMessage={props.t("Invalid type")}
                 >
                   <AvRadio label={props.t("Reminder")} value={1} />
                   <AvRadio label={props.t("Todo")} value={0} />

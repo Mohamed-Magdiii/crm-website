@@ -40,3 +40,13 @@ export const deleteTodo = async (id) => {
   }
   return data.result;
 };
+
+export const editTodo = async (params)=>{
+  const id = params.id;
+  delete params.id;
+  const data = await axiosHelper.patch("/todos/" + id, params);
+  if (data.isError) {
+    throw new Error(data.message);
+  }
+  return data.result;
+};

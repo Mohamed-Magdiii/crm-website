@@ -7,7 +7,8 @@ import {
 import {
   GET_TODOS_START,
   ADD_TODO_START,
-  DELETE_TODO_START
+  DELETE_TODO_START,
+  EDIT_TODO_START
 } from "./actionTypes";
 
 import {
@@ -59,10 +60,19 @@ function * deleteTodo(params){
   } 
 }
 
+function * editTodo(params){
+  try {
+    yield call(todosApi.editTodo, params.payload);  
+  }
+  catch (error){
+  } 
+}
+
 function* calendarSaga() {
   yield takeEvery(GET_TODOS_START, fetchTodos);
   yield takeEvery(ADD_TODO_START, addTodo);
   yield takeEvery(DELETE_TODO_START, deleteTodo);
+  yield takeEvery(EDIT_TODO_START, editTodo);
 
 }
 
