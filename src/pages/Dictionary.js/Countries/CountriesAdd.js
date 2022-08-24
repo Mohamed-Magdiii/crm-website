@@ -88,12 +88,7 @@ function CountriesAdd(props){
                   }
                 }}
                 validate={{
-                  
                   required: { value: true },
-                  pattern :{
-                    value:"^[0-9]+$",
-                    errorMessage:"Calling code must be all in numbers"
-                  }
                 }}
               
               />
