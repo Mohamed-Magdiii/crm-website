@@ -126,7 +126,7 @@ function TransactionFeeGroupAdd(props) {
                 <br />
                 <div className="mb-3">
                   <AvGroup check>
-                    <AvInput type="checkbox" name="isPercentage" onClick={() => setIsPercentage(preValue => !preValue)} value={isPercentage ? "true" : "false"} />
+                    <AvInput type="checkbox" name="isPercentage"  onClick={() => setIsPercentage(preValue => !preValue)} value={isPercentage ? "true" : "false"} />
                     <Label check for="checkItOut">Is Percentage</Label>
                   </AvGroup>
                 </div>
@@ -140,10 +140,11 @@ function TransactionFeeGroupAdd(props) {
                 <Col >
                   <AvField
                     name="value"
-                    label={props.t("Value")}
-                    placeholder={props.t("Enter Value")}
-                    type="number"
                     min="0"
+                    label={props.t("Value")}
+                    placeholder={props.t("Enter value")}
+                    type="number"
+                    
                     errorMessage={props.t("Enter valid fees group value")}
                     validate={{ required: { value: true } }}
                     onKeyPress={(e) => { if (!/^\d*\.?\d*$/.test(e.key)) e.preventDefault(); }}
@@ -154,7 +155,7 @@ function TransactionFeeGroupAdd(props) {
                   <AvField
                     name="minValue"
                     label={props.t("Min value")}
-                    placeholder={props.t("Enter Min Value")}
+                    placeholder={props.t("Enter min value")}
                     type="number"
                     min="0"
                     errorMessage={props.t("Enter valid min fees group value")}
@@ -259,6 +260,14 @@ function TransactionFeeGroupAdd(props) {
               <UncontrolledAlert color="danger">
                 <i className="mdi mdi-block-helper me-2" />
                 {props.t(props.error)}
+              </UncontrolledAlert>
+            )
+          }
+          {
+            props.showAddSuccessMessage && (
+              <UncontrolledAlert color="success">
+                <i className="mdi mdi-check-all me-2" />
+                {props.t("Transaction New Fees Group is added successfully !!!")}
               </UncontrolledAlert>
             )
           }
