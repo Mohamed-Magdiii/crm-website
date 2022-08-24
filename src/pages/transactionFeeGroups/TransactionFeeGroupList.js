@@ -17,6 +17,7 @@ import { fetchTransactionFeeGroupStart, deleteTransactionFeeGroupStart } from "s
 import DeleteModal from "components/Common/DeleteModal";
 import TransactionFeeGroupEdit from "./TransactionFeeGroupEdit";
 import TransactionFeeGroupAdd from "./TransactionFeeGroupAdd";
+import { checkAllBoxes } from "common/utils/checkAllBoxes";
 
 function TransactionFeeGroupList(props) {
   const [deleteModal, setDeleteModal] = useState(false);
@@ -27,7 +28,7 @@ function TransactionFeeGroupList(props) {
   const columns = [
     {
       dataField: "checkbox",
-      text: <input type="checkbox" />
+      text: <input type="checkbox" id="check-all-fee-groups" onChange={()=>checkAllBoxes("check-all-fee-groups", ".fee-group-checkbox")}/>
     },
 
     {
@@ -42,7 +43,7 @@ function TransactionFeeGroupList(props) {
     {
       dataField: "isPercentage",
       text: props.t("isPercentage"),
-      formatter: (val) => (val.isPercentage ? "TRUE" : "FALSE"),
+      formatter: (val) => (val.isPercentage ? "True" : "False"),
     },
     {
       dataField: "value",
@@ -66,7 +67,7 @@ function TransactionFeeGroupList(props) {
       editable: false,
       text: "Action",
       formatter: (item) => (
-        <div className="d-flex gap-3">
+        <div className="d-flex gap-3 justify-content-center">
           <Link className={`text-success ${!update ? "d-none" : ""}`} to="#">
             <i
               className="mdi mdi-pencil font-size-18"
@@ -126,7 +127,7 @@ function TransactionFeeGroupList(props) {
             <Col className="col-12">
               <Card>
                 <CardHeader className="d-flex flex-column gap-3">
-                  <div className="d-flex justify-content-between  align-items-center">
+                  <div className="d-flex justify-content-between align-items-center">
                     <CardTitle>{props.t("Transaction Fee Groups List")} ({props.totalDocs})</CardTitle>
                     <TransactionFeeGroupAdd />
                   </div>
@@ -139,7 +140,7 @@ function TransactionFeeGroupList(props) {
                     >
                       <Table
                         id="tech-companies-1"
-                        className="table  table-hover "
+                        className="table table-hover "
                       >
                         <Thead className="text-center table-light" >
                           <Tr>
@@ -148,13 +149,17 @@ function TransactionFeeGroupList(props) {
                             )}
                           </Tr>
                         </Thead>
-                        <Tbody style={{ fontSize: "13px" }}>
+                        <Tbody style={{
+                          fontSize: "12px",
+                          textAlign: "center",
+                          textTransform: "capitalize"
+                        }}>
                           {props.loading && <TableLoader colSpan={4} />}
                           {!props.loading && props.transactionFeeGroups.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`}>
-                                  {column.dataField === "checkbox" ? <input type="checkbox" /> : ""}
+                                  {column.dataField === "checkbox" ? <input className="fee-group-checkbox" type="checkbox" /> : ""}
                                   {column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
                                 </Td>
                               )}

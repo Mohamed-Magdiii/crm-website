@@ -81,7 +81,7 @@ function TransactionFeeGroupAdd(props) {
     setcol1(!col1);
   };
   useEffect(() => {
-    if (!props.showAddSuccessMessage && addModal) { 
+    if (!props.showAddSuccessMessage && addModal) {
       setAddUserModal(false);
     }
   }, [props.showAddSuccessMessage]);
@@ -114,7 +114,7 @@ function TransactionFeeGroupAdd(props) {
                   <AvField
                     name="title"
                     label={props.t("Title")}
-                    placeholder={props.t("Title")}
+                    placeholder={props.t("Enter Title")}
                     type="text"
                     errorMessage={props.t("Enter Valid title")}
                     validate={{ required: { value: true } }}
@@ -126,7 +126,7 @@ function TransactionFeeGroupAdd(props) {
                 <br />
                 <div className="mb-3">
                   <AvGroup check>
-                    <AvInput type="checkbox" name="isPercentage" onClick={() => setIsPercentage(preValue => !preValue)} value={isPercentage ? "true" : "false"} />
+                    <AvInput type="checkbox" name="isPercentage"  onClick={() => setIsPercentage(preValue => !preValue)} value={isPercentage ? "true" : "false"} />
                     <Label check for="checkItOut">Is Percentage</Label>
                   </AvGroup>
                 </div>
@@ -140,11 +140,14 @@ function TransactionFeeGroupAdd(props) {
                 <Col >
                   <AvField
                     name="value"
+                    min="0"
                     label={props.t("Value")}
-                    placeholder={props.t("value")}
+                    placeholder={props.t("Enter value")}
                     type="number"
+                    
                     errorMessage={props.t("Enter valid fees group value")}
                     validate={{ required: { value: true } }}
+                    onKeyPress={(e) => { if (!/^\d*\.?\d*$/.test(e.key)) e.preventDefault(); }}
                     onChange={(e) => setValue(e.target.value)}
                   />
                 </Col>
@@ -152,10 +155,12 @@ function TransactionFeeGroupAdd(props) {
                   <AvField
                     name="minValue"
                     label={props.t("Min value")}
-                    placeholder={props.t("min value")}
+                    placeholder={props.t("Enter min value")}
                     type="number"
+                    min="0"
                     errorMessage={props.t("Enter valid min fees group value")}
                     validate={{ required: { value: true } }}
+                    onKeyPress={(e) => { if (!/^\d*\.?\d*$/.test(e.key)) e.preventDefault(); }}
                     onChange={(e) => setMinAmount(e.target.value)}
                   />
                 </Col>
@@ -163,10 +168,12 @@ function TransactionFeeGroupAdd(props) {
                   <AvField
                     name="maxValue"
                     label={props.t("Max Value")}
-                    placeholder={props.t("Max Value")}
+                    placeholder={props.t("Enter Max Value")}
                     type="number"
-                    errorMessage={props.t("Enter Valid max feees group value")}
+                    min="0"
+                    errorMessage={props.t("Enter Valid max fees group value")}
                     validate={{ required: { value: true } }}
+                    onKeyPress={(e) => { if (!/^\d*\.?\d*$/.test(e.key)) e.preventDefault(); }}
                     onChange={(e) => setMaxAmount(e.target.value)}
                   />
                 </Col>
@@ -203,8 +210,10 @@ function TransactionFeeGroupAdd(props) {
                                 name={`value${index}`}
                                 label={props.t("Value")}
                                 value={value}
-                                placeholder={props.t("Value")}
+                                placeholder={props.t("Enter Value")}
                                 type="number"
+                                min="0"
+                                onKeyPress={(e) => { if (!/^\d*\.?\d*$/.test(e.key)) e.preventDefault(); }}
                               />
                             </Col>
                             <Col  >
@@ -212,8 +221,10 @@ function TransactionFeeGroupAdd(props) {
                                 name={`minValue${index}`}
                                 value={minAmount}
                                 label={props.t("Min value")}
-                                placeholder={props.t("min value")}
+                                placeholder={props.t("Enter Min Value")}
                                 type="number"
+                                min="0"
+                                onKeyPress={(e) => { if (!/^\d*\.?\d*$/.test(e.key)) e.preventDefault(); }}
                               />
                             </Col>
                             <Col >
@@ -221,8 +232,10 @@ function TransactionFeeGroupAdd(props) {
                                 name={`maxValue${index}`}
                                 value={maxAmount}
                                 label={props.t("Max value")}
-                                placeholder={props.t("Max value")}
+                                placeholder={props.t("Enter Max Value")}
                                 type="number"
+                                min="0"
+                                onKeyPress={(e) => { if (!/^\d*\.?\d*$/.test(e.key)) e.preventDefault(); }}
                               />
                             </Col>
 
@@ -238,7 +251,7 @@ function TransactionFeeGroupAdd(props) {
             </Col>
             <div className='text-center pt-3 p-2'>
               <Button disabled={props.addButtonDisabled} type="submit" color="primary" className="">
-                {props.t("Add New Transaction Fees Group")}
+                {props.t("Add")}
               </Button>
             </div>
           </AvForm>

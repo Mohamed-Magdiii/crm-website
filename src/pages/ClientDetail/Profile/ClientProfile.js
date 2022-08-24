@@ -67,15 +67,15 @@ function ClientDetails(props) {
     // dispatch(fetchClientDetails(clientId)); 
     dispatch(fetchUsers());
     dispatch(fetchMarkupsStart({
-      limit:1000,
+      limit:100,
       page:1
     }));
     dispatch(fetchFeeGroupStart({
-      limit:1000,
+      limit:100,
       page:1
     }));
     dispatch(fetchTransactionFeeGroupStart({
-      limit:1000,
+      limit:100,
       page:1
     }));
   }, []);

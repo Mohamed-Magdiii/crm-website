@@ -25,12 +25,9 @@ import { makeWithdrawalStart, fetchWithdrawalsStart } from "store/transactions/w
 function TransactionForm(props){
   const [transactionModal, setTransactionModal] = useState(false);
   const [type, setType] = useState("");
-  const [selectedClient, setSelectedClient] = useState("");
   const [selectedWalletId, setSelectedWalletId] = useState("");
   const [gateway, setGateway] = useState("");
   const dispatch = useDispatch();
-  const { create } = props.depositsPermissions;
-  const [searchInput, setSearchInput]  = useState("");
   const handleTransaction = (event, values) => {
     delete values.type;
     event.preventDefault();
@@ -41,7 +38,6 @@ function TransactionForm(props){
         gateway,
         ...values
       }));
-      setSearchInput("");
       dispatch(clearWallets());
     }
     else if (type === "Withdrawal"){
@@ -51,37 +47,18 @@ function TransactionForm(props){
         gateway,
         ...values
       }));
-      setSearchInput("");
       dispatch(clearWallets());
     }
   
   }; 
   
   const toggleAddModal = () => {
+    if (!transactionModal) {
+      fetchData();
+    }
     setTransactionModal(!transactionModal);
   };
-  useEffect(()=>{
-    dispatch(fetchClientsStart({
-      page:1,
-      limit:10
-    }));
-    dispatch(fetchDepositsStart({
-      page:1,
-      limit:10
-    }));
-    dispatch(fetchWithdrawalsStart({
-      page:1,
-      limit:10
-    }));
-    dispatch(fetchGatewaysStart());
-    if (searchInput.length >= 3){
-      dispatch(fetchClientsStart({
-        searchText:searchInput
-      }));
-    }
-  
-  }, [searchInput]);
-  
+
   useEffect(() => {
     if (props.modalClear && transactionModal ){
       setTransactionModal(false);
@@ -94,17 +71,12 @@ function TransactionForm(props){
       setTransactionModal(false);
     }
   }, [props.withdrawalModalClear]);
-
-  useEffect(()=>{
+  
+  const fetchData = () => {
     dispatch(fetchWalletStart({
       belongsTo: props.clientId
     }));
-  }, [props.clientId]);
-  
-  const selectClient = (id)=> {
-    // dispatch(fetchWalletStart({
-    //   belongsTo: id
-    // }));
+    dispatch(fetchGatewaysStart());  
   };
   
   return (
