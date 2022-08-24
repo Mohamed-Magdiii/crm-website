@@ -105,7 +105,13 @@ function ClientForm(props){
                     label={props.t("Phone")}
                     placeholder={props.t("Enter Your Phone")}
                     type="text"
-                   
+                    onKeyPress={(e) => {
+                      if (/^[+]?\d+$/.test(e.key) || (e.key === "+" && e.target?.value?.length === 0) ) {
+                        return true;
+                      } else {
+                        e.preventDefault();
+                      }
+                    }}
                     validate={
                       { 
                         required: { value: true },
