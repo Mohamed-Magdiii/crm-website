@@ -1,6 +1,6 @@
 /* eslint-disable object-property-newline */
 import {
-  takeEvery, put, call
+  takeEvery, put, call, delay
 } from "redux-saga/effects";
 
 // Calender Redux States
@@ -15,25 +15,26 @@ import {
   fetchTodosEnd,
   addTodosEnd,
   addTodoClear,
-  deleteTodosEnd
+  deleteTodosEnd,
+  clearError,
 } from "./actions";
 import * as todosApi from "../../apis/reminder";
 import { showErrorNotification, showSuccessNotification } from "store/notifications/actions";
 
-function * fetchTodos(params){
+function* fetchTodos(params) {
   try {
-    const data = yield call(todosApi.getTodos, params);  
+    const data = yield call(todosApi.getTodos, params);
     yield put(fetchTodosEnd({ data }));
   }
-  catch (error){
+  catch (error) {
     yield put(fetchTodosEnd({ error }));
-  } 
+  }
 }
 
-function * addTodo(params){
+function* addTodo(params) {
   try {
-    const data = yield call(todosApi.addTodo, params.payload);  
-    yield put(addTodosEnd({ data : params.payload.id ? params.payload : data, id: params.payload.id }));
+    const data = yield call(todosApi.addTodo, params.payload);
+    yield put(addTodosEnd({ data: params.payload.id ? params.payload : data, id: params.payload.id }));
     if (params.payload.id) {
       yield put(showSuccessNotification("Todo updated successfully"));
     } else {
@@ -42,22 +43,23 @@ function * addTodo(params){
     yield put(addTodoClear());
 
   }
-  catch (error){
+  catch (error) {
     yield put(addTodosEnd({ error }));
-    yield put(showErrorNotification(error.message));
-  } 
+    yield delay(2500);
+    yield put(clearError());
+  }
 }
 
-function * deleteTodo(params){
+function* deleteTodo(params) {
   try {
-    yield call(todosApi.deleteTodo, params.payload);  
+    yield call(todosApi.deleteTodo, params.payload);
     yield put(deleteTodosEnd({ id: params.payload }));
-    yield put(showSuccessNotification("Todo deletd successfully"));
+    yield put(showSuccessNotification("Todo deleted successfully"));
   }
-  catch (error){
+  catch (error) {
     yield put(deleteTodosEnd({ error }));
     yield put(showErrorNotification(error.message));
-  } 
+  }
 }
 
 function * editTodo(params){

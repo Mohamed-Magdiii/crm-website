@@ -5,7 +5,8 @@ import {
   ADD_TODO_END,
   ADD_TODO_CLEAR,
   DELETE_TODO_START,
-  DELETE_TODO_END
+  DELETE_TODO_END,
+  MODAL_CLEAR_ERROR,
 } from "./actionTypes";
 
 const INIT_STATE = {
@@ -34,13 +35,11 @@ const Calendar = (state = INIT_STATE, action) => {
           ...action.payload.data,
         }
       };
-    
     case ADD_TODO_START:
       return {
         ...state,
         adding: true,
       };
-  
     case ADD_TODO_END:
       if (action.payload.id) {
         docs = docs.map(obj => {
@@ -62,9 +61,8 @@ const Calendar = (state = INIT_STATE, action) => {
         addError: action.payload.error,
         list: {
           ...state.list,
-          docs:  docs
+          docs: docs
         },
-
       };
     case ADD_TODO_CLEAR:
       return {
@@ -87,8 +85,13 @@ const Calendar = (state = INIT_STATE, action) => {
           docs: docs
         }
       };
+    case MODAL_CLEAR_ERROR:
+      return {
+        ...state,
+        addError: ""
+      };
     default:
-      return state;
+      return { ...state };
   }
 };
 
