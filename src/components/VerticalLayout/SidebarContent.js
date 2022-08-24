@@ -154,24 +154,24 @@ const SidebarContent = (props) => {
                 </li>   
               </ul>
             </li>
-            <li>
+            {/* <li>
               <Link to='/positions' className="">
                 <FeatherIcon icon="cast"/>
                 <span>{props.t("Positions")}</span> 
               </Link> 
-            </li>
+            </li> */}
             <li>
               <Link to="/calendar/reminders" className="">
                 <FeatherIcon icon="calendar" />
                 <span>{props.t("Reminders/Todos")}</span>
               </Link> 
             </li>
-            <li>
+            {/* <li>
               <Link to='/marketing' className="">
                 <FeatherIcon icon="link-2"/>
                 <span>{props.t("Marketing")}</span> 
               </Link> 
-            </li> 
+            </li>  */}
             <li>
               <Link to="/requests" className="has-arrow">
                 <FeatherIcon icon="clipboard" />
@@ -220,9 +220,6 @@ const SidebarContent = (props) => {
                 <li>
                   <Link to="/currency-pairs" className={`${!getCurrencyPair ? "d-none" : ""}`}>{props.t("Currency Pairs")}</Link>
                 </li>   
-                <li>
-                  <Link to="/markups" className={`${!getMarkups ? "d-none" : ""}`}>{props.t("Markups")}</Link>
-                </li>   
 
               </ul>
             </li> 
@@ -239,10 +236,13 @@ const SidebarContent = (props) => {
                   <Link to="/transaction-fee-groups" >{props.t("Transaction Fee Groups")}</Link>
                 </li>
                 <li>
+                  <Link to="/markups" className={`${!getMarkups ? "d-none" : ""}`}>{props.t("Markups")}</Link>
+                </li>   
+                <li>
                   <Link to="/orders-profit" className={`${!getOrderProfit ? "d-none" : ""}`}>{props.t("Order Profit")}</Link>
                 </li>    
                 <li>
-                  <Link to="/transactions-profit" className={`${!getTransactionProfit ? "d-none" : ""}`}>{props.t("Transaction Profit")}</Link>
+                  <Link to="/transactions-profit" className={`${!getTransactionProfit ? "d-none" : ""}`}>{props.t("Exchange Balance")}</Link>
                 </li>          
               </ul>
             </li>
