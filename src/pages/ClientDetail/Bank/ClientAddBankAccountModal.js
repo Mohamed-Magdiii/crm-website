@@ -25,6 +25,7 @@ function ClientAddBankAccountModal(props){
   const toggleAddModal = () => {
     setAddModal(!addModal);
   };
+
   useEffect(()=>{
     if (props.addClearingCounter > 0 && addModal) {
       setAddModal(false);
@@ -76,16 +77,28 @@ function ClientAddBankAccountModal(props){
                 label={props.t("Account number")}
                 placeholder={props.t("Enter Account Number")}
                 type="text"
+                onKeyPress={(e) => {
+                  if (!isNaN(e.target.value) && e.target.value.length > 0){
+                    return true;
+                  }
+                  if (!/[0-9]/.test(e.key)) {
+                    e.preventDefault();
+                  }
+                }}
                 validate={
                   { 
                     required: { 
                       value: true, 
                       errorMessage: "Enter account number" 
                     },
-                    number: {
-                      value: true,
-                      errorMessage: "Account number must be a number"
-                    }
+                    // number: {
+                    //   value: true,
+                    //   errorMessage: "Account number must be a number"
+                    // },
+                    pattern: {
+                      value: "^[0-9]+$",
+                      errorMessage: "testing error message"
+                    },
                   }
                 }
               />

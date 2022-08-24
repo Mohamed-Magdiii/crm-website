@@ -123,6 +123,14 @@ function BankAccountEditModal(props){
                 type="text"
                 value={selectedBankAccount.accountNumber}
                 errorMessage={props.t("Enter Account Number")}
+                onKeyPress={(e) => {
+                  if (!isNaN(e.target.value) && e.target.value.length > 0){
+                    return true;
+                  }
+                  if (!/[0-9]/.test(e.key)) {
+                    e.preventDefault();
+                  }
+                }}
                 validate={
                   { 
                     required: { 
