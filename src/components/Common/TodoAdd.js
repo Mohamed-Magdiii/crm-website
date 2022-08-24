@@ -110,6 +110,18 @@ function TodoAdd(props) {
   // TODO - get enums from the backend
   const statusOptions = ["open", "ongoing", "completed"];
 
+  const handleChangeDate = (value, ctx, input, cb)=>{
+    delete input.validations.min;
+    const now = moment();
+    const v = moment(value);
+    if (!value){
+      cb("Date is required");
+    }
+    if (now.diff(v) > 0)
+      cb("Can't choose past dates");
+    else
+      cb(true);
+  };
   useEffect(() => {
     if (props?.data?.customerId?._id) {
       setTodoObj(props.data);
@@ -196,9 +208,9 @@ function TodoAdd(props) {
                   // value="testing"
                   value={todoObj?.timeEnd ? String(moment(todoObj.timeEnd).format("YYYY-MM-DDTHH:mm")) : ""}
                   label={props.t("Date")}
-                  errorMessage={props.t("Invalid Date")}
                   validate={{
-                    required: { value: true },
+                    min: moment().format("YYYY-MM-DDTHH:mm"),
+                    custom: handleChangeDate,
                   }}
                 >
                 </AvField>

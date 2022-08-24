@@ -27,11 +27,9 @@ import { editTodoStart, fetchTodosStart } from "store/actions";
 //redux
 import ViewTodo from "./ViewTodo";
 import moment from "moment";
-import Confirm from "components/Common/Confirm";
 
 const Reminder = (props) => {
   const dispatch = useDispatch();
-  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [events, setEvents] = useState([]);
   const [selectedDay, setSelectedDay] = useState(0);
   const [dateRange, setDateRange] = useState({
@@ -157,9 +155,6 @@ const Reminder = (props) => {
             </CardBody>
           </Card>
         </Container>
-        <Confirm
-          show={showConfirmationModal}
-        ></Confirm>
       </div>
     </React.Fragment>
   );
