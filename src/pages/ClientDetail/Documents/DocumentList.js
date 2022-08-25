@@ -195,7 +195,7 @@ function DocumentListing(props) {
     return tmpArr.map(obj => { return obj[0].toUpperCase() + obj.slice(1) }).join(" ");
   }
   function getFileLink(obj){
-    return <a target="_blank" href={`${imagesUrl}${obj.filename}`} rel="noreferrer">{obj.originalname}</a>;
+    return <div><a target="_blank" href={`${imagesUrl}${obj.filename}`} rel="noreferrer">{obj.originalname}</a></div>;
   }
   const columns = [
     {

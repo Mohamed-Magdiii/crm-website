@@ -42,11 +42,17 @@ function * fetchDocs(params){
 }
 
 function * uploadDocs({ payload }){
-  try {
+  try {   
+    const documents = [];
+    for (const pair of payload.formData.entries()) {
+      console.log(pair[0], pair[1]);
+      if (pair[1] !== "undefined")
+        documents.push(pair[0]);
+    }
     const data = yield call(documentsApi.uploadDocuments, payload);   
     yield put(uploadDocsSuccess(data));
     yield put(uploadDocsClear());
-    yield put(showSuccessNotification("Documents upload successfull"));
+    yield put(showSuccessNotification(`${[documents]} uploaded successfully`));
     yield put(fetchDocsStart(payload.clientId));
     yield put(fetchClientStagesStart(payload.clientId));
   }
