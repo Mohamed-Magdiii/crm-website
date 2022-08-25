@@ -176,7 +176,7 @@ function SystemEmailEdit(props){
 
   useEffect((e) => {
     handleSystemEmailFetchById(e, id);
-  }, []);
+  }, [props.editContentResult]);
 
   const copyToClipboard = (str) => {
     const el = document.createElement("textarea");
