@@ -33,8 +33,10 @@ import ClientAddBankAccountModal from "../Bank/ClientAddBankAccountModal";
 import Transaction from "./QuickActions/Transaction";
 import ConvertWallet from "./QuickActions/Wallet";
 import PortalAccess from "./QuickActions/portalAccess";
+import moment from "moment";
 function ClientDetails(props) {
   const [deleteModal, setDeleteModal] = useState(false);
+  const [dateOfISsue, setDateOfIssue] = useState("");
   const clientId = props.clientId;
   const dispatch = useDispatch();
   const { experience, financialInfo, tradingFeeId, markupId, transactionFeeId, declarations } = props.clientDetails;
@@ -172,6 +174,13 @@ function ClientDetails(props) {
                                   placeholder={props.t("Enter Phone")}
                                   type="text"
                                   errorMessage={props.t("Phone is required")}
+                                  onKeyPress={(e)=>{
+                                    if (e.key == "+"){
+                                      return true;
+                                    }
+                                    if (!/[0-9]/.test(e.key))
+                                      e.preventDefault();
+                                  }}
                                   validate={
                                     { 
                                       required: { value: true },
@@ -195,8 +204,15 @@ function ClientDetails(props) {
                                 <AvField
                                   name="mobile"
                                   label={props.t("Mobile")}
-                                  placeholder={props.t("Mobile")}
+                                  placeholder={props.t("Enter Mobile")}
                                   type="text"
+                                  onKeyPress={(e)=>{
+                                    if (e.key == "+"){
+                                      return true;
+                                    }
+                                    if (!/[0-9]/.test(e.key))
+                                      e.preventDefault();
+                                  }}
                                   validate={
                                     { 
                                       pattern :{
@@ -215,10 +231,18 @@ function ClientDetails(props) {
                                 <AvField
                                   name="email"
                                   label={props.t("Email")}
-                                  placeholder={props.t("Email")}
+                                  placeholder={props.t("Enter Email")}
                                   type="text"
-                                  errorMessage={props.t("Email is required")}
-                                  validate={{ required: { value: true } }}
+                                  validate={{
+                                    required: {
+                                      value: true,
+                                      errorMessage:props.t("Email is required") 
+                                    },
+                                    email:{
+                                      value:true,
+                                      errorMessage:props.t("Email is not valid") 
+                                    } 
+                                  }}
                                   value={props.clientDetails.email}
                                 />
                               </div>
@@ -230,8 +254,22 @@ function ClientDetails(props) {
                                   label={props.t("Date of birth")}
                                   placeholder={props.t("Enter Date of birth")}
                                   type="date"
-                                  errorMessage={props.t("Enter Date of birth")}
-                                  validate={{ required: { value: true } }}
+                                  validate={{
+                                    required: {
+                                      value: true,
+                                      errorMessage:props.t("Enter Date of birth") 
+                                    },
+                                    max:{
+                                      value:moment().subtract(18, "years").format("YYYY-MM-DD"),
+                                      errorMessage:props.t("Date of birth should be minmum 18 years old")
+                                    },
+                                    min:{
+                                      value:moment().subtract(110, "years").format("YYYY-MM-DD"),
+                                      errorMessage:props.t("Date of birth should be maximum 110 years old")
+                                    }
+                                  }}
+                                  min={moment().subtract(110, "years").format("YYYY-MM-DD")}
+                                  max={moment().subtract(18, "years").format("YYYY-MM-DD")}
                                   value={props.clientDetails.dob}
                                 />
                               </div>
@@ -292,7 +330,7 @@ function ClientDetails(props) {
                                 <AvField
                                   name="address"
                                   label={props.t("Address")}
-                                  placeholder={props.t("Address")}
+                                  placeholder={props.t("Enter Your Address")}
                                   type="text"
                                   errorMessage={props.t("Address is required")}
                                   validate={{ required: { value: true } }}
@@ -305,7 +343,7 @@ function ClientDetails(props) {
                                 <AvField
                                   name="address2"
                                   label={props.t("Address Line 2")}
-                                  placeholder={props.t("Address Line 2")}
+                                  placeholder={props.t("Enter Your Address Line 2")}
                                   type="text"
                                   errorMessage={props.t("Address is required")}
                                   // validate={{ required: { value: true } }}
@@ -327,9 +365,6 @@ function ClientDetails(props) {
                                   value={props.clientDetails.gender}
                                   label={props.t("Gender")}
                                   options = {[{
-                                    value: "",
-                                    label: "Select Gender"
-                                  }, {
                                     value: "male",
                                     label: "Male"
                                   }, {
@@ -344,7 +379,7 @@ function ClientDetails(props) {
                                 <AvField
                                   name="zipCode"
                                   label={props.t("Postal Code")}
-                                  placeholder={props.t("Postal Code")}
+                                  placeholder={props.t("Enter Postal Code")}
                                   type="text"
                                   value={props.clientDetails.zipCode}
                                 />
@@ -355,7 +390,6 @@ function ClientDetails(props) {
                                 <AvFieldSelect
                                   name="language"
                                   label={props.t("Language")}
-                                  placeholder={props.t("Language")}
                                   type="text"
                                   errorMessage={props.t("Language is required")}
                                   validate={{ required: { value: true } }}
@@ -373,6 +407,7 @@ function ClientDetails(props) {
                                   type="text"
                                   errorMessage={props.t("Source is required")}
                                   validate={{ required: { value: true } }}
+                                  disabled={true}
                                   value={props.clientDetails.source}
                                 />
                               </div>
@@ -424,7 +459,6 @@ function ClientDetails(props) {
                                 <AvFieldSelect
                                   name="politicallyExposed"
                                   label={props.t("Politically exposed ?")}
-                                  placeholder={props.t("Politically exposed ?")}
                                   type="text"
                                   errorMessage={props.t("Politically exposed is required")}
                                   // validate={{ required: { value: true } }}
@@ -454,7 +488,6 @@ function ClientDetails(props) {
                                 <AvFieldSelect
                                   name="callStatus"
                                   label={props.t("Call status")}
-                                  placeholder={props.t("Call status")}
                                   errorMessage={props.t("Call status is required")}
                                   validate={{ required: { value: true } }}
                                   value={props.clientDetails.callStatus}
@@ -478,7 +511,6 @@ function ClientDetails(props) {
                                 <AvFieldSelect
                                   name="idDetails.type"
                                   label={props.t("ID Type")}
-                                  placeholder={props.t("ID Type")}
                                   type="text"
                                   value={props.clientDetails.idDetails && props.clientDetails.idDetails.type}
                                   options = {[{
@@ -496,7 +528,6 @@ function ClientDetails(props) {
                                 <AvFieldSelect
                                   name="idDetails.countryOfIssue"
                                   label={props.t("Country of Issue")}
-                                  placeholder={props.t("Country of Issue")}
                                   value={props.clientDetails.idDetails && props.clientDetails.idDetails.countryOfIssue}
                                   options={props.countries.map((country)=>{
                                     return ({
@@ -512,7 +543,11 @@ function ClientDetails(props) {
                                 <AvField
                                   name="idDetails.documentNo"
                                   label={props.t("ID Number")}
-                                  placeholder={props.t("ID Number")}
+                                  placeholder={props.t("Enter ID Number")}
+                                  onKeyPress={(e)=>{
+                                    if (!/[0-9]/.test(e.key))
+                                      e.preventDefault();
+                                  }}
                                   type="text"
                                   value={props.clientDetails.idDetails && props.clientDetails.idDetails.documentNo}
                                 />
@@ -524,7 +559,11 @@ function ClientDetails(props) {
                                   name="idDetails.dateOfIssue"
                                   label={props.t("Date of Issue")}
                                   placeholder={props.t("Date of Issue")}
+                                  max={moment().format("YYYY-MM-DD")}
                                   type="date"
+                                  onChange={(e)=>{
+                                    setDateOfIssue(e.target.value);
+                                  }}
                                   value={props.clientDetails.idDetails && props.clientDetails.idDetails.dateOfIssue}
                                 />
                               </div>
@@ -535,6 +574,7 @@ function ClientDetails(props) {
                                   name="idDetails.dateOfExpiry"
                                   label={props.t("Date of expiry")}
                                   placeholder={props.t("Date of expiry")}
+                                  min={dateOfISsue}
                                   type="date"
                                   value={props.clientDetails.idDetails && props.clientDetails.idDetails.dateOfExpiry}
                                 />
