@@ -17,6 +17,7 @@ import { fetchClientBankAccount, deleteBankAccount } from "store/bankAccount/act
 import ClientAddBankAccountModal from "./ClientAddBankAccountModal";
 import BankAccountEditModal from "./EditBankAccountModal";
 import DeleteModal from "components/Common/DeleteModal";
+import { captilazeFirstLetter } from "common/utils/manipulateString";
 
 function ClientBank(props) {
   const clientId = props.clientId;
@@ -53,11 +54,17 @@ function ClientBank(props) {
   const columns = [
     {
       dataField: "bankName",
-      text: props.t("Bank Name")
+      text: props.t("Bank Name"),
+      formatter: (item) => (
+        captilazeFirstLetter(item.bankName)
+      )
     },
     {
       dataField: "accountHolderName",
-      text: props.t("Owner")
+      text: props.t("Owner"),
+      formatter: (item) => (
+        captilazeFirstLetter(item.accountHolderName)
+      )
     },
     {
       dataField: "swiftCode",
@@ -73,7 +80,10 @@ function ClientBank(props) {
     },
     {
       dataField: "currency",
-      text: props.t("Currency")
+      text: props.t("Currency"),
+      formatter: (item) => (
+        captilazeFirstLetter(item.currency)
+      )
     },
     {
       dataField: "",
@@ -147,7 +157,7 @@ function ClientBank(props) {
                             }
                           </Tbody>
                           :
-                          <Tbody>
+                          <Tbody className="text-center"> 
                             {props.loading && <TableLoader colSpan={4} />}
                             {!props.loading && props.clientBankAccounts.map((row, rowIndex) =>
                               <Tr key={rowIndex}>

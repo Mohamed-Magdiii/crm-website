@@ -209,18 +209,35 @@ function SystemEmailsList(props){
                             )}
                           </Tr>
                         </Thead>
-                        <Tbody>
-                          {props.loading && <TableLoader colSpan={4} />}
-                          {!props.loading && props.docs.map((row, rowIndex) =>
-                            <Tr key={rowIndex}>
-                              {columns.map((column, index) =>
-                                <Td key={`${rowIndex}-${index}`}>
-                                  { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
-                                </Td>
+                        {
+                          props.totalDocs === 0 
+                            ?
+                            <Tbody>
+                              {props.loading && <TableLoader colSpan={4} />}                            
+                              {!props.loading && /*props.totalDocs === 0 && */
+                                <>
+                                  <Tr>
+                                    <Td colSpan={"100%"} className="fw-bolder text-center" st>
+                                      <h3 className="fw-bolder text-center">No records</h3>
+                                    </Td>
+                                  </Tr>
+                                </>
+                              }
+                            </Tbody>
+                            :
+                            <Tbody className="text-center">
+                              {props.loading && <TableLoader colSpan={4} />}
+                              {!props.loading && props.docs.map((row, rowIndex) =>
+                                <Tr key={rowIndex}>
+                                  {columns.map((column, index) =>
+                                    <Td key={`${rowIndex}-${index}`}>
+                                      { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
+                                    </Td>
+                                  )}
+                                </Tr>
                               )}
-                            </Tr>
-                          )}
-                        </Tbody>
+                            </Tbody>
+                        }
                       </Table>
                       <CustomPagination
                         {...props}

@@ -24,6 +24,8 @@ import {
 } from "store/transactions/deposit/action";
 import Notification from "components/Common/Notification";
 import logo from "assets/images/logo-sm.svg";
+import { captilazeFirstLetter } from "common/utils/manipulateString";
+
 
 function ClientTransactions(props) {
   const clientId = props.clientId;
@@ -70,16 +72,17 @@ function ClientTransactions(props) {
     {
       dataField: "customerId",
       text: props.t("Client"),
-      formatter:(val)=>(val.customerId ? `${val.customerId.firstName} ${val.customerId.lastName}` : "")
+      formatter:(val)=>(val.customerId ? `${captilazeFirstLetter(val.customerId.firstName)} ${captilazeFirstLetter(val.customerId.lastName)}` : "")
     },
     {
       dataField: "gateway",
-      text: props.t("Gateway")
+      text: props.t("Gateway"),
+      formatter:(val)=>(captilazeFirstLetter(val.gateway))
     },
     {
       dataField: "currency",
       text: props.t("Currency"),
-    
+      formatter:(val)=>(captilazeFirstLetter(val.currency))    
     },
     selectedTransactionType === "Deposit" && {
       dataField: "to",
@@ -98,7 +101,7 @@ function ClientTransactions(props) {
     {
       dataField: "status",
       text: props.t("Status"),
-      
+      formatter:(val)=>(captilazeFirstLetter(val.status))
     },
     {
       dataField: "reason",
@@ -118,7 +121,7 @@ function ClientTransactions(props) {
       dataField: "comments",
       text: props.t("Comments"),
       formatter: (item) => (
-        item.comments.length === 0 ? "-" : item.comments
+        item.comments.length === 0 ? "-" : captilazeFirstLetter(item.comments)
       )
     },
     {
@@ -231,7 +234,7 @@ function ClientTransactions(props) {
                               </Tbody>
                               :
                               // if deposits is selected and there is data to show
-                              <Tbody>
+                              <Tbody className="text-center">
                                 {props.loading && <TableLoader colSpan={4} />}
                                 {!props.depositLoading && props.clientDeposits.map((row, rowIndex) =>
                                   <Tr key={rowIndex}>
