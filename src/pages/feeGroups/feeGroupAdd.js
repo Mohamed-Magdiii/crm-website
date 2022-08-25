@@ -116,15 +116,11 @@ function feeGroupAdd(props) {
                     name="value"
                     label={props.t("Value")}
                     placeholder={props.t("Enter value")}
-                    type="text"
+                    type="number"
+                    min="0"
                     errorMessage={props.t("Enter valid fees group value")}
                     validate={{ 
                       required: { value: true },
-                      pattern:{
-                        // eslint-disable-next-line no-useless-escape
-                        value : "^[0-9]+(\\.([0-9]{1,4}))?$",
-                        errorMessage : "Value must be a number"
-                      }
                     }}
                     onChange = { (e)=> setValue(e.target.value)}
                   />
@@ -136,15 +132,11 @@ function feeGroupAdd(props) {
                     name="maxValue"
                     label={props.t("Max Value")}
                     placeholder={props.t("Enter Max")}
-                    type="text"
+                    type="number"
+                    min="0"
                     errorMessage={props.t("Enter Valid max feees group value")}
                     validate={{ 
-                      required: { value: true },
-                      pattern:{
-                        // eslint-disable-next-line no-useless-escape
-                        value: "^[0-9]+(\\.([0-9]{1,4}))?$",
-                        errorMessage :"Max Amount must be number"
-                      }
+                      required: { value: true }
                     }}
                     onChange = {(e)=>setMaxAmount(e.target.value)}
                   />
@@ -156,15 +148,11 @@ function feeGroupAdd(props) {
                     name="minValue"
                     label={props.t("Min value")}
                     placeholder={props.t("Enter Min")}
-                    type="text"
+                    type="number"
+                    min="0"
                     errorMessage={props.t("Enter valid min fees group value")}
                     validate={{ 
-                      required: { value: true },
-                      pattern:{
-                        // eslint-disable-next-line no-useless-escape
-                        value:"^[0-9]+(\\.([0-9]{1,4}))?$",
-                        errorMessage :"Min Value must be number"
-                      }
+                      required: { value: true }
                     }}
                     onChange = {(e)=>setMinAmount(e.target.value)}
                   />
@@ -182,8 +170,6 @@ function feeGroupAdd(props) {
             </Col>
             <Col>
               <Card>
-                
-                
                 <div className="accordion" id="accordion">
                   <div className="accordion-item">
                     <h2 className="accordion-header" id="headingOne">
@@ -207,21 +193,17 @@ function feeGroupAdd(props) {
                         
                           {props.markets.map((market, i)=>{
                             const { pairName } = market;
-                            return <div key={market._id}>
-                                
+                            return <div key={market._id}> 
                               <Row className="mb-3">
                                 <Col className="d-flex flex-column justify-content-center"><label>${pairName} </label></Col>
                                 <Col>
                                   <AvField 
                                     name={`fee${i}`} 
                                     label="Value"
+                                    type="number"
+                                    min="0"
                                     validate = {{
-                                      required :{ value:true },
-                                      pattern : {
-                                        // eslint-disable-next-line no-useless-escape
-                                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
-                                        errorMessage : "Value must be a number"
-                                      }
+                                      required :{ value:true }
                                     }} 
                                     placeholder = {props.t("Enter Value")}
                                     value={value}></AvField>
@@ -230,13 +212,10 @@ function feeGroupAdd(props) {
                                   <AvField 
                                     name={`maxAmount${i}`} 
                                     label="Max Value" 
+                                    type="number"
+                                    min="0"
                                     validate = {{
-                                      required :{ value:true },
-                                      pattern : {
-                                        // eslint-disable-next-line no-useless-escape
-                                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
-                                        errorMessage : "Max value must be a number"
-                                      }
+                                      required :{ value:true }
                                     }} 
                                     placeholder = {props.t("Enter Max")}
                                     value={maxAmount}></AvField>
@@ -245,33 +224,24 @@ function feeGroupAdd(props) {
                                   <AvField 
                                     name={`minAmount${i}`} 
                                     label="Min Value" 
+                                    type="number"
+                                    min="0"
                                     placeholder = {props.t("Enter Min")}
                                     validate = {{
-                                      required :{ value:true },
-                                      pattern : {
-                                        // eslint-disable-next-line no-useless-escape
-                                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
-                                        errorMessage : "Min Value must be a number"
-                                      }
+                                      required :{ value:true }
                                     }} 
                                     value={minAmount}></AvField>
                                 </Col>
-                                
                               </Row>
-                              
-                            </div> ;
-                            
+                            </div>;
                           })}   
-                          
                         </div>
                       </div>
                     </Collapse>
                   </div>
                 </div>
-                
               </Card>
             </Col>
-            
             <div className='text-center pt-3 p-2'>
               <Button disabled={props.addButtonDisabled} type="submit" color="primary" className="">
                 {props.t("Add")}
@@ -286,7 +256,6 @@ function feeGroupAdd(props) {
               </UncontrolledAlert>
             )
           }
-         
         </ModalBody>
       </Modal>
     </React.Fragment>

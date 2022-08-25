@@ -15,7 +15,7 @@ import { withTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 import DeleteModal from "components/Common/DeleteModal";
-import TodoAdd from "components/Common/TodoAdd";
+import TodoEdit from "components/Common/TodoEdit";
 import { deleteTodosStart } from "store/actions";
 import moment from "moment";
 
@@ -64,7 +64,10 @@ function EditReminderModal(props) {
   }, [props.deletingClearCounter]);
 
   const deleteRole = () => {
-    dispatch(deleteTodosStart(todoObj._id));
+    dispatch(deleteTodosStart({
+      id: todoObj._id, 
+      type: todoObj.type
+    }));
   };
   
   return (
@@ -134,13 +137,12 @@ function EditReminderModal(props) {
 
             </div>
           </div>
-          <TodoAdd
+          <TodoEdit
             show={showEditModal} 
             data={props.data} 
             onClose={() => { setShowEditModal(false) }}
             hidenAddButton={true}
           />
-
         </ModalBody>
       </Modal>
       <DeleteModal

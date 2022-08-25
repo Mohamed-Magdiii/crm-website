@@ -22,7 +22,6 @@ import DeleteModal from "components/Common/DeleteModal";
 import RolesAdd from "./RolesAdd";
 import RolesEdit from "./RolesEdit";
 function RolesList(props){
-  
   const [editModal, setEditUserModal] = useState(false);
   const [deleteModal, setDeleteUserModal] = useState(false);
   const [selectedRole, setSelectedRole] = useState();
@@ -94,7 +93,7 @@ function RolesList(props){
   
   useEffect(()=>{
     loadRoles(1, sizePerPage);
-  }, [sizePerPage, 1]);
+  }, [sizePerPage, 1, props.editResult]);
 
   const loadRoles = (page, limit) => {
     dispatch(fetchRoles({
@@ -117,7 +116,6 @@ function RolesList(props){
       setDeleteUserModal(false);
     }
   }, [props.deleteClearingCounter]);
-  
 
   return (
     <React.Fragment>
@@ -202,7 +200,8 @@ const mapStateToProps = (state) => ({
   prevPage: state.rolesReducer.prevPage,
   deleteLoading: state.rolesReducer.deleteLoading,
   deleteClearingCounter: state.rolesReducer.deleteClearingCounter,
-  rolesPermissions: state.Profile.rolesPermissions || {}
+  rolesPermissions: state.Profile.rolesPermissions || {},
+  editResult: state.rolesReducer.editResult
 
 });
 export default connect(mapStateToProps, null)(RolesList);

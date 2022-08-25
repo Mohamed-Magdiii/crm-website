@@ -128,15 +128,11 @@ function AssestForm(props){
                     name="depositFee"
                     label={props.t("Desposit Fee")}
                     placeholder={props.t("Enter Desposit Fee")}
-                    type="text"
+                    type="number"
+                    min="0"
                     errorMessage={props.t("Enter valid deposit fee")}
                     validate = {{
-                      required :{ value:true },
-                      pattern : {
-                        // eslint-disable-next-line no-useless-escape
-                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
-                        errorMessage : "Min deposit fee must be a number"
-                      }
+                      required :{ value:true }
                     }}
                   />
                 </div>
@@ -147,15 +143,11 @@ function AssestForm(props){
                     name="withdrawFee"
                     label={props.t("Withdraw Fee")}
                     placeholder={props.t("Enter Withdrawal Fee")}
-                    type="text"
+                    type="number"
+                    min="0"
                     errorMessage={props.t("Enter valid withdraw fee")}
                     validate = {{
-                      required :{ value:true },
-                      pattern : {
-                        // eslint-disable-next-line no-useless-escape
-                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
-                        errorMessage : "Min withdraw fee must be a number"
-                      }
+                      required :{ value:true }
                     }}
                   />
                 </div>
@@ -168,15 +160,11 @@ function AssestForm(props){
                     name="minDepositAmount"
                     label={props.t("Min Deposit Amount")}
                     placeholder={props.t("Enter Min Deposit Amount")}
-                    type="text"
+                    type="number"
+                    min="0"
                     errorMessage={props.t("Enter valid deposit amount")}
                     validate = {{
-                      required :{ value:true },
-                      pattern : {
-                        // eslint-disable-next-line no-useless-escape
-                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
-                        errorMessage : "Min deposit amount must be a number"
-                      }
+                      required :{ value:true }
                     }}
                   />
                 </div>
@@ -187,15 +175,11 @@ function AssestForm(props){
                     name="minWithdrawAmount"
                     label={props.t("Min Withdraw Amount")}
                     placeholder={props.t("Enter Min Withdrawal Amount")}
-                    type="text"
+                    type="number"
+                    min="0"
                     errorMessage={props.t("Enter valid withdraw amount")}
                     validate = {{
-                      required :{ value:true },
-                      pattern : {
-                        // eslint-disable-next-line no-useless-escape
-                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
-                        errorMessage : "Min withdraw amount must be a number"
-                      }
+                      required :{ value:true }
                     }}
                   />
                 </div>

@@ -99,6 +99,7 @@ function MarketAdd(props) {
                     label={props.t("Fee")}
                     placeholder={props.t("Fee")}
                     type="number"
+                    min="0"
                     errorMessage={props.t("Enter Fee")}
                     validate={{ required: { value: true } }}
                   />
@@ -111,6 +112,7 @@ function MarketAdd(props) {
                     label={props.t("Minimum Amount")}
                     placeholder={props.t("Minimum Amount")}
                     type="number"
+                    min="0"
                     errorMessage={props.t("Enter valid Minimum Amount")}
                     validate={{ required: { value: true } }}
                   />

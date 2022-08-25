@@ -54,7 +54,7 @@ function* deleteTodo(params) {
   try {
     yield call(todosApi.deleteTodo, params.payload);
     yield put(deleteTodosEnd({ id: params.payload }));
-    yield put(showSuccessNotification("Todo deleted successfully"));
+    yield put(showSuccessNotification(`${params.payload.type === 1 ? "Reminder" : "Todo" } deleted successfully`));
   }
   catch (error) {
     yield put(deleteTodosEnd({ error }));

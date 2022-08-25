@@ -107,7 +107,6 @@ function TeamsAddModal(props) {
 
             <div className="mb-3">
               <label>Team Manager</label>
-
               <AsyncPaginate
                 additional={defaultAdditional}
                 value={managerValue}
@@ -117,7 +116,6 @@ function TeamsAddModal(props) {
                 errorMessage="please select Team Manager"
                 validate={{ required: { value: true } }}
               />
-
               {teamError && (
                 <p className="small text-danger ">please select Team Manager</p>
               )}
