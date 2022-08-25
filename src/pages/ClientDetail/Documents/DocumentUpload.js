@@ -1,5 +1,9 @@
-import React, { useEffect, useRef } from "react";
-import { connect, useDispatch } from "react-redux";
+import React, {
+  useEffect, useRef, useState 
+} from "react";
+import {
+  connect, useDispatch, useSelector 
+} from "react-redux";
 import {
   Row, Col, Button, Card,  CardBody, CardHeader, CardTitle, Input
 } from "reactstrap";
@@ -11,6 +15,9 @@ import {
 } from "store/documents/actions";
 function UploadKYC (props) {
   const dispatch = useDispatch();
+  const [idDisabled, setIdDisabled] = useState(false);
+  const [addressDisabled, setAddressDisabled] = useState(false);
+  const { documents } = useSelector(state=>state.documentsReducer);
   const refForm = useRef();
   const [memFiles, setMemFiles] = React.useState({});
   const addFile = (name, files) => {
@@ -59,12 +66,24 @@ function UploadKYC (props) {
     }
   }, [props.clientDetails]);
 
+  useEffect(()=>{
+    const IdApproved = documents.filter((doc)=>doc.status == "APPROVED" && doc.type == "ID");
+    if (IdApproved.length > 0)
+      setIdDisabled(true);
+    const addressApproved = documents.filter((doc)=>doc.status == "APPROVED" && doc.type == "ADDRESS");
+    if (addressApproved.length > 0)
+      setAddressDisabled(true);
+    return () => {
+      setAddressDisabled(false);
+      setIdDisabled(false);
+    };
+  }, [documents]);
+
   const validateFile = (value, ctx, input, cb)=> {
     const extensions = ["png", "jpg", "jpeg", "pdf"];
-    const extension = value.split(".")[1];
+    const possibleExtensions = value.split(".");
+    const extension = value.split(".")[possibleExtensions.length - 1];
     if (extensions.includes(extension) || !value){
-      console.log("memFiles[input.props.name]?.size: ", memFiles[input.props.name]?.size);
-
       if (!value || memFiles[input.props.name]?.size <= 2097152){
         cb(true);
       } else cb("2mb maximum size");
@@ -97,6 +116,7 @@ function UploadKYC (props) {
                     name="ID1"
                     label={props.t("Proof of ID - Front Side")}
                     type="file"
+                    disabled={idDisabled}
                     onChange={(e)=>{addFile("ID1", e.target.files[0])}}
                     validate={{
                       custom:validateFile
@@ -111,6 +131,7 @@ function UploadKYC (props) {
                     name="ID2"
                     label={props.t("Proof of ID - Back Side")}
                     type="file"
+                    disabled={idDisabled}
                     onChange={(e)=>{addFile("ID2", e.target.files[0])}}
                     validate={{
                       custom:validateFile
@@ -125,6 +146,7 @@ function UploadKYC (props) {
                     name="ADDRESS"
                     label={props.t("Proof of Address")}
                     type="file"
+                    disabled={addressDisabled}
                     onChange={(e)=>{addFile("ADDRESS", e.target.files[0])}}
                     validate={{
                       custom:validateFile
@@ -214,9 +236,8 @@ function UploadAdditionalDocs (props) {
 
   const validateFile = (value, ctx, input, cb)=> {
     const extensions = ["png", "jpg", "jpeg", "pdf"];
-    const extension = value.split(".")[1];
-    // eslint-disable-next-line no-debugger
-    // debugger;
+    const possibleExtensions = value.split(".");
+    const extension = value.split(".")[possibleExtensions.length - 1];
     if (extensions.includes(extension) || !value){
       if (!value || memFiles[input.props.name]?.size <= 2097152){    
         cb(true);
