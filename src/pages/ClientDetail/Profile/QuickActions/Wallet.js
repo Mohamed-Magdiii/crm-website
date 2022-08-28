@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import {
   Modal,
   Button,
@@ -12,8 +11,8 @@ import { useDispatch, connect } from "react-redux";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { fetchClientWallets, convertWalletStart } from "store/wallet/action";
 import { fetchAssetsStart } from "store/assests/actions";
-
-import Select from "react-select";
+import Select, { components } from "react-select";
+const { Option } = components;
 
 function ConvertWallet(props) {
   const [addModal, setAddModal] = useState(false);
@@ -57,6 +56,29 @@ function ConvertWallet(props) {
     }));
   };
 
+  const validateAmount = (value, ctx, input, cb)=>{
+    if (!value){
+      cb("Amount is required");
+    }
+    if (isNaN(value)){
+      cb("Amount should be valid number");
+    }
+    cb(true);
+  };
+
+  const CustomOption = (props) => (
+    <Option {...props}>
+      {props.data.label}
+    </Option>
+  );
+
+  const customStyles = {
+    option: (provided, state) => ({
+      ...provided,
+      display: state.isDisabled ? "none" : "flex",
+    }),
+  };
+
   return (
     <React.Fragment>
       <button 
@@ -82,6 +104,10 @@ function ConvertWallet(props) {
               type="text" 
               label = "From Asset"
               name="fromAsset"
+              placeholder="Select From Wallet"
+              isOptionDisabled={(option) => option.value.asset == toAsset}
+              styles={customStyles}
+              components={{ Option: CustomOption }}
               options = {props.docs && props.docs.map((wallet)=>{
                 return {
                   label:`${wallet.asset} (${wallet.amount})`,
@@ -103,6 +129,10 @@ function ConvertWallet(props) {
                 type="text" 
                 label="To Asset" 
                 name="toAsset"
+                placeholder="Select To Wallet"
+                isOptionDisabled={(option) => option.value.asset == fromAsset}
+                styles={customStyles}
+                components={{ Option: CustomOption }}
                 options = {props.docs && props.docs.map(wallet=>{
                   return {
                     label:`${wallet.asset} (${wallet.amount})`,
@@ -110,8 +140,8 @@ function ConvertWallet(props) {
                       id:wallet._id, 
                       asset:wallet.asset
                     }
-                  };
-                
+                  };     
+
                 })}
                 onChange={e=>{
                   setToAssetId(e.value.id);
@@ -123,7 +153,16 @@ function ConvertWallet(props) {
               <AvField 
                 label="Amount"
                 name="amount"
-                type="number"/>
+                type="text"
+                placeholder="Enter Amount"
+                validate={{ custom:validateAmount }}
+                onKeyPress={(e)=>{
+                  if (e.key == ".")
+                    return true;
+                  if (!/[0-9]/.test(e.key))
+                    e.preventDefault();
+                }}
+              />
             </div>
            
             <div className="mt-2 text-center">

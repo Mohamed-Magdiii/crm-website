@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch, connect } from "react-redux";
+import {
+  useDispatch, connect, useSelector 
+} from "react-redux";
 import {
   Modal,
   Button,
@@ -22,7 +24,6 @@ function OrdersAddModal(props) {
   const { buttonText } = props;
   const [addModal, setAddOrderModal] = useState(false);
   const [symbolValue, setSymbolValue] = useState(null);
-  const [clientId] = useState(props?.clientId);
   const [type, setType] = useState(null);
   const [side, setSide] = useState(null);
   const [priceFlag, setPriceFlag] = useState(true);
@@ -31,7 +32,7 @@ function OrdersAddModal(props) {
   const [sideAle, setsideAle] = useState(false);
   const [pricing, setPricing] = useState("");
   const [showPricing, setShowPricing] = useState(false);
-
+  const { clientDetails } = useSelector(state=>state.clientReducer);
   const dispatch = useDispatch();
   const toggleAddModal = () => {
     setAddOrderModal(!addModal);
@@ -40,7 +41,7 @@ function OrdersAddModal(props) {
     values.symbol = symbolValue?.value;
     values.type = type;
     values.side = side;
-    values.customerId = clientId;
+    values.customerId = clientDetails?._id;
     Object.keys(values).forEach(key => {
       if (values[key] === "" || values[key] === null) {
         delete values[key];
@@ -59,7 +60,8 @@ function OrdersAddModal(props) {
     })
       .then(response => {
         setShowPricing(true);
-        setPricing("Current Price " + pair + ": " + (response.docs[0]?.marketPrice || "Not known"));
+        setPricing("Current Price " + pair + ": " + (response.docs[0]?.marketPrice.$numberDecimal 
+          ? response.docs[0]?.marketPrice.$numberDecimal : response.docs[0]?.marketPrice || "Not known"));
       }
       )
       .catch(() => {
@@ -138,7 +140,7 @@ function OrdersAddModal(props) {
             }}
           >
             {(showPricing) ?
-              <label className="form-label font-size-18 ">{pricing}</label>
+              <label className="form-label font-size-18 ">{pricing.toString()}</label>
               : ""}
             <div className="mb-3">
               <label>Symbol</label>
@@ -147,6 +149,7 @@ function OrdersAddModal(props) {
                 value={symbolValue}
                 loadOptions={loadPageOptions}
                 onChange={sympolhandler}
+                placeholder="Select Symbol"
                 errorMessage="please select Order symbol"
                 validate={{ required: { value: true } }}
               />
@@ -173,6 +176,7 @@ function OrdersAddModal(props) {
                   }
                 ]}
                 classNamePrefix="select2-selection"
+                placeholder="Select Type"
               />
               {typeAle && (
                 <label className="form-label font-size-13 text-danger">please select Order Type</label>
@@ -195,6 +199,7 @@ function OrdersAddModal(props) {
                     value: "sell"
                   }
                 ]} classNamePrefix="select2-selection"
+                placeholder="Select Side"
               />
               {sideAle && (
                 <label className="form-label font-size-13 text-danger">please select Order Side</label>
@@ -204,28 +209,46 @@ function OrdersAddModal(props) {
               <AvField
                 name="amount"
                 label="Amount"
-                placeholder="Amount"
-                type="number"
+                placeholder="Enter Amount"
+                type="text"
                 errorMessage="Enter amount"
                 validate={{ required: { value: true } }}
+                onKeyPress={(e)=>{
+                  if (e.key == ".")
+                    return true;
+                  if (!/[0-9]/.test(e.key))
+                    e.preventDefault();
+                }}
               />
             </div>
             <div className="mb-3">
               <AvField
                 name="tp"
                 label="Take Profit"
-                placeholder="Take Profit"
-                type="number"
+                placeholder="Enter Take Profit"
+                type="text"
                 errorMessage="Enter Take Profit"
+                onKeyPress={(e)=>{
+                  if (e.key == ".")
+                    return true;
+                  if (!/[0-9]/.test(e.key))
+                    e.preventDefault();
+                }}
               />
             </div>
             <div className="mb-3">
               <AvField
                 name="sl"
                 label="Stop Loss"
-                placeholder="Stop Loss"
-                type="number"
+                placeholder="Enter Stop Loss"
+                type="text"
                 errorMessage="Enter Stop Loss"
+                onKeyPress={(e)=>{
+                  if (e.key == ".")
+                    return true;
+                  if (!/[0-9]/.test(e.key))
+                    e.preventDefault();
+                }}
               />
             </div>
             {priceFlag ?
@@ -233,14 +256,20 @@ function OrdersAddModal(props) {
                 <AvField
                   name="price"
                   label="Price"
-                  placeholder="Price"
-                  type="number"
+                  placeholder="Enter Price"
+                  type="text"
                   errorMessage="Enter price"
                   validate={{ required: { value: true } }}
+                  onKeyPress={(e)=>{
+                    if (e.key == ".")
+                      return true;
+                    if (!/[0-9]/.test(e.key))
+                      e.preventDefault();
+                  }}
                 />
               </div>
               : ""}
-            <div className="text-center p-5">
+            <div className="text-center p-3">
               <Button type="submit" color="primary" className="">
                 Add New Order
               </Button>

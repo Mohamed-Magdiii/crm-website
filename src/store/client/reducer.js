@@ -157,6 +157,7 @@ export const clientReducer = (state = initalState, action)=>{
       state = {
         ...state,
         clientProfileError: true,
+        editSuccess:false,
         clientProfileloading: false
       };
       break;
@@ -171,6 +172,7 @@ export const clientReducer = (state = initalState, action)=>{
       state = {
         ...state,
         updating: true,
+        editSuccess:false,
         showPortalAccessModal:true
       };
 
