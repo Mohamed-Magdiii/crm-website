@@ -54,8 +54,8 @@ i18n
     saveMissing: true,
     backend: {
       // backend,
-      loadPath: "http://localhost:3001/locales/{{lng}}/{{ns}}.json",
-      addPath: "http://localhost:3001/locales/add/{{lng}}/{{ns}}",
+      loadPath: "https://crypto.itgeek.ae/locales/{{lng}}/{{ns}}.json",
+      addPath: "https://crypto.itgeek.ae/locales/add/{{lng}}/{{ns}}",
       crossDomain: true,
     }
   });
