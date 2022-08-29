@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
-  useDispatch, connect
+  useDispatch, connect, useSelector
 } from "react-redux";
 import {
   Row, Col,
@@ -15,9 +15,13 @@ import {
 } from "availity-reactstrap-validation";
 import { withTranslation } from "react-i18next";
 import { editSymbolStart } from "store/assests/actions";
+import AvFieldSelect from "../../components/Common/AvFieldSelect";
+import { fetchMarkupsStart } from "store/markups/actions";
+
 function AssetEdit (props) {
   const [file, setFile] = useState();
   const { open, symbol = {}, onClose } = props;
+  const { markups } = useSelector(state=>state.markupsReducer);
   let minDepositAmount;
   let minWithdrawAmount;
   let depositFee;
@@ -69,6 +73,23 @@ function AssetEdit (props) {
       onClose();
     }
   }, [props.editClear]);
+
+  useEffect(()=>{
+    dispatch(
+      fetchMarkupsStart()
+    );  
+  }, []);
+
+  const validateFile = (value, ctx, input, cb)=> {
+    const extensions = ["png", "jpg", "jpeg", "pdf"];
+    const extension = value.split(".")[1];
+    if (extensions.includes(extension) || !value){
+      if (!value || file.size <= 2097152){
+        cb(true);
+      } else cb("2mb maximum size");
+    } else cb("Only images or PDF can be uploaded");    
+  };
+
 
   return (
     <React.Fragment >
@@ -128,15 +149,20 @@ function AssetEdit (props) {
               </Col>
               <Col md="6">
                 <div className="mb-3">
-                  <AvField
+                  <AvFieldSelect
                     name="markup"
                     label={props.t("Mark up")}
-                    placeholder={props.t("Markup")}
                     type="text"
                     errorMessage={props.t("Enter valid markup")}
                     value={symbol.markup}
-                    validate={{ required:{ value:true } } }
-                  />
+                    options={markups && markups.length > 0 && markups.map((obj)=>{
+                      return ({
+                        label: `${obj.title} ${obj.value.$numberDecimal}`, 
+                        value: obj
+                      });
+                    })}
+                  >
+                  </AvFieldSelect>
                 </div>
               </Col>
             </Row> 
@@ -236,7 +262,9 @@ function AssetEdit (props) {
                 name="image"
                 type="file"
                 errorMessage = {props.t("Please upload an image for the symbol")}
-                validate = {{ required : { value: false } }}
+                validate = {{
+                  custom:validateFile 
+                }}
                 onChange = {e=>setFile(e.target.files[0])}
               />
    

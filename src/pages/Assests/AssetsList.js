@@ -155,7 +155,11 @@ function AssestsList(props){
                             )}
                           </Tr>
                         </Thead>
-                        <Tbody>
+                        <Tbody style={{
+                          fontSize: "12px",
+                          textAlign: "center",
+                          textTransform: "capitalize"
+                        }}>
                           {props.loading && <TableLoader colSpan={4} />}
                           {!props.loading && props.assets.map((row, rowIndex) =>
                             <Tr key={rowIndex}>

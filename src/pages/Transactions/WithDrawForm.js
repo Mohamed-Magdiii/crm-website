@@ -65,18 +65,18 @@ function WithdrawForm(props){
 
   useEffect(()=>{
     dispatch(fetchClientsStart({
-      page:1,
-      limit:10,
+      limit:props.totalDocs,
       type
     }));
     dispatch(fetchGatewaysOfWithdrawalsStart());
     if (searchInput.length >= 3){
       dispatch(fetchClientsStart({
         searchText:searchInput,
+        limit:props.totalDocs,
         type
       }));
     }
-  }, [searchInput, type]);
+  }, [searchInput, type, open]);
 
   useEffect(() => {
     if (props.withdrawalModalClear && open){
@@ -106,13 +106,11 @@ function WithdrawForm(props){
                 <Label>{props.t("Client")}</Label>
                 <div>
                   <Select 
-                    onChange={(e) => {
-                    
+                    onChange={(e) => { 
                       selectClient(e.value.id);
-                    
                     }}
                     isSearchable = {true}
-                    options={props.clients.map((item) => (
+                    options={props.loading ? [] : props.clients.map((item) => (
                       {
                         label : `${item.firstName} ${item.lastName}`,
                         value : {
@@ -126,8 +124,8 @@ function WithdrawForm(props){
                     placeholder = "choose client name"
                     onInputChange = {(e)=>setSearchInput(e)}
                     name = "clientId"
-                    
                     isRequired = {true}
+                    isLoading={props.loading}
                   />
                 </div>
               
@@ -262,7 +260,7 @@ function WithdrawForm(props){
     
             <div className='text-center pt-3 p-2'>
               <Button disabled = {props.disableWithdrawalButton} type="submit" color="primary" className="">
-                {props.t("Make Withdraw")}
+                {props.t("Add")}
               </Button>
             </div>
           </AvForm>
@@ -284,6 +282,8 @@ const mapStateToProps = (state) => ({
   clients:state.clientReducer.clients || [],
   wallets:state.walletReducer.wallets || [],
   withdrawalsPermissions: state.Profile.withdrawalsPermissions || {}, 
-  disableWithdrawalButton : state.withdrawalReducer.disableWithdrawalButton
+  disableWithdrawalButton : state.withdrawalReducer.disableWithdrawalButton,
+  totalDocs:state.clientReducer.totalDocs,
+  loading:state.clientReducer.loading
 });
 export default connect(mapStateToProps, null)(withTranslation()(WithdrawForm));

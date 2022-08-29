@@ -42,7 +42,7 @@ function FeeGroupsList(props) {
     },
     {
       dataField: "isPercentage",
-      text: props.t("isPercentage"),
+      text: props.t("Is Percentage"),
       formatter: (val) => (val.isPercentage ? "TRUE" : "FALSE"),
     },
     {
@@ -155,7 +155,11 @@ function FeeGroupsList(props) {
                             )}
                           </Tr>
                         </Thead>
-                        <Tbody style={{ fontSize: "13px" }}>
+                        <Tbody style={{
+                          fontSize: "12px",
+                          textAlign: "center",
+                          textTransform: "capitalize"
+                        }}>
                           {props.loading && <TableLoader colSpan={4} />}
                           {!props.loading && props.feeGroups.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
