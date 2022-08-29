@@ -135,7 +135,7 @@ function SystemEmailsList(props){
       editable: false,
       text: props.t("Actions"), 
       formatter: (item) => (
-        <div className="d-flex gap-3">
+        <div className="d-flex gap-3 justify-content-center">
           <Link className={`text-success ${!update ? "d-none" : ""}`} to="#">
             <i
               className="mdi mdi-pencil font-size-18"
@@ -225,12 +225,12 @@ function SystemEmailsList(props){
                               }
                             </Tbody>
                             :
-                            <Tbody>
+                            <Tbody className="text-center" style={{ fontSize: "13px" }}>
                               {props.loading && <TableLoader colSpan={4} />}
                               {!props.loading && props.docs.map((row, rowIndex) =>
                                 <Tr key={rowIndex}>
                                   {columns.map((column, index) =>
-                                    <Td key={`${rowIndex}-${index}`} className="text-center">
+                                    <Td key={`${rowIndex}-${index}`}>
                                       { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
                                     </Td>
                                   )}

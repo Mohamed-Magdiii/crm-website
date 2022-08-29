@@ -124,7 +124,7 @@ function UsersList() {
       editable: false,
       text: "Action",
       formatter: (user) => (
-        <div className="text-center">
+        <div className="d-flex gap-3 justify-content-center">
           <Link className="text-success" to="#">
             <i
               className={`mdi mdi-pencil font-size-18 ${!update ? "d-none" : ""}`}
