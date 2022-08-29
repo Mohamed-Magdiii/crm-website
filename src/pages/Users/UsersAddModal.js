@@ -100,7 +100,7 @@ function UsersAddModal(props) {
                   border: `${emailErrorStyle}`
                 }}
               />
-              {duplicatedEmail && <span className="text-danger">This email is already in use</span>}
+              {duplicatedEmail && <span className="text-danger">Account already exists</span>}
             </div>
             <div className="mb-3">
               <Label>Password</Label>
