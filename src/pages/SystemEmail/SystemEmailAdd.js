@@ -83,7 +83,7 @@ function SystemEmailAdd(props){
                   border: `${titleErrorStyle}`
                 }}
               />
-              {duplicateTitle && <span className="text-danger">This title is already used</span>}
+              {duplicateTitle && <span className="text-danger">This title is already in use</span>}
             </div>
             <div className="mb-3">
               <AvFieldSelect 
