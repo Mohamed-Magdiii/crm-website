@@ -190,7 +190,7 @@ function SystemEmailsList(props){
               <Card>
                 <CardHeader className="d-flex justify-content-between  align-items-center">
                   <CardTitle>{props.t("System emails list")} ({props.totalDocs})</CardTitle>
-                  <SystemEmailAdd />
+                  <SystemEmailAdd allSystemEmails={props.docs}/>
                 </CardHeader>
                 <CardBody>
                   <div className="table-rep-plugin">

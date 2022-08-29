@@ -88,7 +88,7 @@ function RolesList(props){
       ),
     },
   ];
-  const [sizePerPage, setSizePerPage] = useState(5);
+  const [sizePerPage, setSizePerPage] = useState(10);
   const dispatch = useDispatch();
   
   useEffect(()=>{

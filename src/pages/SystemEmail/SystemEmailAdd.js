@@ -18,21 +18,39 @@ import AvFieldTextTag from "components/Common/AvFieldTextTag";
 import { EMAIL_FIELDS } from "common/data/dropdowns";
 
 function SystemEmailAdd(props){
+  const allSystemEmailsTitles = props.allSystemEmails.map((systemEmail) => (
+    systemEmail.title
+  ));
+  const [duplicateTitle, setDuplicateTitle] = useState(false);
   const [addModal, setAddModal] = useState(false);
   const dispatch = useDispatch();
   const { create } = props.systemEmailsPermissions;
+
+  const repeatedTitleCheck = (e) => {
+    e.target?.value?.length > 0 &&
+    setDuplicateTitle(allSystemEmailsTitles.includes(e.target.value?.trim()));
+  };
+
+  const titleErrorStyle = duplicateTitle ? "1px solid red" : "1px solid rgb(181, 181, 181)";
+
   const handleAddSystemEmail = (e, values) => {
     dispatch(addSystemEmail(values));
   };
   const toggleAddModal = () => {
     setAddModal(!addModal);
+    setDuplicateTitle(false);
   };
   useEffect(()=>{
     if (props.clearingCounter > 0 && addModal) {
       setAddModal(false);
+      setDuplicateTitle(false);
     }
   }, [props.clearingCounter]);
 
+  useEffect(() => {
+    setDuplicateTitle(false);
+    
+  }, [props.allSystemEmails]);
   return (
     <React.Fragment >
       <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}>
@@ -46,8 +64,10 @@ function SystemEmailAdd(props){
           <AvForm
             className='p-4'
             onValidSubmit={(e, v) => {
-              v.fields = v.fields && v.fields.map(obj => obj.value) || [];
-              handleAddSystemEmail(e, v);
+              if (!duplicateTitle){
+                v.fields = v.fields && v.fields.map(obj => obj.value) || [];
+                handleAddSystemEmail(e, v);
+              }
             }}
           >
             <div className="mb-3">
@@ -58,7 +78,12 @@ function SystemEmailAdd(props){
                 type="text"
                 errorMessage={props.t("Enter Title")}
                 validate={{ required: { value: true } }}
+                onChange={repeatedTitleCheck}
+                style={{
+                  border: `${titleErrorStyle}`
+                }}
               />
+              {duplicateTitle && <span className="text-danger">This title is already used</span>}
             </div>
             <div className="mb-3">
               <AvFieldSelect 
@@ -69,7 +94,6 @@ function SystemEmailAdd(props){
                 type="text"
                 errorMessage={props.t("Enter Action")}
                 validate={{ required: { value: true } }}
-
                 options={props.actions.filter(n => !props.actionsUsed.includes(n)).map((action)=>{
                   return ({
                     label: capitalToReadable(action),
