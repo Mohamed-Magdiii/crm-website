@@ -56,7 +56,7 @@ function SystemEmailsList(props){
     {
       dataField: "createdBy",
       text: props.t("Created By"),
-      formatter: (val) => {return (val.createdBy && val.createdBy.firstName) ? `${val.createdBy.firstName} ${val.createdBy.lastName}` : " "},
+      formatter: (val) => {return (val.createdBy && val.createdBy.firstName) ? `${capitalToReadable(val.createdBy.firstName)} ${capitalToReadable(val.createdBy.lastName)}` : " "},
     },
     {
       dataField: "title",
@@ -86,7 +86,7 @@ function SystemEmailsList(props){
     {
       dataField: "content",
       text: props.t("Default Subject"),
-      formatter: (val) => {return val.content["en"] && val.content["en"].subject || " "}
+      formatter: (val) => {return val.content["en"] && capitalToReadable(val.content["en"].subject) || " "}
     },
     {
       dataField: "isActive",
@@ -225,12 +225,12 @@ function SystemEmailsList(props){
                               }
                             </Tbody>
                             :
-                            <Tbody className="text-center">
+                            <Tbody>
                               {props.loading && <TableLoader colSpan={4} />}
                               {!props.loading && props.docs.map((row, rowIndex) =>
                                 <Tr key={rowIndex}>
                                   {columns.map((column, index) =>
-                                    <Td key={`${rowIndex}-${index}`}>
+                                    <Td key={`${rowIndex}-${index}`} className="text-center">
                                       { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
                                     </Td>
                                   )}
