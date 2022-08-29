@@ -124,7 +124,7 @@ function UsersList() {
       editable: false,
       text: "Action",
       formatter: (user) => (
-        <div className="text-center">
+        <div className="d-flex gap-3 justify-content-center">
           <Link className="text-success" to="#">
             <i
               className={`mdi mdi-pencil font-size-18 ${!update ? "d-none" : ""}`}
@@ -197,6 +197,11 @@ function UsersList() {
       loadUsers(1, sizePerPage);
     }
   };
+
+  const allUsersEmails = docs.map((doc) => (
+    doc.email
+  ));
+
   useEffect(() => {
     if (deleteClearingCounter > 0 && deleteModal) {
       setDeleteUserModal(false);
@@ -215,7 +220,7 @@ function UsersList() {
                   <CardTitle>
                     Users List ({totalDocs})
                   </CardTitle>
-                  <UsersAddModal usersRoles={roles} />
+                  <UsersAddModal usersRoles={roles} allUsersEmails={allUsersEmails} />
                 </CardHeader>
                 <CardBody>
                   <div className="search-box me-2 mb-2 d-inline-block">
@@ -280,7 +285,7 @@ function UsersList() {
               </Card>
             </Col>
           </Row>
-          {<UsersEditModal open={editModal} user={selectedUser} usersRoles={roles} onClose={() => { setEditUserModal(false) }} />}
+          {<UsersEditModal allUsersEmails={allUsersEmails} open={editModal} user={selectedUser} usersRoles={roles} onClose={() => { setEditUserModal(false) }} />}
           {<DeleteModal loading={deleteLoading} onDeleteClick={deleteUser} show={deleteModal} onCloseClick={() => { setDeleteUserModal(false) }} />}
         </div>
       </div>

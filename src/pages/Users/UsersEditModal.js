@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   useDispatch, connect
 } from "react-redux";
@@ -16,6 +16,7 @@ import { editUser } from "store/users/actions";
 
 function UsersEditModal(props) {
   const { open, user = {}, onClose, usersRoles } = props;
+  const [duplicatedEmail, setDuplicatedEmail] = useState(false);
   const { _id, title } = user.roleId || "";
   const dispatch = useDispatch();
   // console.log(usersRoles);
@@ -25,10 +26,24 @@ function UsersEditModal(props) {
       values
     }));
   };
+
+  const toggleEditModal = () => {
+    onClose();
+    setDuplicatedEmail(false);
+  };
+
+  const emailErrorStyle = duplicatedEmail ? "1px solid red" : "1px solid rgb(200, 200, 200)";
+
+  const repeatedEmailCheck = (e) => {
+    e.target?.value?.length > 0 &&
+    setDuplicatedEmail(props.allUsersEmails?.includes(e.target.value?.trim()));
+  };
+
   useEffect(() => {
     if (props.editClearingCounter > 0 && open ) {
       setTimeout(() => {
         onClose();
+        setDuplicatedEmail(false);
       }, 1000);
     }
   }, [props.editSuccess]);
@@ -36,8 +51,8 @@ function UsersEditModal(props) {
   return (
     <React.Fragment >
       {/* <Link to="#" className="btn btn-light" onClick={onClose}><i className="bx bx-plus me-1"></i> Add New</Link> */}
-      <Modal isOpen={open} toggle={onClose} centered={true}>
-        <ModalHeader toggle={onClose} tag="h4">
+      <Modal isOpen={open} toggle={toggleEditModal} centered={true}>
+        <ModalHeader toggle={toggleEditModal} tag="h4">
           Edit User
         </ModalHeader>
         <ModalBody >
@@ -76,12 +91,17 @@ function UsersEditModal(props) {
                 placeholder="Enter Email"
                 type="email"
                 errorMessage="Enter Valid Email"
+                onChange={repeatedEmailCheck}
                 validate={{
                   required: { value: true },
                   email: { value: true },
                 }}
                 value={user.email}
+                style = {{
+                  border: `${emailErrorStyle}`
+                }}
               />
+              {duplicatedEmail && <span className="text-danger">This email is already in use</span>}
             </div>
             <div className="mb-3">
               <label >Select Role </label>

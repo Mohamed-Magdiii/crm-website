@@ -36,7 +36,7 @@ function SystemEmailEdit(props){
 
   // two states used to check if subject or content were changed
   const [isSubjectChanged, setIsSubjectChanged] = useState(false);
-  const [isContentChanged, setIsContentChanged] = useState(false);
+  const [isContentChanged] = useState(false);
   const [backConfirmationModalState, setBackConfirmationModalState] = useState(false);
   const readableLanguages = {
     "en": "English",
@@ -176,7 +176,7 @@ function SystemEmailEdit(props){
 
   useEffect((e) => {
     handleSystemEmailFetchById(e, id);
-  }, []);
+  }, [props.editContentResult]);
 
   const copyToClipboard = (str) => {
     const el = document.createElement("textarea");
@@ -269,6 +269,7 @@ function SystemEmailEdit(props){
                 editorState={ editorState }
                 onEditorStateChange={setEditorState}
                 placeholder={props.t("Enter Email Content")}
+                // style={{ "line-height": "normal" }}
                 // onChange={contentTempValueHandler}
               />
               <AvField

@@ -31,7 +31,7 @@ function RolesAdd (props) {
     setIsCheck([...checkedRoles]);
   }, [role.permissions]);
 
-  // setting the list (contains all permissions for a selected role) 
+  // setting the list (contains all permissions for the selected role) 
   const allRoles = [];
   role.permissions && Object.keys(role.permissions).map((permKey) => {
     role.permissions[permKey] && Object.keys(role.permissions[permKey]).map((permission) => {
@@ -52,6 +52,11 @@ function RolesAdd (props) {
     if (!checked) {
       setIsCheck(isCheck.filter(item => item !== name));
     }
+  };
+
+  const toggleEditModal = () => {
+    onClose();
+    setIsCheckAll(false);
   };
   
   const handleAddRole = (e, values) => {
@@ -76,14 +81,15 @@ function RolesAdd (props) {
   useEffect(()=>{
     if (props.editClearingCounter > 0 && open) {
       onClose();
+      setIsCheckAll(false);
     }
   }, [props.editClearingCounter]);
 
   return (
     <React.Fragment >
       {/* <Link to="#" className="btn btn-light" onClick={onClose}><i className="bx bx-plus me-1"></i> Add New</Link> */}
-      <Modal isOpen={open} toggle={onClose} centered={true} size={"lg"}>
-        <ModalHeader toggle={onClose} tag="h4">
+      <Modal isOpen={open} toggle={toggleEditModal} centered={true} size={"lg"}>
+        <ModalHeader toggle={toggleEditModal} tag="h4">
             Edit Role
         </ModalHeader>
         <ModalBody >

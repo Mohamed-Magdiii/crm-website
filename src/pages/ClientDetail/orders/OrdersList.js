@@ -23,6 +23,7 @@ import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
 import DeleteModal from "components/Common/DeleteModal";
 import OrdersAddModal from "./OrdersAddModal";
+import { captilazeFirstLetter } from "common/utils/manipulateString";
 
 function OrderList(props) {
   const [deleteModal, setDeleteOrderModal] = useState(false);
@@ -89,11 +90,17 @@ function OrderList(props) {
       text: "Type",
       dataField: "type",
       sort: true,
+      formatter: (item) => (
+        captilazeFirstLetter(item.type)
+      )
     },
     {
       text: "Side",
       dataField: "side",
       sort: true,
+      formatter: (item) => (
+        captilazeFirstLetter(item.side)
+      )
     },
     {
       text: "Amount",
@@ -139,6 +146,9 @@ function OrderList(props) {
       text: "Status",
       dataField: "status",
       sort: true,
+      formatter: (item) => (
+        captilazeFirstLetter(item.status)
+      )
     },
     {
       dataField: "",
@@ -259,7 +269,7 @@ function OrderList(props) {
                             }
                           </Tbody>
                           :
-                          <Tbody>
+                          <Tbody className="text-center">
                             {loading && <TableLoader colSpan={6} />}
                             {!loading && docs.map((row, rowIndex) =>
                               <Tr key={rowIndex}>
