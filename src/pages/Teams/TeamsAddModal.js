@@ -33,8 +33,6 @@ function TeamsAddModal(props) {
     if (managerValue) {
       values.managerId = managerValue?.value;
       values.title = title;
-      // console.log(managerValue);
-      // console.log(values);
       dispatch(addTeam(values));
       setManagerValue(null);
     } else {
@@ -89,9 +87,9 @@ function TeamsAddModal(props) {
         <ModalBody>
           <AvForm
             className="p-4"
-            // onValidSubmit={(e, v) => {
-            //   // handleAddTeam(e, v);
-            // }}
+            onValidSubmit={(e, v) => {
+              handleAddTeam(e, v);
+            }}
           >
             <div className="mb-3">
               <AvField
@@ -122,7 +120,7 @@ function TeamsAddModal(props) {
             </div>
 
             <div className="text-center ">
-              <Button type="submit" onClick={handleAddTeam} color="primary" className="">
+              <Button type="submit"  color="primary" className="">
                 Add
               </Button>
             </div>

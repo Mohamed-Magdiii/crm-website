@@ -84,6 +84,12 @@ function WithdrawForm(props){
     }
   }, [props.withdrawalModalClear]);
   
+  const validateBiggerThanZero = (value, ctx, input, cb) =>{
+    if (value == 0){
+      cb("Should be bigger than 0");
+    } else
+      cb(true);
+  };
   
   return (
     <React.Fragment >
@@ -127,13 +133,24 @@ function WithdrawForm(props){
                     isRequired = {true}
                     isLoading={props.loading}
                   />
+                  <AvField
+                    name="client"
+                    type="text"
+                    errorMessage={props.t("Choose a client")}
+                    validate={{ required: { value: true } }}
+                    value={selectedClient}
+                    style={{
+                      opacity: 0,
+                      height: 0,
+                      width: 0,
+                      margin: -10
+                    }}
+                  />
                 </div>
               
               </Col>
               <Col md="6">
-                <Label>{props.t("Type")}</Label>
-                
-                
+                <Label>{props.t("Type")}</Label>   
                 <div>
                   <Select 
                     defaultValue={{
@@ -153,6 +170,19 @@ function WithdrawForm(props){
                     }]}
                     classNamePrefix="select2-selection"
                     placeholder = "choose a type for deposit"
+                  />
+                  <AvField
+                    name="type"
+                    type="text"
+                    errorMessage={props.t("Choose a type")}
+                    validate={{ required: { value: true } }}
+                    value={selectType}
+                    style={{
+                      opacity: 0,
+                      height: 0,
+                      width: 0,
+                      margin: -10
+                    }}
                   />
                 </div>
               </Col>
@@ -177,7 +207,19 @@ function WithdrawForm(props){
                     ))}
                     classNamePrefix="select2-selection"
                     placeholder = "choose your wallet"
-
+                  />
+                  <AvField
+                    name="wallet"
+                    type="text"
+                    errorMessage={props.t("Choose a wallet")}
+                    validate={{ required: { value: true } }}
+                    value={selectedWalletId}
+                    style={{
+                      opacity: 0,
+                      height: 0,
+                      width: 0,
+                      margin: -10
+                    }}
                   />
                 </div>
               
@@ -243,7 +285,8 @@ function WithdrawForm(props){
                 min="0"
                 errorMessage={props.t("Enter Valid Amount")}
                 validate = {{
-                  required :{ value:true }
+                  required :{ value:true },
+                  custom:validateBiggerThanZero
                 }}
               />
             </div>

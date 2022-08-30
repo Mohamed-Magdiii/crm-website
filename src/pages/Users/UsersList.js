@@ -152,7 +152,7 @@ function UsersList() {
   useEffect(() => {
     loadUsers(currentPage, sizePerPage);
     loadRoles(1, 100);
-  }, [sizePerPage, 1, clearingCounter]);
+  }, [sizePerPage, 1]);
 
   const loadUsers = (page, limit) => {
     setcurrentPagePage(page);

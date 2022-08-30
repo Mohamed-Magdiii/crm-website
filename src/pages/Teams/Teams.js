@@ -160,7 +160,7 @@ function Teams() {
 
   useEffect(() => {
     loadTeams(currentPage, sizePerPage);
-  }, [sizePerPage, 1, clearingCounter, editLoad]);
+  }, [sizePerPage]);
 
   const loadTeams = (page, limit) => {
     setcurrentPagePage(page);
