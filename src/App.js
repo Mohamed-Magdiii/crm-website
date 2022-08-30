@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { Suspense } from "react";
 import { Switch, BrowserRouter as Router } from "react-router-dom";
 import { connect } from "react-redux";
 
@@ -47,32 +47,34 @@ const App = props => {
   const Layout = getLayout(); // layout = layoutCls 
   return (
     <React.Fragment>
-      <Router>
-        <Switch>
-          {userArray.map((route, idx) => (
-            <Authmiddleware
-              path={route.path}
-              layout={Layout}
-              component={route.component}
-              innerPages={route.innerPages}
-              get={route.get}
-              key={idx}
-              isAuthProtected={true}
-              {...(route.notExact ? {} : { exact: true })}
-            />
-          ))}
-          {authRoutes.map((route, idx) => (
-            <Authmiddleware
-              path={route.path}
-              layout={NonAuthLayout}
-              component={route.component}
-              key={idx}
-              isAuthProtected={false}
-              exact
-            />
-          ))}  
-        </Switch>
-      </Router>
+      <Suspense fallback={<>loading</>}>
+        <Router>
+          <Switch>
+            {userArray.map((route, idx) => (
+              <Authmiddleware
+                path={route.path}
+                layout={Layout}
+                component={route.component}
+                innerPages={route.innerPages}
+                get={route.get}
+                key={idx}
+                isAuthProtected={true}
+                {...(route.notExact ? {} : { exact: true })}
+              />
+            ))}
+            {authRoutes.map((route, idx) => (
+              <Authmiddleware
+                path={route.path}
+                layout={NonAuthLayout}
+                component={route.component}
+                key={idx}
+                isAuthProtected={false}
+                exact
+              />
+            ))}  
+          </Switch>
+        </Router>
+      </Suspense>
     </React.Fragment>
   );
 };
@@ -87,6 +89,5 @@ const mapStateToProps = state => {
     layout: state.Layout,
   };
 };
-
 
 export default connect(mapStateToProps, null)(App);

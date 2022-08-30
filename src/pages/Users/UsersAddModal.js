@@ -17,11 +17,13 @@ import { addUser } from "store/users/actions";
 function UsersAddModal(props) {
   const [addModal, setAddUserModal] = useState(false);
   const [submitState, setSubmitState] = useState(false);
+  const [duplicatedEmail, setDuplicatedEmail] = useState(false);
   const dispatch = useDispatch();
   const { usersRoles } = props;
   const { create } = props.userPermissions;
   const toggleAddModal = () => {
     setAddUserModal(!addModal);
+    setDuplicatedEmail(false);
   };
   const handleAddUser = (e, values) => {
     setSubmitState(true);
@@ -32,10 +34,18 @@ function UsersAddModal(props) {
 
   };
 
+  const emailErrorStyle = duplicatedEmail ? "1px solid red" : "1px solid rgb(200, 200, 200)";
+
+  const repeatedEmailCheck = (e) => {
+    e.target?.value?.length > 0 &&
+    setDuplicatedEmail(props.allUsersEmails?.includes(e.target.value?.trim()));
+  };
+
   useEffect(() => {
     if (props.clearingCounter > 0 && addModal) {
       setTimeout(() => {
         setAddUserModal(false);
+        setDuplicatedEmail(false);
       }, 1000);
     }
   }, [props.addSuccess]);
@@ -81,11 +91,16 @@ function UsersAddModal(props) {
                 placeholder="Enter Email"
                 type="email"
                 errorMessage="Enter Valid Email"
+                onChange={repeatedEmailCheck}
                 validate={{
                   required: { value: true },
                   email: { value: true },
                 }}
+                style={{
+                  border: `${emailErrorStyle}`
+                }}
               />
+              {duplicatedEmail && <span className="text-danger">This email is already in use</span>}
             </div>
             <div className="mb-3">
               <Label>Password</Label>
