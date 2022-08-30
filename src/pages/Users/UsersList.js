@@ -43,7 +43,6 @@ function UsersList() {
     deleteLoading,
     deleteClearingCounter,
     roles,
-    clearingCounter,
     userPermissions
     // editClearingCounter,
   } = useSelector((state) => ({

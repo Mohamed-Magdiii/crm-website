@@ -50,7 +50,6 @@ function Teams() {
     deleteLoading,
     deleteClearingCounter,
     // roles,
-    clearingCounter,
     // editClearingCounter,
     teamsPermissions
   } = useSelector((state) => ({
