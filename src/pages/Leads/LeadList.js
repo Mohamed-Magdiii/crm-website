@@ -111,9 +111,7 @@ function LeadsList(props) {
       }));
     }
   };
-
   const handleSearchInput = (e) => (setSearchInputText(e.target.value));
-
   return (
     <React.Fragment>
       <div className="page-content"> 

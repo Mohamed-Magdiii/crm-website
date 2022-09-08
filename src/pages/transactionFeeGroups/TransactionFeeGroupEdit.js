@@ -239,7 +239,7 @@ function TransactionFeeGroupEdit(props) {
             </Row>
             <div className='text-center pt-3 p-2'>
               <Button disabled={disabled} type="submit" color="primary" className="">
-                {props.t("Edit Transaction Fee Group")}
+                {props.t("Edit")}
               </Button>
             </div>
           </AvForm>
