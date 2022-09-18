@@ -35,9 +35,8 @@ function LeadsList(props) {
     {
       dataField: "name",
       text: props.t("Name"),
-      // formatter: (val) => (captilazeFirstLetter(`${val.firstName} ${val.lastName}`)),
       formatter: (client) => (
-        <div className="d-flex gap-3">
+        <div>
           <Link 
             to={{
               pathname: "/clients/" + client.id + "/profile",
