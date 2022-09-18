@@ -73,7 +73,7 @@ function ClientsList(props) {
       dataField: "name",
       text: props.t("Name"),
       formatter: (client) => (
-        <div className="d-flex gap-3">
+        <div>
           <Link 
             to={{
               pathname: "/clients/" + client.id + "/profile",
@@ -260,10 +260,7 @@ function ClientsList(props) {
                             )}
                           </Tr>
                         </Thead>
-                        <Tbody className="text-center" style={{ 
-                          fontSize: "13px",
-                           
-                        }}>
+                        <Tbody className="text-center" style={{ fontSize: "13px" }}>
                           {props.loading && <TableLoader colSpan={4} />}
                           {!props.loading && props.clients.map((row, rowIndex) =>
                             <Tr key={rowIndex} >
