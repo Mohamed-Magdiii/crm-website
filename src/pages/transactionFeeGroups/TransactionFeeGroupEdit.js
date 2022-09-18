@@ -82,7 +82,7 @@ function TransactionFeeGroupEdit(props) {
 
       <Modal size="lg" isOpen={open} toggle={onClose} centered={true}>
         <ModalHeader toggle={onClose} tag="h4">
-          {props.t("Update Transaction Fee Group")}
+          {props.t("Edit")}
         </ModalHeader>
         <ModalBody >
           <AvForm
