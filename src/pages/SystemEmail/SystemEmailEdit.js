@@ -1,5 +1,7 @@
 // a page to edit system email content (language + subject + body)
-import React, { useState, useEffect } from "react";
+import React, { 
+  useState, useEffect, useRef 
+} from "react";
 import { useDispatch, connect } from "react-redux";
 import {
   Button,
@@ -28,6 +30,9 @@ import { editSystemEmailContent, fetchSystemEmailById } from "store/systemEmail/
 function SystemEmailEdit(props){
   const { id } = useParams();
   const dispatch = useDispatch();
+  const contentRef = useRef();
+  const [isContentUpdated, setIsContentUpdated] = useState(false);
+
 
   // fetch system email by id handler to show new updates with every new successful update call 
   const handleSystemEmailFetchById = (e, systemEmailId) => {
@@ -71,14 +76,25 @@ function SystemEmailEdit(props){
   };
 
   // rich editor handler 
-  const blocksFromHTML = htmlToDraft(role.content[selectedLanguage.value].body);
-  const { contentBlocks, entityMap } = blocksFromHTML;
-  const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
-  const [editorState, setEditorState] = useState(EditorState.createWithContent(contentState)); 
+  // first it's the rich editor is created with empty content
+  const [editorState, setEditorState] = useState(EditorState.createEmpty()); 
+  const obj = {};
+  availableLanguageSelect.map((item) => (
+    obj[item.value] = ""
+  ));
+  const [tempEditorValue, setTempEditorValue] = useState(obj);
+
   
   // an effect to change the value of content with every new update or after changing language
   // to avoid late updates
   useEffect (() => {
+    const blocksFromHTML = htmlToDraft(
+      isContentUpdated 
+        ? tempEditorValue[selectedLanguage.value] 
+        : role.content[selectedLanguage.value].body
+    );
+    const { contentBlocks, entityMap } = blocksFromHTML;
+    const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);  
     setEditorState(EditorState.createWithContent(contentState));
     
   }, [role, selectedLanguage]);
@@ -106,55 +122,13 @@ function SystemEmailEdit(props){
   };
 
   // content temp value handler
-  // const contentTempInitialValues = availableLanguages.map((item) => (
-  //   {
-  //     language: item,
-  //     tempContent: ""
-  //   }
-  // ));
-  // const [contentTempValue, setContentempValue] = useState(contentTempInitialValues);
-  // const contentTempValueHandler = (e) => {
-  //   const blocksFromHTML = htmlToDraft(`<p>${e.blocks[0].text}</p>`);
-  //   const { contentBlocks, entityMap } = blocksFromHTML;
-  //   const tempContentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
-  //   const tempEditorState = EditorState.createWithContent(tempContentState); 
-  //   const updatedTempContent = [];
-  //   for (let item of contentTempValue){
-  //     if (item.language === selectedLanguage.value){
-  //       item.tempContent = tempEditorState;
-  //       updatedTempContent.push(item);
-  //     } else {
-  //       updatedTempContent.push(item);
-  //     }
-  //   }
-  //   setIsContentChanged(true);
-  //   setContentempValue(updatedTempContent);
-  // };
-  // const contentTempInitialValues = availableLanguages.map((item) => (
-  //   {
-  //     language: item,
-  //     tempContent: ""
-  //   }
-  // ));
-  // const [contentTempValue, setContentempValue] = useState(contentTempInitialValues);
-  // const contentTempValueHandler = (e) => {
-  //   const blocksFromHTML = htmlToDraft(`<p>${e.blocks[0].text}</p>`);
-  //   const { contentBlocks, entityMap } = blocksFromHTML;
-  //   const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
-  //   const editorState = EditorState.createWithContent(contentState); 
-    
-  //   const updatedTempContent = [];
-  //   for (let item of contentTempValue){
-  //     if (item.language === selectedLanguage.value){
-  //       item.tempContent = editorState;
-  //       updatedTempContent.push(item);
-  //     } else {
-  //       updatedTempContent.push(item);
-  //     }
-  //   }
-  //   setIsContentChanged(true);
-  //   setContentempValue(updatedTempContent);
-  // };
+  const contentTempValueHandler = (e) => {
+    setIsContentUpdated(true);
+    setTempEditorValue({
+      ...tempEditorValue,
+      [selectedLanguage.value]: e.blocks[0].text 
+    });
+  };
 
   // back button handler
   const history = useHistory();
@@ -263,14 +237,19 @@ function SystemEmailEdit(props){
               <label>{props.t("Content")}</label>
               {/* draft.js editor component */}  
               <Editor
+                ref={contentRef}
                 toolbarClassName="toolbarClassName"
                 wrapperClassName="wrapperClassName"
                 editorClassName="editorClassName"
-                editorState={ editorState }
+                editorState={ 
+                  editorState
+                  // isContentUpdated 
+                  //   ? console.log("updated value")
+                  //   : editorState 
+                }
                 onEditorStateChange={setEditorState}
                 placeholder={props.t("Enter Email Content")}
-                // style={{ "line-height": "normal" }}
-                // onChange={contentTempValueHandler}
+                onChange={contentTempValueHandler}
               />
               <AvField
                 name="body"
