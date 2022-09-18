@@ -19,7 +19,7 @@ import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 import { withTranslation } from "react-i18next";
 import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
-import ClientForm from "./ClientAdd";
+import ClientAdd from "./ClientAdd";
 import TodoAdd from "components/Common/TodoAdd";
 
 import { fetchClientsStart } from "store/client/actions";
@@ -222,26 +222,21 @@ function ClientsList(props) {
             onClose={() => { setAddReminderToClientModal(false) }}
             hidenAddButton={true}
           />
+          <h2>{props.t("Clients List")}</h2>
           <Row>
             <Col className="col-12">
               <Card>
                 <CardHeader className="d-flex flex-column gap-3">
-                  <div className="d-flex justify-content-between  align-items-center">
-                    <CardTitle>
-                      {/* {props.t("Clients")} ({props.totalDocs}) */}
-                      <h4 className="d-inline">{props.t("Clients")}</h4> ({props.totalDocs})
-                    </CardTitle>
-                    
+                  <div className="d-flex flex-row justify-content-between align-items-center">
+                    <CardTitle>{props.t("Client List")} ({props.totalDocs})</CardTitle>
+                    <ClientAdd />
                   </div>
-                  <div className="d-flex justify-content-between  align-items-end">
+
+                  <div className="d-flex justify-content-between">
                     <SearchBar handleSearchInput={handleSearchInput} />
-                    <div className="d-flex row">
-                      {assignedClients.length > 0 && <AgentForm clients= {[...assignedClients]}/> }
-                      <ClientForm />
-                    </div>
-                    
+                    {/* {assignedClients.length > 0 &&  } */}
+                    <AgentForm clients= {[...assignedClients]} />
                   </div>
-           
                 </CardHeader>
                 <CardBody>
                   <div className="table-rep-plugin">
