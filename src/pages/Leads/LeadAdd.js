@@ -15,12 +15,14 @@ import React, { useState, useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { addNewLead } from "../../store/leads/actions";
 import CountryDropDown from "../../components/Common/CountryDropDown";
+import { fetchClientsStart } from "store/client/actions";
 import { withTranslation } from "react-i18next";
-function LeadForm(props) {
 
+function LeadForm(props) {
+  const dispatch = useDispatch();
   const [addModal, setAddUserModal] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState("");
-  const dispatch = useDispatch();
+  const [duplicatedEmail, setDuplicatedEmail] = useState(false);
   const { create } = props.leadsPermissions;
   const handleAddLead = (event, values)=>{
     event.preventDefault();
@@ -38,11 +40,32 @@ function LeadForm(props) {
   const toggleAddModal = () => {
     setAddUserModal(!addModal);
   };
+
+  const emailErrorStyle = duplicatedEmail ? "1px solid red" : "1px solid rgb(200, 200, 200)";
+
+  const repeatedEmailCheck = (e) => {
+    e.target?.value?.length > 0 &&
+    setDuplicatedEmail(
+      props.clients?.map((item) => (item.email)).includes(e.target.value?.trim()) || 
+      props.leads?.map((item) => (item.email)).includes(e.target.value?.trim())
+    );
+  };
   
+  useEffect(() => {
+    loadClients();
+  }, []);
+  
+  const loadClients = (page, limit) => {
+    dispatch(fetchClientsStart({
+      limit,
+      page
+    }));
+  };
+
   useEffect(()=>{
     if (!props.showAddSuccessMessage  && addModal) {
-    
       setAddUserModal(false);
+      setDuplicatedEmail(false);
     }
   }, [props.showAddSuccessMessage]);
 
@@ -98,8 +121,16 @@ function LeadForm(props) {
                     placeholder={props.t("Enter Email")}
                     type="email"
                     errorMessage={props.t("Enter Valid Email")}
-                    validate={{ required: { value: true } }}
+                    onChange={repeatedEmailCheck}
+                    validate={{
+                      required: { value: true },
+                      email: { value: true },
+                    }}
+                    style={{
+                      border: `${emailErrorStyle}`
+                    }}
                   />
+                  {duplicatedEmail && <small className="text-danger">Account already exists</small>}
                 </div>
               </Col>
               <Col md="6">
@@ -177,9 +208,11 @@ function LeadForm(props) {
 
 const mapStateToProps = (state) => ({
   error: state.leadReducer.error,
+  leads: state.leadReducer.leads,
   showAddSuccessMessage :state.leadReducer.showAddSuccessMessage,
   disableAddButton : state.leadReducer.disableAddButton,
-  leadsPermissions : state.Profile.leadsPermissions || {}
+  leadsPermissions : state.Profile.leadsPermissions || {},
+  clients: state.clientReducer.clients
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(LeadForm));
