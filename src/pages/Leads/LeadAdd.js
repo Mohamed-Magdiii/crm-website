@@ -16,6 +16,7 @@ import { AvForm, AvField } from "availity-reactstrap-validation";
 import { addNewLead } from "../../store/leads/actions";
 import CountryDropDown from "../../components/Common/CountryDropDown";
 import { fetchClientsStart } from "store/client/actions";
+import { fetchUsers } from "store/users/actions";
 import { withTranslation } from "react-i18next";
 
 function LeadForm(props) {
@@ -47,13 +48,10 @@ function LeadForm(props) {
     e.target?.value?.length > 0 &&
     setDuplicatedEmail(
       props.clients?.map((item) => (item.email)).includes(e.target.value?.trim()) || 
-      props.leads?.map((item) => (item.email)).includes(e.target.value?.trim())
+      props.leads?.map((item) => (item.email)).includes(e.target.value?.trim()) ||
+      props.users?.map((item) => (item.email)).includes(e.target.value?.trim())
     );
   };
-  
-  useEffect(() => {
-    loadClients();
-  }, []);
   
   const loadClients = (page, limit) => {
     dispatch(fetchClientsStart({
@@ -61,6 +59,18 @@ function LeadForm(props) {
       page
     }));
   };
+
+  const loadUsers = (page, limit) => {
+    dispatch(fetchUsers({
+      limit,
+      page
+    }));
+  };
+
+  useEffect(() => {
+    loadClients();
+    loadUsers();
+  }, []);
 
   useEffect(()=>{
     if (!props.showAddSuccessMessage  && addModal) {
@@ -212,7 +222,8 @@ const mapStateToProps = (state) => ({
   showAddSuccessMessage :state.leadReducer.showAddSuccessMessage,
   disableAddButton : state.leadReducer.disableAddButton,
   leadsPermissions : state.Profile.leadsPermissions || {},
-  clients: state.clientReducer.clients
+  clients: state.clientReducer.clients,
+  users: state.usersReducer.docs || []
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(LeadForm));
