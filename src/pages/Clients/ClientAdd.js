@@ -13,16 +13,16 @@ import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 
-import { 
-  addNewClient
-} from "../../store/client/actions";
+import { addNewClient } from "../../store/client/actions";
+import { fetchLeadsStart } from "../../store/leads/actions";
 import CountryDropDown from "../../components/Common/CountryDropDown";
-function ClientForm(props){
 
-  const [addModal, setAddUserModal] = useState(false);
-  const { create } = props.clientPermissions;
+function ClientForm(props){
   const dispatch = useDispatch();
+  const [addModal, setAddUserModal] = useState(false);
+  const [duplicatedEmail, setDuplicatedEmail] = useState(false);
   const [ selectedCountry, setCountry] = useState("");
+  const { create } = props.clientPermissions;
   const handleAddLead = (event, values) => {
     event.preventDefault();
     dispatch(addNewClient({
@@ -37,6 +37,28 @@ function ClientForm(props){
 
   const toggleAddModal = () => {
     setAddUserModal(!addModal);
+    setDuplicatedEmail(false);
+  };
+
+  useEffect(() => {
+    loadLeads();
+  }, []);
+  
+  const loadLeads = (page, limit) => {
+    dispatch(fetchLeadsStart({
+      limit,
+      page
+    }));
+  };
+
+  const emailErrorStyle = duplicatedEmail ? "1px solid red" : "1px solid rgb(200, 200, 200)";
+
+  const repeatedEmailCheck = (e) => {
+    e.target?.value?.length > 0 &&
+    setDuplicatedEmail(
+      props.clients?.map((item) => (item.email)).includes(e.target.value?.trim()) || 
+      props.leads?.map((item) => (item.email)).includes(e.target.value?.trim())
+    );
   };
 
   useEffect(() => {
@@ -96,9 +118,17 @@ function ClientForm(props){
                     label={props.t("Email")}
                     placeholder={props.t("Enter Email")}
                     type="email"
+                    onChange={repeatedEmailCheck}
                     errorMessage={props.t("Enter Valid Email")}
-                    validate={{ required: { value: true } }}
+                    validate={{
+                      required: { value: true },
+                      email: { value: true },
+                    }}
+                    style={{
+                      border: `${emailErrorStyle}`
+                    }}
                   />
+                  {duplicatedEmail && <small className="text-danger">Account already exists</small>}
                 </div>
               </Col>
               <Col md="6">
@@ -141,12 +171,8 @@ function ClientForm(props){
                     // eslint-disable-next-line no-useless-escape
                     value:"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$",
                     errorMessage :"Must contain at least eight characters, at least one number and both lower and uppercase letters and special characters"
-                  }
-                  
-                }
-                }
-                
-                
+                  } 
+                }}
               />
             </div>
             <div className="mb-3">
@@ -174,7 +200,8 @@ const mapStateToProps = (state) => ({
   error: state.clientReducer.error,
   clientPermissions: state.Profile.clientPermissions,
   showAddSuccessMessage: state.clientReducer.showAddSuccessMessage,
-  disableAddButton: state.clientReducer.disableAddButton
-
+  disableAddButton: state.clientReducer.disableAddButton,
+  clients: state.clientReducer.clients,
+  leads: state.leadReducer.leads
 });
 export default connect(mapStateToProps, null)(withTranslation()(ClientForm));

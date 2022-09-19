@@ -209,7 +209,8 @@ function TodoAdd(props) {
                   label={props.t("Date")}
                   min= {moment().format("YYYY-MM-DDTHH:mm")}
                   validate={{
-                    custom: handleChangeDate,
+                    required: { value : true },
+                    custom: handleChangeDate
                   }}
                 >
                 </AvField>

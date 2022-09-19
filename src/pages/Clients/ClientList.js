@@ -211,7 +211,6 @@ function ClientsList(props) {
     }
   };
 
-  console.log(props.clients);
   return (
     <React.Fragment>
       <div className="page-content">
