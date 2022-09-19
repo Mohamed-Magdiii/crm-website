@@ -110,7 +110,7 @@ function TodoAdd(props) {
   // TODO - get enums from the backend
   const statusOptions = ["open", "ongoing", "completed"];
 
-  const handleChangeDate = (value, ctx, input, cb)=>{
+  const handleChangeDate = async (value, ctx, input, cb)=>{
     delete input.validations.min;
     const now = moment();
     const v = moment(value);
@@ -205,11 +205,10 @@ function TodoAdd(props) {
                 <AvField
                   type="datetime-local"
                   name="timeEnd"
-                  // value="testing"
                   value={todoObj?.timeEnd ? String(moment(todoObj.timeEnd).format("YYYY-MM-DDTHH:mm")) : ""}
                   label={props.t("Date")}
+                  min= {moment().format("YYYY-MM-DDTHH:mm")}
                   validate={{
-                    min: moment().format("YYYY-MM-DDTHH:mm"),
                     custom: handleChangeDate,
                   }}
                 >

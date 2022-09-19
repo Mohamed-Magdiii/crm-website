@@ -211,6 +211,7 @@ function ClientsList(props) {
     }
   };
 
+  console.log(props.clients);
   return (
     <React.Fragment>
       <div className="page-content">
@@ -234,8 +235,7 @@ function ClientsList(props) {
 
                   <div className="d-flex justify-content-between">
                     <SearchBar handleSearchInput={handleSearchInput} />
-                    {/* {assignedClients.length > 0 &&  } */}
-                    <AgentForm clients= {[...assignedClients]} />
+                    {assignedClients.length > 0 &&  <AgentForm clients= {[...assignedClients]} />}
                   </div>
                 </CardHeader>
                 <CardBody>
