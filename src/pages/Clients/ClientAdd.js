@@ -16,6 +16,7 @@ import { AvForm, AvField } from "availity-reactstrap-validation";
 import { addNewClient } from "../../store/client/actions";
 import { fetchLeadsStart } from "../../store/leads/actions";
 import CountryDropDown from "../../components/Common/CountryDropDown";
+import { fetchUsers } from "store/users/actions";
 
 function ClientForm(props){
   const dispatch = useDispatch();
@@ -42,10 +43,18 @@ function ClientForm(props){
 
   useEffect(() => {
     loadLeads();
+    loadUsers();
   }, []);
   
   const loadLeads = (page, limit) => {
     dispatch(fetchLeadsStart({
+      limit,
+      page
+    }));
+  };
+
+  const loadUsers = (page, limit) => {
+    dispatch(fetchUsers({
       limit,
       page
     }));
@@ -57,7 +66,8 @@ function ClientForm(props){
     e.target?.value?.length > 0 &&
     setDuplicatedEmail(
       props.clients?.map((item) => (item.email)).includes(e.target.value?.trim()) || 
-      props.leads?.map((item) => (item.email)).includes(e.target.value?.trim())
+      props.leads?.map((item) => (item.email)).includes(e.target.value?.trim()) || 
+      props.users?.map((item) => (item.email)).includes(e.target.value?.trim())
     );
   };
 
@@ -81,6 +91,7 @@ function ClientForm(props){
           <AvForm
             className='p-4'
             onValidSubmit={(e, v) => {
+              !duplicatedEmail &&
               handleAddLead(e, v);
             }}
           >
@@ -202,6 +213,7 @@ const mapStateToProps = (state) => ({
   showAddSuccessMessage: state.clientReducer.showAddSuccessMessage,
   disableAddButton: state.clientReducer.disableAddButton,
   clients: state.clientReducer.clients,
-  leads: state.leadReducer.leads
+  leads: state.leadReducer.leads,
+  users: state.usersReducer.docs || []
 });
 export default connect(mapStateToProps, null)(withTranslation()(ClientForm));

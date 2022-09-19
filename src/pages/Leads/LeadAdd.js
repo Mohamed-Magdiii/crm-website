@@ -93,6 +93,7 @@ function LeadForm(props) {
           <AvForm
             className='p-4'
             onValidSubmit={(e, v) => {
+              !duplicatedEmail && 
               handleAddLead(e, v);
             }}
           >
