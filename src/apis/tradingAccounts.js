@@ -8,6 +8,8 @@ export const getAccountTypes = async({ payload }) => {
 };
 
 export const createTradingAccount = async({ payload }) => {
+  delete payload.type;
+  delete payload.platform;
   const data = await axiosHelper.post("/accounts", payload);
   return data.result;
 };
