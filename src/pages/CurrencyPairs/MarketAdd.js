@@ -123,7 +123,7 @@ function MarketAdd(props) {
               <Col md="6">
                 {/* <Input type="checkbox" name="active" id="active" switch="none"  />
                 <Label className="me-1" htmlFor="active" data-on-label={props.t("Active")} data-off-label=""></Label> */}
-                <AvInput type="checkbox" name="active" validate={{ required: { value: true } }}/> Is It Active?
+                <AvInput type="checkbox" name="active" trueValue={true} /> Is It Active?
               </Col>
             </Row>
             <div className='text-center pt-3 p-2'>
