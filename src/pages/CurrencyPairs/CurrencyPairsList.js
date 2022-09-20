@@ -21,6 +21,7 @@ import { fetchMarketsStart } from "store/markets/actions";
 import MarketForm from "./MarketAdd";
 import MarketEdit from "./MarketEdit";
 import { Link } from "react-router-dom";
+import { captilazeFirstLetter } from "common/utils/manipulateString";
 
 function CurrencyPairsList(props) {
   const [selectedMarket, ] = useState();
@@ -61,6 +62,9 @@ function CurrencyPairsList(props) {
     {
       dataField: "name",
       text: props.t("Name"),
+      formatter: (item) => (
+        captilazeFirstLetter(item.name)
+      )
     },
     {
       dataField: "pairName",
@@ -151,7 +155,7 @@ function CurrencyPairsList(props) {
                             ))}
                           </Tr>
                         </Thead>
-                        <Tbody>
+                        <Tbody className="text-center" style={{ fontSize: "13px" }}>
                           {props.loading && <TableLoader colSpan={12} />}
                           {!props.loading &&
                             props.markets.map((row, rowIndex) => (
