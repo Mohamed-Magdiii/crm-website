@@ -10,6 +10,7 @@ import {
   Input,
   Label,
   Row,
+  Spinner
 } from "reactstrap";
 import {
   Table, Thead, Tbody, Tr, Th, Td
@@ -17,7 +18,7 @@ import {
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 import TableLoader from "components/Common/TableLoader";
 import CustomPagination from "components/Common/CustomPagination";
-import { fetchMarketsStart } from "store/markets/actions";
+import { fetchMarketsStart, changeMarketStatus } from "store/markets/actions";
 import MarketForm from "./MarketAdd";
 import MarketEdit from "./MarketEdit";
 import { Link } from "react-router-dom";
@@ -33,7 +34,7 @@ function CurrencyPairsList(props) {
 
   useEffect(() => {
     loadMarkets(1, sizePerPage);
-  }, [sizePerPage, 1]);
+  }, [sizePerPage, 1, props.changeStatusLoading]);
 
   const loadMarkets = (page, limit) => {
     dispatch(
@@ -44,8 +45,10 @@ function CurrencyPairsList(props) {
     );
   };
 
-  const switchSelectedMarketStatusHandler = (selectedItem) => {
-    selectedItem.active = !selectedItem.active;
+  // a function to switch status of a selected system email
+  const updateStatus = (event, item, index) => {
+    dispatch(changeMarketStatus(item._id, index, !item.active ? "activate" : "deactivate"));
+    event.preventDefault();
   };
 
   useEffect(() => {
@@ -53,6 +56,7 @@ function CurrencyPairsList(props) {
       setDeleteModal(false);
     }
   }, [props.deleteModalClear]);
+
   const columns = [
     {
       dataField: "createdAt",
@@ -101,23 +105,26 @@ function CurrencyPairsList(props) {
     {
       dataField: "active",
       text: props.t("Active"),
-      formatter: (item) => (
+      formatter: (item, index) => (
         <div className="d-flex gap-3">
-          <Input
-            type="checkbox"
-            id={item.id}
-            switch="none"
-            defaultChecked={item.active}
-            onClick={() => {
-              switchSelectedMarketStatusHandler(item);
-            }}
-          />
-          <Label
-            className="me-1"
-            htmlFor={item.id}
-            data-on-label={props.t("Active")}
-            data-off-label=""
-          ></Label>
+          {
+            props.changeStatusLoading && props.changeStatusIndex === index
+              ? 
+              <React.Fragment>
+                <Spinner className="ms-2" color="primary" />  
+              </React.Fragment> 
+              : 
+              <React.Fragment>
+                <Input
+                  checked={item.active}
+                  type="checkbox"
+                  onChange={(e) => {updateStatus(e, item, index)}}
+                  id={item.id}
+                  switch="none"
+                />
+                <Label className="me-1" htmlFor={item.id} data-on-label="" data-off-label="" />
+              </React.Fragment>
+          }
         </div>
       ),
     },
@@ -216,6 +223,8 @@ const mapStateToProps = (state) => ({
   prevPage: state.marketsReducer.prevPage,
   deleteLoading: state.marketsReducer.deleteLoading,
   deleteModalClear: state.marketsReducer.deleteModalClear,
+  changeStatusIndex: state.marketsReducer.changeStatusIndex,
+  changeStatusLoading: state.marketsReducer.changeStatusLoading
 });
 export default connect(
   mapStateToProps,

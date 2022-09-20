@@ -61,7 +61,6 @@ export default function* rootSaga() {
     fork(markupSaga),
     fork(dictionarySaga),
     fork(marketPricingSaga),
-    fork(marketSaga),
     fork(feeGroupSaga),
     fork(transactionFeeGroupSaga),
     fork(documentsSaga),
