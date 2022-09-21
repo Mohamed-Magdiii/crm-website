@@ -13,6 +13,7 @@ import Authmiddleware from "./routes/middleware/Authmiddleware";
 import VerticalLayout from "./components/VerticalLayout/";
 import HorizontalLayout from "./components/HorizontalLayout/";
 import NonAuthLayout from "./components/NonAuthLayout";
+import AppLoader from "./components/AppLoader";
 
 // Import scss
 import "./assets/scss/preloader.scss";
@@ -47,7 +48,7 @@ const App = props => {
   const Layout = getLayout(); // layout = layoutCls 
   return (
     <React.Fragment>
-      <Suspense fallback={<>loading</>}>
+      <Suspense fallback={<AppLoader />}>
         <Router>
           <Switch>
             {userArray.map((route, idx) => (
