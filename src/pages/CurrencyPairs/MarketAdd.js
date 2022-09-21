@@ -128,7 +128,7 @@ function MarketAdd(props) {
             </Row>
             <div className='text-center pt-3 p-2'>
               <Button  type="submit" color="primary" className="">
-                {props.t("Add New Market")}
+                {props.t("Add")}
               </Button>
             </div>
           </AvForm>
