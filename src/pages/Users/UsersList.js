@@ -21,6 +21,7 @@ import TableLoader from "components/Common/TableLoader";
 import DeleteModal from "components/Common/DeleteModal";
 import UsersAddModal from "./UsersAddModal";
 import UsersEditModal from "./UsersEditModal";
+import { showErrorNotification } from "store/notifications/actions";
 function UsersList() {
 
   const [editModal, setEditUserModal] = useState(false);
@@ -42,7 +43,6 @@ function UsersList() {
     deleteLoading,
     deleteClearingCounter,
     roles,
-    clearingCounter,
     userPermissions
     // editClearingCounter,
   } = useSelector((state) => ({
@@ -151,7 +151,7 @@ function UsersList() {
   useEffect(() => {
     loadUsers(currentPage, sizePerPage);
     loadRoles(1, 100);
-  }, [sizePerPage, 1, clearingCounter]);
+  }, [sizePerPage, 1]);
 
   const loadUsers = (page, limit) => {
     setcurrentPagePage(page);
@@ -179,7 +179,12 @@ function UsersList() {
 
   };
   const deleteUser = () => {
-    dispatch(deleteUsers(selectedUser._id));
+    const currentUser = JSON.parse(localStorage.getItem("authUser"));
+    if (selectedUser.email == currentUser.email){
+      dispatch(showErrorNotification("Cannot delete same user as you logged in right now!"));
+      setDeleteUserModal(false);
+    } else
+      dispatch(deleteUsers(selectedUser._id));
   };
 
   const statusUser = (user) => {

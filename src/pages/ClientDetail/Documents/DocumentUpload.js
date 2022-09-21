@@ -63,8 +63,6 @@ function UploadKYC (props) {
     const extensions = ["png", "jpg", "jpeg", "pdf"];
     const extension = value.split(".")[1];
     if (extensions.includes(extension) || !value){
-      console.log("memFiles[input.props.name]?.size: ", memFiles[input.props.name]?.size);
-
       if (!value || memFiles[input.props.name]?.size <= 2097152){
         cb(true);
       } else cb("2mb maximum size");

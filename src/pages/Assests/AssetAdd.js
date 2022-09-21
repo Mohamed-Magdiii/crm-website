@@ -1,4 +1,6 @@
-import { useDispatch, connect } from "react-redux";
+import {
+  useDispatch, connect, useSelector 
+} from "react-redux";
 import {
   Button,
   Modal,
@@ -9,17 +11,19 @@ import {
   Row, 
   Label
 } from "reactstrap";
-
+import AvFieldSelect from "../../components/Common/AvFieldSelect";
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { addNewSymbol } from "store/assests/actions";
 import { withTranslation } from "react-i18next";
+import { fetchMarkupsStart } from "store/markups/actions";
 function AssestForm(props){
 
   const [addModal, setAddUserModal] = useState(false);
   const [file, setFile] = useState({});
   const dispatch = useDispatch();
+  const { markups } = useSelector(state=>state.markupsReducer);
   const { create } = props.symbolsPermissions;
   const handleAddLead = (event, values) => {
     event.preventDefault(); 
@@ -53,6 +57,22 @@ function AssestForm(props){
       
     }
   }, [props.clearModal]);
+
+  useEffect(()=>{
+    dispatch(
+      fetchMarkupsStart()
+    );  
+  }, []);
+
+  const validateFile = (value, ctx, input, cb)=> {
+    const extensions = ["png", "jpg", "jpeg", "pdf"];
+    const extension = value.split(".")[1];
+    if (extensions.includes(extension) || !value){
+      if (!value || file.size <= 2097152){
+        cb(true);
+      } else cb("2mb maximum size");
+    } else cb("Only images or PDF can be uploaded");    
+  };
 
   return (
     <React.Fragment >
@@ -110,14 +130,20 @@ function AssestForm(props){
               </Col>
               <Col md="6">
                 <div className="mb-3">
-                  <AvField
+                  <AvFieldSelect
                     name="markup"
                     label={props.t("Mark up")}
-                    placeholder={props.t("Markup")}
                     type="text"
                     errorMessage={props.t("Enter valid markup")}
                     validate={{ required: { value: true } }}
-                  />
+                    options={markups && markups.length > 0 && markups.map((obj)=>{
+                      return ({
+                        label: `${obj.title} ${obj.value.$numberDecimal}`, 
+                        value: obj
+                      });
+                    })}
+                  >
+                  </AvFieldSelect>
                 </div>
               </Col>
             </Row> 
@@ -201,8 +227,10 @@ function AssestForm(props){
                 name="image"
                 type="file"
                 errorMessage={props.t("Please upload an image for the symbol")}
-                validate = {{ required :{ value:true } }}
-                accept ="image/jpg,image/png"
+                validate = {{
+                  required :{ value:true },
+                  custom:validateFile 
+                }}
                 onChange = {(e)=>setFile(e.target.files[0])}
               />
             </div>

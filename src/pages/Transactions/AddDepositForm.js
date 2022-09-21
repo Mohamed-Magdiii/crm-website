@@ -20,6 +20,7 @@ import { fetchClientsStart } from "store/client/actions";
 import "./SearchableInputStyles.scss";
 import { withTranslation } from "react-i18next";
 import Select from "react-select";
+import AvFieldSelect from "components/Common/AvFieldSelect";
 
 function DepositForm(props){
   
@@ -86,6 +87,12 @@ function DepositForm(props){
         customerId:selectedClient,
       }));
   };
+  const validateBiggerThanZero = (value, ctx, input, cb) =>{
+    if (value == 0){
+      cb("Should be bigger than 0");
+    } else
+      cb(true);
+  };
 
   return (
     <React.Fragment >
@@ -103,12 +110,9 @@ function DepositForm(props){
             }}
           >
             <Row className="mb-3">
-              <Col md="6">
-                <Label>{props.t("Client")}</Label>
-                
-                
+              <Col md="6">                      
                 <div>
-                  <Select 
+                  {/* <Select 
                     onChange={(e) => {
                       selectClient(e.value.id);
                       
@@ -127,7 +131,29 @@ function DepositForm(props){
                     classNamePrefix="select2-selection"
                     placeholder = "choose a client name"
                     onInputChange = {(e)=>setSearchInput(e)}
-                  />
+                  /> */}
+                  <AvFieldSelect
+                    name="client"
+                    label={props.t("Client")}
+                    onChange={(e) => {
+                      selectClient(e.value.id);
+                    }}
+                    isSearchable = {true}
+                    options={props.clients.map((item) => (
+                      {
+                        label : `${item.firstName} ${item.lastName}`,
+                        value : {
+                          name: `${item.firstName} ${item.lastName}`,
+                          id: `${item._id}`
+                        }
+                      }
+
+                    ))}
+                    classNamePrefix="select2-selection"
+                    onInputChange = {(e)=>setSearchInput(e)}
+                    validate={{ required:true }}
+                  >
+                  </AvFieldSelect>
                 </div>
               </Col>
               <Col md="6">
@@ -226,7 +252,8 @@ function DepositForm(props){
                     // eslint-disable-next-line no-useless-escape
                     value :"^[0-9]+(\\.([0-9]{1,4}))?$",
                     errorMessage : "Amount is not valid"
-                  }
+                  },
+                  custom:validateBiggerThanZero
                 }}
               />
             </div>
