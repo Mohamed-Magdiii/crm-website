@@ -10,7 +10,7 @@ function AvFieldSelecvt(props) {
   const [state, setState] = React.useState(null);
   const onFieldChange = (e) => {
     setState(e.value);
-    props.onChange(e);
+    props.onAvFieldSelecvtChange(e);
   };
   const { label, ...params } = props;
   let options = props.options || [];
