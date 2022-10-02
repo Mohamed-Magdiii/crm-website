@@ -32,6 +32,8 @@ const resources = {
   }
 };
 
+const API_URL = process.env.REACT_APP_API_CRM_DOMAIN || "http://localhost:3001";
+
 const language = localStorage.getItem("I18N_LANGUAGE");
 if (!language) {
   localStorage.setItem("I18N_LANGUAGE", "en");
@@ -54,8 +56,8 @@ i18n
     saveMissing: true,
     backend: {
       // backend,
-      loadPath: "https://crypto.itgeek.ae/locales/{{lng}}/{{ns}}.json",
-      addPath: "https://crypto.itgeek.ae/locales/add/{{lng}}/{{ns}}",
+      loadPath: `${API_URL}/locales/{{lng}}/{{ns}}.json`,
+      addPath: `${API_URL}/locales/add/{{lng}}/{{ns}}`,
       crossDomain: true,
     }
   });
