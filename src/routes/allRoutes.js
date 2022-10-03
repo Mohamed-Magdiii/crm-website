@@ -33,6 +33,7 @@ import usePermissions from "./permissions";
 import TransactionFeeGroupList from "pages/transactionFeeGroups/TransactionFeeGroupList";
 import OrderProfitList from "pages/OrderProfit/orderProfitList";
 import TransactionProfitList from "pages/TransactionProfit.js/TransactionProfitList";
+import IbRequest from "pages/Requests/IbRequest";
 
 function userRoutes() {
   const object = usePermissions();
@@ -170,6 +171,10 @@ function userRoutes() {
       path: "/transactions-profit",
       component: TransactionProfitList,
       get : transactionProfitPermissions.get
+    },
+    {
+      path: "/requests/ib",
+      component: IbRequest,
     },
     {
       path: "/",

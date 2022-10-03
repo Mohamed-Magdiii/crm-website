@@ -179,6 +179,9 @@ const SidebarContent = (props) => {
               </Link>
               <ul className="sub-menu">
                 <li>
+                  <Link to="/requests/ib">{props.t("Ib Request")}</Link>
+                </li>
+                <li>
                   <Link to="/requests/list-coin">{props.t("List Coin")}</Link>
                 </li>
                 <li>
