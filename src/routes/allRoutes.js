@@ -37,6 +37,7 @@ import WithdrawalsIndex from "pages/Transactions/WithdrawalsIndex";
 import InternalTransferIndex from "pages/Transactions/Forex/internalTransfer/InternalTransferIndex";
 import CreditIndex from "pages/Transactions/Forex/credit/CreditIndex";
 import ConvertIndex from "pages/Transactions/Forex/convert/ConvertIndex";
+import IbRequest from "pages/Requests/IbRequest";
 
 function userRoutes() {
   const object = usePermissions();
@@ -189,6 +190,10 @@ function userRoutes() {
       path: "/transactions-profit",
       component: TransactionProfitList,
       get : transactionProfitPermissions.get
+    },
+    {
+      path: "/requests/ib",
+      component: IbRequest,
     },
     {
       path: "/",
