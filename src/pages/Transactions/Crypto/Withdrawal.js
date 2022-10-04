@@ -17,7 +17,7 @@ import {
 import SearchBar from "components/Common/SearchBar";
 import CustomDropdown from "components/Common/CustomDropDown";
 import Notification from "components/Common/Notification";
-import logo from "../../assets/images/logo-sm.svg";
+import logo from "../../../assets/images/logo-sm.svg";
 import { withTranslation } from "react-i18next";
 import { checkAllBoxes } from "common/utils/checkAllBoxes";
 import { Link } from "react-router-dom";

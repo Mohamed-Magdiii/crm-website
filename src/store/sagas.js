@@ -32,6 +32,8 @@ import transactionsProfitsSaga from "./transactionsProfit/saga";
 import todosSaga from "./todos/saga";
 import logsSaga from "./logs/saga";
 import dashboardSaga from "./dashboard/saga";
+import forexDepositSaga from "./forexTransactions/deposits/saga";
+import tradingAccountSaga from "./tradingAccounts/saga";
 
 export default function* rootSaga() {
   yield all([
@@ -69,5 +71,7 @@ export default function* rootSaga() {
     fork(todosSaga),
     fork(logsSaga),
     fork(dashboardSaga),
+    fork(forexDepositSaga),
+    fork(tradingAccountSaga)
   ]);
 }

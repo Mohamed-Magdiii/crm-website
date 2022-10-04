@@ -18,12 +18,13 @@ import {
 import CustomDropdown from "components/Common/CustomDropDown";
 import TableLoader from "components/Common/TableLoader";
 import Notification from "components/Common/Notification";
-import logo from "../../assets/images/logo-sm.svg";
+import logo from "../../../assets/images/logo-sm.svg";
 import { withTranslation } from "react-i18next";
 import { checkAllBoxes } from "common/utils/checkAllBoxes";
 import { Link } from "react-router-dom";
 import DetailsModal from "./DetailsModal";
 import { captilazeFirstLetter } from "common/utils/manipulateString";
+
 function Deposit(props){
   const dispatch = useDispatch();
   const [searchInput, setSearchInput] = useState("");
@@ -165,97 +166,93 @@ function Deposit(props){
   return (
 
     <React.Fragment>
-     
-      <div className="page-content">
-        <div className="container-fluid">
-          <Notification
-            onClose={closeNotifaction}
-            body={props.t("The deposit has been updated successfully")}
-            show={showNotication}
-            header={props.t("Deposit Update")}
-            logo={logo}/>
-          <Row>
-            <Col className="col-12">
-              <Card>
-                <CardHeader className="d-flex flex-column gap-3 ">
-                  <div className="d-flex justify-content-between align-items-center">
+      <Notification
+        onClose={closeNotifaction}
+        body={props.t("The deposit has been updated successfully")}
+        show={showNotication}
+        header={props.t("Deposit Update")}
+        logo={logo}
+      />
+      <Row>
+        <Col className="col-12">
+          <Card>
+            <CardHeader className="d-flex flex-column gap-3 ">
+              <div className="d-flex justify-content-between align-items-center">
+                
+                <CardTitle>{props.t(`Deposits(${props.totalDocs})`)}</CardTitle>
+                <AddDepositForm />
+              </div>
+              
+              <div className="d-flex justify-content-between align-items-center">
+                <SearchBar handleSearchInput={handleSearchInput} placeholder={props.t("Search for deposits")}/>
+                <div>
+                  <Dropdown
+                    isOpen={btnprimary1}
+                    toggle={() => setBtnprimary1(!btnprimary1)}
+                  >
+                    <DropdownToggle tag="button" className="btn btn-primary">
+                      {selected} <i className="mdi mdi-chevron-down" />
+                    </DropdownToggle>
+                    <DropdownMenu>
+                      <DropdownItem value="LIVE" onClick={(e)=>{setSelected(e.target.value)}}>LIVE</DropdownItem>
+                      <DropdownItem value="DEMO" onClick={(e)=>{setSelected(e.target.value)}}>DEMO</DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
+                </div>
+              </div>
+              
+            </CardHeader>
+            
+            
+            <CardBody>
+              
+              <div className="table-rep-plugin">
+                <div
+                  className="table-responsive mb-0"
+                  data-pattern="priority-columns"
+                >
+                  <Table
+                    id="tech-companies-1"
+                    className="table  table-hover "
+                  >
+                    <Thead className="text-center table-light" >
+                      <Tr>
+                        {columns.map((column, index) =>
+                          <Th data-priority={index} key={index}>{column.text}</Th>
+                        )}
+                      </Tr>
+                    </Thead>
                     
-                    <CardTitle>{props.t(`Deposits(${props.totalDocs})`)}</CardTitle>
-                    <AddDepositForm />
-                  </div>
-                  
-                  <div className="d-flex justify-content-between align-items-center">
-                    <SearchBar handleSearchInput={handleSearchInput} placeholder={props.t("Search for deposits")}/>
-                    <div>
-                      <Dropdown
-                        isOpen={btnprimary1}
-                        toggle={() => setBtnprimary1(!btnprimary1)}
-                      >
-                        <DropdownToggle tag="button" className="btn btn-primary">
-                          {selected} <i className="mdi mdi-chevron-down" />
-                        </DropdownToggle>
-                        <DropdownMenu>
-                          <DropdownItem value="LIVE" onClick={(e)=>{setSelected(e.target.value)}}>LIVE</DropdownItem>
-                          <DropdownItem value="DEMO" onClick={(e)=>{setSelected(e.target.value)}}>DEMO</DropdownItem>
-                        </DropdownMenu>
-                      </Dropdown>
-                    </div>
-                  </div>
-                 
-                </CardHeader>
-                
-                
-                <CardBody>
-                  
-                  <div className="table-rep-plugin">
-                    <div
-                      className="table-responsive mb-0"
-                      data-pattern="priority-columns"
-                    >
-                      <Table
-                        id="tech-companies-1"
-                        className="table  table-hover "
-                      >
-                        <Thead className="text-center table-light" >
-                          <Tr>
-                            {columns.map((column, index) =>
-                              <Th data-priority={index} key={index}>{column.text}</Th>
-                            )}
-                          </Tr>
-                        </Thead>
-                        
-                        <Tbody style = {{ fontSize : "13px" }}  >
-                          {props.loading && <TableLoader colSpan={4} />}
-                          {!props.loading && props.deposits.map((row, rowIndex) =>
-                            <Tr key={rowIndex}>
-                              {columns.map((column, index) =>
-                                <Td key={`${rowIndex}-${index}`} className= "pt-4">
-                                  { column.dataField === "checkbox" ? <input className = "deposit-checkbox" type="checkbox"/> : ""}
-                                  { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
-                                  {column.dataField === "dropdown" ? <CustomDropdown  permission={props.depositsPermissions.actions ? true : false}
-                                    id={row._id} status={row.status} approve={()=>{depositApprove(row)}} reject={()=>{depositReject(row)}} /> : ""}
-                                </Td>
-                              )}
-                            </Tr>
+                    <Tbody style = {{ fontSize : "13px" }}  >
+                      {props.loading && <TableLoader colSpan={4} />}
+                      {!props.loading && props.deposits.map((row, rowIndex) =>
+                        <Tr key={rowIndex}>
+                          {columns.map((column, index) =>
+                            <Td key={`${rowIndex}-${index}`} className= "pt-4">
+                              { column.dataField === "checkbox" ? <input className = "deposit-checkbox" type="checkbox"/> : ""}
+                              { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
+                              {column.dataField === "dropdown" ? <CustomDropdown  permission={props.depositsPermissions.actions ? true : false}
+                                id={row._id} status={row.status} approve={()=>{depositApprove(row)}} reject={()=>{depositReject(row)}} /> : ""}
+                            </Td>
                           )}
-                        </Tbody>
-                      </Table>
-                      <CustomPagination
-                        {...props}
-                        setSizePerPage={setSizePerPage}
-                        sizePerPage={sizePerPage}
-                        onChange={loadDeposits}
-                        docs={props.deposits}
-                      />
-                    </div>
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-          {<DetailsModal rawData= {selectedContent} open = {detailsModal} onClose = {()=>setDetailsModal(false)} />}
-        </div>
-      </div>
+                        </Tr>
+                      )}
+                    </Tbody>
+                  </Table>
+                  <CustomPagination
+                    {...props}
+                    setSizePerPage={setSizePerPage}
+                    sizePerPage={sizePerPage}
+                    onChange={loadDeposits}
+                    docs={props.deposits}
+                  />
+                </div>
+              </div>
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
+      {<DetailsModal rawData= {selectedContent} open = {detailsModal} onClose = {()=>setDetailsModal(false)} />}
     </React.Fragment>
   );
 

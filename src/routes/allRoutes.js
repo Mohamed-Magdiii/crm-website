@@ -21,8 +21,7 @@ import Page404 from "../pages/Authentication/Page404";
 import AssetsList from "../pages/Assests/AssetsList";
 import CurrencyPairsList from "../pages/CurrencyPairs/CurrencyPairsList";
 import MarkUpsList from "../pages/Markups/MarkUpsList";
-import Deposit from "pages/Transactions/Deposit";
-import Withdrawal from "pages/Transactions/Withdrawal";
+import Withdrawal from "pages/Transactions//Crypto/Withdrawal";
 import Reminder from "../pages/Reminder/Reminder";
 import DictionaryList from "pages/Dictionary.js/DictionaryList";
 import MarketPrice from "pages/MarketPrice/MarketPrice";
@@ -33,6 +32,7 @@ import usePermissions from "./permissions";
 import TransactionFeeGroupList from "pages/transactionFeeGroups/TransactionFeeGroupList";
 import OrderProfitList from "pages/OrderProfit/orderProfitList";
 import TransactionProfitList from "pages/TransactionProfit.js/TransactionProfitList";
+import DepositsIndex from "pages/Transactions/Index";
 
 function userRoutes() {
   const object = usePermissions();
@@ -138,7 +138,7 @@ function userRoutes() {
     },
     {
       path: "/transactions/deposit",
-      component: Deposit,
+      component: DepositsIndex,
       get: depositsPermissions.get
     },
     {
