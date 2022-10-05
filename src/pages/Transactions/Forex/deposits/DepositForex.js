@@ -3,37 +3,34 @@ import React, {
 } from "react";
 import { useDispatch, connect } from "react-redux";
 import {
-  Row, Col, Card, CardBody, CardHeader, CardTitle, Dropdown, DropdownToggle, DropdownMenu, DropdownItem
+  Row, Col, Card, CardBody, CardHeader, CardTitle, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown
 } from "reactstrap";
-
-import AddDepositForm from "./AddDepositForm";
-import {
-  fetchDepositsStart, depositRejectStart, depositApproveStart  
-} from "store/transactions/deposit/action";
+import AddForexDepositModal from "./AddForexDepositModal";
+import { fetchForexDeposits } from "store/forexTransactions/deposits/actions";
 import SearchBar from "components/Common/SearchBar";
 import CustomPagination from "components/Common/CustomPagination";
 import {
   Table, Thead, Tbody, Tr, Th, Td
 } from "react-super-responsive-table";
-import CustomDropdown from "components/Common/CustomDropDown";
+// import CustomDropdown from "components/Common/CustomDropDown";
 import TableLoader from "components/Common/TableLoader";
 import Notification from "components/Common/Notification";
-import logo from "../../../assets/images/logo-sm.svg";
+import logo from "../../../../assets/images/logo-sm.svg";
 import { withTranslation } from "react-i18next";
 import { checkAllBoxes } from "common/utils/checkAllBoxes";
 import { Link } from "react-router-dom";
-import DetailsModal from "./DetailsModal";
 import { captilazeFirstLetter } from "common/utils/manipulateString";
-
-function Deposit(props){
+import { fetchTradingAccounts } from "store/tradingAccounts/actions";
+import { fetchForexGatewaysStart } from "store/forexGateway/action";
+  
+function DepositForex(props){
   const dispatch = useDispatch();
+  const customerId = JSON.parse(localStorage.getItem("authUser")).roleId._id;
   const [searchInput, setSearchInput] = useState("");
   const [showNotication, setShowNotifaction] = useState(false);
-  const [detailsModal, setDetailsModal] = useState(false);
-  const [selectedContent, setSelectedContent] = useState("");
   const [sizePerPage, setSizePerPage] = useState(10);
   const [btnprimary1, setBtnprimary1] = useState(false);
-  const [selected, setSelected] = useState("LIVE");
+  const [selectedFilter, setSelectedFilter] = useState("ALL");
   const columns = [
     {
       dataField:"checkbox",
@@ -45,10 +42,14 @@ function Deposit(props){
       formatter: (val) => {
         let d = new Date(val.createdAt);
         d = d.getDate()  + "-" + (d.getMonth() +  1) + "-" + d.getFullYear() + " " +
-        d.getHours() + ":" + d.getMinutes();
+          d.getHours() + ":" + d.getMinutes();
         return d;
       }
-    }, 
+    },
+    {
+      dataField: "transactionId",
+      text: props.t("Transaction Id")
+    },
     {
       dataField:"customerId",
       text:props.t("Client"),
@@ -60,16 +61,22 @@ function Deposit(props){
                 pathname : `/clients/${val?.customerId?._id}/profile`,
                 state : { clientId : val.customerId }
               }}>
-              <i className="no-italics">{val.customerId ? `${captilazeFirstLetter(val.customerId.firstName)} ${captilazeFirstLetter(val.customerId.lastName)}` : ""}</i>
+              <bold className="no-italics">{val.customerId ? `${captilazeFirstLetter(val.customerId.firstName)} ${captilazeFirstLetter(val.customerId.lastName)}` : ""}</bold>
             </Link>
           </div>
         );
-        
       }
     },
     {
       dataField:"gateway",
-      text:props.t("Gateway")
+      text:props.t("Payment Gateway"),
+      formatter: (item) => (
+        captilazeFirstLetter(item.gateway)
+      )
+    },
+    {
+      dataField: "tradingAccount",
+      text: props.t("Trading Account"),
     },
     {
       dataField: "currency",
@@ -77,94 +84,105 @@ function Deposit(props){
     
     },
     {
+      dataField: "bankReceipt",
+      text: props.t("Bank Receipt"),
+    },
+    {
+      dataField: "note",
+      text: props.t("Note")
+    },
+    {
+      dataField: "paid",
+      text: props.t("paid")
+    },
+    {
+      dataField: "fee",
+      text: props.t("Fee")
+    },
+    {
+      dataField: "amount",
+      text: props.t("Amount")
+    },
+    {
+      dataField: "salesRep",
+      text: props.t("Sales Rep")
+    },
+    {
       dataField: "status",
       text: props.t("Status"),
-  
-    },
-    {
-      dataField:"reason",
-      text: props.t("Reason"),
-      formatter:(val)=>val.reason ? <div data-title = {val.reason}>
-        {
-          val.reason.length > 20 ? `${val.reason.slice(0, 20)}...` : val.reson
-        }
-      </div> : ""
-    },
-    {
-      dataField:"amount",
-      text:props.t("Amount"),
-      formatter: (val) => (val?.amount?.$numberDecimal || val?.amount || ""),
-    },
-    
-    {
-      dataField:"dropdown", 
-      text:props.t("Action")
+      formatter:(item) => {
+        return (
+          item.status === "approved" 
+            ?
+            <div>
+              <bold className="no-italics text-success">{captilazeFirstLetter(item.status)}</bold>
+            </div>
+            :
+            item.status === "pending"
+              ?
+              <div>
+                <bold className="no-italics text-warning">{captilazeFirstLetter(item.status)}</bold>
+              </div>
+              :
+              <div>
+                <bold className="no-italics text-danger">{captilazeFirstLetter(item.status)}</bold>
+              </div>
+        );
+      }
     },
     {
       dataField: "",
       isDummyField: true,
       editable: false,
-      text: props.t("Details"),
-      formatter: (val) => (
-        <div className="d-flex gap-3">
-          <Link className={val.gateway === "BLOCKCHAIN" ? "text-success" : "text-muted"} to="#">
-            <i
-              className="mdi mdi-eye font-size-20"
-              id="edittooltip"
-              onClick={() => {
-                if (val.gateway === "BLOCKCHAIN"){
-                  setDetailsModal(true); 
-                  setSelectedContent(val.rawData);
-                }
-               
-              }}
-            ></i>
-          </Link>
-        </div>
-      ),
+      text: props.t("Actions"),
+      formatter: () => (
+        <UncontrolledDropdown>
+          <DropdownToggle tag="i" className="text-muted" style={{ cursor: "pointer" }}>
+            <i className="mdi mdi-dots-horizontal font-size-18" />
+          </DropdownToggle>
+          <DropdownMenu className="dropdown-menu-end">
+            <DropdownItem href="#">{props.t("Approve")}</DropdownItem>
+            <DropdownItem href="#">{props.t("Reject")}</DropdownItem>
+          </DropdownMenu>
+        </UncontrolledDropdown>
+      )
     },
   ];
-  
-  useEffect(()=>{
-    if (!detailsModal)
-      loadDeposits(1, sizePerPage);
-  }, [sizePerPage, 1, searchInput, selected, props.depositResponseMessage]);
-  
+
   const handleSearchInput = (e)=>{
-  
-    setSearchInput(e.target.value);
-    
+    setSearchInput(e.target.value); 
   };
-  
-  
-  const loadDeposits = (page, limit)=>{
-    dispatch(fetchDepositsStart({
+
+  const loadForexDeposits = (page, limit)=>{
+    dispatch(fetchForexDeposits({
       limit, 
       page,
-      type:selected
-    }));
-    
-    
+      customerId
+    }));   
   };
-  const depositApprove = (deposit)=>{
-    dispatch(depositApproveStart({
-      id:deposit._id,
-      customerId:deposit.customerId._id 
-    }));
-    setShowNotifaction(true);
+
+  const loadTradingAccounts = ()=>{
+    dispatch(fetchTradingAccounts({ customerId }));   
   };
-  const depositReject = (deposit)=>{
-    dispatch(depositRejectStart({
-      id:deposit._id,
-      customerId:deposit.customerId._id 
-    }));
-    setShowNotifaction(true);
+
+  const loadForexGateways = ()=>{
+    dispatch(fetchForexGatewaysStart());   
   };
+
   const closeNotifaction = () => {
     setShowNotifaction(false);
   };
-  return (
 
+  useEffect(()=>{
+    loadForexDeposits(1, sizePerPage);
+  }, [sizePerPage, 1, searchInput, selectedFilter, props.depositResponseMessage]);
+
+  useEffect(() => {
+    loadTradingAccounts();
+    loadForexGateways();
+  }, []);
+
+  return (
     <React.Fragment>
       <Notification
         onClose={closeNotifaction}
@@ -178,11 +196,11 @@ function Deposit(props){
           <Card>
             <CardHeader className="d-flex flex-column gap-3 ">
               <div className="d-flex justify-content-between align-items-center">
-                
+                  
                 <CardTitle>{props.t(`Deposits(${props.totalDocs})`)}</CardTitle>
-                <AddDepositForm />
+                <AddForexDepositModal />
               </div>
-              
+                
               <div className="d-flex justify-content-between align-items-center">
                 <SearchBar handleSearchInput={handleSearchInput} placeholder={props.t("Search for deposits")}/>
                 <div>
@@ -191,21 +209,20 @@ function Deposit(props){
                     toggle={() => setBtnprimary1(!btnprimary1)}
                   >
                     <DropdownToggle tag="button" className="btn btn-primary">
-                      {selected} <i className="mdi mdi-chevron-down" />
+                      {selectedFilter} <i className="mdi mdi-chevron-down" />
                     </DropdownToggle>
                     <DropdownMenu>
-                      <DropdownItem value="LIVE" onClick={(e)=>{setSelected(e.target.value)}}>LIVE</DropdownItem>
-                      <DropdownItem value="DEMO" onClick={(e)=>{setSelected(e.target.value)}}>DEMO</DropdownItem>
+                      <DropdownItem value="ALL" onClick={(e)=>{setSelectedFilter(e.target.value)}}>All</DropdownItem>
+                      <DropdownItem value="APPROVED" onClick={(e)=>{setSelectedFilter(e.target.value)}}>Approved</DropdownItem>
+                      <DropdownItem value="REJECTED" onClick={(e)=>{setSelectedFilter(e.target.value)}}>Rejected</DropdownItem>
+                      <DropdownItem value="PENDING" onClick={(e)=>{setSelectedFilter(e.target.value)}}>Pending</DropdownItem>
                     </DropdownMenu>
                   </Dropdown>
                 </div>
               </div>
-              
+                
             </CardHeader>
-            
-            
             <CardBody>
-              
               <div className="table-rep-plugin">
                 <div
                   className="table-responsive mb-0"
@@ -222,8 +239,9 @@ function Deposit(props){
                         )}
                       </Tr>
                     </Thead>
+                      
                     {
-                      props.totalDocs === 0 
+                      props.totalDocs != 0
                         ?
                         <Tbody>
                           {props.loading && <TableLoader colSpan={4} />}                            
@@ -238,16 +256,16 @@ function Deposit(props){
                           }
                         </Tbody>
                         :
-                        <Tbody style = {{ fontSize : "13px" }}  >
+                        <Tbody className="text-center" style={{ fontSize : "13px" }}>
                           {props.loading && <TableLoader colSpan={4} />}
-                          {!props.loading && props.deposits.map((row, rowIndex) =>
+                          {!props.loading && props.forexDeposits.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`} className= "pt-4">
                                   { column.dataField === "checkbox" ? <input className = "deposit-checkbox" type="checkbox"/> : ""}
                                   { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
-                                  {column.dataField === "dropdown" ? <CustomDropdown  permission={props.depositsPermissions.actions ? true : false}
-                                    id={row._id} status={row.status} approve={()=>{depositApprove(row)}} reject={()=>{depositReject(row)}} /> : ""}
+                                  {/* {column.dataField === "dropdown" ? <CustomDropdown  permission={props.depositsPermissions.actions ? true : false}
+                                    id={row._id} status={row.status} approve={()=>{depositApprove(row)}} reject={()=>{depositReject(row)}} /> : ""} */}
                                 </Td>
                               )}
                             </Tr>
@@ -259,7 +277,7 @@ function Deposit(props){
                     {...props}
                     setSizePerPage={setSizePerPage}
                     sizePerPage={sizePerPage}
-                    onChange={loadDeposits}
+                    onChange={loadForexDeposits}
                     docs={props.deposits}
                   />
                 </div>
@@ -268,25 +286,24 @@ function Deposit(props){
           </Card>
         </Col>
       </Row>
-      {<DetailsModal rawData= {selectedContent} open = {detailsModal} onClose = {()=>setDetailsModal(false)} />}
     </React.Fragment>
   );
-
 }
-
+  
 const mapStateToProps = (state) => ({
-  loading: state.depositReducer.loading || false,
-  deposits: state.depositReducer.deposits || [],
-  page: state.depositReducer.page || 1,
-  totalDocs: state.depositReducer.totalDocs || 0,
-  totalPages: state.depositReducer.totalPages || 0,
-  hasNextPage: state.depositReducer.hasNextPage,
-  hasPrevPage: state.depositReducer.hasPrevPage,
-  limit: state.depositReducer.limit,
-  nextPage: state.depositReducer.nextPage,
-  pagingCounter: state.depositReducer.pagingCounter,
-  prevPage: state.depositReducer.prevPage,
+  loading: state.forexDepositReducer.loading || false,
+  forexDeposits: state.forexDepositReducer.forexDeposits || [],
+  page: state.forexDepositReducer.page || 1,
+  totalDocs: state.forexDepositReducer.forexTotalDocs || 0,
+  totalPages: state.forexDepositReducer.totalPages || 0,
+  hasNextPage: state.forexDepositReducer.hasNextPage,
+  hasPrevPage: state.forexDepositReducer.hasPrevPage,
+  limit: state.forexDepositReducer.limit,
+  nextPage: state.forexDepositReducer.nextPage,
+  pagingCounter: state.forexDepositReducer.pagingCounter,
+  prevPage: state.forexDepositReducer.prevPage,
   depositsPermissions : state.Profile.depositsPermissions || {},
-  depositResponseMessage:state.depositReducer.depositResponseMessage
+  depositResponseMessage:state.forexDepositReducer.depositResponseMessage,
+  tradingAccounts: state.tradingAccountReducer.tradingAccounts
 });
-export default connect(mapStateToProps, null)(withTranslation()(Deposit));
+export default connect(mapStateToProps, null)(withTranslation()(DepositForex));

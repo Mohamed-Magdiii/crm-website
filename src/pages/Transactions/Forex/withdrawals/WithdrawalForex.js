@@ -3,10 +3,10 @@ import React, {
 } from "react";
 import { useDispatch, connect } from "react-redux";
 import {
-  Row, Col, Card, CardBody, CardHeader, CardTitle, Dropdown, DropdownToggle, DropdownMenu, DropdownItem
+  Row, Col, Card, CardBody, CardHeader, CardTitle, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown
 } from "reactstrap";
-import AddForexDepositModal from "./AddForexDepositModal";
-import { fetchForexDeposits } from "store/forexTransactions/deposits/actions";
+import AddForexWithdrawalModal from "./AddForexWithdrawalModal";
+import { fetchForexWithdrawals } from "store/forexTransactions/withdrawals/actions";
 import SearchBar from "components/Common/SearchBar";
 import CustomPagination from "components/Common/CustomPagination";
 import {
@@ -15,14 +15,15 @@ import {
 // import CustomDropdown from "components/Common/CustomDropDown";
 import TableLoader from "components/Common/TableLoader";
 import Notification from "components/Common/Notification";
-import logo from "../../../assets/images/logo-sm.svg";
+import logo from "../../../../assets/images/logo-sm.svg";
 import { withTranslation } from "react-i18next";
 import { checkAllBoxes } from "common/utils/checkAllBoxes";
 import { Link } from "react-router-dom";
 import { captilazeFirstLetter } from "common/utils/manipulateString";
 import { fetchTradingAccounts } from "store/tradingAccounts/actions";
+import { fetchForexGatewaysOfWithdrawalsStart } from "store/forexGateway/action";
   
-function DepositForex(props){
+function WithdrawalForex(props){
   const dispatch = useDispatch();
   const customerId = JSON.parse(localStorage.getItem("authUser")).roleId._id;
   const [searchInput, setSearchInput] = useState("");
@@ -60,7 +61,7 @@ function DepositForex(props){
                 pathname : `/clients/${val?.customerId?._id}/profile`,
                 state : { clientId : val.customerId }
               }}>
-              <i className="no-italics">{val.customerId ? `${captilazeFirstLetter(val.customerId.firstName)} ${captilazeFirstLetter(val.customerId.lastName)}` : ""}</i>
+              <bold className="no-italics">{val.customerId ? `${captilazeFirstLetter(val.customerId.firstName)} ${captilazeFirstLetter(val.customerId.lastName)}` : ""}</bold>
             </Link>
           </div>
         );
@@ -69,24 +70,25 @@ function DepositForex(props){
     },
     {
       dataField:"gateway",
-      text:props.t("Payment Gateway")
+      text:props.t("Payment Gateway"),
+      formatter: (item) => (
+        captilazeFirstLetter(item.gateway)
+      )
+    },
+    {
+      dataField: "walletId",
+      text: props.t("Wallet ID")
     },
     {
       dataField: "tradingAccount",
       text: props.t("Trading Account"),
     },
     {
-      dataField: "currency",
-      text: props.t("Currency"),
-    
-    },
-    {
-      dataField: "BankReceipt",
-      text: props.t("Bank Receipt"),
-    },
-    {
       dataField: "note",
-      text: props.t("Note")
+      text: props.t("Note"),
+      formatter: (item) => (
+        captilazeFirstLetter(item.note)
+      )
     },
     {
       dataField: "paid",
@@ -106,7 +108,26 @@ function DepositForex(props){
     },
     {
       dataField: "status",
-      text: props.t("Status")
+      text: props.t("Status"),
+      formatter:(item) => {
+        return (
+          item.status === "approved" 
+            ?
+            <div>
+              <bold className="no-italics text-success">{captilazeFirstLetter(item.status)}</bold>
+            </div>
+            :
+            item.status === "pending"
+              ?
+              <div>
+                <bold className="no-italics text-warning">{captilazeFirstLetter(item.status)}</bold>
+              </div>
+              :
+              <div>
+                <bold className="no-italics text-danger">{captilazeFirstLetter(item.status)}</bold>
+              </div>
+        );
+      }
     },
     {
       dataField: "",
@@ -114,15 +135,15 @@ function DepositForex(props){
       editable: false,
       text: props.t("Actions"),
       formatter: () => (
-        <>
-          <DropdownToggle tag="i" className="text-muted">
+        <UncontrolledDropdown>
+          <DropdownToggle tag="i" className="text-muted" style={{ cursor: "pointer" }}>
             <i className="mdi mdi-dots-horizontal font-size-18" />
           </DropdownToggle>
           <DropdownMenu className="dropdown-menu-end">
             <DropdownItem href="#">{props.t("Approve")}</DropdownItem>
             <DropdownItem href="#">{props.t("Reject")}</DropdownItem>
           </DropdownMenu>
-        </>
+        </UncontrolledDropdown>
       )
     },
   ];
@@ -131,8 +152,8 @@ function DepositForex(props){
     setSearchInput(e.target.value); 
   };
 
-  const loadDeposits = (page, limit)=>{
-    dispatch(fetchForexDeposits({
+  const loadForexWithdrawals = (page, limit)=>{
+    dispatch(fetchForexWithdrawals({
       limit, 
       page,
       customerId
@@ -143,35 +164,39 @@ function DepositForex(props){
     dispatch(fetchTradingAccounts({ customerId }));   
   };
 
+  const loadForexGateways = ()=>{
+    dispatch(fetchForexGatewaysOfWithdrawalsStart());   
+  };
+
   const closeNotifaction = () => {
     setShowNotifaction(false);
   };
 
   useEffect(()=>{
-    loadDeposits(1, sizePerPage);
+    loadForexWithdrawals(1, sizePerPage);
   }, [sizePerPage, 1, searchInput, selectedFilter, props.depositResponseMessage]);
 
   useEffect(() => {
     loadTradingAccounts();
+    // loadForexGateways();
   }, []);
 
   return (
     <React.Fragment>
       <Notification
         onClose={closeNotifaction}
-        body={props.t("The deposit has been updated successfully")}
+        body={props.t("Withdrawal has been updated successfully")}
         show={showNotication}
-        header={props.t("Deposit Update")}
+        header={props.t("Withdrawal Update")}
         logo={logo}
       />
       <Row>
         <Col className="col-12">
           <Card>
-            <CardHeader className="d-flex flex-column gap-3 ">
+            <CardHeader className="d-flex flex-column gap-3">
               <div className="d-flex justify-content-between align-items-center">
-                  
                 <CardTitle>{props.t(`Deposits(${props.totalDocs})`)}</CardTitle>
-                <AddForexDepositModal tradingAccounts={props.tradingAccounts}/>
+                <AddForexWithdrawalModal />
               </div>
                 
               <div className="d-flex justify-content-between align-items-center">
@@ -212,7 +237,6 @@ function DepositForex(props){
                         )}
                       </Tr>
                     </Thead>
-                      
                     {
                       props.totalDocs === 0
                         ?
@@ -229,9 +253,9 @@ function DepositForex(props){
                           }
                         </Tbody>
                         :
-                        <Tbody className="text-center" style={{ fontSize : "13px" }}>
+                        <Tbody className="text-center" style={{ fontSize: "13px" }}>
                           {props.loading && <TableLoader colSpan={4} />}
-                          {!props.loading && props.forexDeposits.map((row, rowIndex) =>
+                          {!props.loading && props.forexWithdrawals.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`} className= "pt-4">
@@ -250,7 +274,7 @@ function DepositForex(props){
                     {...props}
                     setSizePerPage={setSizePerPage}
                     sizePerPage={sizePerPage}
-                    onChange={loadDeposits}
+                    onChange={loadForexWithdrawals}
                     docs={props.deposits}
                   />
                 </div>
@@ -264,19 +288,19 @@ function DepositForex(props){
 }
   
 const mapStateToProps = (state) => ({
-  loading: state.forexDepositReducer.loading || false,
-  forexDeposits: state.forexDepositReducer.forexDeposits || [],
-  page: state.forexDepositReducer.page || 1,
-  totalDocs: state.forexDepositReducer.forexTotalDocs || 0,
-  totalPages: state.forexDepositReducer.totalPages || 0,
-  hasNextPage: state.forexDepositReducer.hasNextPage,
-  hasPrevPage: state.forexDepositReducer.hasPrevPage,
-  limit: state.forexDepositReducer.limit,
-  nextPage: state.forexDepositReducer.nextPage,
-  pagingCounter: state.forexDepositReducer.pagingCounter,
-  prevPage: state.forexDepositReducer.prevPage,
+  loading: state.forexWithdrawalReducer.loading || false,
+  forexWithdrawals: state.forexWithdrawalReducer.forexWithdrawals || [],
+  page: state.forexWithdrawalReducer.page || 1,
+  totalDocs: state.forexWithdrawalReducer.forexTotalDocs || 0,
+  totalPages: state.forexWithdrawalReducer.totalPages || 0,
+  hasNextPage: state.forexWithdrawalReducer.hasNextPage,
+  hasPrevPage: state.forexWithdrawalReducer.hasPrevPage,
+  limit: state.forexWithdrawalReducer.limit,
+  nextPage: state.forexWithdrawalReducer.nextPage,
+  pagingCounter: state.forexWithdrawalReducer.pagingCounter,
+  prevPage: state.forexWithdrawalReducer.prevPage,
   depositsPermissions : state.Profile.depositsPermissions || {},
-  depositResponseMessage:state.forexDepositReducer.depositResponseMessage,
+  depositResponseMessage:state.forexWithdrawalReducer.depositResponseMessage,
   tradingAccounts: state.tradingAccountReducer.tradingAccounts
 });
-export default connect(mapStateToProps, null)(withTranslation()(DepositForex));
+export default connect(mapStateToProps, null)(withTranslation()(WithdrawalForex));

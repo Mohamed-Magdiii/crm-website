@@ -7,60 +7,40 @@ import {
   UncontrolledAlert,
   Label,
   Row,
-  Col,
-  Input
+  Col
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
-import "./SearchableInputStyles.scss";
+import "../SearchableInputStyles.scss";
 import { withTranslation } from "react-i18next";
 import Select from "react-select";
-import { addForexDeposit } from "store/forexTransactions/deposits/actions";
+import { addForexWithdrawal } from "store/forexTransactions/withdrawals/actions";
 import Loader from "components/Common/Loader";
 
-function AddForexDepositModal(props){
+function AddForexWithdrawalModal(props){
   const dispatch = useDispatch();
   const customerId = JSON.parse(localStorage.getItem("authUser")).roleId._id;
-  const { create } = props.depositsPermissions;
+  const { create } = props.withdrawalsPermissions;
   const [addModal, setDepositModal] = useState(false);
-  const [memFiles, setMemFiles] = useState({});
-  const [imageError, setImageError] = useState();
   const [gateway, setGateway] = useState("");
+  const [accountType, setAccuntType] = useState("");
   const [tradingAccountOwnerName, setTradingAccountOwnerName] = useState();
 
-  // max file size to uplaod = 5 MB
-  const maxFileSize = 5;
-  const acceptedExtensions = ["image/jpeg", "image/png", "application/pdf"];
-  const fileSizeError = "File is too large, It has to be 5MB at most";
-  const fileExtensionError = "Only accepts files with the following extensions *jpg, *png, *pdf";
-
-  const addFile = (name, files) => {
-    // clear previous error
-    setImageError("");
-
-    // check file extension
-    if (!acceptedExtensions.includes(files?.type)){
-      setImageError(fileExtensionError);
+  // account type options
+  const accountTypeOptions = [
+    {
+      label: "Live Account",
+      value: "liveAccount"
+    },
+    {
+      label: "IB Account (Individual)",
+      value: "ibAccount"
     }
-
-    // check file size
-    if ((files?.size / 1000000) > maxFileSize){
-      setImageError(fileSizeError);
-    }
-
-    // otherwise it's all good 
-    if ((files?.size / 1000000) <= maxFileSize){
-      setMemFiles({
-        ...memFiles,
-        [name]: files,
-      });
-    }
-  };
+  ];
   
   const toggleAddModal = () => {
     setDepositModal(!addModal);
-    setImageError("");
     setTradingAccountOwnerName("");
   };
 
@@ -84,7 +64,7 @@ function AddForexDepositModal(props){
   ];
 
   const handleAddForexDeposit = (e, v) => {
-    dispatch(addForexDeposit(v));
+    dispatch(addForexWithdrawal(v));
   };
 
   const handleLiveAccountChange = (e) => {
@@ -97,36 +77,56 @@ function AddForexDepositModal(props){
     } else
       cb(true);
   };
-
+  
   return (
     <React.Fragment >
-      <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> {props.t("Add New Deposit")}</Link>
+      <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> {props.t("Add New Withdrawal")}</Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
-          {props.t("Add Deposit")}
+          {props.t("Add New Withdrawal")}
         </ModalHeader>
         <ModalBody >
           <AvForm
             className='p-4'
             onValidSubmit={(e, v) => {
               v.gateway = gateway;
-              // v.image = memFiles;
+              v.accountType = accountType;
               v.customerId = customerId;
-              v.tradingAccountId = test.filter((item) => (item.recordId === v.liveAccount))[0]?._id;
-              delete v.liveAccount;
+              v.tradingAccountId = test.filter((item) => (item.recordId === v.account))[0]?._id;
+              delete v.account;
               delete v.customerName;
+              delete v.accountType;
               handleAddForexDeposit(e, v);
             }}
           >
             <Row className="mb-3">
-              {/* live account */}
+              {/* account type live or IB (individual) */}
+              <Col md="12">
+                <Label>{props.t("Account Type")}</Label>
+                <div>
+                  <Select 
+                    required
+                    onChange={(e) => {
+                      setAccuntType(e.value.gateway);
+                    }}
+                    isSearchable = {true}
+                    options={accountTypeOptions}
+                    classNamePrefix="select2-selection"
+                    placeholder = "Choose An Account Type"    
+                  />
+                </div>
+              </Col>
+            </Row>
+
+            {/* account */}
+            <Row className="mb-3">
               <Col md="12">
                 <AvField
-                  name="liveAccount"
-                  label={props.t("Live Account")}
-                  placeholder={props.t("Enter Live Account")}
+                  name="account"
+                  label={props.t("Account")}
+                  placeholder={props.t("Enter An Account")}
                   type="text"
-                  errorMessage={props.t("Enter Valid Live Account")}
+                  errorMessage={props.t("Enter Valid Account")}
                   validate = {{
                     required :{ value:true },
                     custom:validateLiveAccount
@@ -148,7 +148,7 @@ function AddForexDepositModal(props){
 
             {/* customer name */}
             <Row className="mb-3">
-              <Col md="6">
+              <Col md="12">
                 <AvField
                   readOnly={true}
                   value={tradingAccountOwnerName}
@@ -175,13 +175,14 @@ function AddForexDepositModal(props){
                       setGateway(e.value.gateway);
                     }}
                     isSearchable = {true}
-                    options={Object.keys(props.gateways).map((key) => (
+                    options={Object.keys(props.forexWithdrawalGateways).map((key) => (
                       {
-                        label : `${props.gateways[key]}`,
+                        label : `${props.forexWithdrawalGateways[key]}`,
                         value : {
-                          gateway: `${props.gateways[key]}`
+                          gateway: `${props.forexWithdrawalGateways[key]}`
                         }
                       }
+  
                     ))}
                     classNamePrefix="select2-selection"
                     placeholder = "Choose A Gateway"    
@@ -190,9 +191,8 @@ function AddForexDepositModal(props){
               </Col>
             </Row>
 
-            {/* amount and image */}
+            {/* amount */}
             <Row className="mb-3">
-              {/* amount */}
               <Col md="6">
                 <AvField
                   name="amount"
@@ -205,24 +205,6 @@ function AddForexDepositModal(props){
                     required :{ value:true }
                   }}
                 />
-              </Col>
-
-              {/* image */}
-              <Col md="6">
-                <Label>{props.t("Image")}</Label>
-                <Input
-                  type="file"
-                  className="form-control form-control-md"
-                  id="image"
-                  onChange={(e) => {
-                    addFile("IMAGE", e.target.files[0]);
-                  }}
-                  name="image"
-                  invalid={imageError}
-                />
-                {
-                  imageError && <small className="text-danger">{imageError}</small>
-                }
               </Col>
             </Row>
 
@@ -253,9 +235,9 @@ function AddForexDepositModal(props){
               }
             </div>
           </AvForm>
-          {props.addForexDepositFailDetails && <UncontrolledAlert color="danger">
+          {props.addForexWithdrawalFailDetails && <UncontrolledAlert color="danger">
             <i className="mdi mdi-block-helper me-2" />
-            {props.t(props.addForexDepositFailDetails)}
+            {props.t(props.addForexWithdrawalFailDetails)}
           </UncontrolledAlert>}
         </ModalBody> 
       </Modal>
@@ -263,14 +245,12 @@ function AddForexDepositModal(props){
   );
 }
 const mapStateToProps = (state) => ({
-  gateways:state.gatewayReducer.gateways || [],
-  modalClear:state.depositReducer.modalClear,
-  depositResponseMessage:state.depositReducer.depositResponseMessage,
-  clients:state.clientReducer.clients || [],
-  wallets:state.walletReducer.wallets || [],
-  depositsPermissions : state.Profile.depositsPermissions || {}, 
-  disableAddButton : state.depositReducer.disableAddButton,
-  loading: state.tradingAccountReducer.loading,
-  addForexDepositFailDetails: state.forexDepositReducer.addForexDepositFailDetails
+  forexWithdrawalGateways: state.forexGatewayReducer.forexWithdrawalGateways || [],
+  withdrawalsPermissions : state.Profile.withdrawalsPermissions || {}, 
+  modalClear: state.forexWithdrawalReducer.modalClear,
+  disableAddButton : state.forexWithdrawalReducer.disableAddButton,
+  loading: state.forexWithdrawalReducer.loading,
+  addForexWithdrawalFailDetails: state.forexWithdrawalReducer.addForexWithdrawalFailDetails,
+  tradingAccounts: state.tradingAccountReducer.tradingAccounts
 });
-export default connect(mapStateToProps, null)(withTranslation()(AddForexDepositModal));
+export default connect(mapStateToProps, null)(withTranslation()(AddForexWithdrawalModal));

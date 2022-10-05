@@ -48,6 +48,8 @@ import logsReducer from "./logs/reducer";
 import dashboardReducer from "./dashboard/reducer";
 import forexDepositReducer from "./forexTransactions/deposits/reducer";
 import tradingAccountReducer from "./tradingAccounts/reducer";
+import forexGatewayReducer from "./forexGateway/reducer";
+import forexWithdrawalReducer from "./forexTransactions/withdrawals/reducer";
 
 const rootReducer = combineReducers({
   // public
@@ -86,7 +88,9 @@ const rootReducer = combineReducers({
   logsReducer,
   dashboardReducer,
   forexDepositReducer,
-  tradingAccountReducer
+  tradingAccountReducer,
+  forexGatewayReducer,
+  forexWithdrawalReducer
 });
 
 export default rootReducer;

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { 
   useDispatch, connect 
 } from "react-redux";
-
+import MetaTags from "react-meta-tags";
 import { fetchDictionaryStart } from "store/dictionary/actions";
 import {
   Card,
@@ -13,12 +13,11 @@ import {
   NavLink,
   Row,
   TabContent,
-  TabPane,
-
+  TabPane
 } from "reactstrap";
 import classnames from "classnames";
 import Deposits from "pages/Transactions/Crypto/Deposit";
-import DepositsForex from "pages/Transactions/Forex/DepositForex";
+import DepositsForex from "pages/Transactions/Forex/deposits/DepositForex";
 
 function DepositsIndex(){
   const dispatch = useDispatch();
@@ -32,9 +31,13 @@ function DepositsIndex(){
     }
   };
   
-
   return (
     <React.Fragment>
+      <MetaTags>
+        <title>
+          Deposits
+        </title>
+      </MetaTags>
       <div className="page-content"> 
         <div className="container-fluid">
           <h2>Deposits</h2>
