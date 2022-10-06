@@ -33,13 +33,15 @@ const tradingAccountReducer = (state = initalState, action) => {
         prevPage: action.payload.result.prevPage,
         totalPages: action.payload.result.totalPages,
         loading: false,  
+        fetchTradingAccountsFail: false
       };
       break;
     case FETCH_TRADING_ACCOUNTS_FAIL:
       state = {
         ...state,
         loading: false,
-        errorMessage: action.payload
+        errorMessage: action.payload,
+        fetchTradingAccountsFail: true
       };
       break;
 

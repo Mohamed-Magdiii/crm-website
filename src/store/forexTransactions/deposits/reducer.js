@@ -56,7 +56,10 @@ const forexDepositReducer = (state = initalState, action) => {
     case ADD_FOREX_DEPOSIT_REQUESTED:
       state = {
         ...state,
-        addLoading: true
+        addLoading: true,
+        addForexDepositSuccess: false,
+        addForexDepositFail: false,
+        addForexDepositFailDetails: ""
       };
       break;
     case ADD_FOREX_DEPOSIT_SUCCESS:
@@ -83,7 +86,8 @@ const forexDepositReducer = (state = initalState, action) => {
         addForexDepositClearingCounter: state.addForexDepositClearingCounter + 1,
         addForexDepositFail: false,
         addForexDepositSuccess: false,
-        modalClear: true
+        modalClear: true,
+        addForexDepositFailDetails: ""
       };
       break;
     

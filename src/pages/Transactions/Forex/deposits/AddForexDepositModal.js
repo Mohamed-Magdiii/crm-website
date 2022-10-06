@@ -89,11 +89,11 @@ function AddForexDepositModal(props){
   };
 
   const validateLiveAccount = (value, ctx, input, cb) =>{
-    if (!props.tradingAccounts.map((item) => (item.login))[0] == value){
+    if (!props.tradingAccounts.map((item) => (item.login))[0] == value || props.fetchTradingAccountsFail){
       cb("Enter A Valid Live Account");
     } else cb(true);
   };
-  
+
   return (
     <React.Fragment >
       <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> {props.t("Add New Deposit")}</Link>
@@ -147,7 +147,7 @@ function AddForexDepositModal(props){
               <Col md="6">
                 <AvField
                   readOnly={true}
-                  value={tradingAccountOwnerName}
+                  value={!props.fetchTradingAccountFail && !props.fetchTradingAccountsLoading ? tradingAccountOwnerName : ""}
                   name="customerName"
                   label={props.t("Customer Name")}
                   placeholder={props.t("Customer Name")}
@@ -266,6 +266,8 @@ const mapStateToProps = (state) => ({
   disableAddButton : state.forexDepositReducer.disableAddButton,
   addLoading: state.forexDepositReducer.addLoading,
   addForexDepositFailDetails: state.forexDepositReducer.addForexDepositFailDetails,
-  tradingAccounts: state.tradingAccountReducer.tradingAccounts
+  tradingAccounts: state.tradingAccountReducer.tradingAccounts,
+  fetchTradingAccountsFail: state.tradingAccountReducer.fetchTradingAccountsFail,
+  fetchTradingAccountsLoading: state.tradingAccountReducer.loading
 });
 export default connect(mapStateToProps, null)(withTranslation()(AddForexDepositModal));
