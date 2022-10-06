@@ -11,7 +11,8 @@ import {
 
 const initalState = {
   forexDeposits:[],
-  loading:false,
+  fetchLoading:false,
+  addLoading:false,
   error:"",
   modalClear:false,
   forexDepositResponseMessage:"",
@@ -24,7 +25,7 @@ const forexDepositReducer = (state = initalState, action) => {
     case FETCH_FOREX_DEPOSITS_REQUESTED:
       state = {
         ...state,
-        loading: true
+        fetchLoading: true
       };
       break;
     case FETCH_FOREX_DEPOSITS_SUCCESS:
@@ -40,13 +41,13 @@ const forexDepositReducer = (state = initalState, action) => {
         pagingCounter: action.payload.result.pagingCounter,
         prevPage: action.payload.result.prevPage,
         totalPages: action.payload.result.totalPages,
-        loading: false,  
+        fetchLoading: false,  
       };
       break;
     case FETCH_FOREX_DEPOSITS_FAIL:
       state = {
         ...state,
-        loading: false,
+        fetchLoading: false,
         forexDepositError: action.payload
       };
       break;
@@ -55,7 +56,7 @@ const forexDepositReducer = (state = initalState, action) => {
     case ADD_FOREX_DEPOSIT_REQUESTED:
       state = {
         ...state,
-        loading: true
+        addLoading: true
       };
       break;
     case ADD_FOREX_DEPOSIT_SUCCESS:
@@ -71,14 +72,14 @@ const forexDepositReducer = (state = initalState, action) => {
         ...state,
         addForexDepositSuccess: false,
         addForexDepositFail: true,
-        loading: false,
+        addLoading: false,
         addForexDepositFailDetails: action.payload.error
       };
       break;
     case ADD_FOREX_DEPOSIT_CLEAR:
       state = {
         ...state,
-        loading: false,
+        addLoading: false,
         addForexDepositClearingCounter: state.addForexDepositClearingCounter + 1,
         addForexDepositFail: false,
         addForexDepositSuccess: false,

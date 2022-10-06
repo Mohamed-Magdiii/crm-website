@@ -18,30 +18,31 @@ import Select from "react-select";
 import { addForexWithdrawal } from "store/forexTransactions/withdrawals/actions";
 import Loader from "components/Common/Loader";
 
-function AddForexWithdrawalModal(props){
+function AddCreditModal(props){
   const dispatch = useDispatch();
   const customerId = JSON.parse(localStorage.getItem("authUser")).roleId._id;
   const { create } = props.withdrawalsPermissions;
   const [addModal, setAddModal] = useState(false);
-  const [gateway, setGateway] = useState("");
-  const [accountType, setAccuntType] = useState("");
   const [tradingAccountOwnerName, setTradingAccountOwnerName] = useState();
+  const [transferToAccount, setTransferToAccount] = useState();
+  const [creditType, setCreditType] = useState();
 
-  // account type options
-  const accountTypeOptions = [
+  // credit type options
+  const creditTypeOptions = [
     {
-      label: "Live Account",
-      value: "liveAccount"
+      label: "Credit In",
+      value: "creditIn"
     },
     {
-      label: "IB Account (Individual)",
-      value: "ibAccount"
+      label: "Credit Out",
+      value: "creditOut"
     }
   ];
   
   const toggleAddModal = () => {
     setAddModal(!addModal);
     setTradingAccountOwnerName("");
+    setTransferToAccount("");
   };
 
   useEffect(() => {
@@ -80,50 +81,31 @@ function AddForexWithdrawalModal(props){
   
   return (
     <React.Fragment >
-      <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> {props.t("Add New Withdrawal")}</Link>
+      <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> {props.t("Add New Credit")}</Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
-          {props.t("Add New Withdrawal")}
+          {props.t("Add New Credit")}
         </ModalHeader>
         <ModalBody >
           <AvForm
             className='p-4'
             onValidSubmit={(e, v) => {
-              v.gateway = gateway;
-              v.accountType = accountType;
               v.customerId = customerId;
               v.tradingAccountId = test.filter((item) => (item.recordId === v.account))[0]?._id;
+              v.creditType = creditType;
+              v.transferToAccount = transferToAccount;
               delete v.account;
               delete v.customerName;
               delete v.accountType;
               handleAddForexDeposit(e, v);
             }}
           >
-            {/* account type live or IB (individual) */}
-            <Row className="mb-3">
-              <Col md="12">
-                <Label>{props.t("Account Type")}</Label>
-                <div>
-                  <Select 
-                    required
-                    onChange={(e) => {
-                      setAccuntType(e.value);
-                    }}
-                    isSearchable = {true}
-                    options={accountTypeOptions}
-                    classNamePrefix="select2-selection"
-                    placeholder = "Choose An Account Type"    
-                  />
-                </div>
-              </Col>
-            </Row>
-
-            {/* account */}
+            {/* live account */}
             <Row className="mb-3">
               <Col md="12">
                 <AvField
-                  name="account"
-                  label={props.t("Account")}
+                  name="liveAccount"
+                  label={props.t("Live Account")}
                   placeholder={props.t("Enter An Account")}
                   type="text"
                   errorMessage={props.t("Enter A Valid Account")}
@@ -164,34 +146,7 @@ function AddForexWithdrawalModal(props){
               </Col>
             </Row>
 
-            {/* gateway */}
-            <Row className="mb-3">
-              <Col md="12">
-                <Label>{props.t("Gateway")}</Label>
-                <div>
-                  <Select 
-                    required
-                    onChange={(e) => {
-                      setGateway(e.value.gateway);
-                    }}
-                    isSearchable = {true}
-                    options={Object.keys(props.forexWithdrawalGateways).map((key) => (
-                      {
-                        label : `${props.forexWithdrawalGateways[key]}`,
-                        value : {
-                          gateway: `${props.forexWithdrawalGateways[key]}`
-                        }
-                      }
-  
-                    ))}
-                    classNamePrefix="select2-selection"
-                    placeholder = "Choose A Gateway"    
-                  />
-                </div>
-              </Col>
-            </Row>
-
-            {/* amount */}
+            {/* amount and credit type*/}
             <Row className="mb-3">
               <Col md="6">
                 <AvField
@@ -205,6 +160,22 @@ function AddForexWithdrawalModal(props){
                     required :{ value:true }
                   }}
                 />
+              </Col>
+
+              <Col md="6">
+                <Label>{props.t("Credit Type")}</Label>
+                <div>
+                  <Select 
+                    required
+                    onChange={(e) => {
+                      setCreditType(e.value.gateway);
+                    }}
+                    options={creditTypeOptions}
+                    isSearchable = {true}
+                    classNamePrefix="select2-selection"
+                    placeholder = "Choose An Account"    
+                  />
+                </div>
               </Col>
             </Row>
 
@@ -235,9 +206,9 @@ function AddForexWithdrawalModal(props){
               }
             </div>
           </AvForm>
-          {props.addForexWithdrawalFailDetails && <UncontrolledAlert color="danger">
+          {props.addinternalTransferFailDetails && <UncontrolledAlert color="danger">
             <i className="mdi mdi-block-helper me-2" />
-            {props.t(props.addForexWithdrawalFailDetails)}
+            {props.t(props.addinternalTransferFailDetails)}
           </UncontrolledAlert>}
         </ModalBody> 
       </Modal>
@@ -245,12 +216,11 @@ function AddForexWithdrawalModal(props){
   );
 }
 const mapStateToProps = (state) => ({
-  forexWithdrawalGateways: state.forexGatewayReducer.forexWithdrawalGateways || [],
   withdrawalsPermissions : state.Profile.withdrawalsPermissions || {}, 
-  modalClear: state.forexWithdrawalReducer.modalClear,
-  disableAddButton : state.forexWithdrawalReducer.disableAddButton,
-  loading: state.forexWithdrawalReducer.loading,
-  addForexWithdrawalFailDetails: state.forexWithdrawalReducer.addForexWithdrawalFailDetails,
+  modalClear: state.creditReducer.modalClear,
+  disableAddButton : state.creditReducer.disableAddButton,
+  loading: state.creditReducer.loading,
+  addinternalTransferFailDetails: state.creditReducer.addinternalTransferFailDetails,
   tradingAccounts: state.tradingAccountReducer.tradingAccounts
 });
-export default connect(mapStateToProps, null)(withTranslation()(AddForexWithdrawalModal));
+export default connect(mapStateToProps, null)(withTranslation()(AddCreditModal));

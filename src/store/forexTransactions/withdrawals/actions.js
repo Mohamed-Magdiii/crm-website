@@ -20,7 +20,7 @@ export const fetchForexWithdrawals = (params = {}) => {
 export const fetchForexWithdrawalsSuccess = (data) => {
   return {
     type: FETCH_FOREX_WITHDRAWALS_SUCCESS,
-    paylad: data
+    payload: data
   };
 };
 export const fetchForexWithdrawalsFail = (error) => {

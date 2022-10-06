@@ -20,12 +20,14 @@ import { withRouter, Link } from "react-router-dom";
 
 const SidebarContent = (props) => {
   const ref = useRef();
-  
+
   const { get:getUser } = props.userPermissions;
   const { get:getClient } = props.clientPermissions;
   const { get:getLeads } = props.leadsPermissions;
   const { get:getDeposits } = props.depositsPermissions;
   const { get:getWithdrawals } = props.withdrawalsPermissions;
+  // const { get: getInternalTranfer } = props.internalTransferPermissions;
+  // const { get: getCredit } = props.creditPermissions;
   const { get:getMarkups } = props.markupsPermissions;
   const { get:getRoles } = props.rolesPermissions;
   const { get:getDictionaries } = props.dictionariesPermissions;
@@ -150,7 +152,13 @@ const SidebarContent = (props) => {
                   <Link to="/transactions/deposit" className= {`${!getDeposits ? "d-none" : ""}`}>{props.t("Deposit")}</Link>
                 </li>
                 <li>
-                  <Link to="/transactions/withdrawals" className = {`${!getWithdrawals ? "d-none" : ""}`}>{props.t("Withdrawals")}</Link>
+                  <Link to="/transactions/withdrawals" className = {`${!getWithdrawals ? "d-none" : ""}`}>{props.t("Withdrawal")}</Link>
+                </li> 
+                <li>
+                  <Link to="/transactions/internal-transfer">{props.t("Internal Transfer")}</Link>
+                </li> 
+                <li>
+                  <Link to="/transactions/credit">{props.t("Credit")}</Link>
                 </li>   
               </ul>
             </li>
@@ -274,7 +282,8 @@ const mapStateToProps = (state) => ({
   markupsPermissions : state.Profile.markupsPermissions || {},
   transactionFeeGroupsPermissions : state.Profile.transactionFeeGroupsPermissions || {},
   orderProfitPermissions : state.Profile.orderProfitPermissions || {},
-  transactionProfitPermissions : state.Profile.transactionProfitPermissions || {}
-
+  transactionProfitPermissions : state.Profile.transactionProfitPermissions || {},
+  // internalTransferPermissions: state.profile.internalTransferPermissions || {},
+  // creditPermissions: state.Profile.creditPermissions || {}
 });
 export default withTranslation()(withRouter(connect(mapStateToProps, null) (SidebarContent)));

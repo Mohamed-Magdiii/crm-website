@@ -15,7 +15,7 @@ export const fetchTradingAccounts = (params = {}) => {
 export const fetchTradingAccountsSuccess = (data) => {
   return {
     type: FETCH_TRADING_ACCOUNTS_SUCCESS,
-    paylad: data
+    payload: data
   };
 };
 export const fetchTradingAccountsFail = (error) => {

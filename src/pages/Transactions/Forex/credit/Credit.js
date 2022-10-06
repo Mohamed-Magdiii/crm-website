@@ -5,8 +5,6 @@ import { useDispatch, connect } from "react-redux";
 import {
   Row, Col, Card, CardBody, CardHeader, CardTitle, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown
 } from "reactstrap";
-import AddForexWithdrawalModal from "./AddForexWithdrawalModal";
-import { fetchForexWithdrawals } from "store/forexTransactions/withdrawals/actions";
 import SearchBar from "components/Common/SearchBar";
 import CustomPagination from "components/Common/CustomPagination";
 import {
@@ -21,9 +19,10 @@ import { checkAllBoxes } from "common/utils/checkAllBoxes";
 import { Link } from "react-router-dom";
 import { captilazeFirstLetter } from "common/utils/manipulateString";
 import { fetchTradingAccounts } from "store/tradingAccounts/actions";
-import { fetchForexGatewaysOfWithdrawalsStart } from "store/forexGateway/action";
-  
-function WithdrawalForex(props){
+import { fetchCredits } from "store/forexTransactions/credit/actions";
+import AddCreditModal from "./AddCreditModal";
+
+function Credit(props){
   const dispatch = useDispatch();
   const customerId = JSON.parse(localStorage.getItem("authUser")).roleId._id;
   const [searchInput, setSearchInput] = useState("");
@@ -53,49 +52,32 @@ function WithdrawalForex(props){
     {
       dataField:"customerId",
       text:props.t("Client"),
-      // formatter:(val)=>{
-      //   return (
-      //     <div>
-      //       <Link 
-      //         to ={{
-      //           pathname : `/clients/${val?.customerId?._id}/profile`,
-      //           state : { clientId : val.customerId }
-      //         }}>
-      //         <spam className="no-italics" style={{ fontWeight: "bold" }}>{val.customerId ? `${captilazeFirstLetter(val.customerId.firstName)} ${captilazeFirstLetter(val.customerId.lastName)}` : ""}</spam>
-      //       </Link>
-      //     </div>
-      //   );
-          
-      // }
+      formatter:(val)=>{
+        return (
+          <div>
+            <Link 
+              to ={{
+                pathname : `/clients/${val?.customerId?._id}/profile`,
+                state : { clientId : val.customerId }
+              }}>
+              <spam className="no-italics" style={{ fontWeight: "bold" }}>{val.customerId ? `${captilazeFirstLetter(val.customerId.firstName)} ${captilazeFirstLetter(val.customerId.lastName)}` : ""}</spam>
+            </Link>
+          </div>
+        );
+      }
     },
     {
-      dataField:"gateway",
-      text:props.t("Payment Gateway"),
-      // formatter: (item) => (
-      //   captilazeFirstLetter(item.gateway)
-      // )
+      dataField: "currency",
+      text: props.t("Currency"),
+        
     },
     {
-      dataField: "walletId",
-      text: props.t("Wallet ID")
+      dataField: "fromAccount",
+      text: props.t("From Account")
     },
     {
-      dataField: "tradingAccount",
-      text: props.t("Trading Account"),
-      formatter: (item) => (
-        item.tradingAccountId?.login
-      )
-    },
-    {
-      dataField: "note",
-      text: props.t("Note"),
-      // formatter: (item) => (
-      //   captilazeFirstLetter(item?.note)
-      // )
-    },
-    {
-      dataField: "paid",
-      text: props.t("paid")
+      dataField: "toAccount",
+      text: props.t("To Account")
     },
     {
       dataField: "fee",
@@ -104,10 +86,6 @@ function WithdrawalForex(props){
     {
       dataField: "amount",
       text: props.t("Amount")
-    },
-    {
-      dataField: "salesRep",
-      text: props.t("Sales Rep")
     },
     {
       dataField: "status",
@@ -150,60 +128,56 @@ function WithdrawalForex(props){
       )
     },
   ];
-
+  
   const handleSearchInput = (e)=>{
     setSearchInput(e.target.value); 
   };
-
-  const loadForexWithdrawals = (page, limit)=>{
-    dispatch(fetchForexWithdrawals({
+  
+  const loadCredits = (page, limit)=>{
+    dispatch(fetchCredits({
       limit, 
       page,
       customerId
     }));   
   };
-
+  
   const loadTradingAccounts = ()=>{
     dispatch(fetchTradingAccounts({ customerId }));   
   };
-
-  const loadForexGateways = ()=>{
-    dispatch(fetchForexGatewaysOfWithdrawalsStart());   
-  };
-
+  
   const closeNotifaction = () => {
     setShowNotifaction(false);
   };
-
+  
   useEffect(()=>{
-    loadForexWithdrawals(1, sizePerPage);
+    loadCredits(1, sizePerPage);
   }, [sizePerPage, 1, searchInput, selectedFilter, props.depositResponseMessage]);
-
+  
   useEffect(() => {
     loadTradingAccounts();
-    // loadForexGateways();
   }, []);
-
+  
   return (
     <React.Fragment>
       <Notification
         onClose={closeNotifaction}
-        body={props.t("Withdrawal has been updated successfully")}
+        body={props.t("Credit has been updated successfully")}
         show={showNotication}
-        header={props.t("Withdrawal Update")}
+        header={props.t("Credit Update")}
         logo={logo}
       />
       <Row>
         <Col className="col-12">
           <Card>
-            <CardHeader className="d-flex flex-column gap-3">
+            <CardHeader className="d-flex flex-column gap-3 ">
               <div className="d-flex justify-content-between align-items-center">
-                <CardTitle>{props.t(`Deposits(${props.totalDocs})`)}</CardTitle>
-                <AddForexWithdrawalModal />
+                    
+                <CardTitle>{props.t(`Credits(${props.totalDocs})`)}</CardTitle>
+                <AddCreditModal />
               </div>
-                
+                  
               <div className="d-flex justify-content-between align-items-center">
-                <SearchBar handleSearchInput={handleSearchInput} placeholder={props.t("Search for deposits")}/>
+                <SearchBar handleSearchInput={handleSearchInput} placeholder={props.t("Search for credits")}/>
                 <div>
                   <Dropdown
                     isOpen={btnprimary1}
@@ -221,7 +195,7 @@ function WithdrawalForex(props){
                   </Dropdown>
                 </div>
               </div>
-                
+                  
             </CardHeader>
             <CardBody>
               <div className="table-rep-plugin">
@@ -240,32 +214,33 @@ function WithdrawalForex(props){
                         )}
                       </Tr>
                     </Thead>
+                        
                     {
                       props.totalDocs === 0
                         ?
                         <Tbody>
                           {props.loading && <TableLoader colSpan={4} />}                            
                           {!props.loading &&
-                            <>
-                              <Tr>
-                                <Td colSpan={"100%"} className="fw-bolder text-center" st>
-                                  <h3 className="fw-bolder text-center">No records</h3>
-                                </Td>
-                              </Tr>
-                            </>
+                              <>
+                                <Tr>
+                                  <Td colSpan={"100%"} className="fw-bolder text-center" st>
+                                    <h3 className="fw-bolder text-center">No records</h3>
+                                  </Td>
+                                </Tr>
+                              </>
                           }
                         </Tbody>
                         :
-                        <Tbody className="text-center" style={{ fontSize: "13px" }}>
+                        <Tbody className="text-center" style={{ fontSize : "13px" }}>
                           {props.loading && <TableLoader colSpan={4} />}
-                          {!props.loading && props.forexWithdrawals.map((row, rowIndex) =>
+                          {!props.loading && props.credits.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`} className= "pt-4">
                                   { column.dataField === "checkbox" ? <input className = "deposit-checkbox" type="checkbox"/> : ""}
                                   { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
                                   {/* {column.dataField === "dropdown" ? <CustomDropdown  permission={props.depositsPermissions.actions ? true : false}
-                                    id={row._id} status={row.status} approve={()=>{depositApprove(row)}} reject={()=>{depositReject(row)}} /> : ""} */}
+                                      id={row._id} status={row.status} approve={()=>{depositApprove(row)}} reject={()=>{depositReject(row)}} /> : ""} */}
                                 </Td>
                               )}
                             </Tr>
@@ -277,7 +252,7 @@ function WithdrawalForex(props){
                     {...props}
                     setSizePerPage={setSizePerPage}
                     sizePerPage={sizePerPage}
-                    onChange={loadForexWithdrawals}
+                    onChange={loadCredits}
                     docs={props.deposits}
                   />
                 </div>
@@ -289,21 +264,21 @@ function WithdrawalForex(props){
     </React.Fragment>
   );
 }
-  
+    
 const mapStateToProps = (state) => ({
-  loading: state.forexWithdrawalReducer.loading || false,
-  forexWithdrawals: state.forexWithdrawalReducer.forexWithdrawals || [],
-  page: state.forexWithdrawalReducer.page || 1,
-  totalDocs: state.forexWithdrawalReducer.forexTotalDocs || 0,
-  totalPages: state.forexWithdrawalReducer.totalPages || 0,
-  hasNextPage: state.forexWithdrawalReducer.hasNextPage,
-  hasPrevPage: state.forexWithdrawalReducer.hasPrevPage,
-  limit: state.forexWithdrawalReducer.limit,
-  nextPage: state.forexWithdrawalReducer.nextPage,
-  pagingCounter: state.forexWithdrawalReducer.pagingCounter,
-  prevPage: state.forexWithdrawalReducer.prevPage,
+  loading: state.creditReducer.loading || false,
+  credits: state.creditReducer.credits || [],
+  page: state.creditReducer.page || 1,
+  totalDocs: state.creditReducer.internalTransferTotalDocs || 0,
+  totalPages: state.creditReducer.totalPages || 0,
+  hasNextPage: state.creditReducer.hasNextPage,
+  hasPrevPage: state.creditReducer.hasPrevPage,
+  limit: state.creditReducer.limit,
+  nextPage: state.creditReducer.nextPage,
+  pagingCounter: state.creditReducer.pagingCounter,
+  prevPage: state.creditReducer.prevPage,
   depositsPermissions : state.Profile.depositsPermissions || {},
-  depositResponseMessage:state.forexWithdrawalReducer.depositResponseMessage,
+  depositResponseMessage:state.creditReducer.depositResponseMessage,
   tradingAccounts: state.tradingAccountReducer.tradingAccounts
 });
-export default connect(mapStateToProps, null)(withTranslation()(WithdrawalForex));
+export default connect(mapStateToProps, null)(withTranslation()(Credit));

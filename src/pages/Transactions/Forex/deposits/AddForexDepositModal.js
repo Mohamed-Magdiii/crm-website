@@ -18,6 +18,7 @@ import { withTranslation } from "react-i18next";
 import Select from "react-select";
 import { addForexDeposit } from "store/forexTransactions/deposits/actions";
 import Loader from "components/Common/Loader";
+import { fetchTradingAccounts } from "store/tradingAccounts/actions";
 
 function AddForexDepositModal(props){
   const dispatch = useDispatch();
@@ -70,32 +71,27 @@ function AddForexDepositModal(props){
     }
   }, [props.modalClear]);
 
-  const test = [
-    {
-      _id: "1",
-      customer: "shokr",
-      recordId: "10033" 
-    },
-    {
-      _id: "2",
-      customer: "abdelrhman",
-      recordId: "10044" 
-    }
-  ];
-
   const handleAddForexDeposit = (e, v) => {
     dispatch(addForexDeposit(v));
   };
 
+  const loadTradingAccounts = (login)=>{
+    dispatch(fetchTradingAccounts({ login }));   
+  };
+
   const handleLiveAccountChange = (e) => {
-    setTradingAccountOwnerName(test.filter((item) => (item.recordId === e.target.value))[0]?.customer);
+    loadTradingAccounts(e.target.value);
+    setTradingAccountOwnerName(
+      props.tradingAccounts.filter((item) => (item.login == e.target.value))[0]?.customerId.firstName + 
+      " " +
+      props.tradingAccounts.filter((item) => (item.login == e.target.value))[0]?.customerId.lastName 
+    );
   };
 
   const validateLiveAccount = (value, ctx, input, cb) =>{
-    if (!test.map((item) => (item.recordId)).includes(value)){
+    if (!props.tradingAccounts.map((item) => (item.login))[0] == value){
       cb("Enter A Valid Live Account");
-    } else
-      cb(true);
+    } else cb(true);
   };
   
   return (
@@ -112,7 +108,7 @@ function AddForexDepositModal(props){
               v.gateway = gateway;
               // v.image = memFiles;
               v.customerId = customerId;
-              v.tradingAccountId = test.filter((item) => (item.recordId === v.liveAccount))[0]?._id;
+              v.tradingAccountId = props.tradingAccounts.filter((item) => (item.login == v.liveAccount))[0]?._id;
               delete v.liveAccount;
               delete v.customerName;
               handleAddForexDeposit(e, v);
@@ -138,7 +134,7 @@ function AddForexDepositModal(props){
                     if (!isNaN(e.key) && e.target.value.length > 0){
                       return true;
                     }
-                    if (!/[0-9]/.test(e.key)) {
+                    if (!/[0-9]/.props.tradingAccounts(e.key)) {
                       e.preventDefault();
                     }
                   }}
@@ -240,12 +236,12 @@ function AddForexDepositModal(props){
     
             <div className='text-center pt-3 p-2'>
               {
-                props.loading 
+                props.addLoading 
                   ?
                   <Loader />
                   :
                   <Button 
-                    disabled = {props.loading} 
+                    disabled = {props.addLoading} 
                     type="submit" 
                     color="primary"
                   >
@@ -268,7 +264,7 @@ const mapStateToProps = (state) => ({
   modalClear: state.forexDepositReducer.modalClear,
   depositsPermissions : state.Profile.depositsPermissions || {}, 
   disableAddButton : state.forexDepositReducer.disableAddButton,
-  loading: state.forexDepositReducer.loading,
+  addLoading: state.forexDepositReducer.addLoading,
   addForexDepositFailDetails: state.forexDepositReducer.addForexDepositFailDetails,
   tradingAccounts: state.tradingAccountReducer.tradingAccounts
 });

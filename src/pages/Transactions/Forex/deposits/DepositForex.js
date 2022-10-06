@@ -20,7 +20,6 @@ import { withTranslation } from "react-i18next";
 import { checkAllBoxes } from "common/utils/checkAllBoxes";
 import { Link } from "react-router-dom";
 import { captilazeFirstLetter } from "common/utils/manipulateString";
-import { fetchTradingAccounts } from "store/tradingAccounts/actions";
 import { fetchForexGatewaysStart } from "store/forexGateway/action";
   
 function DepositForex(props){
@@ -47,7 +46,7 @@ function DepositForex(props){
       }
     },
     {
-      dataField: "transactionId",
+      dataField: "recordId",
       text: props.t("Transaction Id")
     },
     {
@@ -61,7 +60,7 @@ function DepositForex(props){
                 pathname : `/clients/${val?.customerId?._id}/profile`,
                 state : { clientId : val.customerId }
               }}>
-              <bold className="no-italics">{val.customerId ? `${captilazeFirstLetter(val.customerId.firstName)} ${captilazeFirstLetter(val.customerId.lastName)}` : ""}</bold>
+              <spam className="no-italics" style={{ fontWeight: "bold" }}>{val.customerId ? `${captilazeFirstLetter(val.customerId.firstName)} ${captilazeFirstLetter(val.customerId.lastName)}` : ""}</spam>
             </Link>
           </div>
         );
@@ -77,6 +76,9 @@ function DepositForex(props){
     {
       dataField: "tradingAccount",
       text: props.t("Trading Account"),
+      formatter: (item) => (
+        item.tradingAccountId?.login
+      )
     },
     {
       dataField: "currency",
@@ -112,20 +114,20 @@ function DepositForex(props){
       text: props.t("Status"),
       formatter:(item) => {
         return (
-          item.status === "approved" 
+          item.status === "APPROVED" 
             ?
             <div>
-              <bold className="no-italics text-success">{captilazeFirstLetter(item.status)}</bold>
+              <spam className="no-italics text-success">{item.status}</spam>
             </div>
             :
-            item.status === "pending"
+            item.status === "PENDING"
               ?
               <div>
-                <bold className="no-italics text-warning">{captilazeFirstLetter(item.status)}</bold>
+                <spam className="no-italics text-warning">{item.status}</spam>
               </div>
               :
               <div>
-                <bold className="no-italics text-danger">{captilazeFirstLetter(item.status)}</bold>
+                <spam className="no-italics text-danger">{item.status}</spam>
               </div>
         );
       }
@@ -161,10 +163,6 @@ function DepositForex(props){
     }));   
   };
 
-  const loadTradingAccounts = ()=>{
-    dispatch(fetchTradingAccounts({ customerId }));   
-  };
-
   const loadForexGateways = ()=>{
     dispatch(fetchForexGatewaysStart());   
   };
@@ -175,10 +173,9 @@ function DepositForex(props){
 
   useEffect(()=>{
     loadForexDeposits(1, sizePerPage);
-  }, [sizePerPage, 1, searchInput, selectedFilter, props.depositResponseMessage]);
+  }, [props.addLoading, sizePerPage, 1, searchInput, selectedFilter, props.depositResponseMessage]);
 
   useEffect(() => {
-    loadTradingAccounts();
     loadForexGateways();
   }, []);
 
@@ -241,11 +238,11 @@ function DepositForex(props){
                     </Thead>
                       
                     {
-                      props.totalDocs != 0
+                      props.totalDocs === 0
                         ?
                         <Tbody>
-                          {props.loading && <TableLoader colSpan={4} />}                            
-                          {!props.loading &&
+                          {props.fetchLoading && <TableLoader colSpan={4} />}                            
+                          {!props.fetchLoading &&
                             <>
                               <Tr>
                                 <Td colSpan={"100%"} className="fw-bolder text-center" st>
@@ -257,8 +254,8 @@ function DepositForex(props){
                         </Tbody>
                         :
                         <Tbody className="text-center" style={{ fontSize : "13px" }}>
-                          {props.loading && <TableLoader colSpan={4} />}
-                          {!props.loading && props.forexDeposits.map((row, rowIndex) =>
+                          {props.fetchLoading && <TableLoader colSpan={4} />}
+                          {!props.fetchLoading && props.forexDeposits.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`} className= "pt-4">
@@ -291,7 +288,8 @@ function DepositForex(props){
 }
   
 const mapStateToProps = (state) => ({
-  loading: state.forexDepositReducer.loading || false,
+  fetchLoading: state.forexDepositReducer.fetchLoading || false,
+  addLoading: state.forexDepositReducer.addLoading || false,
   forexDeposits: state.forexDepositReducer.forexDeposits || [],
   page: state.forexDepositReducer.page || 1,
   totalDocs: state.forexDepositReducer.forexTotalDocs || 0,

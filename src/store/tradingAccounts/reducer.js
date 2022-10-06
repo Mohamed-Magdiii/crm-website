@@ -22,7 +22,7 @@ const tradingAccountReducer = (state = initalState, action) => {
     case FETCH_TRADING_ACCOUNTS_SUCCESS:
       state = {
         ...state,
-        tradingAccounts: [...action.payload.result.docs],
+        tradingAccounts: [action.payload.result],
         tradingAccountsTotalDocs: action.payload.result.totalDocs,
         hasNextPage: action.payload.result.hasNextPage,
         hasPrevPage: action.payload.result.hasPrevPage,

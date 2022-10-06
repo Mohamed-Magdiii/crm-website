@@ -33,6 +33,8 @@ import OrderProfitList from "pages/OrderProfit/orderProfitList";
 import TransactionProfitList from "pages/TransactionProfit.js/TransactionProfitList";
 import DepositsIndex from "pages/Transactions/DepositsIndex";
 import WithdrawalsIndex from "pages/Transactions/WithdrawalsIndex";
+import InternalTransferIndex from "pages/Transactions/Forex/internalTransfer/InternalTransferIndex";
+import CreditIndex from "pages/Transactions/Forex/credit/CreditIndex";
 
 function userRoutes() {
   const object = usePermissions();
@@ -144,6 +146,16 @@ function userRoutes() {
     {
       path: "/transactions/withdrawals",
       component: WithdrawalsIndex,
+      get: withdrawalsPermissions.get
+    },
+    {
+      path: "/transactions/internal-transfer",
+      component: InternalTransferIndex,
+      get: withdrawalsPermissions.get
+    },
+    {
+      path: "/transactions/credit",
+      component: CreditIndex,
       get: withdrawalsPermissions.get
     },
     {
