@@ -10,11 +10,12 @@ import {
 } from "./actionTypes";
 
 const initalState = {
-  credits:[],
-  loading:false,
-  error:"",
-  modalClear:false,
-  creditResponseMessage:"",
+  credits: [],
+  fetchCreditsLoading: false,
+  addCreditLoading: false,
+  error: "",
+  modalClear: false,
+  creditResponseMessage: "",
   addCreditClearingCounter: 0
 };
 
@@ -24,7 +25,7 @@ const creditReducer = (state = initalState, action) => {
     case FETCH_CREDITS_REQUESTED:
       state = {
         ...state,
-        loading: true
+        fetchCreditsLoading: true
       };
       break;
     case FETCH_CREDITS_SUCCESS:
@@ -40,13 +41,13 @@ const creditReducer = (state = initalState, action) => {
         pagingCounter: action.payload.result.pagingCounter,
         prevPage: action.payload.result.prevPage,
         totalPages: action.payload.result.totalPages,
-        loading: false,  
+        fetchCreditsLoading: false,  
       };
       break;
     case FETCH_CREDITS_FAIL:
       state = {
         ...state,
-        loading: false,
+        fetchCreditsLoading: false,
         creditsError: action.payload
       };
       break;
@@ -55,7 +56,7 @@ const creditReducer = (state = initalState, action) => {
     case ADD_CREDIT_REQUESTED:
       state = {
         ...state,
-        loading: true
+        addCreditLoading: true
       };
       break;
     case ADD_CREDIT_SUCCESS:
@@ -71,14 +72,14 @@ const creditReducer = (state = initalState, action) => {
         ...state,
         addCreditSuccess: false,
         addCreditFail: true,
-        loading: false,
+        addCreditLoading: false,
         addCreditFailDetails: action.payload.error
       };
       break;
     case ADD_CREDIT_CLEAR:
       state = {
         ...state,
-        loading: false,
+        addCreditLoading: false,
         addCreditClearingCounter: state.addCreditClearingCounter + 1,
         addCreditFail: false,
         addCreditSuccess: false,

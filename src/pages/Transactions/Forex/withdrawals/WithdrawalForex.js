@@ -271,7 +271,7 @@ function WithdrawalForex(props){
                     setSizePerPage={setSizePerPage}
                     sizePerPage={sizePerPage}
                     onChange={loadForexWithdrawals}
-                    docs={props.deposits}
+                    docs={props.forexWithdrawals}
                   />
                 </div>
               </div>

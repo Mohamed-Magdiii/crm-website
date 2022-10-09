@@ -15,8 +15,9 @@ import { AvForm, AvField } from "availity-reactstrap-validation";
 import "../SearchableInputStyles.scss";
 import { withTranslation } from "react-i18next";
 import Select from "react-select";
-import { addForexWithdrawal } from "store/forexTransactions/withdrawals/actions";
 import Loader from "components/Common/Loader";
+import { addCredit } from "store/forexTransactions/credit/actions";
+import { fetchTradingAccounts } from "store/tradingAccounts/actions";
 
 function AddCreditModal(props){
   const dispatch = useDispatch();
@@ -24,25 +25,23 @@ function AddCreditModal(props){
   const { create } = props.withdrawalsPermissions;
   const [addModal, setAddModal] = useState(false);
   const [tradingAccountOwnerName, setTradingAccountOwnerName] = useState();
-  const [transferToAccount, setTransferToAccount] = useState();
   const [creditType, setCreditType] = useState();
 
   // credit type options
   const creditTypeOptions = [
     {
       label: "Credit In",
-      value: "creditIn"
+      value: "CREDIT_IN"
     },
     {
       label: "Credit Out",
-      value: "creditOut"
+      value: "CREDIT_OUT"
     }
   ];
   
   const toggleAddModal = () => {
     setAddModal(!addModal);
     setTradingAccountOwnerName("");
-    setTransferToAccount("");
   };
 
   useEffect(() => {
@@ -51,32 +50,27 @@ function AddCreditModal(props){
     }
   }, [props.modalClear]);
 
-  const test = [
-    {
-      _id: "1",
-      customer: "shokr",
-      recordId: "10033" 
-    },
-    {
-      _id: "2",
-      customer: "abdelrhman",
-      recordId: "10044" 
-    }
-  ];
+  const handleAddCredit = (e, v) => {
+    dispatch(addCredit(v));
+  };
 
-  const handleAddForexDeposit = (e, v) => {
-    dispatch(addForexWithdrawal(v));
+  const loadTradingAccounts = (login)=>{
+    dispatch(fetchTradingAccounts({ login }));   
   };
 
   const handleLiveAccountChange = (e) => {
-    setTradingAccountOwnerName(test.filter((item) => (item.recordId === e.target.value))[0]?.customer);
+    loadTradingAccounts(e.target.value);
+    setTradingAccountOwnerName(
+      props.tradingAccounts.filter((item) => (item.login == e.target.value))[0]?.customerId.firstName + 
+      " " +
+      props.tradingAccounts.filter((item) => (item.login == e.target.value))[0]?.customerId.lastName 
+    );
   };
 
   const validateLiveAccount = (value, ctx, input, cb) =>{
-    if (!test.map((item) => (item.recordId)).includes(value)){
+    if (!props.tradingAccounts.map((item) => (item.login))[0] == value || props.fetchTradingAccountsFail){
       cb("Enter A Valid Live Account");
-    } else
-      cb(true);
+    } else cb(true);
   };
   
   return (
@@ -91,13 +85,13 @@ function AddCreditModal(props){
             className='p-4'
             onValidSubmit={(e, v) => {
               v.customerId = customerId;
-              v.tradingAccountId = test.filter((item) => (item.recordId === v.account))[0]?._id;
-              v.creditType = creditType;
-              v.transferToAccount = transferToAccount;
+              v.tradingAccountId = props.tradingAccounts.filter((item) => (item.login == v.liveAccount))[0]?._id;
+              v.type = creditType;
               delete v.account;
               delete v.customerName;
               delete v.accountType;
-              handleAddForexDeposit(e, v);
+              delete v.liveAccount;
+              handleAddCredit(e, v);
             }}
           >
             {/* live account */}
@@ -168,7 +162,7 @@ function AddCreditModal(props){
                   <Select 
                     required
                     onChange={(e) => {
-                      setCreditType(e.value.gateway);
+                      setCreditType(e.value);
                     }}
                     options={creditTypeOptions}
                     isSearchable = {true}
@@ -192,12 +186,12 @@ function AddCreditModal(props){
     
             <div className='text-center pt-3 p-2'>
               {
-                props.loading 
+                props.addCreditLoading 
                   ?
                   <Loader />
                   :
                   <Button 
-                    disabled = {props.loading} 
+                    disabled = {props.addCreditLoading} 
                     type="submit" 
                     color="primary"
                   >
@@ -206,9 +200,9 @@ function AddCreditModal(props){
               }
             </div>
           </AvForm>
-          {props.addinternalTransferFailDetails && <UncontrolledAlert color="danger">
+          {props.addCreditFailDetails && <UncontrolledAlert color="danger">
             <i className="mdi mdi-block-helper me-2" />
-            {props.t(props.addinternalTransferFailDetails)}
+            {props.t(props.addCreditFailDetails)}
           </UncontrolledAlert>}
         </ModalBody> 
       </Modal>
@@ -219,8 +213,8 @@ const mapStateToProps = (state) => ({
   withdrawalsPermissions : state.Profile.withdrawalsPermissions || {}, 
   modalClear: state.creditReducer.modalClear,
   disableAddButton : state.creditReducer.disableAddButton,
-  loading: state.creditReducer.loading,
-  addinternalTransferFailDetails: state.creditReducer.addinternalTransferFailDetails,
+  addCreditLoading: state.creditReducer.addCreditLoading,
+  addCreditFailDetails: state.creditReducer.addCreditFailDetails,
   tradingAccounts: state.tradingAccountReducer.tradingAccounts
 });
 export default connect(mapStateToProps, null)(withTranslation()(AddCreditModal));

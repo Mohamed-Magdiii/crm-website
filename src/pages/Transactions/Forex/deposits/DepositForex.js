@@ -275,7 +275,7 @@ function DepositForex(props){
                     setSizePerPage={setSizePerPage}
                     sizePerPage={sizePerPage}
                     onChange={loadForexDeposits}
-                    docs={props.deposits}
+                    docs={props.forexDeposits}
                   />
                 </div>
               </div>

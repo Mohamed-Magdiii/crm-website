@@ -18,7 +18,6 @@ import { withTranslation } from "react-i18next";
 import { checkAllBoxes } from "common/utils/checkAllBoxes";
 import { Link } from "react-router-dom";
 import { captilazeFirstLetter } from "common/utils/manipulateString";
-import { fetchTradingAccounts } from "store/tradingAccounts/actions";
 import { fetchCredits } from "store/forexTransactions/credit/actions";
 import AddCreditModal from "./AddCreditModal";
 
@@ -47,7 +46,14 @@ function Credit(props){
     },
     {
       dataField: "recordId",
-      text: props.t("Transaction Id")
+      text: props.t("Credit Id")
+    },
+    {
+      dataField: "type",
+      text: props.t("Credit Type"),
+      formatter: (item) => (
+        item.type === "CREDIT_IN" ? "CREDIT IN" : "CREDIT OUT"
+      )
     },
     {
       dataField:"customerId",
@@ -70,22 +76,6 @@ function Credit(props){
       dataField: "currency",
       text: props.t("Currency"),
         
-    },
-    {
-      dataField: "fromAccount",
-      text: props.t("From Account")
-    },
-    {
-      dataField: "toAccount",
-      text: props.t("To Account")
-    },
-    {
-      dataField: "fee",
-      text: props.t("Fee")
-    },
-    {
-      dataField: "amount",
-      text: props.t("Amount")
     },
     {
       dataField: "status",
@@ -141,21 +131,13 @@ function Credit(props){
     }));   
   };
   
-  const loadTradingAccounts = ()=>{
-    dispatch(fetchTradingAccounts({ customerId }));   
-  };
-  
   const closeNotifaction = () => {
     setShowNotifaction(false);
   };
   
   useEffect(()=>{
     loadCredits(1, sizePerPage);
-  }, [sizePerPage, 1, searchInput, selectedFilter, props.depositResponseMessage]);
-  
-  useEffect(() => {
-    loadTradingAccounts();
-  }, []);
+  }, [props.addCreditSuccess, sizePerPage, 1, searchInput, selectedFilter, props.depositResponseMessage]);
   
   return (
     <React.Fragment>
@@ -213,8 +195,7 @@ function Credit(props){
                           <Th data-priority={index} key={index}>{column.text}</Th>
                         )}
                       </Tr>
-                    </Thead>
-                        
+                    </Thead>   
                     {
                       props.totalDocs === 0
                         ?
@@ -253,7 +234,7 @@ function Credit(props){
                     setSizePerPage={setSizePerPage}
                     sizePerPage={sizePerPage}
                     onChange={loadCredits}
-                    docs={props.deposits}
+                    docs={props.credits}
                   />
                 </div>
               </div>
@@ -269,7 +250,7 @@ const mapStateToProps = (state) => ({
   loading: state.creditReducer.loading || false,
   credits: state.creditReducer.credits || [],
   page: state.creditReducer.page || 1,
-  totalDocs: state.creditReducer.internalTransferTotalDocs || 0,
+  totalDocs: state.creditReducer.creditsTotalDocs || 0,
   totalPages: state.creditReducer.totalPages || 0,
   hasNextPage: state.creditReducer.hasNextPage,
   hasPrevPage: state.creditReducer.hasPrevPage,
@@ -279,6 +260,7 @@ const mapStateToProps = (state) => ({
   prevPage: state.creditReducer.prevPage,
   depositsPermissions : state.Profile.depositsPermissions || {},
   depositResponseMessage:state.creditReducer.depositResponseMessage,
-  tradingAccounts: state.tradingAccountReducer.tradingAccounts
+  tradingAccounts: state.tradingAccountReducer.tradingAccounts,
+  addCreditSuccess: state.creditReducer.addCreditSuccess
 });
 export default connect(mapStateToProps, null)(withTranslation()(Credit));
