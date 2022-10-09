@@ -20,8 +20,7 @@ import { withTranslation } from "react-i18next";
 import { checkAllBoxes } from "common/utils/checkAllBoxes";
 import { Link } from "react-router-dom";
 import { captilazeFirstLetter } from "common/utils/manipulateString";
-import { fetchTradingAccounts } from "store/tradingAccounts/actions";
-import { fetchForexGatewaysOfWithdrawalsStart } from "store/forexGateway/action";
+import { fetchForexWithdrawalsGatewaysStart } from "store/forexGateway/actions";
   
 function WithdrawalForex(props){
   const dispatch = useDispatch();
@@ -53,27 +52,26 @@ function WithdrawalForex(props){
     {
       dataField:"customerId",
       text:props.t("Client"),
-      // formatter:(val)=>{
-      //   return (
-      //     <div>
-      //       <Link 
-      //         to ={{
-      //           pathname : `/clients/${val?.customerId?._id}/profile`,
-      //           state : { clientId : val.customerId }
-      //         }}>
-      //         <spam className="no-italics" style={{ fontWeight: "bold" }}>{val.customerId ? `${captilazeFirstLetter(val.customerId.firstName)} ${captilazeFirstLetter(val.customerId.lastName)}` : ""}</spam>
-      //       </Link>
-      //     </div>
-      //   );
-          
-      // }
+      formatter:(val)=>{
+        return (
+          <div>
+            <Link 
+              to ={{
+                pathname : `/clients/${val?.customerId?._id}/profile`,
+                state : { clientId : val.customerId }
+              }}>
+              <spam className="no-italics" style={{ fontWeight: "bold" }}>{val.customerId ? `${captilazeFirstLetter(val.customerId.firstName)} ${captilazeFirstLetter(val.customerId.lastName)}` : ""}</spam>
+            </Link>
+          </div>
+        ); 
+      }
     },
     {
       dataField:"gateway",
       text:props.t("Payment Gateway"),
-      // formatter: (item) => (
-      //   captilazeFirstLetter(item.gateway)
-      // )
+      formatter: (item) => (
+        captilazeFirstLetter(item.gateway)
+      )
     },
     {
       dataField: "walletId",
@@ -89,9 +87,9 @@ function WithdrawalForex(props){
     {
       dataField: "note",
       text: props.t("Note"),
-      // formatter: (item) => (
-      //   captilazeFirstLetter(item?.note)
-      // )
+      formatter: (item) => (
+        item.note ? captilazeFirstLetter(item?.note) : ""
+      )
     },
     {
       dataField: "paid",
@@ -163,12 +161,8 @@ function WithdrawalForex(props){
     }));   
   };
 
-  const loadTradingAccounts = ()=>{
-    dispatch(fetchTradingAccounts({ customerId }));   
-  };
-
-  const loadForexGateways = ()=>{
-    dispatch(fetchForexGatewaysOfWithdrawalsStart());   
+  const loadWithdrawalForexGateways = ()=>{
+    dispatch(fetchForexWithdrawalsGatewaysStart());   
   };
 
   const closeNotifaction = () => {
@@ -177,11 +171,10 @@ function WithdrawalForex(props){
 
   useEffect(()=>{
     loadForexWithdrawals(1, sizePerPage);
-  }, [sizePerPage, 1, searchInput, selectedFilter, props.depositResponseMessage]);
+  }, [props.withdrawalAddLoading, sizePerPage, 1, searchInput, selectedFilter]);
 
   useEffect(() => {
-    loadTradingAccounts();
-    // loadForexGateways();
+    loadWithdrawalForexGateways();
   }, []);
 
   return (
@@ -304,6 +297,7 @@ const mapStateToProps = (state) => ({
   prevPage: state.forexWithdrawalReducer.prevPage,
   depositsPermissions : state.Profile.depositsPermissions || {},
   depositResponseMessage:state.forexWithdrawalReducer.depositResponseMessage,
-  tradingAccounts: state.tradingAccountReducer.tradingAccounts
+  tradingAccounts: state.tradingAccountReducer.tradingAccounts,
+  withdrawalAddLoading: state.forexWithdrawalReducer.withdrawalAddLoading
 });
 export default connect(mapStateToProps, null)(withTranslation()(WithdrawalForex));

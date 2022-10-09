@@ -17,6 +17,7 @@ import { withTranslation } from "react-i18next";
 import Select from "react-select";
 import { addForexWithdrawal } from "store/forexTransactions/withdrawals/actions";
 import Loader from "components/Common/Loader";
+import { fetchTradingAccounts } from "store/tradingAccounts/actions";
 
 function AddForexWithdrawalModal(props){
   const dispatch = useDispatch();
@@ -50,32 +51,27 @@ function AddForexWithdrawalModal(props){
     }
   }, [props.modalClear]);
 
-  const test = [
-    {
-      _id: "1",
-      customer: "shokr",
-      recordId: "10033" 
-    },
-    {
-      _id: "2",
-      customer: "abdelrhman",
-      recordId: "10044" 
-    }
-  ];
-
   const handleAddForexDeposit = (e, v) => {
     dispatch(addForexWithdrawal(v));
   };
 
+  const loadTradingAccounts = (login)=>{
+    dispatch(fetchTradingAccounts({ login }));   
+  };
+
   const handleLiveAccountChange = (e) => {
-    setTradingAccountOwnerName(test.filter((item) => (item.recordId === e.target.value))[0]?.customer);
+    loadTradingAccounts(e.target.value);
+    props.tradingAccounts && setTradingAccountOwnerName(
+      props.tradingAccounts.filter((item) => (item.login == e.target.value))[0]?.customerId.firstName + 
+      " " +
+      props.tradingAccounts.filter((item) => (item.login == e.target.value))[0]?.customerId.lastName 
+    );
   };
 
   const validateLiveAccount = (value, ctx, input, cb) =>{
-    if (!test.map((item) => (item.recordId)).includes(value)){
+    if (!props.tradingAccounts.map((item) => (item.login))[0] == value || props.fetchTradingAccountsFail){
       cb("Enter A Valid Live Account");
-    } else
-      cb(true);
+    } else cb(true);
   };
   
   return (
@@ -92,7 +88,7 @@ function AddForexWithdrawalModal(props){
               v.gateway = gateway;
               v.accountType = accountType;
               v.customerId = customerId;
-              v.tradingAccountId = test.filter((item) => (item.recordId === v.account))[0]?._id;
+              v.tradingAccountId = props.tradingAccounts.filter((item) => (item.login == v.account))[0]?._id;
               delete v.account;
               delete v.customerName;
               delete v.accountType;
@@ -151,7 +147,7 @@ function AddForexWithdrawalModal(props){
               <Col md="12">
                 <AvField
                   readOnly={true}
-                  value={tradingAccountOwnerName}
+                  value={tradingAccountOwnerName && tradingAccountOwnerName}
                   name="customerName"
                   label={props.t("Customer Name")}
                   placeholder={props.t("Customer Name")}
@@ -175,11 +171,11 @@ function AddForexWithdrawalModal(props){
                       setGateway(e.value.gateway);
                     }}
                     isSearchable = {true}
-                    options={Object.keys(props.forexWithdrawalGateways).map((key) => (
+                    options={Object.keys(props.forexWithdrawalsGateways).map((key) => (
                       {
-                        label : `${props.forexWithdrawalGateways[key]}`,
+                        label : `${props.forexWithdrawalsGateways[key]}`,
                         value : {
-                          gateway: `${props.forexWithdrawalGateways[key]}`
+                          gateway: `${props.forexWithdrawalsGateways[key]}`
                         }
                       }
   
@@ -221,12 +217,12 @@ function AddForexWithdrawalModal(props){
     
             <div className='text-center pt-3 p-2'>
               {
-                props.loading 
+                props.withdrawalAddLoading 
                   ?
                   <Loader />
                   :
                   <Button 
-                    disabled = {props.loading} 
+                    disabled = {props.withdrawalAddLoading} 
                     type="submit" 
                     color="primary"
                   >
@@ -245,11 +241,11 @@ function AddForexWithdrawalModal(props){
   );
 }
 const mapStateToProps = (state) => ({
-  forexWithdrawalGateways: state.forexGatewayReducer.forexWithdrawalGateways || [],
+  forexWithdrawalsGateways: state.forexGatewayReducer.forexWithdrawalsGateways || [],
   withdrawalsPermissions : state.Profile.withdrawalsPermissions || {}, 
   modalClear: state.forexWithdrawalReducer.modalClear,
   disableAddButton : state.forexWithdrawalReducer.disableAddButton,
-  loading: state.forexWithdrawalReducer.loading,
+  withdrawalAddLoading: state.forexWithdrawalReducer.withdrawalAddLoading,
   addForexWithdrawalFailDetails: state.forexWithdrawalReducer.addForexWithdrawalFailDetails,
   tradingAccounts: state.tradingAccountReducer.tradingAccounts
 });

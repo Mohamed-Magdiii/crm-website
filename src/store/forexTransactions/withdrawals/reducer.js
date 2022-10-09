@@ -16,7 +16,8 @@ const initalState = {
   modalClear:false,
   forexDepositResponseMessage:"",
   addForexWithdrawalClearingCounter: 0,
-  disableAddButton: false
+  disableAddButton: false,
+  withdrawalAddLoading: false
 };
 
 const forexWithdrawalReducer = (state = initalState, action) => {
@@ -56,7 +57,7 @@ const forexWithdrawalReducer = (state = initalState, action) => {
     case ADD_FOREX_WITHDRAWAL_REQUESTED:
       state = {
         ...state,
-        loading: true,
+        withdrawalAddLoading: true,
         disableAddButton: true
       };
       break;
@@ -66,7 +67,7 @@ const forexWithdrawalReducer = (state = initalState, action) => {
         newForexWithdrawal: action.payload.result,
         addforexWithdrawalsuccess: true,
         addForexWithdrawalFail: false,
-        loading: false
+        withdrawalAddLoading: false
       };
       break;
     case ADD_FOREX_WITHDRAWAL_FAIL:
@@ -74,7 +75,7 @@ const forexWithdrawalReducer = (state = initalState, action) => {
         ...state,
         addforexWithdrawalsuccess: false,
         addForexWithdrawalFail: true,
-        loading: false,
+        withdrawalAddLoading: false,
         addForexWithdrawalFailDetails: action.payload.error,
         disableAddButton: false
       };
@@ -82,7 +83,7 @@ const forexWithdrawalReducer = (state = initalState, action) => {
     case ADD_FOREX_WITHDRAWAL_CLEAR:
       state = {
         ...state,
-        loading: false,
+        withdrawalAddLoading: false,
         addForexWithdrawalClearingCounter: state.addForexWithdrawalClearingCounter + 1,
         addForexWithdrawalFail: false,
         addforexWithdrawalsuccess: false,

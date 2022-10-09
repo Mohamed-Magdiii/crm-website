@@ -1,35 +1,45 @@
+import {
+  FETCH_FOREX_DEPOSITS_GATEWAYS_START, 
+  FETCH_FOREX_DEPOSITS_GATEWAYS_SUCCESS,
+  FETCH_FOREX_WITHDRAWALS_GATEWAYS_START,
+  FETCH_FOREX_WITHDRAWALS_GATEWAYS_SUCCESS
+} from "./actionTypes";
+
 const initState = {
-  gateways:{},
-  loading:false,
-  error:""
+  forexDepositsGateways: {},
+  forexWithdrawalsGateways: {},
+  depositsGatewaysLoading: false,
+  withdrawalsGatewaysLoading: false,
+  error: ""
 };
 
 const forexGatewayReducer = (state = initState, action)=>{
   switch (action.type){
-    case "FETCH_FOREX_GATEWAYS_START":
+    case FETCH_FOREX_DEPOSITS_GATEWAYS_START:
       state = {
         ...state,
-        loading:true
+        depositsGatewaysLoading: true
       };
       break;
-    case "FETCH_FOREX_GATEWAYS_SUCCESS":
+    case FETCH_FOREX_DEPOSITS_GATEWAYS_SUCCESS:
       state = {
         ...state,
-        loading: false,
-        forexDepositGateways: { ...action.payload.result }
+        depositsGatewaysLoading: false,
+        forexDepositsGateways: { ...action.payload.result }
       };
       break;
-    case "FETCH_WITHDRAWALS_FOREX_GATEWAYS_START":
+
+    case FETCH_FOREX_WITHDRAWALS_GATEWAYS_START:
       state = {
         ...state,
-        loading:true
+        withdrawalsGatewaysLoading: true
       };
       break;
-    case "FETCH_WITHDRAWALS_FOREX_GATEWAYS_SUCCESS":
+    case FETCH_FOREX_WITHDRAWALS_GATEWAYS_SUCCESS:
       state = {
         ...state,
-        loading:false,
-        forexWithdrawalGateways:{ ...action.payload.result }
+        withdrawalsGatewaysLoading: false,
+        forexWithdrawalsGateways: { ...action.payload.result }
       };
       break;
 

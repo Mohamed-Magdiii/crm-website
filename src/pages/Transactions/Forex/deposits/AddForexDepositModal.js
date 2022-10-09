@@ -147,7 +147,7 @@ function AddForexDepositModal(props){
               <Col md="6">
                 <AvField
                   readOnly={true}
-                  value={!props.fetchTradingAccountFail && !props.fetchTradingAccountsLoading ? tradingAccountOwnerName : ""}
+                  value={tradingAccountOwnerName}
                   name="customerName"
                   label={props.t("Customer Name")}
                   placeholder={props.t("Customer Name")}
@@ -167,15 +167,16 @@ function AddForexDepositModal(props){
                 <div>
                   <Select 
                     required
+                    loading={props.depositsGatewaysLoading}
                     onChange={(e) => {
                       setGateway(e.value.gateway);
                     }}
                     isSearchable = {true}
-                    options={Object.keys(props.forexDepositGateways).map((key) => (
+                    options={Object.keys(props.forexDepositsGateways).map((key) => (
                       {
-                        label : `${props.forexDepositGateways[key]}`,
+                        label : `${props.forexDepositsGateways[key]}`,
                         value : {
-                          gateway: `${props.forexDepositGateways[key]}`
+                          gateway: `${props.forexDepositsGateways[key]}`
                         }
                       }
   
@@ -260,7 +261,8 @@ function AddForexDepositModal(props){
   );
 }
 const mapStateToProps = (state) => ({
-  forexDepositGateways: state.forexGatewayReducer.forexDepositGateways || [],
+  forexDepositsGateways: state.forexGatewayReducer.forexDepositsGateways || [],
+  depositsGatewaysLoading: state.forexGatewayReducer.depositsGatewaysLoading || [],
   modalClear: state.forexDepositReducer.modalClear,
   depositsPermissions : state.Profile.depositsPermissions || {}, 
   disableAddButton : state.forexDepositReducer.disableAddButton,

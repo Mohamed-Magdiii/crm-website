@@ -5,6 +5,7 @@ export const getForexGatewayOfDeposit = async ()=>{
   
   return gateways;
 };
+
 export const getForexGatewaysOfWithdraw = async ()=>{
   const gateways = await axiosHelper.get("/fxtransactions/withdrawals-gateways");
   

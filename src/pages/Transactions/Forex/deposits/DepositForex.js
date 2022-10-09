@@ -20,7 +20,7 @@ import { withTranslation } from "react-i18next";
 import { checkAllBoxes } from "common/utils/checkAllBoxes";
 import { Link } from "react-router-dom";
 import { captilazeFirstLetter } from "common/utils/manipulateString";
-import { fetchForexGatewaysStart } from "store/forexGateway/action";
+import { fetchForexDepositsGatewaysStart } from "store/forexGateway/actions";
   
 function DepositForex(props){
   const dispatch = useDispatch();
@@ -164,7 +164,7 @@ function DepositForex(props){
   };
 
   const loadForexGateways = ()=>{
-    dispatch(fetchForexGatewaysStart());   
+    dispatch(fetchForexDepositsGatewaysStart());   
   };
 
   const closeNotifaction = () => {
