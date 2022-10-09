@@ -18,14 +18,12 @@ import { withTranslation } from "react-i18next";
 import { checkAllBoxes } from "common/utils/checkAllBoxes";
 import { Link } from "react-router-dom";
 import { captilazeFirstLetter } from "common/utils/manipulateString";
-import { fetchTradingAccounts } from "store/tradingAccounts/actions";
 import { fetchInternalTransfers } from "store/forexTransactions/internalTransfers/actions";
 import AddInternalTransferModal from "./AddInternalTransferModal";
 
 function Credit(props){
   const dispatch = useDispatch();
   const customerId = JSON.parse(localStorage.getItem("authUser")).roleId._id;
-  console.log(customerId);
   const [searchInput, setSearchInput] = useState("");
   const [showNotication, setShowNotifaction] = useState(false);
   const [sizePerPage, setSizePerPage] = useState(10);
@@ -48,11 +46,7 @@ function Credit(props){
     },
     {
       dataField: "recordId",
-      text: props.t("Credit Id")
-    },
-    {
-      dataField: "creditType",
-      text: props.t("Credit Type")
+      text: props.t("Transaction Id")
     },
     {
       dataField:"Client",
@@ -72,21 +66,65 @@ function Credit(props){
       }
     },
     {
-      dataField: "tradingAccount",
-      text: props.t("Trading Account"),
-      formatter: (item) => (
-        item.tradingAccountId?.login
+      dataField: "currency",
+      text: props.t("Currency")
+    },
+    {
+      dataField: "tradingAccountFrom",
+      text: props.t("fromAccount")
+    },
+    {
+      dataField: "tradingAccountTo",
+      text: props.t("toAccount")
+    },
+    {
+      dataField: "fee",
+      text: props.t("Fee")
+    },
+    {
+      dataField: "amount",
+      text: props.t("Amount")
+    },
+    {
+      dataField: "status",
+      text: props.t("Status"),
+      formatter:(item) => {
+        return (
+          item.status === "APPROVED" 
+            ?
+            <div>
+              <spam className="no-italics text-success">{item.status}</spam>
+            </div>
+            :
+            item.status === "PENDING"
+              ?
+              <div>
+                <spam className="no-italics text-warning">{item.status}</spam>
+              </div>
+              :
+              <div>
+                <spam className="no-italics text-danger">{item.status}</spam>
+              </div>
+        );
+      }
+    },
+    {
+      dataField: "",
+      isDummyField: true,
+      editable: false,
+      text: props.t("Actions"),
+      formatter: () => (
+        <UncontrolledDropdown>
+          <DropdownToggle tag="i" className="text-muted" style={{ cursor: "pointer" }}>
+            <i className="mdi mdi-dots-horizontal font-size-18" />
+          </DropdownToggle>
+          <DropdownMenu className="dropdown-menu-end">
+            <DropdownItem href="#">{props.t("Approve")}</DropdownItem>
+            <DropdownItem href="#">{props.t("Reject")}</DropdownItem>
+          </DropdownMenu>
+        </UncontrolledDropdown>
       )
     },
-    {
-      dataField: "currency",
-      text: props.t("Currency"),
-        
-    },
-    {
-      dataField: "note",
-      text: props.t("Note")
-    }
   ];
   
   const handleSearchInput = (e)=>{
@@ -101,21 +139,13 @@ function Credit(props){
     }));   
   };
   
-  const loadTradingAccounts = ()=>{
-    dispatch(fetchTradingAccounts({ customerId }));   
-  };
-  
   const closeNotifaction = () => {
     setShowNotifaction(false);
   };
   
   useEffect(()=>{
     loadInternalTransfers(1, sizePerPage);
-  }, [sizePerPage, 1, searchInput, selectedFilter, props.depositResponseMessage]);
-  
-  useEffect(() => {
-    loadTradingAccounts();
-  }, []);
+  }, [props.addInternalTransferLoading, sizePerPage, 1, searchInput, selectedFilter]);
   
   return (
     <React.Fragment>
@@ -132,7 +162,7 @@ function Credit(props){
             <CardHeader className="d-flex flex-column gap-3 ">
               <div className="d-flex justify-content-between align-items-center">
                     
-                <CardTitle>{props.t(`Internal Transfers(${props.totalDocs})`)}</CardTitle>
+                <CardTitle>{props.t(`Internal Transfers(${props.internalTransfersTotalDocs})`)}</CardTitle>
                 <AddInternalTransferModal />
               </div>
                   
@@ -176,11 +206,11 @@ function Credit(props){
                     </Thead>
                         
                     {
-                      props.totalDocs === 0
+                      props.internalTransfersTotalDocs === 0
                         ?
                         <Tbody>
-                          {props.loading && <TableLoader colSpan={4} />}                            
-                          {!props.loading &&
+                          {props.fetchInternalTransfersLoading && <TableLoader colSpan={4} />}                            
+                          {!props.fetchInternalTransfersLoading &&
                               <>
                                 <Tr>
                                   <Td colSpan={"100%"} className="fw-bolder text-center" st>
@@ -192,8 +222,8 @@ function Credit(props){
                         </Tbody>
                         :
                         <Tbody className="text-center" style={{ fontSize : "13px" }}>
-                          {props.loading && <TableLoader colSpan={4} />}
-                          {!props.loading && props.internalTransfers.map((row, rowIndex) =>
+                          {props.fetchInternalTransfersLoading && <TableLoader colSpan={4} />}
+                          {!props.fetchInternalTransfersLoading && props.internalTransfers.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`} className= "pt-4">
@@ -213,7 +243,7 @@ function Credit(props){
                     setSizePerPage={setSizePerPage}
                     sizePerPage={sizePerPage}
                     onChange={loadInternalTransfers}
-                    docs={props.deposits}
+                    docs={props.internalTransfers}
                   />
                 </div>
               </div>
@@ -226,10 +256,10 @@ function Credit(props){
 }
     
 const mapStateToProps = (state) => ({
-  loading: state.internalTransferReducer.loading || false,
+  fetchInternalTransfersLoading: state.internalTransferReducer.fetchInternalTransfersLoading || false,
   internalTransfers: state.internalTransferReducer.internalTransfers || [],
   page: state.internalTransferReducer.page || 1,
-  totalDocs: state.internalTransferReducer.internalTransferTotalDocs || 0,
+  internalTransfersTotalDocs: state.internalTransferReducer.internalTransfersTotalDocs || 0,
   totalPages: state.internalTransferReducer.totalPages || 0,
   hasNextPage: state.internalTransferReducer.hasNextPage,
   hasPrevPage: state.internalTransferReducer.hasPrevPage,
@@ -238,7 +268,7 @@ const mapStateToProps = (state) => ({
   pagingCounter: state.internalTransferReducer.pagingCounter,
   prevPage: state.internalTransferReducer.prevPage,
   depositsPermissions : state.Profile.depositsPermissions || {},
-  depositResponseMessage:state.internalTransferReducer.depositResponseMessage,
-  tradingAccounts: state.tradingAccountReducer.tradingAccounts
+  tradingAccounts: state.tradingAccountReducer.tradingAccounts,
+  addInternalTransferLoading: state.internalTransferReducer.addInternalTransferLoading
 });
 export default connect(mapStateToProps, null)(withTranslation()(Credit));

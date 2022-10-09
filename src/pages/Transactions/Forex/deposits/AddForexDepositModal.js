@@ -29,6 +29,7 @@ function AddForexDepositModal(props){
   const [imageError, setImageError] = useState();
   const [gateway, setGateway] = useState("");
   const [tradingAccountOwnerName, setTradingAccountOwnerName] = useState();
+  const [tradingAccountLogin, setTradingAccountLogin] = useState();
 
   // max file size to uplaod = 5 MB
   const maxFileSize = 5;
@@ -80,13 +81,17 @@ function AddForexDepositModal(props){
   };
 
   const handleLiveAccountChange = (e) => {
+    setTradingAccountLogin(e.target.value);
     loadTradingAccounts(e.target.value);
-    setTradingAccountOwnerName(
-      props.tradingAccounts.filter((item) => (item.login == e.target.value))[0]?.customerId.firstName + 
-      " " +
-      props.tradingAccounts.filter((item) => (item.login == e.target.value))[0]?.customerId.lastName 
-    );
   };
+
+  useEffect(() => {
+    setTradingAccountOwnerName(
+      props.tradingAccounts.filter((item) => (item.login == tradingAccountLogin))[0]?.customerId.firstName + 
+      " " +
+      props.tradingAccounts.filter((item) => (item.login == tradingAccountLogin))[0]?.customerId.lastName 
+    );
+  }, [props.fetchTradingAccountsLoading]);
 
   const validateLiveAccount = (value, ctx, input, cb) =>{
     if (!props.tradingAccounts.map((item) => (item.login))[0] == value || props.fetchTradingAccountsFail){
@@ -99,7 +104,7 @@ function AddForexDepositModal(props){
       <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> {props.t("Add New Deposit")}</Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
-          {props.t("Add Deposit")}
+          {props.t("Add New Deposit")}
         </ModalHeader>
         <ModalBody >
           <AvForm
@@ -147,7 +152,7 @@ function AddForexDepositModal(props){
               <Col md="6">
                 <AvField
                   readOnly={true}
-                  value={tradingAccountOwnerName}
+                  value={props.tradingAccounts?.length != 0 && tradingAccountOwnerName}
                   name="customerName"
                   label={props.t("Customer Name")}
                   placeholder={props.t("Customer Name")}

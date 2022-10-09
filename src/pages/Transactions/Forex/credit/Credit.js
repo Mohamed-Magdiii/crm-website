@@ -101,6 +101,10 @@ function Credit(props){
       }
     },
     {
+      dataField: "note",
+      text: props.t("Note")
+    },
+    {
       dataField: "",
       isDummyField: true,
       editable: false,

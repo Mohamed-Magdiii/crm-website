@@ -26,6 +26,7 @@ function AddCreditModal(props){
   const [addModal, setAddModal] = useState(false);
   const [tradingAccountOwnerName, setTradingAccountOwnerName] = useState();
   const [creditType, setCreditType] = useState();
+  const [tradingAccountLogin, setTradingAccountLogin] = useState();
 
   // credit type options
   const creditTypeOptions = [
@@ -59,13 +60,18 @@ function AddCreditModal(props){
   };
 
   const handleLiveAccountChange = (e) => {
+    setTradingAccountLogin(e.target.value);
     loadTradingAccounts(e.target.value);
-    setTradingAccountOwnerName(
-      props.tradingAccounts.filter((item) => (item.login == e.target.value))[0]?.customerId.firstName + 
-      " " +
-      props.tradingAccounts.filter((item) => (item.login == e.target.value))[0]?.customerId.lastName 
-    );
   };
+
+  useEffect(() => {
+    setTradingAccountOwnerName(
+      props.tradingAccounts.filter((item) => (item.login == tradingAccountLogin))[0]?.customerId.firstName + 
+      " " +
+      props.tradingAccounts.filter((item) => (item.login == tradingAccountLogin))[0]?.customerId.lastName 
+    );
+  }, [props.fetchTradingAccountsLoading]);
+
 
   const validateLiveAccount = (value, ctx, input, cb) =>{
     if (!props.tradingAccounts.map((item) => (item.login))[0] == value || props.fetchTradingAccountsFail){
@@ -127,7 +133,7 @@ function AddCreditModal(props){
               <Col md="12">
                 <AvField
                   readOnly={true}
-                  value={tradingAccountOwnerName}
+                  value={props.tradingAccounts?.length != 0 && tradingAccountOwnerName}
                   name="customerName"
                   label={props.t("Customer Name")}
                   placeholder={props.t("Customer Name")}
@@ -215,6 +221,7 @@ const mapStateToProps = (state) => ({
   disableAddButton : state.creditReducer.disableAddButton,
   addCreditLoading: state.creditReducer.addCreditLoading,
   addCreditFailDetails: state.creditReducer.addCreditFailDetails,
-  tradingAccounts: state.tradingAccountReducer.tradingAccounts
+  tradingAccounts: state.tradingAccountReducer.tradingAccounts,
+  fetchTradingAccountsLoading: state.tradingAccountReducer.loading
 });
 export default connect(mapStateToProps, null)(withTranslation()(AddCreditModal));
