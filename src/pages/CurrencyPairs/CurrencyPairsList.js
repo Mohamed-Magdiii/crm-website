@@ -23,6 +23,7 @@ import MarketForm from "./MarketAdd";
 import MarketEdit from "./MarketEdit";
 import { Link } from "react-router-dom";
 import { captilazeFirstLetter } from "common/utils/manipulateString";
+import { MetaTags } from "react-meta-tags";
 
 function CurrencyPairsList(props) {
   const [selectedMarket, ] = useState();
@@ -132,6 +133,11 @@ function CurrencyPairsList(props) {
 
   return (
     <React.Fragment>
+      <MetaTags>
+        <title>
+          Currency Pairs
+        </title>
+      </MetaTags>
       <div className="page-content">
         <div className="container-fluid">
           <h2>{t("Currency Pairs")}</h2>

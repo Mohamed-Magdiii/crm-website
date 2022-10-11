@@ -101,13 +101,13 @@ function WithdrawForm(props){
         <ModalBody >
 
           <AvForm
-            className='p-4'
+            className='px-4 py-2'
             onValidSubmit={(e, v) => {
               handleWithdraw(e, v);
             }}
           >
             
-            <Row className="mb-3">
+            <Row className="mb-2">
               <Col md="6">
                 <Label>{props.t("Client")}</Label>
                 <div>
@@ -186,7 +186,7 @@ function WithdrawForm(props){
                   />
                 </div>
               </Col>
-              <Col md="12">
+              <Col md="12" className="mt-3">
                 <Label>{props.t("Wallet")}</Label>
                 <div>
                   <Select 
@@ -229,20 +229,6 @@ function WithdrawForm(props){
             <div className="mb-3">
               <Label>{props.t("Gateway")}</Label>
               <div>
-                {/* <AvFieldSelect
-                  name="gateway"
-                  type="text"
-                  value={Object.keys(props.gateways)[0]?.gateway}
-                  errorMessage={props.t("Choose gateway")}
-                  validate={{ required: { value: true } }}
-                  label={props.t("Gateway")}
-                  options={Object.keys(props.gateways).map((key) => (
-                    {
-                      label : `${props.gateways[key]}`,
-                      value : `${props.gateways[key]}`
-                    }
-                  ))}
-                /> */}
                 <Select 
                   onChange={(e) => {
                     setGateway(e.value.gateway);
@@ -301,7 +287,7 @@ function WithdrawForm(props){
               />
             </div>
     
-            <div className='text-center pt-3 p-2'>
+            <div className='text-center mt-3 p-2'>
               <Button disabled = {props.disableWithdrawalButton} type="submit" color="primary" className="">
                 {props.t("Add")}
               </Button>

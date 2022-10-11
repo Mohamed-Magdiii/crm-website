@@ -18,6 +18,7 @@ import DeleteModal from "components/Common/DeleteModal";
 import TransactionFeeGroupEdit from "./TransactionFeeGroupEdit";
 import TransactionFeeGroupAdd from "./TransactionFeeGroupAdd";
 import { checkAllBoxes } from "common/utils/checkAllBoxes";
+import { MetaTags } from "react-meta-tags";
 
 function TransactionFeeGroupList(props) {
   const [deleteModal, setDeleteModal] = useState(false);
@@ -120,6 +121,11 @@ function TransactionFeeGroupList(props) {
 
   return (
     <React.Fragment>
+      <MetaTags>
+        <title>
+          Transaction Fee Groups
+        </title>
+      </MetaTags>
       <div className="page-content">
         <div className="container-fluid">
           <h2>{props.t("Transaction Fee Groups")}</h2>

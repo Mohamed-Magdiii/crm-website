@@ -16,6 +16,7 @@ import { withTranslation } from "react-i18next";
 import { fetchTransactionFeeGroupStart, deleteTransactionFeeGroupStart } from "store/transactionFeeGroups/actions";
 import DeleteModal from "components/Common/DeleteModal";
 import { fetchOrdersProfits } from "store/ordersProfit/actions";
+import { MetaTags } from "react-meta-tags";
 
 
 function OrderProfitList(props) {
@@ -106,6 +107,11 @@ function OrderProfitList(props) {
 
   return (
     <React.Fragment>
+      <MetaTags>
+        <title>
+          Order Profit
+        </title>
+      </MetaTags>
       <div className="page-content">
         <div className="container-fluid">
           <h2>{props.t("Order Profit")}</h2>
