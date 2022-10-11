@@ -102,9 +102,8 @@ function DepositForm(props){
           {props.t("Add Deposit")}
         </ModalHeader>
         <ModalBody >
-    
           <AvForm
-            className='p-4'
+            className='px-4 py-2'
             onValidSubmit={(e, v) => {
               handleAddDeposit(e, v);
             }}
@@ -112,26 +111,6 @@ function DepositForm(props){
             <Row className="mb-3">
               <Col md="6">                      
                 <div>
-                  {/* <Select 
-                    onChange={(e) => {
-                      selectClient(e.value.id);
-                      
-                    }}
-                    isSearchable = {true}
-                    options={props.clients.map((item) => (
-                      {
-                        label : `${item.firstName} ${item.lastName}`,
-                        value : {
-                          name: `${item.firstName} ${item.lastName}`,
-                          id: `${item._id}`
-                        }
-                      }
-
-                    ))}
-                    classNamePrefix="select2-selection"
-                    placeholder = "choose a client name"
-                    onInputChange = {(e)=>setSearchInput(e)}
-                  /> */}
                   <AvFieldSelect
                     name="client"
                     label={props.t("Client")}
@@ -157,9 +136,7 @@ function DepositForm(props){
                 </div>
               </Col>
               <Col md="6">
-                <Label>{props.t("Type")}</Label>
-                
-                
+                <Label>{props.t("Type")}</Label> 
                 <div>
                   <Select 
                     defaultValue={{
@@ -182,7 +159,7 @@ function DepositForm(props){
                   />
                 </div>
               </Col>
-              <Col md="12">
+              <Col md="12" className="mt-3">
                 <Label>{props.t("Wallet")}</Label>
                 <div>
                   <Select 
@@ -271,7 +248,7 @@ function DepositForm(props){
               />
             </div>
     
-            <div className='text-center pt-3 p-2'>
+            <div className='text-center mt-3 p-2'>
               <Button 
                 disabled = {props.disableAddButton} 
                 type="submit" 
