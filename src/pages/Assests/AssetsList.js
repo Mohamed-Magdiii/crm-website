@@ -18,6 +18,7 @@ import AssetEdit from "./AssetEdit";
 import DeleteModal from "components/Common/DeleteModal";
 import { withTranslation } from "react-i18next";
 import { checkAllBoxes } from "common/utils/checkAllBoxes";
+import { MetaTags } from "react-meta-tags";
 function AssestsList(props){
   const [selectedSymbol, setSelectedSymbol] = useState();
   const [editModal, setEditModal] = useState(false);
@@ -125,6 +126,11 @@ function AssestsList(props){
   }, [props.deleteModalClear]);
   return (
     <React.Fragment>
+      <MetaTags>
+        <title>
+          Symbols
+        </title>
+      </MetaTags>
       <div className="page-content">
         <div className="container-fluid">
           <h2>{props.t("Symbols")}</h2>

@@ -13,6 +13,7 @@ import TableLoader from "components/Common/TableLoader";
 import { withTranslation } from "react-i18next";
 
 import { fetchTransactionsProfitsStart } from "store/transactionsProfit/actions";
+import { MetaTags } from "react-meta-tags";
 
 
 function TransactionProfitList(props) {
@@ -60,6 +61,11 @@ function TransactionProfitList(props) {
 
   return (
     <React.Fragment>
+      <MetaTags>
+        <title>
+          Exchange Balance
+        </title>
+      </MetaTags>
       <div className="page-content">
         <div className="container-fluid">
           <h2>{props.t("Exchange Balances")}</h2>

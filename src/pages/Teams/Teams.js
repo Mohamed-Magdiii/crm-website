@@ -23,6 +23,7 @@ import TeamsAddModal from "./TeamsAddModal";
 import TeamsEditModal from "./TeamsEditModal";
 import TeamsEditMembersModal from "./TeamsEditMembersModal";
 import { showSuccessNotification } from "store/notifications/actions";
+import { MetaTags } from "react-meta-tags";
 
 function Teams() {
 
@@ -197,6 +198,11 @@ function Teams() {
 
   return (
     <React.Fragment>
+      <MetaTags>
+        <title>
+          Teams
+        </title>
+      </MetaTags>
       <div className="page-content">
         <div className="container-fluid">
           <h2>Teams</h2>

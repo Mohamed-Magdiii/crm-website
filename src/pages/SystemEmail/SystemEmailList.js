@@ -26,6 +26,7 @@ import DeleteModal from "components/Common/DeleteModal";
 import SystemEmailAdd from "./SystemEmailAdd";
 import SystemEmailEditModal from "./SystemEmailEditModal";
 import SystemEmailHTMLPreviewModal from "./SystemEmailHTMLPreviewModal";
+import { MetaTags } from "react-meta-tags";
 
 function SystemEmailsList(props){
   const [deleteModal, setDeleteModal] = useState(false);
@@ -182,6 +183,11 @@ function SystemEmailsList(props){
 
   return (
     <React.Fragment>
+      <MetaTags>
+        <title>
+          System Emails
+        </title>
+      </MetaTags>
       <div className="page-content">
         <div className="container-fluid">
           <h2>{props.t("System emails")}</h2>
