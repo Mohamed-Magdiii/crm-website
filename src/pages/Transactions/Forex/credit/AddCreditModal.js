@@ -21,7 +21,6 @@ import { fetchTradingAccounts } from "store/tradingAccounts/actions";
 
 function AddCreditModal(props){
   const dispatch = useDispatch();
-  const customerId = JSON.parse(localStorage.getItem("authUser")).roleId._id;
   const { create } = props.withdrawalsPermissions;
   const [addModal, setAddModal] = useState(false);
   const [tradingAccountOwnerName, setTradingAccountOwnerName] = useState();
@@ -90,7 +89,7 @@ function AddCreditModal(props){
           <AvForm
             className='p-4'
             onValidSubmit={(e, v) => {
-              v.customerId = customerId;
+              v.customerId = props.tradingAccounts.filter((item) => (item.login == v.liveAccount))[0]?.customerId._id;
               v.tradingAccountId = props.tradingAccounts.filter((item) => (item.login == v.liveAccount))[0]?._id;
               v.type = creditType;
               delete v.account;

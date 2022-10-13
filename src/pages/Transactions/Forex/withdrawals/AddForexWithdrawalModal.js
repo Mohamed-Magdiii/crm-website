@@ -93,7 +93,7 @@ function AddForexWithdrawalModal(props){
             onValidSubmit={(e, v) => {
               v.gateway = gateway;
               v.accountType = accountType;
-              v.customerId = customerId;
+              v.customerId = props.tradingAccounts.filter((item) => (item.login == v.liveAccount))[0]?.customerId._id;
               v.tradingAccountId = props.tradingAccounts.filter((item) => (item.login == v.account))[0]?._id;
               delete v.account;
               delete v.customerName;

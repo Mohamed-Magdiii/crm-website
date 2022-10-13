@@ -17,17 +17,16 @@ import { withTranslation } from "react-i18next";
 import Select from "react-select";
 import { addInternalTransfer } from "store/forexTransactions/internalTransfers/actions";
 import Loader from "components/Common/Loader";
-import { fetchTradingAccounts } from "store/tradingAccounts/actions";
+import { fetchTradingAccounts, fetchTradingAccountsByCustomerID } from "store/tradingAccounts/actions";
 
 function AddInternalTransferModal(props){
   const dispatch = useDispatch();
-  const customerId = JSON.parse(localStorage.getItem("authUser")).roleId._id;
   const { create } = props.withdrawalsPermissions;
   const [addModal, setAddModal] = useState(false);
   const [accountType, setAccountType] = useState("");
   const [tradingAccountOwnerName, setTradingAccountOwnerName] = useState();
   const [toAccount, setToAccount] = useState();
-  const [transferToAccount, setTransferToAccount] = useState();
+  const [transferTo, setTransferTo] = useState();
   const [tradingAccountLogin, setTradingAccountLogin] = useState();
 
   // account type options
@@ -42,8 +41,8 @@ function AddInternalTransferModal(props){
     }
   ];
 
-  // transfer to account options
-  const transferToAccountOptions = [
+  // transfer to options
+  const transferToOptions = [
     {
       label: "Own Account",
       value: "ownAccount"
@@ -53,11 +52,19 @@ function AddInternalTransferModal(props){
       value: "clientAccount"
     }
   ];
+
+  // in case of IB transfer, transfer to account oprions
+  const transferToAccountOptions = props.tradingAccountsByCustomerId?.map((item) => (
+    {
+      label: `${item.login}-${item.platform}`,
+      value: item.login
+    }
+  ));
   
   const toggleAddModal = () => {
     setAddModal(!addModal);
     setTradingAccountOwnerName("");
-    setTransferToAccount("");
+    setTransferTo("");
   };
 
   useEffect(() => {
@@ -74,10 +81,18 @@ function AddInternalTransferModal(props){
     dispatch(fetchTradingAccounts({ login }));   
   };
 
+  const loadTradingAccountsByCustomerId = (customerId)=>{
+    dispatch(fetchTradingAccountsByCustomerID({ customerId }));   
+  };
+
   const handleLiveAccountChange = (e) => {
     setTradingAccountLogin(e.target.value);
     loadTradingAccounts(e.target.value);
   };
+  
+  useEffect(() => {
+    loadTradingAccountsByCustomerId(props.tradingAccounts[0]?.customerId._id);
+  }, props.tradingAccounts);
 
   useEffect(() => {
     setTradingAccountOwnerName(
@@ -92,7 +107,7 @@ function AddInternalTransferModal(props){
       cb("Enter A Valid Live Account");
     } else cb(true);
   };
-  
+
   return (
     <React.Fragment >
       <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}>
@@ -108,10 +123,10 @@ function AddInternalTransferModal(props){
             className='p-4'
             onValidSubmit={(e, v) => {
               // v.accountType = accountType;
-              v.customerId = customerId;
+              v.customerId = props.tradingAccounts.filter((item) => (item.login == v.liveAccount))[0]?.customerId._id;
               v.tradingAccountFrom = props.tradingAccounts.filter((item) => (item.login == v.fromAccount))[0]?._id;
               v.tradingAccountTo = toAccount;
-              v.transferToAccount = transferToAccount;
+              v.transferToAccount = transferTo;
               delete v.account;
               delete v.customerName;
               delete v.accountType;
@@ -193,10 +208,10 @@ function AddInternalTransferModal(props){
                   <Select 
                     required
                     onChange={(e) => {
-                      setTransferToAccount(e.value.gateway);
+                      setTransferTo(e.value.gateway);
                     }}
                     isSearchable = {true}
-                    options={transferToAccountOptions}
+                    options={transferToOptions}
                     classNamePrefix="select2-selection"
                     placeholder = "Choose An option"    
                   />
@@ -215,6 +230,13 @@ function AddInternalTransferModal(props){
                     onChange={(e) => {
                       setToAccount(e.value.gateway);
                     }}
+                    options={
+                      transferTo === "clientAccount"
+                        ?
+                        transferToAccountOptions
+                        :
+                        transferToAccountOptions
+                    }
                     isSearchable = {true}
                     classNamePrefix="select2-selection"
                     placeholder = "Choose An Account"    
@@ -283,6 +305,7 @@ const mapStateToProps = (state) => ({
   addInternalTransferLoading: state.internalTransferReducer.addInternalTransferLoading,
   addinternalTransferFailDetails: state.internalTransferReducer.addinternalTransferFailDetails,
   tradingAccounts: state.tradingAccountReducer.tradingAccounts,
-  fetchTradingAccountsLoading: state.tradingAccountReducer.loading
+  fetchTradingAccountsLoading: state.tradingAccountReducer.loading,
+  tradingAccountsByCustomerId: state.tradingAccountReducer.tradingAccountsByCustomerId
 });
 export default connect(mapStateToProps, null)(withTranslation()(AddInternalTransferModal));

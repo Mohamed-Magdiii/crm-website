@@ -112,7 +112,7 @@ function AddForexDepositModal(props){
             onValidSubmit={(e, v) => {
               v.gateway = gateway;
               // v.image = memFiles;
-              v.customerId = customerId;
+              v.customerId = props.tradingAccounts.filter((item) => (item.login == v.liveAccount))[0]?.customerId._id;
               v.tradingAccountId = props.tradingAccounts.filter((item) => (item.login == v.liveAccount))[0]?._id;
               delete v.liveAccount;
               delete v.customerName;

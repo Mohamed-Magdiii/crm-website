@@ -34,7 +34,7 @@ function CurrencyPairsList(props) {
 
   useEffect(() => {
     loadMarkets(1, sizePerPage);
-  }, [sizePerPage, 1, props.changeStatusLoading]);
+  }, [sizePerPage, 1]);
 
   const loadMarkets = (page, limit) => {
     dispatch(
