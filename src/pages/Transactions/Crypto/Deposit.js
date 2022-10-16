@@ -106,7 +106,7 @@ function Deposit(props){
       editable: false,
       text: props.t("Details"),
       formatter: (val) => (
-        <div className="d-flex gap-3">
+        <div className="text-center">
           <Link className={val.gateway === "BLOCKCHAIN" ? "text-success" : "text-muted"} to="#">
             <i
               className="mdi mdi-eye font-size-20"
@@ -238,7 +238,7 @@ function Deposit(props){
                           }
                         </Tbody>
                         :
-                        <Tbody style = {{ fontSize : "13px" }}  >
+                        <Tbody style = {{ fontSize : "13px" }} className="text-center">
                           {props.loading && <TableLoader colSpan={4} />}
                           {!props.loading && props.deposits.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
@@ -246,7 +246,7 @@ function Deposit(props){
                                 <Td key={`${rowIndex}-${index}`} className= "pt-4">
                                   { column.dataField === "checkbox" ? <input className = "deposit-checkbox" type="checkbox"/> : ""}
                                   { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
-                                  {column.dataField === "dropdown" ? <CustomDropdown  permission={props.depositsPermissions.actions ? true : false}
+                                  { column.dataField === "dropdown" ? <CustomDropdown permission={props.depositsPermissions.actions ? true : false}
                                     id={row._id} status={row.status} approve={()=>{depositApprove(row)}} reject={()=>{depositReject(row)}} /> : ""}
                                 </Td>
                               )}
