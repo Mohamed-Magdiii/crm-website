@@ -29,7 +29,8 @@ import {
   SEND_EMAIL_TO_RESET_PASSWORD_START, 
   SEND_EMAIL_MODAL_CLEAR,
   CLIENT_FORGOT_PASSWORD_START,
-  CLIENT_FORGOT_PASSWORD_CLEAR
+  CLIENT_FORGOT_PASSWORD_CLEAR,
+  CLIENT_DISABLE_2FA_START
 } from "./actionsType";
 
 export const fetchClientsStart = (params = {})=>{
@@ -202,5 +203,11 @@ export const clientForgotPasswordStart = (params)=>{
 export const clientForgotPasswordClear = ()=>{
   return {
     type:CLIENT_FORGOT_PASSWORD_CLEAR
+  };
+};
+export const disable2FA = (params)=>{
+  return {
+    type:CLIENT_DISABLE_2FA_START,
+    payload:params
   };
 };

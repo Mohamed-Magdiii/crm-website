@@ -18,6 +18,7 @@ import Logs from "./Logs/Logs";
 
 import { fetchClientDetails } from "store/client/actions";
 import { fetchDictionaryStart } from "store/dictionary/actions";
+import Security from "./Security/Security";
 
 function ClientMainPage(props) {
   const pathParams = useParams();
@@ -40,7 +41,7 @@ function ClientMainPage(props) {
     { component: ClientWallets, url: `/clients/${clientId}/wallets` },
     { component: OrderList, url: `/clients/${clientId}/orders` },
     { component: Logs, url: `/clients/${clientId}/logs` },
-    { component: "Security", url: `/clients/${clientId}/security` },
+    { component: Security, url: `/clients/${clientId}/security` },
   ];
   useEffect(()=>{
     getClientDetails(clientId);

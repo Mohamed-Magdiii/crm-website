@@ -42,17 +42,6 @@ function LeadForm(props) {
     setAddUserModal(!addModal);
   };
 
-  const emailErrorStyle = duplicatedEmail ? "1px solid red" : "1px solid rgb(200, 200, 200)";
-
-  const repeatedEmailCheck = (e) => {
-    e.target?.value?.length > 0 &&
-    setDuplicatedEmail(
-      props.clients?.map((item) => (item.email)).includes(e.target.value?.trim()) || 
-      props.leads?.map((item) => (item.email)).includes(e.target.value?.trim()) ||
-      props.users?.map((item) => (item.email)).includes(e.target.value?.trim())
-    );
-  };
-  
   const loadClients = (page, limit) => {
     dispatch(fetchClientsStart({
       limit,
@@ -79,6 +68,12 @@ function LeadForm(props) {
     }
   }, [props.showAddSuccessMessage]);
 
+  const emailCheck = (value, ctx, input, cb)=>{
+    const found = props.leads.find((item) => item.email === value.toLowerCase());
+    if (found)
+      cb(("Email already Exists"));
+    cb(true);
+  };
   return (
     <React.Fragment >
       <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}>
@@ -132,16 +127,12 @@ function LeadForm(props) {
                     placeholder={props.t("Enter Email")}
                     type="email"
                     errorMessage={props.t("Enter Valid Email")}
-                    onChange={repeatedEmailCheck}
                     validate={{
                       required: { value: true },
                       email: { value: true },
-                    }}
-                    style={{
-                      border: `${emailErrorStyle}`
+                      custom: emailCheck
                     }}
                   />
-                  {duplicatedEmail && <small className="text-danger">Account already exists</small>}
                 </div>
               </Col>
               <Col md="6">
