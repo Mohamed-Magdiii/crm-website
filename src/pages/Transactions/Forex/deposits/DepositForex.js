@@ -158,8 +158,7 @@ function DepositForex(props){
   const loadForexDeposits = (page, limit)=>{
     dispatch(fetchForexDeposits({
       limit, 
-      page,
-      customerId
+      page
     }));   
   };
 

@@ -52,7 +52,6 @@ function DepositForm(props){
   useEffect(()=>{
     dispatch(fetchClientsStart({
       page:1,
-      limit:10,
       type
     }));
     dispatch(fetchGatewaysStart());
