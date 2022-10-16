@@ -38,6 +38,7 @@ import forexGatewaySaga from "./forexGateway/saga";
 import forexWithdrawalSaga from "./forexTransactions/withdrawals/saga";
 import internalTransferSaga from "./forexTransactions/internalTransfers/saga";
 import creditSaga from "./forexTransactions/credit/saga";
+import convertSaga from "./converts/saga";
 
 export default function* rootSaga() {
   yield all([
@@ -80,6 +81,7 @@ export default function* rootSaga() {
     fork(forexGatewaySaga),
     fork(forexWithdrawalSaga),
     fork(internalTransferSaga),
-    fork(creditSaga)
+    fork(creditSaga),
+    fork(convertSaga)
   ]);
 }

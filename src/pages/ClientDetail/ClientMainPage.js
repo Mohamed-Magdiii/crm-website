@@ -15,7 +15,7 @@ import OrderList from "./orders/OrdersList";
 import Documents from "./Documents/Documents";
 import ClientDetailsHeader from "./ClientDetailsHeader";
 import Logs from "./Logs/Logs";
-
+import Converts from "./Converts/Converts";
 import { fetchClientDetails } from "store/client/actions";
 import { fetchDictionaryStart } from "store/dictionary/actions";
 
@@ -41,6 +41,7 @@ function ClientMainPage(props) {
     { component: OrderList, url: `/clients/${clientId}/orders` },
     { component: Logs, url: `/clients/${clientId}/logs` },
     { component: "Security", url: `/clients/${clientId}/security` },
+    { component: Converts, url: `/clients/${clientId}/converts` },
   ];
   useEffect(()=>{
     getClientDetails(clientId);

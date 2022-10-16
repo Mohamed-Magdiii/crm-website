@@ -52,6 +52,7 @@ import forexGatewayReducer from "./forexGateway/reducer";
 import forexWithdrawalReducer from "./forexTransactions/withdrawals/reducer";
 import internalTransferReducer from "./forexTransactions/internalTransfers/reducer";
 import creditReducer from "./forexTransactions/credit/reducer";
+import convertReducer from "./converts/reducer";
 
 const rootReducer = combineReducers({
   // public
@@ -94,7 +95,8 @@ const rootReducer = combineReducers({
   forexGatewayReducer,
   forexWithdrawalReducer,
   internalTransferReducer,
-  creditReducer
+  creditReducer,
+  convertReducer
 });
 
 export default rootReducer;
