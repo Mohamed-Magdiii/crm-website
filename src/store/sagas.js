@@ -33,11 +33,12 @@ import todosSaga from "./todos/saga";
 import logsSaga from "./logs/saga";
 import dashboardSaga from "./dashboard/saga";
 import forexDepositSaga from "./forexTransactions/deposits/saga";
-import tradingAccountSaga from "./tradingAccounts/saga";
 import forexGatewaySaga from "./forexGateway/saga";
 import forexWithdrawalSaga from "./forexTransactions/withdrawals/saga";
 import internalTransferSaga from "./forexTransactions/internalTransfers/saga";
 import creditSaga from "./forexTransactions/credit/saga";
+import tradingAccountsSaga from "./tradingAccounts/saga";
+import clientTransactionsSaga from "./transactions/saga";
 
 export default function* rootSaga() {
   yield all([
@@ -76,10 +77,11 @@ export default function* rootSaga() {
     fork(logsSaga),
     fork(dashboardSaga),
     fork(forexDepositSaga),
-    fork(tradingAccountSaga),
     fork(forexGatewaySaga),
     fork(forexWithdrawalSaga),
     fork(internalTransferSaga),
-    fork(creditSaga)
+    fork(creditSaga),
+    fork(tradingAccountsSaga),
+    fork(clientTransactionsSaga),
   ]);
 }

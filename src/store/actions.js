@@ -17,3 +17,4 @@ export * from "./contacts/actions";
 export * from "./todos/actions";
 export * from "./logs/actions";
 export * from "./dashboard/actions";
+export * from "./tradingAccounts/actions";

@@ -15,6 +15,7 @@ import OrderList from "./orders/OrdersList";
 import Documents from "./Documents/Documents";
 import ClientDetailsHeader from "./ClientDetailsHeader";
 import Logs from "./Logs/Logs";
+import ListAccounts from "./TradingAccounts/ListAccounts";
 
 import { fetchClientDetails } from "store/client/actions";
 import { fetchDictionaryStart } from "store/dictionary/actions";
@@ -37,6 +38,7 @@ function ClientMainPage(props) {
     { component: ClientProfile, url: `/clients/${clientId}/profile` },
     { component: ClientBank, url: `/clients/${clientId}/bank` },
     { component: Documents, url: `/clients/${clientId}/documents` },
+    { component: ListAccounts, url: `/clients/${clientId}/trading-accounts` },
     { component: ClientTransactions, url: `/clients/${clientId}/transactions` },
     { component: ClientWallets, url: `/clients/${clientId}/wallets` },
     { component: OrderList, url: `/clients/${clientId}/orders` },
