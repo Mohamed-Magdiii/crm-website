@@ -41,6 +41,7 @@ import creditSaga from "./forexTransactions/credit/saga";
 import convertSaga from "./converts/saga";
 import tradingAccountsSaga from "./tradingAccounts/saga";
 import clientTransactionsSaga from "./transactions/saga";
+import requestSaga from "./requests/saga";
 
 export default function* rootSaga() {
   yield all([
@@ -87,5 +88,6 @@ export default function* rootSaga() {
     fork(convertSaga),
     fork(tradingAccountsSaga),
     fork(clientTransactionsSaga),
+    fork(requestSaga),
   ]);
 }

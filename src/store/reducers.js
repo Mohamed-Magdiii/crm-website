@@ -55,6 +55,7 @@ import creditReducer from "./forexTransactions/credit/reducer";
 import convertReducer from "./converts/reducer";
 import tradingAccountReducer from "./tradingAccounts/reducer";
 import clientTransactionsReducer from "./transactions/reducer";
+import requestReducer from "./requests/reducer";
 
 const rootReducer = combineReducers({
   // public
@@ -101,6 +102,7 @@ const rootReducer = combineReducers({
   convertReducer,
   tradingAccountReducer,
   clientTransactionsReducer,
+  requestReducer
 });
 
 export default rootReducer;

@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import {
   useDispatch, connect
@@ -21,7 +22,7 @@ import TableLoader from "components/Common/TableLoader";
 import { captilazeFirstLetter } from "common/utils/manipulateString";
 import CustomDropDown from "components/Common/CustomDropDown";
 
-function IbRequest(props){
+function Leverage(props){
 
   const columns = [
     {
@@ -50,6 +51,22 @@ function IbRequest(props){
     },
     {
       dataField:"type",
+      text:"Trading account",
+    },
+    {
+      dataField:"type",
+      text:"MT5 Account",
+    },
+    {
+      dataField:"type",
+      text:"Leverage",
+    },
+    {
+      dataField:"type",
+      text:"Requested Leverage",
+    },
+    {
+      dataField:"type",
       text:"Sales Rep",
     },
     {
@@ -58,14 +75,14 @@ function IbRequest(props){
       formatter: (user) => (
         <>
           {user.status === "PENDING"  ? (
-            <div className="text-dark">
+            <div className="text-warning">
               {user.status}
             </div>
           ) : (user.status === "APPROVED" ? (
-            <div className="text-success">
+            <div className="text-warning">
               {user.status}
             </div>
-          ) : <div className="text-danger">
+          ) : <div className="text-warning">
             {user.status}
           </div> 
           )}
@@ -186,4 +203,4 @@ const mapStateToProps = (state) => ({
   // requestResponseMessage:state.depositReducer.depositResponseMessage
 
 });
-export default connect(mapStateToProps, null)(IbRequest);
+export default connect(mapStateToProps, null)(Leverage);

@@ -18,7 +18,7 @@ function CustomDropdown({ id, status, approve, reject, permission, ...props }){
     }
   };
   return (
-    <div className="d-flex gap-3" >
+    <div className="d-flex gap-3 " >
       <div className="flex-shrink-0">
         <Dropdown  disabled={isDisabled()}
           isOpen={isOpen}
