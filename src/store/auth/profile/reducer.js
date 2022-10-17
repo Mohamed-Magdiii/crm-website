@@ -19,6 +19,7 @@ const initialState = {
   orderProfitPermissions: {},
   transactionProfitPermissions: {},
   exchangeBalancePermissions: {},
+  requestsPermissions: {},
   error: "",
   success: "",
 };
@@ -66,6 +67,7 @@ const profile = (state = initialState, action) => {
         exchangeBalancePermissions : { ...action.payload.exchangeBalance },
         orderProfitPermissions : { ...action.payload.orderProfit },
         transactionProfitPermissions : { ...action.payload.transactionProfit },
+        requestsPermissions : { ...action.payload.requests },
       };
       break;
     case "CLEAR_PROFILE":
