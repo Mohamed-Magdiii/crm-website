@@ -7,7 +7,7 @@ export const resetPassword = async (payload) => {
     }
   };
   delete payload.token;
-  const data = await axiosHelper.patch("/clients/reset-password", payload, config);
+  const data = await axiosHelper.patch("/users/reset-password", payload, config);
   if (data.isError) {
     throw new Error(data.message);
   }
