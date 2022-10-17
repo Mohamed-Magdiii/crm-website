@@ -29,16 +29,20 @@ function DepositForm(props){
   const [selectedWalletId, setSelectedWalletId] = useState("");
   const [gateway, setGateway] = useState("");
   const [type, setType] = useState("LIVE");
+  const [gatewayError, setGatewayError] = useState(false);
   const dispatch = useDispatch();
   const { create } = props.depositsPermissions;
   const [searchInput, setSearchInput]  = useState("");
 
+  const gatewayErrorStyle = gatewayError ? "1px solid red" : "1px solid rgb(200, 200, 200)";
+  console.log(gatewayErrorStyle);
+
   const handleAddDeposit = (event, values) => {
     event.preventDefault();
     dispatch(addDepositStart({
-      customerId:selectedClient,
+      customerId: selectedClient,
       walletId: selectedWalletId,
-      type,
+      type: "DEPOSIT",
       gateway,
       ...values
     }));
@@ -51,8 +55,7 @@ function DepositForm(props){
   };
   useEffect(()=>{
     dispatch(fetchClientsStart({
-      page:1,
-      type
+      page:1
     }));
     dispatch(fetchGatewaysStart());
     if (searchInput.length >= 3){
@@ -67,6 +70,7 @@ function DepositForm(props){
   useEffect(() => {
     if (!props.disableAddButton && open ){
       setDepositModal(false);
+      setGatewayError(false);
     }
   }, [props.modalClear]);
   
@@ -86,13 +90,8 @@ function DepositForm(props){
         customerId:selectedClient,
       }));
   };
-  const validateBiggerThanZero = (value, ctx, input, cb) =>{
-    if (value == 0){
-      cb("Should be bigger than 0");
-    } else
-      cb(true);
-  };
 
+  console.log(gatewayError);
   return (
     <React.Fragment >
       <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> {props.t("Add Deposit")}</Link>
@@ -105,33 +104,15 @@ function DepositForm(props){
           <AvForm
             className='p-4'
             onValidSubmit={(e, v) => {
+              !gateway && setGatewayError(true);
+              gateway && selectedWalletId && selectedClient &&
               handleAddDeposit(e, v);
             }}
           >
             <Row className="mb-3">
               <Col md="6">                      
                 <div>
-                  {/* <Select 
-                    onChange={(e) => {
-                      selectClient(e.value.id);
-                      
-                    }}
-                    isSearchable = {true}
-                    options={props.clients.map((item) => (
-                      {
-                        label : `${item.firstName} ${item.lastName}`,
-                        value : {
-                          name: `${item.firstName} ${item.lastName}`,
-                          id: `${item._id}`
-                        }
-                      }
-
-                    ))}
-                    classNamePrefix="select2-selection"
-                    placeholder = "choose a client name"
-                    onInputChange = {(e)=>setSearchInput(e)}
-                  /> */}
-                  <AvFieldSelect
+                  {/* <AvFieldSelect
                     name="client"
                     label={props.t("Client")}
                     onChange={(e) => {
@@ -152,13 +133,34 @@ function DepositForm(props){
                     onInputChange = {(e)=>setSearchInput(e)}
                     validate={{ required:true }}
                   >
-                  </AvFieldSelect>
+                  </AvFieldSelect> */}
+                  <Label>{props.t("Client")}</Label>
+                  <div>
+                    <Select 
+                      required
+                      onChange={(e) => {
+                        selectClient(e.value.id);
+                      }}
+                      isSearchable = {true}
+                      options={props.clients.map((item) => (
+                        {
+                          label : `${item.firstName} ${item.lastName}`,
+                          value : {
+                            name: `${item.firstName} ${item.lastName}`,
+                            id: `${item._id}`
+                          }
+                        }
+                      ))}
+                      classNamePrefix="select2-selection"
+                      placeholder={props.t("Choose A Client")}    
+                    />
+                  </div>
                 </div>
               </Col>
+
+              {/* type */}
               <Col md="6">
                 <Label>{props.t("Type")}</Label>
-                
-                
                 <div>
                   <Select 
                     defaultValue={{
@@ -177,17 +179,20 @@ function DepositForm(props){
                       value:"DEMO"
                     }]}
                     classNamePrefix="select2-selection"
-                    placeholder = "choose a type for deposit"
+                    placeholder={props.t("choose a type for deposit")}
                   />
                 </div>
               </Col>
+            </Row>
+
+            <Row className="mb-3">
+              {/* wallet */}
               <Col md="12">
                 <Label>{props.t("Wallet")}</Label>
                 <div>
                   <Select 
                     onChange={(e) => {
                       setSelectedWalletId(e.value.id);
-                      
                     }}
                     isSearchable = {true}
                     options={props.wallets.map((wallet) => (
@@ -200,23 +205,17 @@ function DepositForm(props){
 
                     ))}
                     classNamePrefix="select2-selection"
-                    placeholder = "choose your wallet"
-                      
+                    placeholder={props.t("choose your wallet")}
                   />
                 </div>
-              
               </Col>
-          
             </Row>
           
-        
             <div className="mb-3">
-              
               <Label>{props.t("Gateway")}</Label>
               <div>
                 <Select 
                   onChange={(e) => {
-                      
                     setGateway(e.value.gateway);
                   }}
                   isSearchable = {true}
@@ -227,35 +226,31 @@ function DepositForm(props){
                         gateway: `${props.gateways[key]}`
                       }
                     }
-
                   ))}
                   classNamePrefix="select2-selection"
-                  placeholder = "choose a gateway"
-                      
+                  placeholder = {props.t("Choose Valid Gateway")}
+                  style={{
+                    border: "1px solid red"
+                  }}
                 />
+                {gatewayError && <small className="text-danger">{props.t("Choose Valid Gateway")}</small>}
               </div>
             </div>
               
-               
             <div className="mb-3">
               <AvField
                 name="amount"
                 label={props.t("Amount")}
-                placeholder={props.t("enter amount")}
+                placeholder={props.t("Enter amount")}
                 type="number"
-                min="0"
+                min="1"
                 errorMessage={props.t("Enter Valid Amount")}
                 validate = {{
-                  required :{ value:true },
-                  pattern : {
-                    // eslint-disable-next-line no-useless-escape
-                    value :"^[0-9]+(\\.([0-9]{1,4}))?$",
-                    errorMessage : "Amount is not valid"
-                  },
-                  custom:validateBiggerThanZero
+                  required :{ value:true }
                 }}
               />
             </div>
+
             <div className="mb-3">
               <AvField
                 name="note"
@@ -264,8 +259,7 @@ function DepositForm(props){
                 type="text"
                 errorMessage={props.t("Enter Valid Note")}
                 validate={{ 
-                  required: { value: true },
-                  
+                  required:{ value: false }
                 }}
               />
             </div>

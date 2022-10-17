@@ -56,6 +56,7 @@ export const clientReducer = (state = initalState, action)=>{
         totalPages: action.payload.result.totalPages,
         loading: false           
       };
+      console.log(action.payload.result.docs);
       break;
     case "ADD_NEW_CLIENT":
       state = {

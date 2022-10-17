@@ -163,6 +163,7 @@ function Deposit(props){
   const closeNotifaction = () => {
     setShowNotifaction(false);
   };
+  console.log(props.deposits);
   return (
 
     <React.Fragment>
