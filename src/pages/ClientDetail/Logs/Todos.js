@@ -16,6 +16,7 @@ import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
 import { fetchTodosStart, deleteTodosStart } from "store/actions";
 import TodoAdd from "components/Common/TodoAdd";
+import TodoEdit from "components/Common/TodoEdit";
 import DeleteModal from "components/Common/DeleteModal";
 
 function Todos(props) {
@@ -103,10 +104,13 @@ function Todos(props) {
   }, []);
   useEffect(()=>{
     fetchData(1);
-  }, [sizePerPage, 1]);
+  }, [props.deletingClearCounter, sizePerPage, 1]);
 
   const deleteRole = () => {
-    dispatch(deleteTodosStart(todoObj._id));
+    dispatch(deleteTodosStart({
+      id: todoObj._id, 
+      type: todoObj.type
+    }));
   };
 
   useEffect(()=>{
@@ -127,7 +131,7 @@ function Todos(props) {
                     {props.t("Todos")} / {props.t("Reminders")}
                   </CardTitle>
                   <TodoAdd selectedClient={props.selectedClient} />
-                  <TodoAdd
+                  <TodoEdit
                     show={showModal} 
                     data={todoObj} 
                     onClose={() => { setShowModal(false) }}
@@ -136,7 +140,7 @@ function Todos(props) {
                   <DeleteModal
                     loading={props.deleteLoading}
                     onDeleteClick={deleteRole}
-                    show={showDeleteModal }
+                    show={showDeleteModal}
                     onCloseClick={()=>{setShowDeleteModal(false)}}
                   />
                 </CardHeader>

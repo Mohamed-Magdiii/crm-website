@@ -49,7 +49,7 @@ const depositReducer = (state = { initalState }, action)=>{
         // deposits:[{ ...action.payload.deposit }, ...state.deposits],
         // totalDocs:state.totalDocs + 1,
         depositResponseMessage:action.payload.deposit.status, 
-      }; 
+      };
       break;
     case "DEPOSIT_STATUS_CHANGE_SUCCESS":
       // eslint-disable-next-line no-case-declarations

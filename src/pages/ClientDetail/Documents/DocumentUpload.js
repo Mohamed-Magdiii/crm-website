@@ -6,11 +6,12 @@ import {
 import { AvForm, AvField } from "availity-reactstrap-validation";
 // i18n 
 import { withTranslation } from "react-i18next";
-import { uploadDocsStart } from "store/documents/actions";
+import {
+  uploadDocsStart
+} from "store/documents/actions";
 function UploadKYC (props) {
   const dispatch = useDispatch();
   const refForm = useRef();
-
   const [memFiles, setMemFiles] = React.useState({});
   const addFile = (name, files) => {
     setMemFiles({
@@ -20,16 +21,19 @@ function UploadKYC (props) {
   };
   const uploadDoc = async () => {
     try {
-      var formData = new FormData();
-      formData.append("ID", memFiles["ID1"]);
-      if (memFiles["ID2"]) {
-        formData.append("ID", memFiles["ID2"]);
+      if (Object.keys(memFiles).length > 0)
+      { 
+        var formData = new FormData();
+        formData.append("ID", memFiles["ID1"]);
+        if (memFiles["ID2"]) {
+          formData.append("ID", memFiles["ID2"]);
+        }
+        formData.append("ADDRESS", memFiles["ADDRESS"]);
+        dispatch(uploadDocsStart({
+          clientId: props.clientId,
+          formData,
+        }));
       }
-      formData.append("ADDRESS", memFiles["ADDRESS"]);
-      dispatch(uploadDocsStart({
-        clientId: props.clientId,
-        formData,
-      }));
       // const tmp = await uploadDocuments(props.clientId, formData);
       // console.log("result ", tmp);
     } catch (error) {
@@ -55,6 +59,16 @@ function UploadKYC (props) {
     }
   }, [props.clientDetails]);
 
+  const validateFile = (value, ctx, input, cb)=> {
+    const extensions = ["png", "jpg", "jpeg", "pdf"];
+    const extension = value.split(".")[1];
+    if (extensions.includes(extension) || !value){
+      if (!value || memFiles[input.props.name]?.size <= 2097152){
+        cb(true);
+      } else cb("2mb maximum size");
+    } else cb("Only images or PDF can be uploaded");    
+  };
+
   return (<React.Fragment>
     <AvForm
       style={{ height: "100%" }}
@@ -74,68 +88,45 @@ function UploadKYC (props) {
           <CardBody className="d-flex justify-content-center align-items-center">
             {showKYC && 
               <Row>
-                <Col md="6" className="mb-3">
-                      
-                  {/* <AvField
-                    name="ID.file1"
+                <Col md="6" className="mb-3">           
+                  <AvField
+                    tag={Input}
+                    className="form-control"
+                    name="ID1"
                     label={props.t("Proof of ID - Front Side")}
                     type="file"
                     onChange={(e)=>{addFile("ID1", e.target.files[0])}}
-                    errorMessage={props.t("Please select file for ID Front")}
-                    // validate={{ required: { value: true } }}
-                  /> */}
-                  <Input
-                    className="form-control"
-                    id="Proof_of_ID_front_side"
-                    onChange={(e) => { addFile("ID1", e.target.files[0]) }}
-                    tag={AvField}
-                    errorMessage={props.t("Error in file")}
-                    name="ID.file1"
-                    label={props.t("Proof of ID - Front Side")}
-                    type="file"
-                  />
-                      
-                </Col>
-                <Col md="6" className="mb-3">
-                  {/* <AvField
-                    name="ID.file2"
-                    label={props.t("Proof of ID - Back Side")}
-                    type="file"
-                    onChange={(e)=>{addFile("ID2", e.target.files[0])}}
-                    errorMessage={props.t("must file")}
-                    // validate={{ required: { value: true } }}
-                  /> */}
-                  <Input
-                    className="form-control"
-                    id="Proof_of_ID_front_side"
-                    tag={AvField}
-                    name="ID.file2"
-                    label={props.t("Proof of ID - Back Side")}
-                    type="file"
-                    onChange={(e)=>{addFile("ID2", e.target.files[0])}}
-                    errorMessage={props.t("must file")}
-                    // validate={{ required: { value: true } }}
+                    validate={{
+                      custom:validateFile
+                    }}
                   />
                 </Col>
                 <Col md="6" className="mb-3">
-                  {/* <AvField
-                    name="ADDRESS.file1"
-                    label={props.t("Proof of Address")}
-                    type="file"
-                    onChange={(e)=>{addFile("ADDRESS", e.target.files[0])}}
-                    errorMessage={props.t("Please select file for proof of Address")}
-                    // validate={{ required: { value: true } }}
-                  /> */}
-                  <Input
+                  <AvField
+                    tag={Input}
                     className="form-control"
                     id="Proof_of_ID_front_side"
-                    tag={AvField}
-                    name="ADDRESS.file1"
+                    name="ID2"
+                    label={props.t("Proof of ID - Back Side")}
+                    type="file"
+                    onChange={(e)=>{addFile("ID2", e.target.files[0])}}
+                    validate={{
+                      custom:validateFile
+                    }}
+                  />
+                </Col>
+                <Col md="6" className="mb-3">
+                  <AvField
+                    tag={Input}
+                    className="form-control"
+                    id="Proof_of_ID_front_side"
+                    name="ADDRESS"
                     label={props.t("Proof of Address")}
                     type="file"
                     onChange={(e)=>{addFile("ADDRESS", e.target.files[0])}}
-                    errorMessage={props.t("Please select file for proof of Address")}
-                    // validate={{ required: { value: true } }}
+                    validate={{
+                      custom:validateFile
+                    }}
                   />
                 </Col>
                 <Col md="12" className='text-center pt-3 p-2'>
@@ -183,19 +174,23 @@ function UploadAdditionalDocs (props) {
       resetForm();
     }
   }, [props.clear]);
+
   const uploadDoc = async () => {
     try {
-      var formData = new FormData();
-      Object.keys(memFiles).forEach((key) => {
-        for (let index = 0; index < memFiles[key].length; index++) {
-          const file = memFiles[key][index];
-          formData.append(key, file);
-        }
-      });
-      dispatch(uploadDocsStart({
-        clientId: props.clientId,
-        formData,
-      }));
+      if (Object.keys(memFiles).length > 0)
+      { 
+        var formData = new FormData();
+        Object.keys(memFiles).forEach((key) => {
+          for (let index = 0; index < memFiles[key].length; index++) {
+            const file = memFiles[key][index];
+            formData.append(key, file);
+          }
+        });
+        dispatch(uploadDocsStart({
+          clientId: props.clientId,
+          formData,
+        }));
+      }
       // const tmp = await uploadDocuments(props.clientId, formData);
       // console.log("result ", tmp);
     } catch (error) {
@@ -214,6 +209,20 @@ function UploadAdditionalDocs (props) {
     label: "Additional Documents",
     value: "ADDITIONAL_DOCUMENTS"
   }];
+
+  const validateFile = (value, ctx, input, cb)=> {
+    const extensions = ["png", "jpg", "jpeg", "pdf"];
+    const extension = value.split(".")[1];
+    // eslint-disable-next-line no-debugger
+    // debugger;
+    if (extensions.includes(extension) || !value){
+      if (!value || memFiles[input.props.name]?.size <= 2097152){    
+        cb(true);
+        return;
+      } else cb("2mb maximum size");
+    } else cb("Only images or PDF can be uploaded");    
+  };
+
   return (<React.Fragment>
     <AvForm
       ref={refForm}
@@ -233,28 +242,21 @@ function UploadAdditionalDocs (props) {
             <Row>
               {options.map((obj, index) => <React.Fragment key={index}>
                 <Col md={6} className="mb-3">
-                  {/* <AvField
-                    onChange={(e)=>{addFile(obj.value, e.target.files)}}
-                    name={obj.value}
-                    label={props.t(obj.label)}
-                    type="file"
-                    errorMessage={props.t("Error in file")}
-                  /> */}
-                  <Input
+                  <AvField
+                    tag={Input}
                     className="form-control"
                     id="Proof_of_ID_front_side"
-                    onChange={(e) => { addFile(obj.value, e.target.files) }}
-                    tag={AvField}
+                    onChange={(e) => { addFile(obj.value, e.target.files[0]) }}
                     name={obj.value}
                     label={props.t(obj.label)}
                     type="file"
-                    errorMessage={props.t("Error in file")}
+                    validate={{
+                      custom:validateFile
+                    }}
                   />
                 </Col>
               </React.Fragment>)}
-              <Col md="12" className='text-center pt-3 p-2'>
-                
-                
+              <Col md="12" className='text-center pt-3 p-2'>   
                 <Row className="spacing">
                   <Col sm={6} xs={6}></Col>
                   <Col sm={6} xs={12} className="d-flex justify-content-between">

@@ -25,6 +25,7 @@ function ClientAddBankAccountModal(props){
   const toggleAddModal = () => {
     setAddModal(!addModal);
   };
+
   useEffect(()=>{
     if (props.addClearingCounter > 0 && addModal) {
       setAddModal(false);
@@ -42,7 +43,7 @@ function ClientAddBankAccountModal(props){
         </ModalHeader>
         <ModalBody >
           <AvForm
-            className='p-4' 
+            className="p-4" 
             onValidSubmit={(e, v) => {
               v.customerId = id;
               addBankAccountHandler(e, v);
@@ -76,17 +77,28 @@ function ClientAddBankAccountModal(props){
                 label={props.t("Account number")}
                 placeholder={props.t("Enter Account Number")}
                 type="text"
-                errorMessage={props.t("Enter Account Number")}
+                onKeyPress={(e) => {
+                  if (!isNaN(e.key) && e.target.value.length > 0){
+                    return true;
+                  }
+                  if (!/[0-9]/.test(e.key)) {
+                    e.preventDefault();
+                  }
+                }}
                 validate={
                   { 
                     required: { 
                       value: true, 
                       errorMessage: "Enter account number" 
                     },
-                    number: {
-                      value: true,
-                      errorMessage: "Account number must be a number"
-                    }
+                    // number: {
+                    //   value: true,
+                    //   errorMessage: "Account number must be a number"
+                    // },
+                    pattern: {
+                      value: "^[0-9]+$",
+                      errorMessage: "testing error message"
+                    },
                   }
                 }
               />
@@ -167,7 +179,7 @@ function ClientAddBankAccountModal(props){
                 validate={{ required: { value: true } }}
               />
             </div>
-            <div className='text-center pt-3 p-2'>
+            <div className="text-center pt-3 p-2">
               {/* on clicking this button it switches from the list component to the edit component if 
                   submission is valid but it adds the new system email to the db onValidSubmit above */}
               <Button disabled={props.addLoading} type="submit" color="primary">

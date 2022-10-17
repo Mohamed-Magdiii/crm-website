@@ -21,8 +21,6 @@ import Page404 from "../pages/Authentication/Page404";
 import AssetsList from "../pages/Assests/AssetsList";
 import CurrencyPairsList from "../pages/CurrencyPairs/CurrencyPairsList";
 import MarkUpsList from "../pages/Markups/MarkUpsList";
-import Deposit from "pages/Transactions/Deposit";
-import Withdrawal from "pages/Transactions/Withdrawal";
 import Reminder from "../pages/Reminder/Reminder";
 import DictionaryList from "pages/Dictionary.js/DictionaryList";
 import MarketPrice from "pages/MarketPrice/MarketPrice";
@@ -33,6 +31,10 @@ import usePermissions from "./permissions";
 import TransactionFeeGroupList from "pages/transactionFeeGroups/TransactionFeeGroupList";
 import OrderProfitList from "pages/OrderProfit/orderProfitList";
 import TransactionProfitList from "pages/TransactionProfit.js/TransactionProfitList";
+import DepositsIndex from "pages/Transactions/DepositsIndex";
+import WithdrawalsIndex from "pages/Transactions/WithdrawalsIndex";
+import InternalTransferIndex from "pages/Transactions/Forex/internalTransfer/InternalTransferIndex";
+import CreditIndex from "pages/Transactions/Forex/credit/CreditIndex";
 
 function userRoutes() {
   const object = usePermissions();
@@ -138,12 +140,22 @@ function userRoutes() {
     },
     {
       path: "/transactions/deposit",
-      component: Deposit,
+      component: DepositsIndex,
       get: depositsPermissions.get
     },
     {
       path: "/transactions/withdrawals",
-      component: Withdrawal,
+      component: WithdrawalsIndex,
+      get: withdrawalsPermissions.get
+    },
+    {
+      path: "/transactions/internal-transfer",
+      component: InternalTransferIndex,
+      get: withdrawalsPermissions.get
+    },
+    {
+      path: "/transactions/credit",
+      component: CreditIndex,
       get: withdrawalsPermissions.get
     },
     {

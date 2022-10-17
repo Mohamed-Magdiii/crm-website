@@ -20,6 +20,7 @@ import SearchBar from "components/Common/SearchBar";
 import { withTranslation } from "react-i18next";
 import { captilazeFirstLetter } from "common/utils/manipulateString";
 import { checkAllBoxes } from "common/utils/checkAllBoxes";
+import { MetaTags } from "react-meta-tags";
 function LeadsList(props) {
 
   const columns = [
@@ -35,9 +36,8 @@ function LeadsList(props) {
     {
       dataField: "name",
       text: props.t("Name"),
-      // formatter: (val) => (captilazeFirstLetter(`${val.firstName} ${val.lastName}`)),
       formatter: (client) => (
-        <div className="d-flex gap-3">
+        <div>
           <Link 
             to={{
               pathname: "/clients/" + client.id + "/profile",
@@ -115,7 +115,12 @@ function LeadsList(props) {
   const handleSearchInput = (e) => (setSearchInputText(e.target.value));
 
   return (
-    <React.Fragment>
+    <React.Fragment>      
+      <MetaTags>
+        <title>
+          Leads
+        </title>
+      </MetaTags>
       <div className="page-content"> 
         <div className="container-fluid">
           <h2>{props.t("Leads List")}</h2>

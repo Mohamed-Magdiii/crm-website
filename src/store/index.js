@@ -8,7 +8,11 @@ import rootReducer from "./reducers";
 import rootSaga from "./sagas";
 
 const sagaMiddleware = createSagaMiddleware();
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ 
+//   trace: true, 
+//   traceLimit: 25 
+// }) || compose;
+const composeEnhancers = compose;
 const middlewares = [sagaMiddleware, thunk];
 const store = createStore(
   rootReducer,

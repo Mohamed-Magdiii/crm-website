@@ -57,7 +57,7 @@ function MarketAdd(props) {
                   <AvField
                     name="name"
                     label={props.t("Name")}
-                    placeholder={props.t("Name")}
+                    placeholder={props.t("Enter Name")}
                     type="text"
                     errorMessage={props.t("Enter name of the market")}
                     validate={{ required: { value: true } }}
@@ -71,7 +71,7 @@ function MarketAdd(props) {
                   <AvField
                     name="baseAsset"
                     label={props.t("Base Asset")}
-                    placeholder={props.t("Base Asset")}
+                    placeholder={props.t("Enter Base Asset")}
                     type="text"
                     errorMessage={props.t("Enter Base Asset")}
                     validate={{ required: { value: true } }}
@@ -83,7 +83,7 @@ function MarketAdd(props) {
                   <AvField
                     name="quoteAsset"
                     label={props.t("Quote Asset")}
-                    placeholder={props.t("Quote Asset")}
+                    placeholder={props.t("Enter Quote Asset")}
                     type="text"
                     errorMessage={props.t("Enter valid Quote Asset")}
                     validate={{ required: { value: true } }}
@@ -97,8 +97,9 @@ function MarketAdd(props) {
                   <AvField
                     name="fee"
                     label={props.t("Fee")}
-                    placeholder={props.t("Fee")}
+                    placeholder={props.t("Enter Fee")}
                     type="number"
+                    min="0"
                     errorMessage={props.t("Enter Fee")}
                     validate={{ required: { value: true } }}
                   />
@@ -109,8 +110,9 @@ function MarketAdd(props) {
                   <AvField
                     name="minAmount"
                     label={props.t("Minimum Amount")}
-                    placeholder={props.t("Minimum Amount")}
+                    placeholder={props.t("Enter Minimum Amount")}
                     type="number"
+                    min="0"
                     errorMessage={props.t("Enter valid Minimum Amount")}
                     validate={{ required: { value: true } }}
                   />
@@ -121,12 +123,12 @@ function MarketAdd(props) {
               <Col md="6">
                 {/* <Input type="checkbox" name="active" id="active" switch="none"  />
                 <Label className="me-1" htmlFor="active" data-on-label={props.t("Active")} data-off-label=""></Label> */}
-                <AvInput type="checkbox" name="active" validate={{ required: { value: true } }}/> is it active?
+                <AvInput type="checkbox" name="active" trueValue={true} /> Is It Active?
               </Col>
             </Row>
             <div className='text-center pt-3 p-2'>
               <Button  type="submit" color="primary" className="">
-                {props.t("Add New Market")}
+                {props.t("Add")}
               </Button>
             </div>
           </AvForm>

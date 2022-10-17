@@ -36,3 +36,13 @@ export const updateMarket = async ({ payload })=>{
   }
   return data;
 }; 
+
+// change market status 
+export const changeMarketStatusApi = async({ payload }) => {
+  const { id, status } = payload;
+  const data = await axiosHelper.post(`/markets/${id}/${status}`);
+  if (data.isError) {
+    throw new Error(data.message);
+  } 
+  return data;
+};

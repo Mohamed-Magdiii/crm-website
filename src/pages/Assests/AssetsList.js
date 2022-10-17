@@ -18,6 +18,7 @@ import AssetEdit from "./AssetEdit";
 import DeleteModal from "components/Common/DeleteModal";
 import { withTranslation } from "react-i18next";
 import { checkAllBoxes } from "common/utils/checkAllBoxes";
+import { MetaTags } from "react-meta-tags";
 function AssestsList(props){
   const [selectedSymbol, setSelectedSymbol] = useState();
   const [editModal, setEditModal] = useState(false);
@@ -49,12 +50,12 @@ function AssestsList(props){
     },
     {
       dataField: "minAmount",
-      text: props.t("Min deposit Amount"),
+      text: props.t("Min Deposit"),
       formatter:(val)=>(`${val?.minAmount?.deposit ? val.minAmount.deposit : ""}`)
     },
     {
       dataField:"minAmount",
-      text:props.t("Min withdrawal Amount"),
+      text:props.t("Min Withdrawal"),
       formatter:(val)=>(`${val?.minAmount?.withdrawal ? val.minAmount.withdrawal : ""}`)
     },  
     {
@@ -125,6 +126,11 @@ function AssestsList(props){
   }, [props.deleteModalClear]);
   return (
     <React.Fragment>
+      <MetaTags>
+        <title>
+          Symbols
+        </title>
+      </MetaTags>
       <div className="page-content">
         <div className="container-fluid">
           <h2>{props.t("Symbols")}</h2>
@@ -155,7 +161,11 @@ function AssestsList(props){
                             )}
                           </Tr>
                         </Thead>
-                        <Tbody>
+                        <Tbody style={{
+                          fontSize: "12px",
+                          textAlign: "center",
+                          textTransform: "capitalize"
+                        }}>
                           {props.loading && <TableLoader colSpan={4} />}
                           {!props.loading && props.assets.map((row, rowIndex) =>
                             <Tr key={rowIndex}>

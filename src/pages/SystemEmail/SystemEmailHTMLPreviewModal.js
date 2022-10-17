@@ -57,9 +57,13 @@ function SystemEmailHTMLModal(props){
   }, [props.fetchHTMLClearingCounter]);
 
   useEffect(() => {
+    setSelectedLanguage(languageInitialValue);
+  }, [role]);
+
+  useEffect(() => {
     handlefetchSystemEmailHTML();
 
-  }, [selectedLanguage]);
+  }, [selectedLanguage, role]);
 
   return (
     <React.Fragment >

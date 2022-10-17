@@ -21,6 +21,9 @@ import {
   SEND_EMAIL_MODAL_CLEAR,
   CLIENT_FORGOT_PASSWORD_START,
   CLIENT_FORGOT_PASSWORD_CLEAR,
+  CLIENT_DISABLE_2FA_START,
+  CLIENT_DISABLE_2FA_SUCCESS,
+  CLIENT_DISABLE_2FA_FAIL,
 } from "./actionsType";
 
 const initalState = {
@@ -30,7 +33,10 @@ const initalState = {
   successMessage:"",
   clientDetails: {},
   editSuccess: false,
-  updatedClientDetails: ""
+  updatedClientDetails: "",
+  disable2FA:{
+    loading:false
+  }
 };
 
 export const clientReducer = (state = initalState, action)=>{
@@ -157,6 +163,7 @@ export const clientReducer = (state = initalState, action)=>{
       state = {
         ...state,
         clientProfileError: true,
+        editSuccess:false,
         clientProfileloading: false
       };
       break;
@@ -171,6 +178,7 @@ export const clientReducer = (state = initalState, action)=>{
       state = {
         ...state,
         updating: true,
+        editSuccess:false,
         showPortalAccessModal:true
       };
 
@@ -288,6 +296,21 @@ export const clientReducer = (state = initalState, action)=>{
         })
       };
       break;
+    case CLIENT_DISABLE_2FA_START:
+      return {
+        ...state,
+        disable2FA: {
+          loading:true
+        }
+      };
+    case CLIENT_DISABLE_2FA_SUCCESS:
+    case CLIENT_DISABLE_2FA_FAIL:
+      return {
+        ...state,
+        disable2FA:{
+          loading:false
+        }
+      };
     default:
       state = { ...state };
   }

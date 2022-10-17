@@ -67,6 +67,7 @@ function MarketEdit(props) {
                     label={props.t("Fee")}
                     placeholder={props.t("Fee")}
                     type="number"
+                    min="0"
                     value={market.fee["$numberDecimal"]}
                     errorMessage={props.t("Enter Fee")}
                     validate={{ required: { value: true } }}
@@ -80,6 +81,7 @@ function MarketEdit(props) {
                     label={props.t("Minimum Amount")}
                     placeholder={props.t("Minimum Amount")}
                     type="number"
+                    min="0"
                     value={market.minAmount["$numberDecimal"]}
                     errorMessage={props.t("Enter valid Minimum Amount")}
                     validate={{ required: { value: true } }}
