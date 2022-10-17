@@ -8,17 +8,19 @@ function Security(props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { loading } = useSelector(state=>state.clientReducer.disable2FA);
+  const state = useSelector(state=>state.clientReducer.clientDetails);
   const disable2fa = ()=>{
     dispatch(disable2FA({ id:props.clientId }));
   };
 
-  return ( <div className="d-flex align-items-center justify-content-center">
-    <Button color="primary" disabled={loading} onClick={disable2fa}>
+  return (<>
+    {state?.settings?.twoFactorAuthEnabled && <div className="d-flex align-items-center justify-content-center"> <Button color="primary" disabled={loading} onClick={disable2fa}>
       {loading ? <div className="d-flex align-items-center justify-content-center">
         <Spinner></Spinner>
       </div> : t("Disable 2FA")}
     </Button>
-  </div> );
+    </div>}
+  </> );
 }
 
 export default Security;
