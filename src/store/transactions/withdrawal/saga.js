@@ -50,7 +50,7 @@ function * makeWithdrawal({ payload:{ withdrawal } }){
     yield put(showSuccessNotification("Withdrawal has been added successfuly"));
   } catch (error){
     yield put(withdrawalError(error.message));
-    yield delay(3000);
+    yield delay(5000);
     yield put(withdrawalErrorClear());
   }
 

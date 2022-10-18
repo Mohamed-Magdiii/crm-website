@@ -6,7 +6,8 @@ import {
   ADD_CREDIT_REQUESTED,
   ADD_CREDIT_SUCCESS,
   ADD_CREDIT_FAIL,
-  ADD_CREDIT_CLEAR
+  ADD_CREDIT_CLEAR,
+  ADD_CREDIT_ERROR_CLEAR
 } from "./actionTypes";
 
 
@@ -53,5 +54,10 @@ export const addCreditClear = (data) => {
   return {
     type: ADD_CREDIT_CLEAR,
     payload: data
+  };
+};
+export const addCreditErrorClear = () => {
+  return {
+    type: ADD_CREDIT_ERROR_CLEAR
   };
 };

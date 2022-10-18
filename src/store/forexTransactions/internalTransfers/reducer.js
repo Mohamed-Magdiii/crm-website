@@ -6,7 +6,8 @@ import {
   ADD_INTERNAL_TRANSFER_REQUESTED,
   ADD_INTERNAL_TRANSFER_SUCCESS,
   ADD_INTERNAL_TRANSFER_FAIL,
-  ADD_INTERNAL_TRANSFER_CLEAR
+  ADD_INTERNAL_TRANSFER_CLEAR,
+  ADD_INTERNAL_TRANSFER_ERROR_CLEAR
 } from "./actionTypes";
 
 const initalState = {
@@ -86,7 +87,15 @@ const internalTransferReducer = (state = initalState, action) => {
         modalClear: true
       };
       break;
-    
+    case ADD_INTERNAL_TRANSFER_ERROR_CLEAR:
+      state = {
+        ...state,
+        addInternalTransferLoading: false,
+        addInternalTransferFail: false,
+        addInternalTransferFailDetails: null
+      };
+      break;
+      
     default:
       state = { ...state };
   }

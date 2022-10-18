@@ -1,7 +1,8 @@
 import {
   call,
   put,
-  takeEvery
+  takeEvery,
+  delay
 } from "redux-saga/effects";
 import { 
   FETCH_FOREX_DEPOSITS_REQUESTED,
@@ -13,7 +14,8 @@ import {
 
   addForexDepositSuccess,
   addForexDepositFail,
-  addForexDepositClear
+  addForexDepositClear,
+  addForexDepositErrorClear
 } from "./actions";
 import * as forexDepositApis from "apis/forexDeposit";
 import { showSuccessNotification } from "store/notifications/actions";
@@ -35,6 +37,8 @@ function * addForexDeposit(params){
     yield put(addForexDepositClear());
   } catch (err){
     yield put(addForexDepositFail(err.message));
+    yield delay(5000);
+    yield put(addForexDepositErrorClear());
   }
 }
 

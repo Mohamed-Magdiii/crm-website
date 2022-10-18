@@ -24,7 +24,6 @@ import { fetchForexWithdrawalsGatewaysStart } from "store/forexGateway/actions";
   
 function WithdrawalForex(props){
   const dispatch = useDispatch();
-  const customerId = JSON.parse(localStorage.getItem("authUser")).roleId._id;
   const [searchInput, setSearchInput] = useState("");
   const [showNotication, setShowNotifaction] = useState(false);
   const [sizePerPage, setSizePerPage] = useState(10);
@@ -143,8 +142,7 @@ function WithdrawalForex(props){
   const loadForexWithdrawals = (page, limit)=>{
     dispatch(fetchForexWithdrawals({
       limit, 
-      page,
-      customerId
+      page
     }));   
   };
 

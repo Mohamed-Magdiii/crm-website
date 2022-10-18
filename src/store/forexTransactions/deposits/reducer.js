@@ -6,7 +6,8 @@ import {
   ADD_FOREX_DEPOSIT_REQUESTED,
   ADD_FOREX_DEPOSIT_SUCCESS,
   ADD_FOREX_DEPOSIT_FAIL,
-  ADD_FOREX_DEPOSIT_CLEAR
+  ADD_FOREX_DEPOSIT_CLEAR,
+  ADD_FOREX_DEPOSIT_ERROR_CLEAR
 } from "./actionTypes";
 
 const initalState = {
@@ -90,7 +91,15 @@ const forexDepositReducer = (state = initalState, action) => {
         addForexDepositFailDetails: ""
       };
       break;
-    
+    case ADD_FOREX_DEPOSIT_ERROR_CLEAR:
+      state = {
+        ...state,
+        addLoading: false,
+        addForexDepositFail: false,
+        addForexDepositFailDetails: ""
+      };
+      break;
+      
     default:
       state = { ...state };
   }

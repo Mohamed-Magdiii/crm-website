@@ -21,11 +21,10 @@ import { fetchTradingAccounts } from "store/tradingAccounts/actions";
 
 function AddForexWithdrawalModal(props){
   const dispatch = useDispatch();
-  const customerId = JSON.parse(localStorage.getItem("authUser")).roleId._id;
   const { create } = props.withdrawalsPermissions;
   const [addModal, setAddModal] = useState(false);
   const [gateway, setGateway] = useState("");
-  const [accountType, setAccuntType] = useState("");
+  const [, setAccuntType] = useState("");
   const [tradingAccountOwnerName, setTradingAccountOwnerName] = useState();
   const [tradingAccountLogin, setTradingAccountLogin] = useState();
 
@@ -79,7 +78,7 @@ function AddForexWithdrawalModal(props){
       cb("Enter A Valid Live Account");
     } else cb(true);
   };
-  
+
   return (
     <React.Fragment >
       <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> {props.t("Add New Withdrawal")}</Link>
@@ -92,12 +91,10 @@ function AddForexWithdrawalModal(props){
             className='p-4'
             onValidSubmit={(e, v) => {
               v.gateway = gateway;
-              v.accountType = accountType;
-              v.customerId = props.tradingAccounts.filter((item) => (item.login == v.liveAccount))[0]?.customerId._id;
+              v.customerId = props.tradingAccounts.filter((item) => (item.login == v.account))[0]?.customerId?._id;
               v.tradingAccountId = props.tradingAccounts.filter((item) => (item.login == v.account))[0]?._id;
               delete v.account;
               delete v.customerName;
-              delete v.accountType;
               handleAddForexDeposit(e, v);
             }}
           >
