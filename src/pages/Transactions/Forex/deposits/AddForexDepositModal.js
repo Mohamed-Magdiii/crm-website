@@ -77,7 +77,7 @@ function AddForexDepositModal(props){
   };
 
   const loadTradingAccounts = (login)=>{
-    dispatch(fetchTradingAccounts({ login }));   
+    dispatch(fetchTradingAccounts({ login: +login }));   
   };
 
   const handleLiveAccountChange = (e) => {
@@ -99,6 +99,7 @@ function AddForexDepositModal(props){
     } else cb(true);
   };
 
+  console.log(props.tradingAccounts);
   return (
     <React.Fragment >
       <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> {props.t("Add New Deposit")}</Link>
@@ -139,9 +140,9 @@ function AddForexDepositModal(props){
                     if (!isNaN(e.key) && e.target.value.length > 0){
                       return true;
                     }
-                    if (!/[0-9]/.props.tradingAccounts(e.key)) {
-                      e.preventDefault();
-                    }
+                    // if (!/[0-9]/.props.tradingAccounts(e.key)) {
+                    //   e.preventDefault();
+                    // }
                   }}
                 />
               </Col>

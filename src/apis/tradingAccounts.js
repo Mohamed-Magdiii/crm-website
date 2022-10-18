@@ -2,6 +2,7 @@ import * as axiosHelper from "./api_helper";
 
 // fetch a trading account by login number
 export const getTradingAccountByLogin = async ({ payload })=>{
+  console.log(typeof payload.login);
   const result = await axiosHelper.get(`/accounts/login/${payload.login}`);
   if (!result.status) {
     throw new Error(result.message);
