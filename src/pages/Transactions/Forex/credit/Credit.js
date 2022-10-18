@@ -23,7 +23,6 @@ import AddCreditModal from "./AddCreditModal";
 
 function Credit(props){
   const dispatch = useDispatch();
-  const customerId = JSON.parse(localStorage.getItem("authUser")).roleId._id;
   const [searchInput, setSearchInput] = useState("");
   const [showNotication, setShowNotifaction] = useState(false);
   const [sizePerPage, setSizePerPage] = useState(10);
@@ -117,8 +116,7 @@ function Credit(props){
   const loadCredits = (page, limit)=>{
     dispatch(fetchCredits({
       limit, 
-      page,
-      customerId
+      page
     }));   
   };
   
