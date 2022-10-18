@@ -2,9 +2,7 @@ import * as axiosHelper from "./api_helper";
 import qs from "qs";
 
 export const getClients = async ({ payload }) => {
-  console.log(payload);
   const data = await axiosHelper.get(`/clients?${qs.stringify(payload)}`);
-  console.log("data", data);
   if (data.isError){
     throw new Error(data.isError);
   }

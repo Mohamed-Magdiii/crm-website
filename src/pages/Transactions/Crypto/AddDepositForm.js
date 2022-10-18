@@ -15,15 +15,15 @@ import React, { useState, useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { fetchGatewaysStart } from "store/gateway/action";
 import { addDepositStart } from "store/transactions/deposit/action";
-import { fetchWalletStart, clearWallets } from "store/wallet/action";
+import { 
+  fetchWalletStart, clearWallets, fetchClientWallets 
+} from "store/wallet/action";
 import { fetchClientsStart } from "store/client/actions";
 import "./SearchableInputStyles.scss";
 import { withTranslation } from "react-i18next";
 import Select from "react-select";
-import AvFieldSelect from "components/Common/AvFieldSelect";
 
 function DepositForm(props){
-  
   const [addModal, setDepositModal] = useState(false);
   const [selectedClient, setSelectedClient] = useState("");
   const [selectedWalletId, setSelectedWalletId] = useState("");
@@ -35,7 +35,6 @@ function DepositForm(props){
   const [searchInput, setSearchInput]  = useState("");
 
   const gatewayErrorStyle = gatewayError ? "1px solid red" : "1px solid rgb(200, 200, 200)";
-  console.log(gatewayErrorStyle);
 
   const handleAddDeposit = (event, values) => {
     event.preventDefault();
@@ -73,14 +72,13 @@ function DepositForm(props){
       setGatewayError(false);
     }
   }, [props.modalClear]);
-  
-  const selectClient = (id)=>{
-    setSelectedClient(id);
-    dispatch(fetchWalletStart({
-      belongsTo:id,
-      customerId:id,
+
+  useEffect(() => {
+    selectedClient &&
+    dispatch(fetchClientWallets({
+      belongsTo: selectedClient
     }));
-  };
+  }, [selectedClient]);
 
   const selectType = (type)=>{
     setType(type);
@@ -91,7 +89,6 @@ function DepositForm(props){
       }));
   };
 
-  console.log(gatewayError);
   return (
     <React.Fragment >
       <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> {props.t("Add Deposit")}</Link>
@@ -112,34 +109,12 @@ function DepositForm(props){
             <Row className="mb-3">
               <Col md="6">                      
                 <div>
-                  {/* <AvFieldSelect
-                    name="client"
-                    label={props.t("Client")}
-                    onChange={(e) => {
-                      selectClient(e.value.id);
-                    }}
-                    isSearchable = {true}
-                    options={props.clients.map((item) => (
-                      {
-                        label : `${item.firstName} ${item.lastName}`,
-                        value : {
-                          name: `${item.firstName} ${item.lastName}`,
-                          id: `${item._id}`
-                        }
-                      }
-
-                    ))}
-                    classNamePrefix="select2-selection"
-                    onInputChange = {(e)=>setSearchInput(e)}
-                    validate={{ required:true }}
-                  >
-                  </AvFieldSelect> */}
                   <Label>{props.t("Client")}</Label>
                   <div>
                     <Select 
                       required
                       onChange={(e) => {
-                        selectClient(e.value.id);
+                        setSelectedClient(e.value?.id);
                       }}
                       isSearchable = {true}
                       options={props.clients.map((item) => (
@@ -230,7 +205,7 @@ function DepositForm(props){
                   classNamePrefix="select2-selection"
                   placeholder = {props.t("Choose Valid Gateway")}
                   style={{
-                    border: "1px solid red"
+                    border: gatewayErrorStyle
                   }}
                 />
                 {gatewayError && <small className="text-danger">{props.t("Choose Valid Gateway")}</small>}
@@ -289,7 +264,7 @@ const mapStateToProps = (state) => ({
   modalClear:state.depositReducer.modalClear,
   depositResponseMessage:state.depositReducer.depositResponseMessage,
   clients:state.clientReducer.clients || [],
-  wallets:state.walletReducer.wallets || [],
+  wallets:state.walletReducer.docs || [],
   depositsPermissions : state.Profile.depositsPermissions || {}, 
   disableAddButton : state.depositReducer.disableAddButton,
 });
