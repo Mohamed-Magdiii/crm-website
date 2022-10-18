@@ -54,7 +54,8 @@ function DepositForm(props){
   };
   useEffect(()=>{
     dispatch(fetchClientsStart({
-      page:1
+      page:1,
+      // type
     }));
     dispatch(fetchGatewaysStart());
     if (searchInput.length >= 3){
@@ -252,7 +253,7 @@ function DepositForm(props){
           </AvForm>
           {props.error && <UncontrolledAlert color="danger">
             <i className="mdi mdi-block-helper me-2"></i>
-            {props.t(props.error)}
+            {props.t(props.errorDetails)}
           </UncontrolledAlert>}
         </ModalBody> 
       </Modal>
@@ -265,6 +266,8 @@ const mapStateToProps = (state) => ({
   depositResponseMessage:state.depositReducer.depositResponseMessage,
   clients:state.clientReducer.clients || [],
   wallets:state.walletReducer.docs || [],
+  errorDetails:state.walletReducer.errorDetails,
+  error:state.walletReducer.error,
   depositsPermissions : state.Profile.depositsPermissions || {}, 
   disableAddButton : state.depositReducer.disableAddButton,
 });

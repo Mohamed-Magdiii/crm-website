@@ -99,7 +99,6 @@ function AddForexDepositModal(props){
     } else cb(true);
   };
 
-  console.log(props.tradingAccounts);
   return (
     <React.Fragment >
       <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> {props.t("Add New Deposit")}</Link>

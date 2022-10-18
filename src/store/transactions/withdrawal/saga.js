@@ -1,7 +1,8 @@
 import {
   call,
   put,
-  takeEvery
+  takeEvery,
+  delay
 } from "redux-saga/effects";
 import { 
   addWithdrawal, 
@@ -26,9 +27,10 @@ import {
 
   fetchClientWithdrawalsSuccess,
   fetchClientWithdrawalsFail, 
-  errorClear
+  withdrawalErrorClear
 } from "./action";
 import { showSuccessNotification } from "store/notifications/actions";
+
 function *fetchWithdrawals(params){
   try {
     const data = yield call(getWithdrawals, params);
@@ -42,17 +44,14 @@ function *fetchWithdrawals(params){
 function * makeWithdrawal({ payload:{ withdrawal } }){
   try {
     const data = yield call(addWithdrawal, withdrawal);
-    const { status, result } = data;
-    
-    if (status){
-      yield put(makeWithdrawalSuccess(result));
-      yield put(modalClear());
-      yield put(showSuccessNotification(`Withdrawal has been ${result.status}`));
-    }
-    
+    const { result } = data;
+    yield put(makeWithdrawalSuccess(result));
+    yield put(modalClear());
+    yield put(showSuccessNotification("Withdrawal has been added successfuly"));
   } catch (error){
     yield put(withdrawalError(error.message));
-    yield put(errorClear());
+    yield delay(3000);
+    yield put(withdrawalErrorClear());
   }
 
 }
