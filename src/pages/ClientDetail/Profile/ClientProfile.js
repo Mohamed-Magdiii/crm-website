@@ -613,53 +613,7 @@ function ClientDetails(props) {
                           </Row>
 
                           {/* sith row */}
-                          <Row>
-                            <Col md="3">
-                              <div className="mt-2">
-                                <AvFieldSelect 
-                                  name="agent"
-                                  options={agentOptions}
-                                  label={props.t("Agent")}
-                                  errorMessage={props.t("Agent is required")}
-                                  onChange={(e)=>{
-                                    setClientData((state)=>{ 
-                                      return {
-                                        ...state, 
-                                        agent:{
-                                          ...state.agent,
-                                          _id:e.value
-                                        }
-                                      };});
-                                  }}
-                                  // validate={{ required: { value: true } }}
-                                  value={props.clientDetails.agent && props.clientDetails.agent._id || ""}
-                                />
-                              </div>
-                            </Col>
-                            <Col md="3">
-                              <div className="mt-2">
-                                <AvFieldSelect
-                                  name="callStatus"
-                                  label={props.t("Call status")}
-                                  placeholder={props.t("Call status")}
-                                  value={props.clientDetails.callStatus}
-                                  onChange={(e)=>{
-                                    setClientData((state)=>{ 
-                                      return {
-                                        ...state, 
-                                        callStatus:e.value
-                                      };});
-                                  }}
-                                  options={CALL_STATUSES.map(obj => {
-                                    return {
-                                      value: obj,
-                                      label: obj 
-                                    };
-                                  })}
-                                />
-                              </div>
-                            </Col> 
-                          </Row>
+                          
                         
                           {/* seventh row */}
                           <Row>
@@ -798,6 +752,51 @@ function ClientDetails(props) {
                             </Button>
                           </div>
                         </div>
+                      </AvForm>
+                      <AvForm
+                        onValidSubmit={(e, v) => {
+                          loadUpdatedClientDetailsHandler(e, v);
+                        }}
+                      >
+                        <Row>
+                          <Col md="5">
+                            <div className="mt-2">
+                              <AvFieldSelect 
+                                name="agent"
+                                options={agentOptions}
+                                label={props.t("Agent")}
+                                errorMessage={props.t("Agent is required")}
+                                value={props.clientDetails.agent && props.clientDetails.agent._id || ""}
+                              />
+                            </div>
+                          </Col>
+                          <Col md="5">
+                            <div className="mt-2">
+                              <AvFieldSelect
+                                name="callStatus"
+                                label={props.t("Call status")}
+                                value={props.clientDetails.callStatus}
+                                options={CALL_STATUSES.map(obj => {
+                                  return {
+                                    value: obj,
+                                    label: obj 
+                                  };
+                                })}
+                              />
+                            </div>
+                          </Col> 
+                          <Col md="2" className="d-flex align-items-end justify-content-end">
+                            <div>
+                              <Button 
+                                disabled={props.updating}  
+                                type="submit" 
+                                color="primary"
+                              >
+                                {props.t("Update")}
+                              </Button>
+                            </div>
+                          </Col>
+                        </Row>
                       </AvForm>
                     </CardBody>
                   </Card>
