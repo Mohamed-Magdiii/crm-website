@@ -13,7 +13,8 @@ import {
   fetchConvertsFail,
   addConvertSuccess,
   addConvertFail,
-  addConvertClear
+  addConvertClear,
+  addConvertErrorClear
 } from "./actions";
 import * as convertsApis from "apis/converts";
 import { showSuccessNotification } from "store/notifications/actions";
@@ -36,6 +37,8 @@ function * addConvert(params){
     yield put(addConvertClear());
   } catch (err){
     yield put(addConvertFail(err.message));
+    yield delay(5000);
+    yield put(addConvertErrorClear());
   }
 }
 

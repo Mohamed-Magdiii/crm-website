@@ -6,7 +6,8 @@ import {
   ADD_CONVERT_REQUESTED,
   ADD_CONVERT_SUCCESS,
   ADD_CONVERT_FAIL,
-  ADD_CONVERT_CLEAR
+  ADD_CONVERT_CLEAR,
+  ADD_CONVERT_ERROR_CLEAR
 } from "./actionTypes";
 
 const initalState = {
@@ -73,7 +74,7 @@ const convertReducer = (state = initalState, action) => {
         addLoading: false,
         addSuccess: false,
         addFail: true,
-        addFailDetails: action.payload
+        addFailDetails: action.payload.error
       };
       break;
     case ADD_CONVERT_CLEAR:
@@ -81,6 +82,13 @@ const convertReducer = (state = initalState, action) => {
         ...state,
         addSuccess: false,
         addFail: false
+      };
+      break;
+    case ADD_CONVERT_ERROR_CLEAR:
+      state = {
+        ...state,
+        addFail: false,
+        addFailDetails: null
       };
       break;
 

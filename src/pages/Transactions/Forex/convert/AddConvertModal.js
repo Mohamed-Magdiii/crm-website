@@ -57,18 +57,16 @@ function AddConvertModal(props){
 
   useEffect(() => {
     dispatch(fetchAssetsStart({
-      page:1,
-      limit:1000
+      page:1
     }));
     dispatch(fetchClientsStart({
-      page:1,
-      limit:100
+      page:1
     }));
   }, []);
 
   useEffect(() => {
     clientId && dispatch(fetchClientWallets(clientId));
-  }, [props.clients]);
+  }, [clientId]);
   
   return (
     <React.Fragment >
@@ -143,6 +141,7 @@ function AddConvertModal(props){
                 <div>
                   <Select 
                     required
+                    isOptionDisabled={(option) => option.value.asset == fromAsset}
                     onChange={(e) => {
                       setToAsset(e.value.asset);
                       setToAssetId(e.value.id);

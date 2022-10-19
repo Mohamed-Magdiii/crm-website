@@ -59,7 +59,7 @@ function AddConvertModal(props){
       page:1,
       limit:1000
     }));
-    dispatch(fetchClientWallets({ customerId }));
+    dispatch(fetchClientWallets(customerId));
   }, []);
 
   return (
@@ -115,6 +115,7 @@ function AddConvertModal(props){
                       setToAsset(e.value.asset);
                       setToAssetId(e.value.id);
                     }}
+                    isOptionDisabled={(option) => option.value.asset == fromAsset}
                     options={props.wallets && props.wallets.map((wallet)=>{
                       return {
                         label:`${wallet.asset} (${wallet.amount})`,

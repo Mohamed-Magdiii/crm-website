@@ -6,7 +6,8 @@ import {
   ADD_CONVERT_REQUESTED,
   ADD_CONVERT_SUCCESS,
   ADD_CONVERT_FAIL,
-  ADD_CONVERT_CLEAR
+  ADD_CONVERT_CLEAR,
+  ADD_CONVERT_ERROR_CLEAR
 } from "./actionTypes";
 
 // fetch converts
@@ -52,5 +53,10 @@ export const addConvertClear = (data) => {
   return {
     type: ADD_CONVERT_CLEAR,
     payload: data 
+  };
+};
+export const addConvertErrorClear = () => {
+  return {
+    type: ADD_CONVERT_ERROR_CLEAR
   };
 };
