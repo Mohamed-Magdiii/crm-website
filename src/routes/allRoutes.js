@@ -36,6 +36,7 @@ import DepositsIndex from "pages/Transactions/DepositsIndex";
 import WithdrawalsIndex from "pages/Transactions/WithdrawalsIndex";
 import InternalTransferIndex from "pages/Transactions/Forex/internalTransfer/InternalTransferIndex";
 import CreditIndex from "pages/Transactions/Forex/credit/CreditIndex";
+import ConvertIndex from "pages/Transactions/Forex/convert/ConvertIndex";
 
 function userRoutes() {
   const object = usePermissions();
@@ -157,6 +158,11 @@ function userRoutes() {
     {
       path: "/transactions/credit",
       component: CreditIndex,
+      get: withdrawalsPermissions.get
+    },
+    {
+      path: "/transactions/convert",
+      component: ConvertIndex,
       get: withdrawalsPermissions.get
     },
     {

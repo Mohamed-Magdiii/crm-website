@@ -38,6 +38,7 @@ import forexGatewaySaga from "./forexGateway/saga";
 import forexWithdrawalSaga from "./forexTransactions/withdrawals/saga";
 import internalTransferSaga from "./forexTransactions/internalTransfers/saga";
 import creditSaga from "./forexTransactions/credit/saga";
+import convertSaga from "./converts/saga";
 import tradingAccountsSaga from "./tradingAccounts/saga";
 import clientTransactionsSaga from "./transactions/saga";
 
@@ -83,6 +84,7 @@ export default function* rootSaga() {
     fork(forexWithdrawalSaga),
     fork(internalTransferSaga),
     fork(creditSaga),
+    fork(convertSaga),
     fork(tradingAccountsSaga),
     fork(clientTransactionsSaga),
   ]);

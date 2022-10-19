@@ -8,7 +8,7 @@ export const getWallets = async  ({ payload })=>{
 
 export const getClientWalletDetails = async ({ payload }) => {
   const id = payload;
-  const data = await axiosHelper.get(`/wallets/?belongsTo=${id}`);
+  const data = await axiosHelper.get(`/wallets/?belongsTo=${id}&customerId=${id}`);
   if (data.isError){
     throw new Error(data.isError);
   }

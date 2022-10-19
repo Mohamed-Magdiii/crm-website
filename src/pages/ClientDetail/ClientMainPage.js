@@ -15,6 +15,7 @@ import OrderList from "./orders/OrdersList";
 import Documents from "./Documents/Documents";
 import ClientDetailsHeader from "./ClientDetailsHeader";
 import Logs from "./Logs/Logs";
+import Converts from "./Converts/Converts";
 import ListAccounts from "./TradingAccounts/ListAccounts";
 
 import { fetchClientDetails } from "store/client/actions";
@@ -43,6 +44,7 @@ function ClientMainPage(props) {
     { component: ClientWallets, url: `/clients/${clientId}/wallets` },
     { component: OrderList, url: `/clients/${clientId}/orders` },
     { component: Logs, url: `/clients/${clientId}/logs` },
+    { component: Converts, url: `/clients/${clientId}/converts` },
     { component: Security, url: `/clients/${clientId}/security` },
   ];
   useEffect(()=>{
