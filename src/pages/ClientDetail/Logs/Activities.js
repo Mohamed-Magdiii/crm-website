@@ -80,6 +80,36 @@ function Activities(props) {
       case LOG_TYPES.WALLET:
         message = `${props.t("Creation of wallet was successful")} (${asset})`;
         break;
+        // bank accs
+      case LOG_TYPES.ADD_BANK_ACCOUNT:
+        message = `${props.t(`New ${content.bankName} bank account added`)}`;
+        break;
+      case LOG_TYPES.EDIT_BANK_ACCOUNT:
+        message = `${props.t(`${content.bankName} bank info changed`)}`;
+        break;
+      case LOG_TYPES.DELETE_BANK_ACCOUNT:
+        message = `${props.t("A bank account has been deleted")}`;
+        break;
+        //docs
+      case LOG_TYPES.CHANGE_DOC_STATUS:
+        message = `${props.t(`Document status is ${details.status} ${details.reason ? `reason is ${details.reason}` : ""}`)}`;
+        break;
+      case LOG_TYPES.OVERWRITE_DOCS:
+        message = `${props.t("Document(s) has been overwritten")}`;
+        break;
+      case LOG_TYPES.UPLOAD_DOCS:
+        message = `${props.t("Document(s) has been uploaded")}`;
+        break;
+        // todos
+      case LOG_TYPES.ADD_TODO:
+        message = `${props.t(`${content.type == "0" ? "Todo" : "Reminder"}`)} ${content.note} ${props.t("at")} ${content.timeEnd}` ;
+        break;
+      case LOG_TYPES.EDIT_TODO:
+        message = `${props.t(`${content.type == "0" ? "Todo" : "Reminder"}`)} ${props.t("has been edited")}` ;
+        break;
+      case LOG_TYPES.DELETE_TODO:
+        message = `${props.t(`${content.type == "0" ? "Todo" : "Reminder"}`)} ${props.t("has been deleted")}` ;
+        break;
     }
     return message;
   };
