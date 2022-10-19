@@ -20,6 +20,11 @@ import {
   LOG_TYPES,
 } from "constants/logs";
 
+const formatDate = (date) => {
+  let d = new Date(date);
+  return `${d.toLocaleDateString()}, ${d.toLocaleTimeString()}`;
+};
+
 function Activities(props) {
 //   const clientId = props.clientId;
 // const dispatch = useDispatch();
@@ -102,7 +107,7 @@ function Activities(props) {
         break;
         // todos
       case LOG_TYPES.ADD_TODO:
-        message = `${props.t(`${content.type == "0" ? "Todo" : "Reminder"}`)} ${content.note} ${props.t("at")} ${content.timeEnd}` ;
+        message = `${props.t(`${content.type == "0" ? "Todo" : "Reminder"}`)} ${content.note} ${props.t("at")} ${formatDate(content.timeEnd)}` ;
         break;
       case LOG_TYPES.EDIT_TODO:
         message = `${props.t(`${content.type == "0" ? "Todo" : "Reminder"}`)} ${props.t("has been edited")}` ;
@@ -157,11 +162,7 @@ function Activities(props) {
     {
       dataField: "createdAt",
       text: props.t("Date Created"),
-      formatter: (val) => {
-        let d = new Date(val.createdAt);
-        d = `${d.toLocaleDateString()}, ${d.toLocaleTimeString()}`;
-        return d;
-      }
+      formatter: (val) => formatDate(val.createdAt),
     },
     {
       dataField: "content",
