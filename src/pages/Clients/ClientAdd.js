@@ -17,6 +17,7 @@ import { addNewClient } from "../../store/client/actions";
 import { fetchLeadsStart } from "../../store/leads/actions";
 import CountryDropDown from "../../components/Common/CountryDropDown";
 import { fetchUsers } from "store/users/actions";
+import { checkClientEmailApi } from "apis/checkemail";
 
 function ClientForm(props){
   const dispatch = useDispatch();
@@ -66,10 +67,10 @@ function ClientForm(props){
     }
   }, [props.showAddSuccessMessage]);
 
-  const emailCheck = (value, ctx, input, cb)=>{
-    const found = props.clients.find((item) => item.email === value.toLowerCase());
-    if (found)
-      cb(("Email already Exists"));
+  const emailCheck = async (value, ctx, input, cb) => {
+    const emailCheck = await checkClientEmailApi(value);
+    if (!emailCheck.status)
+      cb(emailCheck.message);
     cb(true);
   };
 
@@ -142,7 +143,7 @@ function ClientForm(props){
                     placeholder={props.t("Enter Your Phone")}
                     type="text"
                     onKeyPress={(e) => {
-                      if (/^[+]?\d+$/.test(e.key) || (e.key === "+" && e.target?.value?.length === 0) ) {
+                      if (/^[+]?\d+$/.test(e.key) || e.key === "+") {
                         return true;
                       } else {
                         e.preventDefault();
