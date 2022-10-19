@@ -82,7 +82,7 @@ function AddInternalTransferModal(props){
   };
 
   const loadTradingAccountsByCustomerId = (customerId)=>{
-    dispatch(fetchTradingAccountsByCustomerID({ customerId }));   
+    dispatch(fetchTradingAccountsByCustomerID(customerId));   
   };
 
   const handleLiveAccountChange = (e) => {
@@ -92,7 +92,7 @@ function AddInternalTransferModal(props){
   
   useEffect(() => {
     loadTradingAccountsByCustomerId(props.tradingAccounts[0]?.customerId._id);
-  }, props.tradingAccounts);
+  }, [props.tradingAccounts]);
 
   useEffect(() => {
     setTradingAccountOwnerName(
@@ -107,6 +107,7 @@ function AddInternalTransferModal(props){
       cb("Enter A Valid Live Account");
     } else cb(true);
   };
+  console.log(props.tradingAccountsByCustomerId);
 
   return (
     <React.Fragment >
@@ -227,6 +228,7 @@ function AddInternalTransferModal(props){
                 <div>
                   <Select 
                     required
+                    // isOptionDisabled={(option) => option.value.asset == fromAsset}
                     onChange={(e) => {
                       setToAccount(e.value.gateway);
                     }}

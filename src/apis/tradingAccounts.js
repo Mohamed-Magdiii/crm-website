@@ -12,7 +12,9 @@ export const getTradingAccountByLogin = async ({ payload })=>{
 
 // fetch all trading accounts related to a user 
 export const getTradingAccountsByCustomerId = async ({ payload })=>{
-  const result = await axiosHelper.get(`/accounts?customerId=${payload.customerId}`);
+  console.log(payload);
+  const result = await axiosHelper.get(`/accounts?customerId=${payload}`);
+  console.log(result);
   if (!result.status) {
     throw new Error(result.message);
   }
