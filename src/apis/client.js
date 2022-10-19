@@ -72,3 +72,10 @@ export const forgotPassword = async(payload)=>{
   }
   return data;
 };
+export const disable2FA = async (payload)=>{
+  const { id  } = payload;
+  const res = await axiosHelper.post("/clients/disable-2fa", { customerId: id });
+  if (res.status)
+    return res.status;
+  else throw new Error(res.message);
+};
