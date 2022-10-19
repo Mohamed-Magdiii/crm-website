@@ -119,6 +119,9 @@ function Activities(props) {
       case LOG_TYPES.EDIT_CUSTOMER_INFO:
         message = `${props.t("Profile information has been updated")}` ;
         break;
+      case LOG_TYPES.PROFILE_COMPLETED:
+        message = `${props.t("Customer has completed his profile")}` ;
+        break;
     }
     return message;
   };

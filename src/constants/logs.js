@@ -24,6 +24,7 @@ const LOG_TYPES = {
   DELETE_TODO: "DELETE_TODO",
   // customers
   EDIT_CUSTOMER_INFO: "EDIT_CUSTOMER_INFO",
+  PROFILE_COMPLETED: "PROFILE_COMPLETED",
   // ASSIGN_AGENT: "ASSIGN_AGENT",
   /*
   user logs ain't implemented yet.
