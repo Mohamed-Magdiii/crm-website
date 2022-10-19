@@ -12,6 +12,7 @@ function MainNavigation(props){
     { name: "Profile", url: `/clients/${clientId}/profile` },
     { name: "Bank Accounts", url: `/clients/${clientId}/bank` },
     { name: "Documents", url: `/clients/${clientId}/documents` },
+    { name: "Trading Accounts", url: `/clients/${clientId}/trading-accounts` },
     { name: "Transactions", url: `/clients/${clientId}/transactions` },
     { name: "Converts", url: `/clients/${clientId}/converts` },
     { name: "Wallets", url: `/clients/${clientId}/wallets` },

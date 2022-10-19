@@ -60,22 +60,18 @@ function ClientForm(props){
     }));
   };
 
-  const emailErrorStyle = duplicatedEmail ? "1px solid red" : "1px solid rgb(200, 200, 200)";
-
-  const repeatedEmailCheck = (e) => {
-    e.target?.value?.length > 0 &&
-    setDuplicatedEmail(
-      props.clients?.map((item) => (item.email)).includes(e.target.value?.trim()) || 
-      props.leads?.map((item) => (item.email)).includes(e.target.value?.trim()) || 
-      props.users?.map((item) => (item.email)).includes(e.target.value?.trim())
-    );
-  };
-
   useEffect(() => {
     if (!props.showAddSuccessMessage  && addModal) {
       setAddUserModal(false);
     }
   }, [props.showAddSuccessMessage]);
+
+  const emailCheck = (value, ctx, input, cb)=>{
+    const found = props.clients.find((item) => item.email === value.toLowerCase());
+    if (found)
+      cb(("Email already Exists"));
+    cb(true);
+  };
 
   return (
     <React.Fragment >
@@ -129,17 +125,13 @@ function ClientForm(props){
                     label={props.t("Email")}
                     placeholder={props.t("Enter Email")}
                     type="email"
-                    onChange={repeatedEmailCheck}
                     errorMessage={props.t("Enter Valid Email")}
                     validate={{
                       required: { value: true },
                       email: { value: true },
-                    }}
-                    style={{
-                      border: `${emailErrorStyle}`
+                      custom: emailCheck
                     }}
                   />
-                  {duplicatedEmail && <small className="text-danger">Account already exists</small>}
                 </div>
               </Col>
               <Col md="6">

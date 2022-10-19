@@ -1,54 +1,82 @@
+
 import {
-  FETCH_TRADING_ACCOUNTS_REQUESTED,
-  FETCH_TRADING_ACCOUNTS_SUCCESS,
-  FETCH_TRADING_ACCOUNTS_FAIL
+  FETCH_ACCOUNT_TYPES_START,
+  FETCH_ACCOUNT_TYPES_END,
+  FETCH_TRADING_ACCOUNT_START,
+  FETCH_TRADING_ACCOUNT_END,
+  CREATE_TRADING_ACCOUNT_START,
+  CREATE_TRADING_ACCOUNT_END,
+  CREATE_TRADING_ACCOUNT_CLEAR
 } from "./actionTypes";
 
-const initalState = {
-  tradingAccounts:[],
-  loading:false,
-  error:"",
-  modalClear:false
+const initialState = {
+  accountTypesLoading: false,
+  createCounter : 0,
+  accounts: {}
 };
-
-const tradingAccountReducer = (state = initalState, action) => {
+const tradingAccountReducer = (state = initialState, action)=>{
   switch (action.type){
-    case FETCH_TRADING_ACCOUNTS_REQUESTED:
+    case FETCH_ACCOUNT_TYPES_START:
       state = {
         ...state,
-        loading: true
+        accountTypesLoading: true,
       };
       break;
-    case FETCH_TRADING_ACCOUNTS_SUCCESS:
+    case FETCH_ACCOUNT_TYPES_END:
       state = {
         ...state,
-        tradingAccounts: [action.payload.result],
-        tradingAccountsTotalDocs: action.payload.result.totalDocs,
-        hasNextPage: action.payload.result.hasNextPage,
-        hasPrevPage: action.payload.result.hasPrevPage,
-        limit: action.payload.result.limit,
-        nextPage: action.payload.result.nextPage,
-        page: action.payload.result.page,
-        pagingCounter: action.payload.result.pagingCounter,
-        prevPage: action.payload.result.prevPage,
-        totalPages: action.payload.result.totalPages,
-        loading: false,  
-        fetchTradingAccountsFail: false
+        accountTypesLoading: false,
+        accountTypes: action.payload.data,
+        accountTypesError: action.payload.error,
       };
       break;
-    case FETCH_TRADING_ACCOUNTS_FAIL:
+    
+    case FETCH_TRADING_ACCOUNT_START:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case FETCH_TRADING_ACCOUNT_END:
       state = {
         ...state,
         loading: false,
-        errorMessage: action.payload,
-        fetchTradingAccountsFail: true
+        accounts: action.payload.data,
+        accountsError: action.payload.error,
+        createCounter: state.createCounter + 1,
+      };
+      break;
+    
+    case CREATE_TRADING_ACCOUNT_START:
+      state = {
+        ...state,
+        creating: true,
+      };
+      break;
+    case CREATE_TRADING_ACCOUNT_END:
+      state = {
+        ...state,
+        creating: false,
+        accounts: {
+          ...state.accounts,
+          docs : [
+            action.payload.data,
+            ...(state.accounts && state.accounts.docs || [])
+          ]
+        },
+      };
+      break;
+    case CREATE_TRADING_ACCOUNT_CLEAR:
+      state = {
+        ...state,
+        createCounter: state.createCounter + 1,
       };
       break;
 
     default:
       state = { ...state };
+
   }
   return state;
 };
-
 export default tradingAccountReducer;

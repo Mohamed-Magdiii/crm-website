@@ -16,8 +16,11 @@ import Documents from "./Documents/Documents";
 import ClientDetailsHeader from "./ClientDetailsHeader";
 import Logs from "./Logs/Logs";
 import Converts from "./Converts/Converts";
+import ListAccounts from "./TradingAccounts/ListAccounts";
+
 import { fetchClientDetails } from "store/client/actions";
 import { fetchDictionaryStart } from "store/dictionary/actions";
+import Security from "./Security/Security";
 
 function ClientMainPage(props) {
   const pathParams = useParams();
@@ -36,12 +39,13 @@ function ClientMainPage(props) {
     { component: ClientProfile, url: `/clients/${clientId}/profile` },
     { component: ClientBank, url: `/clients/${clientId}/bank` },
     { component: Documents, url: `/clients/${clientId}/documents` },
+    { component: ListAccounts, url: `/clients/${clientId}/trading-accounts` },
     { component: ClientTransactions, url: `/clients/${clientId}/transactions` },
     { component: ClientWallets, url: `/clients/${clientId}/wallets` },
     { component: OrderList, url: `/clients/${clientId}/orders` },
     { component: Logs, url: `/clients/${clientId}/logs` },
-    { component: "Security", url: `/clients/${clientId}/security` },
     { component: Converts, url: `/clients/${clientId}/converts` },
+    { component: Security, url: `/clients/${clientId}/security` },
   ];
   useEffect(()=>{
     getClientDetails(clientId);

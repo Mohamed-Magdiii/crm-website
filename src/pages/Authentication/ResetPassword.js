@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import MetaTags from "react-meta-tags";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Row, Col, Alert, Container 
 } from "reactstrap";
@@ -10,29 +10,37 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { withRouter, Link } from "react-router-dom";
 import { withTranslation } from "react-i18next";
-
 // availity-reactstrap-validation
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import * as content from "content";
 
 // action
-import { userForgetPassword } from "../../store/actions";
+import { resetPassword } from "../../store/actions";
 
 // import images
 // import logo from "../../assets/images/logo-sm.svg";
 import CarouselPage from "./CarouselPage";
 
-const ForgetPasswordPage = props => {
+const ResetPasswordPage = props => {
   const dispatch = useDispatch();
-  
-  const { forgetError, forgetSuccessMsg } = useSelector(state => ({
-    forgetError: state.ForgetPassword.forgetError,
-    forgetSuccessMsg: state.ForgetPassword.forgetSuccessMsg,
+  const token = new URLSearchParams(location.search).get("token") || "";
+  const { resetPasswordError, resetPasswordSuccessMsg } = useSelector(state => ({
+    resetPasswordError: state.ResetPasswordReducer.resetPasswordError,
+    resetPasswordSuccessMsg: state.ResetPasswordReducer.resetPasswordSuccessMsg,
+    resetPasswordSuccess: state.ResetPasswordReducer.resetPasswordSuccess
   }));
 
   function handleValidSubmit(event, values) {
-    dispatch(userForgetPassword(values.email));
+    dispatch(resetPassword({
+      password: values.password, 
+      token
+    }));
   }
+
+  useEffect(() => {
+    if (props.resetPasswordSuccess) 
+      history.push("/login");
+  }, [props.resetPasswordSuccess]);
 
   return (
     <React.Fragment>
@@ -59,14 +67,14 @@ const ForgetPasswordPage = props => {
                         <p className="text-muted mt-2">{props.t("Reset Password with")} {content.clientName}.</p>
                       </div>
 
-                      {forgetError && forgetError ? (
+                      {resetPasswordError && resetPasswordError ? (
                         <Alert color="danger" style={{ marginTop: "13px" }}>
-                          {forgetError}
+                          {resetPasswordError}
                         </Alert>
                       ) : null}
-                      {forgetSuccessMsg ? (
+                      {resetPasswordSuccessMsg ? (
                         <Alert color="success" style={{ marginTop: "13px" }}>
-                          {forgetSuccessMsg}
+                          {resetPasswordSuccessMsg}
                         </Alert>
                       ) : null}
 
@@ -75,21 +83,21 @@ const ForgetPasswordPage = props => {
                       >
                         <div className="mb-3">
                           <AvField
-                            name="email"
-                            label={props.t("Email")}
+                            name="password"
+                            label={props.t("New Password")}
                             className="form-control"
-                            placeholder={props.t("Enter email")}
-                            type="email"
+                            placeholder={props.t("Enter New Password")}
+                            type="password"
                             required
                           />
                         </div>
                         <div className="mb-3 mt-4">
-                          <button className="btn btn-primary w-100 waves-effect waves-light" type="submit">Reset</button>
+                          <button className="btn btn-primary w-100 waves-effect waves-light" type="submit">Reset Password</button>
                         </div>
                       </AvForm>
 
                       <div className="mt-5 text-center">
-                        <p className="text-muted mb-0">{props.t("Remember It")}?  <a href="/login"
+                        <p className="text-muted mb-0">{props.t("Remember Your Password")}?<a href="/login"
                           className="text-primary fw-semibold"> {props.t("Sign In")} </a> </p>
                       </div>
                     </div>
@@ -108,8 +116,8 @@ const ForgetPasswordPage = props => {
   );
 };
 
-ForgetPasswordPage.propTypes = {
+ResetPasswordPage.propTypes = {
   history: PropTypes.object,
 };
 
-export default withTranslation()(withRouter(ForgetPasswordPage));
+export default withTranslation()(withRouter(ResetPasswordPage));

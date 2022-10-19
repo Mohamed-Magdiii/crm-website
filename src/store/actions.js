@@ -4,6 +4,7 @@ export * from "./layout/actions";
 export * from "./auth/register/actions";
 export * from "./auth/login/actions";
 export * from "./auth/forgetpwd/actions";
+export * from "./auth/resetpwd/actions";
 export * from "./auth/profile/actions";
 
 //chat
@@ -17,3 +18,4 @@ export * from "./contacts/actions";
 export * from "./todos/actions";
 export * from "./logs/actions";
 export * from "./dashboard/actions";
+export * from "./tradingAccounts/actions";
