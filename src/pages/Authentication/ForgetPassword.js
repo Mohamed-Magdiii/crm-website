@@ -89,7 +89,7 @@ const ForgetPasswordPage = props => {
                       </AvForm>
 
                       <div className="mt-5 text-center">
-                        <p className="text-muted mb-0">{props.t("Remember It")}?  <a href="auth-login.html"
+                        <p className="text-muted mb-0">{props.t("Remember It")}?  <a href="/login"
                           className="text-primary fw-semibold"> {props.t("Sign In")} </a> </p>
                       </div>
                     </div>
