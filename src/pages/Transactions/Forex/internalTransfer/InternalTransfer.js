@@ -121,8 +121,7 @@ function Credit(props){
   const loadInternalTransfers = (page, limit)=>{
     dispatch(fetchInternalTransfers({
       limit, 
-      page,
-      customerId
+      page
     }));   
   };
   
