@@ -98,7 +98,7 @@ function Activities(props) {
         message = `${props.t("Document(s) has been overwritten")}`;
         break;
       case LOG_TYPES.UPLOAD_DOCS:
-        message = `${props.t("Document(s) has been uploaded")}`;
+        message = `${content.type } ${props.t("document(s) has been uploaded")}`;
         break;
         // todos
       case LOG_TYPES.ADD_TODO:
