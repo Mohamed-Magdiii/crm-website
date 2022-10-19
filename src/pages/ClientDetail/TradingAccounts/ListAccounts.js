@@ -170,9 +170,9 @@ function Accounts(props) {
 
 const mapStateToProps = (state) => ({
   clientDetails: state.clientReducer.clientDetails || {},
-  accounts: state.tradingAccountsReducer.accounts && state.tradingAccountsReducer.accounts.docs || [],
-  pagination: state.tradingAccountsReducer.accounts || {},
-  loading: state.tradingAccountsReducer.loading,
+  accounts: state.tradingAccountReducer.accounts && state.tradingAccountReducer.accounts.docs || [],
+  pagination: state.tradingAccountReducer.accounts || {},
+  loading: state.tradingAccountReducer.loading,
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(Accounts));
