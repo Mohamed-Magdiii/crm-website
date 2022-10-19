@@ -115,6 +115,10 @@ function Activities(props) {
       case LOG_TYPES.DELETE_TODO:
         message = `${props.t(`${content.type == "0" ? "Todo" : "Reminder"}`)} ${props.t("has been deleted")}` ;
         break;
+        // customer
+      case LOG_TYPES.EDIT_CUSTOMER_INFO:
+        message = `${props.t("Profile information has been updated")}` ;
+        break;
     }
     return message;
   };
