@@ -92,7 +92,7 @@ function Activities(props) {
         break;
         //docs
       case LOG_TYPES.CHANGE_DOC_STATUS:
-        message = `${props.t(`Document status is ${details.status} ${details.reason ? `reason is ${details.reason}` : ""}`)}`;
+        message = `${props.t(`Document status is ${details.status} ${details.rejectionReason ? `, reason is ${details.rejectionReason}` : ""}`)}`;
         break;
       case LOG_TYPES.OVERWRITE_DOCS:
         message = `${props.t("Document(s) has been overwritten")}`;
