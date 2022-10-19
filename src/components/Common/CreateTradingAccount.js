@@ -157,9 +157,9 @@ function CreateTradingAccount (props) {
 
 
 const mapStateToProps = (state) => ({
-  accountTypes: state.tradingAccountsReducer.accountTypes || [],
+  accountTypes: state.tradingAccountReducer.accountTypes || [],
   tradingAccountPermission: state.Profile.todosPermissions || {},
-  createCounter: state.tradingAccountsReducer.createCounter || 0,
-  creating: state.tradingAccountsReducer.creating || false,
+  createCounter: state.tradingAccountReducer.createCounter || 0,
+  creating: state.tradingAccountReducer.creating || false,
 });
 export default connect(mapStateToProps, null)(withTranslation()(CreateTradingAccount));
