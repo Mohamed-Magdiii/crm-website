@@ -2,6 +2,7 @@ import { all, fork } from "redux-saga/effects";
 import AccountSaga from "./auth/register/saga";
 import AuthSaga from "./auth/login/saga";
 import ForgetSaga from "./auth/forgetpwd/saga";
+import ResetPasswordSaga from "./auth/resetpwd/saga";
 import ProfileSaga from "./auth/profile/saga";
 import LayoutSaga from "./layout/saga";
 import chatSaga from "./chat/saga";
@@ -37,6 +38,7 @@ import forexGatewaySaga from "./forexGateway/saga";
 import forexWithdrawalSaga from "./forexTransactions/withdrawals/saga";
 import internalTransferSaga from "./forexTransactions/internalTransfers/saga";
 import creditSaga from "./forexTransactions/credit/saga";
+import convertSaga from "./converts/saga";
 import tradingAccountsSaga from "./tradingAccounts/saga";
 import clientTransactionsSaga from "./transactions/saga";
 
@@ -46,6 +48,7 @@ export default function* rootSaga() {
     fork(AccountSaga),
     fork(AuthSaga),
     fork(ForgetSaga),
+    fork(ResetPasswordSaga),
     fork(ProfileSaga),
     fork(LayoutSaga),
     fork(chatSaga),
@@ -81,6 +84,7 @@ export default function* rootSaga() {
     fork(forexWithdrawalSaga),
     fork(internalTransferSaga),
     fork(creditSaga),
+    fork(convertSaga),
     fork(tradingAccountsSaga),
     fork(clientTransactionsSaga),
   ]);

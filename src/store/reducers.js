@@ -7,6 +7,7 @@ import Layout from "./layout/reducer";
 import Login from "./auth/login/reducer";
 import Account from "./auth/register/reducer";
 import ForgetPassword from "./auth/forgetpwd/reducer";
+import ResetPasswordReducer from "./auth/resetpwd/reducer";
 import Profile from "./auth/profile/reducer";
 
 
@@ -51,6 +52,7 @@ import forexGatewayReducer from "./forexGateway/reducer";
 import forexWithdrawalReducer from "./forexTransactions/withdrawals/reducer";
 import internalTransferReducer from "./forexTransactions/internalTransfers/reducer";
 import creditReducer from "./forexTransactions/credit/reducer";
+import convertReducer from "./converts/reducer";
 import tradingAccountReducer from "./tradingAccounts/reducer";
 import clientTransactionsReducer from "./transactions/reducer";
 
@@ -60,6 +62,7 @@ const rootReducer = combineReducers({
   Login,
   Account,
   ForgetPassword,
+  ResetPasswordReducer,
   Profile,
   chat,
   invoices,
@@ -95,6 +98,7 @@ const rootReducer = combineReducers({
   forexWithdrawalReducer,
   internalTransferReducer,
   creditReducer,
+  convertReducer,
   tradingAccountReducer,
   clientTransactionsReducer,
 });
