@@ -6,19 +6,27 @@ import {
   IB_REQUEST_STATUS_CHANGE_TO_APPROVE_SUCCESS,
   IB_REQUEST_APPROVE_START,
   IB_REQUEST_STATUS_CHANGE_TO_REJECT_SUCCESS,
-  IB_REQUEST_REJECT_START
+  IB_REQUEST_REJECT_START,
+  FETCH_LEVERAGE_REQUESTS_START,
+  FETCH_LEVERAGE_REQUESTS_SUCCESS,
+  FETCH_LEVERAGE_REQUESTS_ERROR,
+  LEVERAGE_REQUEST_APPROVE_START,
+  LEVERAGE_REQUEST_STATUS_CHANGE_TO_APPROVE_SUCCESS,
+  LEVERAGE_REQUEST_REJECT_START,
+  LEVERAGE_REQUEST_STATUS_CHANGE_TO_REJECT_SUCCESS
 } from "./actionTypes";
 
 const initialState = {
   loading: false,
   error: "",
   ibs: [],
+  leverages:[],
   clearingCounter: 0,
   editClearingCounter: 0,
   deleteClearingCounter: 0,
-  isApproveOrReject: false
+  isApproveOrReject: false,
   // totalDocs: 0,
-  // docs: [],
+  docs: [],
   // page: 1
 };
 const requestsReducer = (state = initialState, action) => {
@@ -75,6 +83,68 @@ const requestsReducer = (state = initialState, action) => {
       };
       break;
     case IB_REQUEST_STATUS_CHANGE_TO_REJECT_SUCCESS:
+      // eslint-disable-next-line no-case-declarations
+      state = {
+        ...state,
+        loading: false,
+        changeStatusLoading: false,
+        isApproveOrReject: true,
+      };
+      break;
+
+      // LEVERAGE REDUCERS
+    case FETCH_LEVERAGE_REQUESTS_START:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case FETCH_LEVERAGE_REQUESTS_SUCCESS:
+      state = {
+        ...state,
+        docs: [...action.payload.docs],
+        totalDocs: action.payload.totalDocs,
+        hasNextPage: action.payload.hasNextPage,
+        hasPrevPage: action.payload.hasPrevPage,
+        limit: action.payload.limit,
+        nextPage: action.payload.nextPage,
+        page: action.payload.page,
+        pagingCounter: action.payload.pagingCounter,
+        prevPage: action.payload.prevPage,
+        totalPages: action.payload.totalPages,
+        loading: false,
+      };
+      break;
+    case FETCH_LEVERAGE_REQUESTS_ERROR:
+      state = {
+        ...state,
+        loading: false,
+        error: action.payload.error
+      };
+      break;
+    case LEVERAGE_REQUEST_APPROVE_START:
+      state = {
+        ...state,
+        loading: true
+      };
+      break;
+
+    case LEVERAGE_REQUEST_STATUS_CHANGE_TO_APPROVE_SUCCESS:
+      // eslint-disable-next-line no-case-declarations
+      state = {
+        ...state,
+        loading: false,
+        changeStatusLoading: false,
+        isApproveOrReject: true,
+      };
+      break;
+    case LEVERAGE_REQUEST_REJECT_START:
+      state = {
+        ...state,
+        loading: true
+      };
+      break;
+    case LEVERAGE_REQUEST_STATUS_CHANGE_TO_REJECT_SUCCESS:
       // eslint-disable-next-line no-case-declarations
       state = {
         ...state,

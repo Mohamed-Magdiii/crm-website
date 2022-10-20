@@ -22,6 +22,7 @@ import DeleteModal from "components/Common/DeleteModal";
 import RolesAdd from "./RolesAdd";
 import RolesEdit from "./RolesEdit";
 import { captilazeFirstLetter } from "common/utils/manipulateString";
+import { MetaTags } from "react-meta-tags";
 
 function RolesList(props){
   const [editModal, setEditUserModal] = useState(false);
@@ -124,6 +125,11 @@ function RolesList(props){
 
   return (
     <React.Fragment>
+      <MetaTags>
+        <title>
+          Roles
+        </title>
+      </MetaTags>
       <div className="page-content">
         <div className="container-fluid">
           <h2>Roles</h2>

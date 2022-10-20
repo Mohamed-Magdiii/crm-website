@@ -32,6 +32,13 @@ import transactionsProfitsSaga from "./transactionsProfit/saga";
 import todosSaga from "./todos/saga";
 import logsSaga from "./logs/saga";
 import dashboardSaga from "./dashboard/saga";
+import forexDepositSaga from "./forexTransactions/deposits/saga";
+import forexGatewaySaga from "./forexGateway/saga";
+import forexWithdrawalSaga from "./forexTransactions/withdrawals/saga";
+import internalTransferSaga from "./forexTransactions/internalTransfers/saga";
+import creditSaga from "./forexTransactions/credit/saga";
+import tradingAccountsSaga from "./tradingAccounts/saga";
+import clientTransactionsSaga from "./transactions/saga";
 import requestSaga from "./requests/saga";
 
 export default function* rootSaga() {
@@ -62,7 +69,6 @@ export default function* rootSaga() {
     fork(markupSaga),
     fork(dictionarySaga),
     fork(marketPricingSaga),
-    fork(marketSaga),
     fork(feeGroupSaga),
     fork(transactionFeeGroupSaga),
     fork(documentsSaga),
@@ -71,6 +77,13 @@ export default function* rootSaga() {
     fork(todosSaga),
     fork(logsSaga),
     fork(dashboardSaga),
+    fork(forexDepositSaga),
+    fork(forexGatewaySaga),
+    fork(forexWithdrawalSaga),
+    fork(internalTransferSaga),
+    fork(creditSaga),
+    fork(tradingAccountsSaga),
+    fork(clientTransactionsSaga),
     fork(requestSaga),
   ]);
 }

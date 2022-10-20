@@ -21,6 +21,7 @@ import ActionsTab from "./Actions.js/ActionsTab";
 import CountriesTab from "./Countries/CountriesTab";
 import EmailProvidersTab from "./EmailProvider/EmailProvidersTab";
 import ExchangesTab from "./Exchanges/ExchangesTab";
+import { MetaTags } from "react-meta-tags";
 function DictionaryList(){
   const dispatch = useDispatch();
   useState(()=>{
@@ -36,6 +37,11 @@ function DictionaryList(){
 
   return (
     <React.Fragment>
+      <MetaTags>
+        <title>
+          Dictionaries
+        </title>
+      </MetaTags>
       <div className="page-content"> 
         <div className="container-fluid">
           <h2>Dictionary</h2>

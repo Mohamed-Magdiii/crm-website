@@ -20,12 +20,14 @@ import { withRouter, Link } from "react-router-dom";
 
 const SidebarContent = (props) => {
   const ref = useRef();
-  
+
   const { get:getUser } = props.userPermissions;
   const { get:getClient } = props.clientPermissions;
   const { get:getLeads } = props.leadsPermissions;
   const { get:getDeposits } = props.depositsPermissions;
   const { get:getWithdrawals } = props.withdrawalsPermissions;
+  // const { get: getInternalTranfer } = props.internalTransferPermissions;
+  // const { get: getCredit } = props.creditPermissions;
   const { get:getMarkups } = props.markupsPermissions;
   const { get:getRoles } = props.rolesPermissions;
   const { get:getDictionaries } = props.dictionariesPermissions;
@@ -141,6 +143,20 @@ const SidebarContent = (props) => {
               </Link>
             </li> */}
             <li>
+              <Link to="/requsts" className="has-arrow">
+                <FeatherIcon icon="trending-up" />
+                <span>{props.t("Requests")}</span>
+              </Link>
+              <ul className="sub-menu">
+                <li>
+                  <Link to="/requests/ib" className= {`${!getDeposits ? "d-none" : ""}`}>{props.t("IB Request")}</Link>
+                </li>
+                <li>
+                  <Link to="/requests/leverage" className = {`${!getWithdrawals ? "d-none" : ""}`}>{props.t("Change Leverage")}</Link>
+                </li> 
+              </ul>
+            </li>
+            <li>
               <Link to="/transactions" className="has-arrow">
                 <FeatherIcon icon="trending-up" />
                 <span>{props.t("Transactions")}</span>
@@ -150,7 +166,13 @@ const SidebarContent = (props) => {
                   <Link to="/transactions/deposit" className= {`${!getDeposits ? "d-none" : ""}`}>{props.t("Deposit")}</Link>
                 </li>
                 <li>
-                  <Link to="/transactions/withdrawals" className = {`${!getWithdrawals ? "d-none" : ""}`}>{props.t("Withdrawals")}</Link>
+                  <Link to="/transactions/withdrawals" className = {`${!getWithdrawals ? "d-none" : ""}`}>{props.t("Withdrawal")}</Link>
+                </li> 
+                <li>
+                  <Link to="/transactions/internal-transfer">{props.t("Internal Transfer")}</Link>
+                </li> 
+                <li>
+                  <Link to="/transactions/credit">{props.t("Credit")}</Link>
                 </li>   
               </ul>
             </li>
@@ -171,25 +193,7 @@ const SidebarContent = (props) => {
                 <FeatherIcon icon="link-2"/>
                 <span>{props.t("Marketing")}</span> 
               </Link> 
-            </li>  */}
-            <li>
-              <Link to="/requests" className="has-arrow">
-                <FeatherIcon icon="clipboard" />
-                <span>{props.t("Requests")}</span>
-              </Link>
-              <ul className="sub-menu">
-                <li>
-                  <Link to="/requests/ib">{props.t("Ib Request")}</Link>
-                </li>
-                <li>
-                  <Link to="/requests/list-coin">{props.t("List Coin")}</Link>
-                </li>
-                <li>
-                  <Link to="/requests/otc">{props.t("OTC Request")}</Link>
-                </li>   
-              </ul>
-            </li> 
-          
+            </li>  */}          
             <li>
               <Link to="/settings" className="has-arrow">
                 <FeatherIcon icon="tool" />
@@ -277,7 +281,8 @@ const mapStateToProps = (state) => ({
   markupsPermissions : state.Profile.markupsPermissions || {},
   transactionFeeGroupsPermissions : state.Profile.transactionFeeGroupsPermissions || {},
   orderProfitPermissions : state.Profile.orderProfitPermissions || {},
-  transactionProfitPermissions : state.Profile.transactionProfitPermissions || {}
-
+  transactionProfitPermissions : state.Profile.transactionProfitPermissions || {},
+  // internalTransferPermissions: state.profile.internalTransferPermissions || {},
+  // creditPermissions: state.Profile.creditPermissions || {}
 });
 export default withTranslation()(withRouter(connect(mapStateToProps, null) (SidebarContent)));

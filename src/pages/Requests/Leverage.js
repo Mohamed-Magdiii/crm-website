@@ -15,7 +15,7 @@ import {
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 
 import {
-  fetchIbs, ibRequestApprove, ibRequestReject,
+  fetchIbs, fetchLeverages, ibRequestApprove, ibRequestReject, leverageRequestApprove, leverageRequestReject,
 } from "store/requests/actions";
 import CustomPagination from "components/Common/CustomPagination";
 import TableLoader from "components/Common/TableLoader";
@@ -50,19 +50,19 @@ function Leverage(props){
       formatter:(val)=> {return (val.customerId && val.customerId.firstName) ? `${captilazeFirstLetter(val.customerId.firstName)} ${captilazeFirstLetter(val.customerId.lastName)}` : ""}
     },
     {
-      dataField:"type",
+      dataField:"content.login",
       text:"Trading account",
     },
     {
       dataField:"type",
-      text:"MT5 Account",
+      text:"Platform",
     },
     {
-      dataField:"type",
+      dataField:"content.from",
       text:"Leverage",
     },
     {
-      dataField:"type",
+      dataField:"content.to",
       text:"Requested Leverage",
     },
     {
@@ -100,21 +100,21 @@ function Leverage(props){
 
   const dispatch = useDispatch();
   useEffect(()=>{
-    loadIbs(1, sizePerPage);
+    loadLeverages(1, sizePerPage);
   }, [sizePerPage, 1, props.isApproveOrReject]);
 
-  const loadIbs = (page, limit) => {
-    dispatch(fetchIbs({
+  const loadLeverages = (page, limit) => {
+    dispatch(fetchLeverages({
       page,
       limit,
     }));
   };
 
-  const iBApprove = (id)=>{
-    dispatch(ibRequestApprove(id));
+  const leverageApprove = (id)=>{
+    dispatch(leverageRequestApprove(id));
   };
-  const ibRejected = (id)=>{
-    dispatch(ibRequestReject(id));
+  const leverageRejected = (id)=>{
+    dispatch(leverageRequestReject(id));
   };
   return (
     <React.Fragment>
@@ -152,7 +152,7 @@ function Leverage(props){
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`}>
                                   { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
-                                  {column.dataField === "dropdown" ? <CustomDropDown  permission={props.requestsPermissions.actions ? true : false} id={row._id} status={row.status} approve={()=>iBApprove(row._id)} reject={()=>ibRejected(row._id)} /> : ""}
+                                  {column.dataField === "dropdown" ? <CustomDropDown  permission={props.requestsPermissions.actions ? true : false} id={row._id} status={row.status} approve={()=>leverageApprove(row._id)} reject={()=>leverageRejected(row._id)} /> : ""}
                                 </Td>
                               )}
                             </Tr>
@@ -163,7 +163,7 @@ function Leverage(props){
                         {...props}
                         setSizePerPage={setSizePerPage}
                         sizePerPage={sizePerPage}
-                        onChange={loadIbs}
+                        onChange={loadLeverages}
                       />
                     </div>
                   </div>

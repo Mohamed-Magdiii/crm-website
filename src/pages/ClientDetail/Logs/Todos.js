@@ -104,7 +104,7 @@ function Todos(props) {
   }, []);
   useEffect(()=>{
     fetchData(1);
-  }, [sizePerPage, 1]);
+  }, [props.deletingClearCounter, sizePerPage, 1]);
 
   const deleteRole = () => {
     dispatch(deleteTodosStart({
