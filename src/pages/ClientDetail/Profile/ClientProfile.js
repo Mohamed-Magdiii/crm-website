@@ -113,7 +113,7 @@ function ClientDetails(props) {
               <Row>
                 {/* input fields to the left side */}
                 <Col md="9" sm="12" xs="12" className="mb-3">
-                  <Card>
+                  <Card style={{ overflow:"visible" }}>
                     <CardHeader className="d-flex flex-column gap-3">
                       <div className="d-flex justify-content-between align-items-center">
                         <CardTitle>{props.t("General information")}</CardTitle>
