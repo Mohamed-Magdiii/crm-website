@@ -21,7 +21,7 @@ import {
   updateFinancialInfoFail,
   resetPasswordClear,
   editClientDetailsFail,
-  clientForgotPasswordClear
+  clientForgotPasswordClear,
 } from "./actions";
 import { 
   ADD_NEW_CLIENT, 
@@ -34,7 +34,10 @@ import {
   UPDATE_FINANCIAL_INFO_START,
   CHANGE_PASSWORD_START,
   SEND_EMAIL_TO_RESET_PASSWORD_START,
-  CLIENT_FORGOT_PASSWORD_START
+  CLIENT_FORGOT_PASSWORD_START,
+  CLIENT_DISABLE_2FA_START,
+  CLIENT_DISABLE_2FA_SUCCESS,
+  CLIENT_DISABLE_2FA_FAIL
 } from "./actionsType"; 
 import { showSuccessNotification, showErrorNotification } from "store/notifications/actions";
 function *fetchClients(params) {
@@ -156,6 +159,24 @@ function * changePassword({ payload }){
     yield put(showErrorNotification("Error Happend while changing password"));
   }
 }
+
+function * disable2FA({ payload }){
+  try {
+    const res =  yield call(clientApi.disable2FA, payload);
+    if (res){
+      yield put({
+        type: CLIENT_DISABLE_2FA_SUCCESS,
+      });
+      yield put(showSuccessNotification("Two factor authentication disabled successfully"));
+    }
+  } catch (error){
+    yield put({
+      type: CLIENT_DISABLE_2FA_FAIL,
+    });
+    yield put(showErrorNotification(error.message));
+  }
+}
+
 function * sendEmail({ payload }){
   try {
     // const data = yield call(clientApi.sendingEmailWithPasswordResetLink, payload);
@@ -195,6 +216,7 @@ function * clientSaga() {
   yield takeEvery(CHANGE_PASSWORD_START, changePassword);
   yield takeEvery(SEND_EMAIL_TO_RESET_PASSWORD_START, sendEmail);
   yield takeEvery(CLIENT_FORGOT_PASSWORD_START, forgotPassword);
+  yield takeEvery(CLIENT_DISABLE_2FA_START, disable2FA);
 }
 
 export default clientSaga;

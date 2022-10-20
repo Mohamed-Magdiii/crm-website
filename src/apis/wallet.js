@@ -6,13 +6,16 @@ export const getWallets = async  ({ payload })=>{
   return wallets;
 };
 
-export const getClientWalletDetails = async (payload) => {
-  const { belongsTo } = payload; 
-  const data = await axiosHelper.get(`/wallets/?belongsTo=${belongsTo}&customerId=${belongsTo}`);
+export const getClientWalletDetails = async ({ payload }) => {
+  const params = {
+    belongsTo: payload.belongsTo,
+    customerId: payload.belongsTo,
+    ...payload,
+  };
+  const data = await axiosHelper.get(`/wallets?${qs.stringify(params)}`);
   if (data.isError){
     throw new Error(data.isError);
   }
-
   return data;
 };
 

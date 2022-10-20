@@ -20,6 +20,7 @@ import SearchBar from "components/Common/SearchBar";
 import { withTranslation } from "react-i18next";
 import { captilazeFirstLetter } from "common/utils/manipulateString";
 import { checkAllBoxes } from "common/utils/checkAllBoxes";
+import { MetaTags } from "react-meta-tags";
 function LeadsList(props) {
 
   const columns = [
@@ -114,7 +115,12 @@ function LeadsList(props) {
   const handleSearchInput = (e) => (setSearchInputText(e.target.value));
 
   return (
-    <React.Fragment>
+    <React.Fragment>      
+      <MetaTags>
+        <title>
+          Leads
+        </title>
+      </MetaTags>
       <div className="page-content"> 
         <div className="container-fluid">
           <h2>{props.t("Leads List")}</h2>
@@ -126,7 +132,9 @@ function LeadsList(props) {
                     <CardTitle>{props.t("Leads List")} ({totalDocs})</CardTitle>
                     <LeadForm/>
                   </div>
-                  <SearchBar handleSearchInput={handleSearchInput} />
+                  <div className="w-50">
+                    <SearchBar handleSearchInput={handleSearchInput} />
+                  </div>
                 </CardHeader>
                 <CardBody>
                   <div className="table-rep-plugin">

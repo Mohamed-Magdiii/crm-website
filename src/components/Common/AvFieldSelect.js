@@ -5,12 +5,14 @@ import {
 } from "availity-reactstrap-validation";
 import Select from "react-select";
 
-function AvFieldSelecvt(props) {
+function AvFieldSelect(props) {
   const ref1 = useRef();
   const [state, setState] = React.useState(null);
   const onFieldChange = (e) => {
     setState(e.value);
-    // props.onAvFieldSelecvtChange(e);
+    if (props.onChange){
+      props.onChange(e);
+    }
   };
   const { label, ...params } = props;
   let options = props.options || [];
@@ -55,4 +57,4 @@ function AvFieldSelecvt(props) {
   </React.Fragment>);
 }
 
-export default AvFieldSelecvt;
+export default AvFieldSelect;

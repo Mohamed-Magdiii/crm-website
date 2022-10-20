@@ -98,9 +98,8 @@ function DepositForm(props){
           {props.t("Add Deposit")}
         </ModalHeader>
         <ModalBody >
-    
           <AvForm
-            className='p-4'
+            className='px-4 py-2'
             onValidSubmit={(e, v) => {
               !gateway && setGatewayError(true);
               gateway && selectedWalletId && selectedClient &&
@@ -163,7 +162,7 @@ function DepositForm(props){
 
             <Row className="mb-3">
               {/* wallet */}
-              <Col md="12">
+              <Col md="12" className="mt-3">
                 <Label>{props.t("Wallet")}</Label>
                 <div>
                   <Select 
@@ -240,7 +239,7 @@ function DepositForm(props){
               />
             </div>
     
-            <div className='text-center pt-3 p-2'>
+            <div className='text-center mt-3 p-2'>
               <Button 
                 disabled = {props.disableAddButton} 
                 type="submit" 

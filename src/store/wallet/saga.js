@@ -28,9 +28,8 @@ function* fetchWallet(params) {
 }
 
 function* fetchClientWallet(params) {
-  const belongsTo = params.payload;
   try {
-    const data = yield call(walletApi.getClientWalletDetails, belongsTo);
+    const data = yield call(walletApi.getClientWalletDetails, params);
     yield put(fetchClientWalletsSuccess(data));
   } catch (error) {
     yield put(fetchClientWalletsFail({ error: error.message }));

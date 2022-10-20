@@ -22,6 +22,7 @@ import DeleteModal from "components/Common/DeleteModal";
 import UsersAddModal from "./UsersAddModal";
 import UsersEditModal from "./UsersEditModal";
 import { showErrorNotification } from "store/notifications/actions";
+import { MetaTags } from "react-meta-tags";
 function UsersList() {
 
   const [editModal, setEditUserModal] = useState(false);
@@ -215,6 +216,11 @@ function UsersList() {
 
   return (
     <React.Fragment>
+      <MetaTags>
+        <title>
+          Users
+        </title>
+      </MetaTags>
       <div className="page-content">
         <div className="container-fluid">
           <h2>Users</h2>

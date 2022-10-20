@@ -19,6 +19,7 @@ import FeeGroupAdd from "./feeGroupAdd";
 import FeeGroupEdit from "./feeGroupEdit";
 import { fetchMarketsStart } from "store/markets/actions";
 import { checkAllBoxes } from "common/utils/checkAllBoxes";
+import { MetaTags } from "react-meta-tags";
 function FeeGroupsList(props) {
   const [deleteModal, setDeleteModal] = useState(false);
   const [deletedItem, setDeletedItem] = useState();
@@ -126,6 +127,11 @@ function FeeGroupsList(props) {
 
   return (
     <React.Fragment>
+      <MetaTags>
+        <title>
+          Trading Fee Groups
+        </title>
+      </MetaTags>
       <div className="page-content"> 
         <div className="container-fluid">
           <h2>{props.t("Trading Fee Group")}</h2>

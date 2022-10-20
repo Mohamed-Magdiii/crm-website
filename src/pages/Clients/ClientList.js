@@ -29,6 +29,7 @@ import { Link } from "react-router-dom";
 import { captilazeFirstLetter, displaySubString } from "common/utils/manipulateString";
 import { checkAllBoxes } from "common/utils/checkAllBoxes";
 import AgentForm from "./AgentDropDown";
+import { MetaTags } from "react-meta-tags";
 function ClientsList(props) {
   const [addModal, setAddReminderToClientModal] = useState(false);
   const [selectedClient, setSelectedClient] = useState({});
@@ -213,6 +214,11 @@ function ClientsList(props) {
 
   return (
     <React.Fragment>
+      <MetaTags>
+        <title>
+          Clients
+        </title>
+      </MetaTags>
       <div className="page-content">
         <div className="container-fluid">
           {/* <h2>{props.t("Clients")}</h2> */}

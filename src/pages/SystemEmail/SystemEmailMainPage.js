@@ -33,7 +33,7 @@ function SystemEmailMainPage(props) {
   const getSystemEmailDetails = async(systemEmailId) => {
     try {
       setSystemEmail({ loading: true });
-      const data = await axiosHelper.get(`/system-emails/${systemEmailId}`);
+      const data = await axiosHelper.get(`/systememail/${systemEmailId}`);
       if (data && data.result) {
         setSystemEmail({
           loading: false,

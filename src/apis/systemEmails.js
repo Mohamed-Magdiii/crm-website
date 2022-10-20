@@ -2,7 +2,7 @@ import qs from "qs";
 import * as axiosHelper from "./api_helper";
 
 export const getSystemEmails = async ({ payload }) => {
-  const data = await axiosHelper.get(`/systememail/?${qs.stringify(payload)}`);
+  const data = await axiosHelper.get(`/systememail?${qs.stringify(payload)}`);
   if (data.isError){
     throw new Error(data.mesage);
   }
@@ -21,7 +21,7 @@ export const getSystemEmailById = async ({ payload }) => {
 };
 
 export const addSystemEmail = async({ payload }) => {
-  const data = await axiosHelper.post("/systememails", payload);
+  const data = await axiosHelper.post("/systememail", payload);
   if (data.isError) {
     throw new Error(data.message);
   } 

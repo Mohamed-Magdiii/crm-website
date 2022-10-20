@@ -21,6 +21,7 @@ import { Link } from "react-router-dom";
 import MarkupEdit from "./MarkupEdit";
 import DeleteModal from "components/Common/DeleteModal";
 import AddMarkup from "./AddMarkup";
+import { MetaTags } from "react-meta-tags";
 
 
 function MarkUpsList(props) {
@@ -145,6 +146,11 @@ function MarkUpsList(props) {
 
   return (<>
     <React.Fragment>
+      <MetaTags>
+        <title>
+          Markups
+        </title>
+      </MetaTags>
       <div className="page-content">
         <div className="container-fluid">
           <h2>{t("Markups")}</h2>

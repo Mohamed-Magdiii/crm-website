@@ -17,7 +17,7 @@ import { withTranslation } from "react-i18next";
 import Select from "react-select";
 import { addInternalTransfer } from "store/forexTransactions/internalTransfers/actions";
 import Loader from "components/Common/Loader";
-import { fetchTradingAccounts, fetchTradingAccountsByCustomerID } from "store/tradingAccounts/actions";
+import { fetchTradingAccounts } from "store/tradingAccounts/actions";
 
 function AddInternalTransferModal(props){
   const dispatch = useDispatch();
@@ -78,11 +78,11 @@ function AddInternalTransferModal(props){
   };
 
   const loadTradingAccounts = (login)=>{
-    dispatch(fetchTradingAccounts({ login }));   
+    dispatch(fetchTradingAccounts({ login: +login }));   
   };
 
   const loadTradingAccountsByCustomerId = (customerId)=>{
-    dispatch(fetchTradingAccountsByCustomerID({ customerId }));   
+    dispatch(fetchTradingAccounts({ customerId }));   
   };
 
   const handleLiveAccountChange = (e) => {

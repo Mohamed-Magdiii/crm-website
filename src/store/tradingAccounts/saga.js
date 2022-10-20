@@ -1,40 +1,72 @@
 import {
-  call,
-  put,
-  takeEvery
+  call, put, takeEvery
 } from "redux-saga/effects";
-import { 
+// Login Redux States
+import {
+  FETCH_ACCOUNT_TYPES_START,
+  FETCH_TRADING_ACCOUNT_START,
+  CREATE_TRADING_ACCOUNT_START,
   FETCH_TRADING_ACCOUNTS_REQUESTED,
-  FETCH_TRADING_ACCOUNTS_BY_CUSTOMERID_REQUESTED
 } from "./actionTypes";
+
 import {
   fetchTradingAccountsSuccess,
   fetchTradingAccountsFail,
-  fetchTradingAccountsByCustomerIDSuccess,
-  fetchTradingAccountsByCustomerIDFail
+  fetchAccountTypesEnd,
+  fetchTradingAccountEnd,
+  createAccountClear,
+  createTradingAccountEnd
 } from "./actions";
-import * as tradingAccountsApis from "apis/tradingAccounts";
+import { showErrorNotification, showSuccessNotification } from "store/notifications/actions";
 
-function * fetchTradingAccounts(params){
+//Include Both Helper File with needed methods
+import * as accountsApi from "../../apis/tradingAccounts";
+
+function * fetchTradingAccountsByLogin(params){
   try {
-    const data = yield call(tradingAccountsApis.getTradingAccountByLogin, params);
+    const data = yield call(accountsApi.getTradingAccountByLogin, params);
     yield put(fetchTradingAccountsSuccess(data));
   } catch (err){
     yield put(fetchTradingAccountsFail(err.message));
   }
 }
 
-function * fetchTradingAccountsByCustomerId(params){
+function * fetchAccountTypes(params){
   try {
-    const data = yield call(tradingAccountsApis.getTradingAccountsByCustomerId, params);
-    yield put(fetchTradingAccountsByCustomerIDSuccess(data));
+    const data = yield call(accountsApi.getAccountTypes, params);    
+    yield put(fetchAccountTypesEnd({ data }));
+  }
+  catch (error){
+    yield put(fetchAccountTypesEnd({ error }));
+  } 
+}
+
+function * fetchTradingAccounts(params){
+  try {
+    const data = yield call(accountsApi.getTradingAccounts, params);
+    yield put(fetchTradingAccountsSuccess(data));
   } catch (err){
-    yield put(fetchTradingAccountsByCustomerIDFail(err.message));
+    yield put(fetchTradingAccountEnd(err.message));
   }
 }
 
-function * tradingAccountSaga(){
-  yield takeEvery(FETCH_TRADING_ACCOUNTS_REQUESTED, fetchTradingAccounts);
-  yield takeEvery(FETCH_TRADING_ACCOUNTS_BY_CUSTOMERID_REQUESTED, fetchTradingAccountsByCustomerId);
+function * createTradingAccount(params){
+  try {
+    const data = yield call(accountsApi.createTradingAccount, params);    
+    yield put(createTradingAccountEnd({ data }));
+    yield put(createAccountClear());
+    yield put(showSuccessNotification("Trading account created."));
+  }
+  catch (error){
+    yield put(createTradingAccountEnd({ error }));
+  } 
 }
+
+function * tradingAccountSaga(){
+  yield takeEvery(FETCH_TRADING_ACCOUNTS_REQUESTED, fetchTradingAccountsByLogin);
+  yield takeEvery(FETCH_ACCOUNT_TYPES_START, fetchAccountTypes);
+  yield takeEvery(FETCH_TRADING_ACCOUNT_START, fetchTradingAccounts);
+  yield takeEvery(CREATE_TRADING_ACCOUNT_START, createTradingAccount);
+}
+
 export default tradingAccountSaga;

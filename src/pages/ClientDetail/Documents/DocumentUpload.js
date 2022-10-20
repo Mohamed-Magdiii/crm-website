@@ -213,8 +213,6 @@ function UploadAdditionalDocs (props) {
   const validateFile = (value, ctx, input, cb)=> {
     const extensions = ["png", "jpg", "jpeg", "pdf"];
     const extension = value.split(".")[1];
-    // eslint-disable-next-line no-debugger
-    // debugger;
     if (extensions.includes(extension) || !value){
       if (!value || memFiles[input.props.name]?.size <= 2097152){    
         cb(true);
