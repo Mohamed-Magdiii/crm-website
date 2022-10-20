@@ -6,7 +6,8 @@ import {
   ADD_CREDIT_REQUESTED,
   ADD_CREDIT_SUCCESS,
   ADD_CREDIT_FAIL,
-  ADD_CREDIT_CLEAR
+  ADD_CREDIT_CLEAR,
+  ADD_CREDIT_ERROR_CLEAR
 } from "./actionTypes";
 
 const initalState = {
@@ -86,7 +87,15 @@ const creditReducer = (state = initalState, action) => {
         modalClear: true
       };
       break;
-    
+    case ADD_CREDIT_ERROR_CLEAR:
+      state = {
+        ...state,
+        addCreditLoading: false,
+        addCreditFail: false,
+        addCreditFailDetails: null
+      };
+      break;
+      
     default:
       state = { ...state };
   }

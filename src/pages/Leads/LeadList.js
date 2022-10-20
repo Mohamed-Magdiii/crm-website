@@ -130,7 +130,9 @@ function LeadsList(props) {
                     <CardTitle>{props.t("Leads List")} ({totalDocs})</CardTitle>
                     <LeadForm/>
                   </div>
-                  <SearchBar handleSearchInput={handleSearchInput} />
+                  <div className="w-50">
+                    <SearchBar handleSearchInput={handleSearchInput} />
+                  </div>
                 </CardHeader>
                 <CardBody>
                   <div className="table-rep-plugin">

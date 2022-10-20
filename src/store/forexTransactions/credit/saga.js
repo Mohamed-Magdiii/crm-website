@@ -1,7 +1,8 @@
 import {
   call,
   put,
-  takeEvery
+  takeEvery,
+  delay
 } from "redux-saga/effects";
 import { 
   FETCH_CREDITS_REQUESTED,
@@ -13,7 +14,8 @@ import {
 
   addCreditSuccess,
   addCreditFail,
-  addCreditClear
+  addCreditClear,
+  addCreditErrorClear
 } from "./actions";
 import * as creditApis from "apis/credit";
 import { showSuccessNotification } from "store/notifications/actions";
@@ -35,6 +37,8 @@ function * addCredit(params){
     yield put(addCreditClear());
   } catch (err){
     yield put(addCreditFail(err.message));
+    yield delay(5000);
+    yield put(addCreditErrorClear());
   }
 }
 

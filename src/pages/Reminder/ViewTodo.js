@@ -74,7 +74,7 @@ function EditReminderModal(props) {
     <React.Fragment >
       <Modal isOpen={props.show} toggle={props.onClose} centered={true}>
         <ModalHeader toggle={props.onClose} tag="h4">
-          Reminder
+          { todoObj.type == "0" ? "Todo" : "Reminder" }
         </ModalHeader>
         <ModalBody >
           <div className="row">
@@ -104,7 +104,7 @@ function EditReminderModal(props) {
                 </Col>
               </Row>
               <div className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-3">
-                Reminder At :<span> &nbsp; </span>
+                { todoObj.type == "0" ? "Todo" : "Reminder" } At :<span> &nbsp; </span>
                 <span>
                   <span>
                     {moment(todoObj.timeEnd).format("YYYY-MM-DD")}
@@ -118,23 +118,9 @@ function EditReminderModal(props) {
                 Created By :<span> &nbsp; </span> {todoObj.createdBy.firstName + " " + todoObj.createdBy.lastName}
               </div>
               <div className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12">
-                Reminder Note : <span> &nbsp; </span> {todoObj.note}
+                { todoObj.type == "0" ? "Todo" : "Reminder" }  Note : <span> &nbsp; </span> {todoObj.note}
                 {/* <br /> */}
               </div>
-              <div className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-3">
-                {todoObj.type == "0" &&
-                  <>
-                    Type : <span> &nbsp; </span>Todo
-                  </>
-                }
-                {todoObj.type == "1" &&
-                  <>
-                    Type :<span> &nbsp; </span> Reminder
-                  </>
-                }
-                {/* <h5>Created By: {createdBy?.firstName + " " + createdBy?.lastName}</h5> */}
-              </div>
-
             </div>
           </div>
           <TodoEdit

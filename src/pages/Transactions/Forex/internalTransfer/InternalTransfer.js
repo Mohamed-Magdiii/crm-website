@@ -3,14 +3,14 @@ import React, {
 } from "react";
 import { useDispatch, connect } from "react-redux";
 import {
-  Row, Col, Card, CardBody, CardHeader, CardTitle, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown
+  Row, Col, Card, CardBody, CardHeader, CardTitle, Dropdown, DropdownToggle, DropdownMenu, DropdownItem
 } from "reactstrap";
 import SearchBar from "components/Common/SearchBar";
 import CustomPagination from "components/Common/CustomPagination";
 import {
   Table, Thead, Tbody, Tr, Th, Td
 } from "react-super-responsive-table";
-// import CustomDropdown from "components/Common/CustomDropDown";
+import CustomDropdown from "components/Common/CustomDropDown";
 import TableLoader from "components/Common/TableLoader";
 import Notification from "components/Common/Notification";
 import logo from "../../../../assets/images/logo-sm.svg";
@@ -18,14 +18,11 @@ import { withTranslation } from "react-i18next";
 import { checkAllBoxes } from "common/utils/checkAllBoxes";
 import { Link } from "react-router-dom";
 import { captilazeFirstLetter } from "common/utils/manipulateString";
-import { fetchTradingAccounts } from "store/tradingAccounts/actions";
 import { fetchInternalTransfers } from "store/forexTransactions/internalTransfers/actions";
 import AddInternalTransferModal from "./AddInternalTransferModal";
 
 function Credit(props){
   const dispatch = useDispatch();
-  const customerId = JSON.parse(localStorage.getItem("authUser")).roleId._id;
-  console.log(customerId);
   const [searchInput, setSearchInput] = useState("");
   const [showNotication, setShowNotifaction] = useState(false);
   const [sizePerPage, setSizePerPage] = useState(10);
@@ -48,11 +45,7 @@ function Credit(props){
     },
     {
       dataField: "recordId",
-      text: props.t("Credit Id")
-    },
-    {
-      dataField: "creditType",
-      text: props.t("Credit Type")
+      text: props.t("Transaction Id")
     },
     {
       dataField:"Client",
@@ -72,20 +65,51 @@ function Credit(props){
       }
     },
     {
-      dataField: "tradingAccount",
-      text: props.t("Trading Account"),
-      formatter: (item) => (
-        item.tradingAccountId?.login
-      )
-    },
-    {
       dataField: "currency",
-      text: props.t("Currency"),
-        
+      text: props.t("Currency")
     },
     {
-      dataField: "note",
-      text: props.t("Note")
+      dataField: "tradingAccountFrom",
+      text: props.t("fromAccount")
+    },
+    {
+      dataField: "tradingAccountTo",
+      text: props.t("toAccount")
+    },
+    {
+      dataField: "fee",
+      text: props.t("Fee")
+    },
+    {
+      dataField: "amount",
+      text: props.t("Amount")
+    },
+    {
+      dataField: "status",
+      text: props.t("Status"),
+      formatter:(item) => {
+        return (
+          item.status === "APPROVED" 
+            ?
+            <div>
+              <spam className="no-italics text-success">{item.status}</spam>
+            </div>
+            :
+            item.status === "PENDING"
+              ?
+              <div>
+                <spam className="no-italics text-warning">{item.status}</spam>
+              </div>
+              :
+              <div>
+                <spam className="no-italics text-danger">{item.status}</spam>
+              </div>
+        );
+      }
+    },
+    {
+      dataField: "dropdown",
+      text:props.t("Actions")
     }
   ];
   
@@ -96,13 +120,8 @@ function Credit(props){
   const loadInternalTransfers = (page, limit)=>{
     dispatch(fetchInternalTransfers({
       limit, 
-      page,
-      customerId
+      page
     }));   
-  };
-  
-  const loadTradingAccounts = ()=>{
-    dispatch(fetchTradingAccounts({ customerId }));   
   };
   
   const closeNotifaction = () => {
@@ -111,11 +130,7 @@ function Credit(props){
   
   useEffect(()=>{
     loadInternalTransfers(1, sizePerPage);
-  }, [sizePerPage, 1, searchInput, selectedFilter, props.depositResponseMessage]);
-  
-  useEffect(() => {
-    loadTradingAccounts();
-  }, []);
+  }, [props.addInternalTransferLoading, sizePerPage, 1, searchInput, selectedFilter]);
   
   return (
     <React.Fragment>
@@ -132,7 +147,7 @@ function Credit(props){
             <CardHeader className="d-flex flex-column gap-3 ">
               <div className="d-flex justify-content-between align-items-center">
                     
-                <CardTitle>{props.t(`Internal Transfers(${props.totalDocs})`)}</CardTitle>
+                <CardTitle>{props.t(`Internal Transfers(${props.internalTransfersTotalDocs})`)}</CardTitle>
                 <AddInternalTransferModal />
               </div>
                   
@@ -176,11 +191,11 @@ function Credit(props){
                     </Thead>
                         
                     {
-                      props.totalDocs === 0
+                      props.internalTransfersTotalDocs === 0
                         ?
                         <Tbody>
-                          {props.loading && <TableLoader colSpan={4} />}                            
-                          {!props.loading &&
+                          {props.fetchInternalTransfersLoading && <TableLoader colSpan={4} />}                            
+                          {!props.fetchInternalTransfersLoading &&
                               <>
                                 <Tr>
                                   <Td colSpan={"100%"} className="fw-bolder text-center" st>
@@ -192,15 +207,15 @@ function Credit(props){
                         </Tbody>
                         :
                         <Tbody className="text-center" style={{ fontSize : "13px" }}>
-                          {props.loading && <TableLoader colSpan={4} />}
-                          {!props.loading && props.internalTransfers.map((row, rowIndex) =>
+                          {props.fetchInternalTransfersLoading && <TableLoader colSpan={4} />}
+                          {!props.fetchInternalTransfersLoading && props.internalTransfers.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
                               {columns.map((column, index) =>
                                 <Td key={`${rowIndex}-${index}`} className= "pt-4">
                                   { column.dataField === "checkbox" ? <input className = "deposit-checkbox" type="checkbox"/> : ""}
                                   { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
-                                  {/* {column.dataField === "dropdown" ? <CustomDropdown  permission={props.depositsPermissions.actions ? true : false}
-                                      id={row._id} status={row.status} approve={()=>{depositApprove(row)}} reject={()=>{depositReject(row)}} /> : ""} */}
+                                  { column.dataField === "dropdown" ? <CustomDropdown  permission={props.internalTransferPermissions.actions ? true : false}
+                                    id={row._id} status={row.status} /> : ""}
                                 </Td>
                               )}
                             </Tr>
@@ -213,7 +228,7 @@ function Credit(props){
                     setSizePerPage={setSizePerPage}
                     sizePerPage={sizePerPage}
                     onChange={loadInternalTransfers}
-                    docs={props.deposits}
+                    docs={props.internalTransfers}
                   />
                 </div>
               </div>
@@ -226,10 +241,10 @@ function Credit(props){
 }
     
 const mapStateToProps = (state) => ({
-  loading: state.internalTransferReducer.loading || false,
+  fetchInternalTransfersLoading: state.internalTransferReducer.fetchInternalTransfersLoading || false,
   internalTransfers: state.internalTransferReducer.internalTransfers || [],
   page: state.internalTransferReducer.page || 1,
-  totalDocs: state.internalTransferReducer.internalTransferTotalDocs || 0,
+  internalTransfersTotalDocs: state.internalTransferReducer.internalTransfersTotalDocs || 0,
   totalPages: state.internalTransferReducer.totalPages || 0,
   hasNextPage: state.internalTransferReducer.hasNextPage,
   hasPrevPage: state.internalTransferReducer.hasPrevPage,
@@ -238,7 +253,8 @@ const mapStateToProps = (state) => ({
   pagingCounter: state.internalTransferReducer.pagingCounter,
   prevPage: state.internalTransferReducer.prevPage,
   depositsPermissions : state.Profile.depositsPermissions || {},
-  depositResponseMessage:state.internalTransferReducer.depositResponseMessage,
-  tradingAccounts: state.tradingAccountReducer.tradingAccounts
+  tradingAccounts: state.tradingAccountReducer.tradingAccounts,
+  addInternalTransferLoading: state.internalTransferReducer.addInternalTransferLoading,
+  internalTransferPermissions: state.Profile.internalTransferPermissions
 });
 export default connect(mapStateToProps, null)(withTranslation()(Credit));

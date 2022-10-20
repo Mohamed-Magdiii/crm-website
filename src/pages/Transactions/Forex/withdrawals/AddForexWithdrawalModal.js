@@ -21,12 +21,12 @@ import { fetchTradingAccounts } from "store/tradingAccounts/actions";
 
 function AddForexWithdrawalModal(props){
   const dispatch = useDispatch();
-  const customerId = JSON.parse(localStorage.getItem("authUser")).roleId._id;
   const { create } = props.withdrawalsPermissions;
   const [addModal, setAddModal] = useState(false);
   const [gateway, setGateway] = useState("");
-  const [accountType, setAccuntType] = useState("");
+  const [, setAccuntType] = useState("");
   const [tradingAccountOwnerName, setTradingAccountOwnerName] = useState();
+  const [tradingAccountLogin, setTradingAccountLogin] = useState();
 
   // account type options
   const accountTypeOptions = [
@@ -60,20 +60,25 @@ function AddForexWithdrawalModal(props){
   };
 
   const handleLiveAccountChange = (e) => {
+    setTradingAccountLogin(e.target.value);
     loadTradingAccounts(e.target.value);
-    props.tradingAccounts && setTradingAccountOwnerName(
-      props.tradingAccounts.filter((item) => (item.login == e.target.value))[0]?.customerId.firstName + 
-      " " +
-      props.tradingAccounts.filter((item) => (item.login == e.target.value))[0]?.customerId.lastName 
-    );
+    
   };
+
+  useEffect(() => {
+    setTradingAccountOwnerName(
+      props.tradingAccounts.filter((item) => (item.login == tradingAccountLogin))[0]?.customerId.firstName + 
+      " " +
+      props.tradingAccounts.filter((item) => (item.login == tradingAccountLogin))[0]?.customerId.lastName 
+    );
+  }, [props.fetchTradingAccountsLoading]);
 
   const validateLiveAccount = (value, ctx, input, cb) =>{
     if (!props.tradingAccounts.map((item) => (item.login))[0] == value || props.fetchTradingAccountsFail){
       cb("Enter A Valid Live Account");
     } else cb(true);
   };
-  
+
   return (
     <React.Fragment >
       <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> {props.t("Add New Withdrawal")}</Link>
@@ -86,12 +91,10 @@ function AddForexWithdrawalModal(props){
             className='p-4'
             onValidSubmit={(e, v) => {
               v.gateway = gateway;
-              v.accountType = accountType;
-              v.customerId = customerId;
+              v.customerId = props.tradingAccounts.filter((item) => (item.login == v.account))[0]?.customerId?._id;
               v.tradingAccountId = props.tradingAccounts.filter((item) => (item.login == v.account))[0]?._id;
               delete v.account;
               delete v.customerName;
-              delete v.accountType;
               handleAddForexDeposit(e, v);
             }}
           >
@@ -147,7 +150,7 @@ function AddForexWithdrawalModal(props){
               <Col md="12">
                 <AvField
                   readOnly={true}
-                  value={tradingAccountOwnerName && tradingAccountOwnerName}
+                  value={props.tradingAccounts?.length != 0 && tradingAccountOwnerName}
                   name="customerName"
                   label={props.t("Customer Name")}
                   placeholder={props.t("Customer Name")}
@@ -247,6 +250,7 @@ const mapStateToProps = (state) => ({
   disableAddButton : state.forexWithdrawalReducer.disableAddButton,
   withdrawalAddLoading: state.forexWithdrawalReducer.withdrawalAddLoading,
   addForexWithdrawalFailDetails: state.forexWithdrawalReducer.addForexWithdrawalFailDetails,
-  tradingAccounts: state.tradingAccountReducer.tradingAccounts
+  tradingAccounts: state.tradingAccountReducer.tradingAccounts,
+  fetchTradingAccountsLoading: state.tradingAccountReducer.loading
 });
 export default connect(mapStateToProps, null)(withTranslation()(AddForexWithdrawalModal));

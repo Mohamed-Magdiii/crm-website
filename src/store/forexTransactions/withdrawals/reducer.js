@@ -6,7 +6,8 @@ import {
   ADD_FOREX_WITHDRAWAL_REQUESTED,
   ADD_FOREX_WITHDRAWAL_SUCCESS,
   ADD_FOREX_WITHDRAWAL_FAIL,
-  ADD_FOREX_WITHDRAWAL_CLEAR
+  ADD_FOREX_WITHDRAWAL_CLEAR,
+  ADD_FOREX_WITHDRAWAL_ERROR_CLEAR
 } from "./actionTypes";
 
 const initalState = {
@@ -91,7 +92,14 @@ const forexWithdrawalReducer = (state = initalState, action) => {
         disableAddButton: false
       };
       break;
-    
+    case ADD_FOREX_WITHDRAWAL_ERROR_CLEAR:
+      state = {
+        ...state,
+        addForexWithdrawalFailDetails: null,
+        disableAddButton: false
+      };
+      break;
+      
     default:
       state = { ...state };
   }

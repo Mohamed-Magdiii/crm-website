@@ -26,8 +26,9 @@ const SidebarContent = (props) => {
   const { get:getLeads } = props.leadsPermissions;
   const { get:getDeposits } = props.depositsPermissions;
   const { get:getWithdrawals } = props.withdrawalsPermissions;
-  // const { get: getInternalTranfer } = props.internalTransferPermissions;
-  // const { get: getCredit } = props.creditPermissions;
+  const { get:getInternalTransfers } = props.internalTransferPermissions;
+  const { get:getCredits } = props.creditPermissions;
+  const { get:getConverts } = props.convertPermissions;
   const { get:getMarkups } = props.markupsPermissions;
   const { get:getRoles } = props.rolesPermissions;
   const { get:getDictionaries } = props.dictionariesPermissions;
@@ -169,10 +170,13 @@ const SidebarContent = (props) => {
                   <Link to="/transactions/withdrawals" className = {`${!getWithdrawals ? "d-none" : ""}`}>{props.t("Withdrawal")}</Link>
                 </li> 
                 <li>
-                  <Link to="/transactions/internal-transfer">{props.t("Internal Transfer")}</Link>
+                  <Link to="/transactions/internal-transfer" /*className={`${!getInternalTransfers ? "d-none" : ""}`}*/>{props.t("Internal Transfer")}</Link>
                 </li> 
                 <li>
-                  <Link to="/transactions/credit">{props.t("Credit")}</Link>
+                  <Link to="/transactions/credit" /*className={`${!getCredits ? "d-none" : ""}`}*/>{props.t("Credit")}</Link>
+                </li>
+                <li>
+                  <Link to="/transactions/convert" /*className={`${!getConverts ? "d-none" : ""}`}*/>{props.t("Convert")}</Link>
                 </li>   
               </ul>
             </li>
@@ -282,7 +286,8 @@ const mapStateToProps = (state) => ({
   transactionFeeGroupsPermissions : state.Profile.transactionFeeGroupsPermissions || {},
   orderProfitPermissions : state.Profile.orderProfitPermissions || {},
   transactionProfitPermissions : state.Profile.transactionProfitPermissions || {},
-  // internalTransferPermissions: state.profile.internalTransferPermissions || {},
-  // creditPermissions: state.Profile.creditPermissions || {}
+  internalTransferPermissions : state.Profile.internalTransferPermissions || {},
+  creditPermissions : state.Profile.creditPermissions || {},
+  convertPermissions : state.Profile.convertPermissions || {},
 });
 export default withTranslation()(withRouter(connect(mapStateToProps, null) (SidebarContent)));

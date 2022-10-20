@@ -1,4 +1,7 @@
 import {
+  FETCH_TRADING_ACCOUNTS_REQUESTED,
+  FETCH_TRADING_ACCOUNTS_SUCCESS,
+  FETCH_TRADING_ACCOUNTS_FAIL,
   FETCH_ACCOUNT_TYPES_START,
   FETCH_ACCOUNT_TYPES_END,
   FETCH_TRADING_ACCOUNT_START,
@@ -21,12 +24,35 @@ export const fetchAccountTypesEnd = (data)=>{
   };
 };
 
+// fetch trading account by login
+export const fetchTradingAccountsByLogin = (params = {}) => {
+  return {
+    type: FETCH_TRADING_ACCOUNTS_REQUESTED,
+    payload: params
+  };
+};
+
 export const fetchTradingAccounts = (params = {})=>{
   return {
     type:FETCH_TRADING_ACCOUNT_START,
     payload: params
   };
 };
+
+export const fetchTradingAccountsSuccess = (data) => {
+  return {
+    type: FETCH_TRADING_ACCOUNTS_SUCCESS,
+    payload: data
+  };
+};
+
+export const fetchTradingAccountsFail = (error) => {
+  return {
+    type: FETCH_TRADING_ACCOUNTS_FAIL,
+    payload: { error }
+  };
+};
+
 export const fetchTradingAccountEnd = (data)=>{
   return {
     type:FETCH_TRADING_ACCOUNT_END,
@@ -40,6 +66,7 @@ export const createTradingAccount = (params = {})=>{
     payload: params
   };
 };
+
 export const createTradingAccountEnd = (data)=>{
   return {
     type:CREATE_TRADING_ACCOUNT_END,

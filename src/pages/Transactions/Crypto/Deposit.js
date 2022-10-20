@@ -69,7 +69,8 @@ function Deposit(props){
     },
     {
       dataField:"gateway",
-      text:props.t("Gateway")
+      text:props.t("Gateway"),
+      formatter: (val) => val && val.gateway &&  val.gateway.split("_").join(" ")
     },
     {
       dataField: "currency",
@@ -79,7 +80,7 @@ function Deposit(props){
     {
       dataField: "status",
       text: props.t("Status"),
-  
+      formatter: (val) => (val && val.status && val.status.toLowerCase())
     },
     {
       dataField:"reason",
@@ -106,7 +107,7 @@ function Deposit(props){
       editable: false,
       text: props.t("Details"),
       formatter: (val) => (
-        <div className="d-flex gap-3">
+        <div className="text-center">
           <Link className={val.gateway === "BLOCKCHAIN" ? "text-success" : "text-muted"} to="#">
             <i
               className="mdi mdi-eye font-size-20"
@@ -163,8 +164,8 @@ function Deposit(props){
   const closeNotifaction = () => {
     setShowNotifaction(false);
   };
+  
   return (
-
     <React.Fragment>
       <Notification
         onClose={closeNotifaction}
@@ -194,8 +195,8 @@ function Deposit(props){
                       {selected} <i className="mdi mdi-chevron-down" />
                     </DropdownToggle>
                     <DropdownMenu>
-                      <DropdownItem value="LIVE" onClick={(e)=>{setSelected(e.target.value)}}>LIVE</DropdownItem>
-                      <DropdownItem value="DEMO" onClick={(e)=>{setSelected(e.target.value)}}>DEMO</DropdownItem>
+                      <DropdownItem value="LIVE" onClick={(e)=>{setSelected(e.target.value)}}>Live</DropdownItem>
+                      <DropdownItem value="DEMO" onClick={(e)=>{setSelected(e.target.value)}}>Demo</DropdownItem>
                     </DropdownMenu>
                   </Dropdown>
                 </div>
@@ -238,15 +239,19 @@ function Deposit(props){
                           }
                         </Tbody>
                         :
-                        <Tbody style = {{ fontSize : "13px" }}  >
+                        <Tbody style = {{
+                          fontSize: "12px",
+                          textAlign: "center",
+                          textTransform: "capitalize"
+                        }}  >
                           {props.loading && <TableLoader colSpan={4} />}
                           {!props.loading && props.deposits.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
                               {columns.map((column, index) =>
-                                <Td key={`${rowIndex}-${index}`} className= "pt-4">
+                                <Td key={`${rowIndex}-${index}`} className={`pt-4 ${column.dataField === "dropdown" && "d-flex justify-content-center"}`}>
                                   { column.dataField === "checkbox" ? <input className = "deposit-checkbox" type="checkbox"/> : ""}
                                   { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
-                                  {column.dataField === "dropdown" ? <CustomDropdown  permission={props.depositsPermissions.actions ? true : false}
+                                  { column.dataField === "dropdown" ? <CustomDropdown permission={props.depositsPermissions.actions ? true : false}
                                     id={row._id} status={row.status} approve={()=>{depositApprove(row)}} reject={()=>{depositReject(row)}} /> : ""}
                                 </Td>
                               )}

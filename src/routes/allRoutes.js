@@ -10,6 +10,7 @@ import Login from "../pages/Authentication/Login";
 import Logout from "../pages/Authentication/Logout";
 import Register from "../pages/Authentication/Register";
 import ForgetPwd from "../pages/Authentication/ForgetPassword";
+import ResetPassword from "pages/Authentication/ResetPassword";
 import ClientList from "../pages/Clients/ClientList";
 import UsersList from "../pages/Users/UsersList";
 import LeadsList from "../pages/Leads/LeadList";
@@ -37,6 +38,7 @@ import InternalTransferIndex from "pages/Transactions/Forex/internalTransfer/Int
 import CreditIndex from "pages/Transactions/Forex/credit/CreditIndex";
 import IbRequest from "pages/Requests/IbRequest";
 import Leverage from "pages/Requests/Leverage";
+import ConvertIndex from "pages/Transactions/Forex/convert/ConvertIndex";
 
 function userRoutes() {
   const object = usePermissions();
@@ -161,6 +163,11 @@ function userRoutes() {
       get: withdrawalsPermissions.get
     },
     {
+      path: "/transactions/convert",
+      component: ConvertIndex,
+      get: withdrawalsPermissions.get
+    },
+    {
       path: "/dictionaries",
       component: DictionaryList,
       get: dictionariesPermissions.get
@@ -217,6 +224,10 @@ const authRoutes = [
   {
     path: "/forgot-password",
     component: ForgetPwd,
+  },
+  {
+    path: "/reset-password",
+    component: ResetPassword,
   },
   {
     path: "/register",

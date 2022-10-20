@@ -104,12 +104,9 @@ function Withdrawal(props){
       text:props.t("Amount"),
       formatter: (val) => (val?.amount?.$numberDecimal || val?.amount || ""),
     },
-    
-    
     {
       dataField: "dropdown",
       text:props.t("Action")
-  
     },
     {
       dataField: "",
@@ -117,7 +114,7 @@ function Withdrawal(props){
       editable: false,
       text: props.t("Details"),
       formatter: (val) => (
-        <div className="d-flex gap-3">
+        <div className="text-center">
           <Link className={`${val.gateway === "BLOCKCHAIN" ? "text-success" : "text-muted"}`} to="#">
             <i
               className="mdi mdi-eye font-size-20"
@@ -228,7 +225,7 @@ function Withdrawal(props){
                           }
                         </Tbody>
                         :
-                        <Tbody  style = {{ fontSize : "13px" }}>
+                        <Tbody  style={{ fontSize : "13px" }} className="text-center">
                           {props.loading && <TableLoader colSpan={4} />}
                           {!props.loading && props.withdrawals.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
@@ -236,7 +233,7 @@ function Withdrawal(props){
                                 <Td key={`${rowIndex}-${index}`} className = "pt-4">
                                   { column.dataField === "checkbox" ? <input className= "withdraw-checkbox"  type="checkbox"/> : ""}
                                   { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
-                                  {column.dataField === "dropdown" ? <CustomDropdown permission={props.withdrawalsPermissions.actions ? true : false} id={row._id} status={row.status} approve={()=>{withdrawApprove(row)}} reject={()=>{withdrawReject(row)}}/> : ""}
+                                  {column.dataField === "dropdown" ? <CustomDropdown permission={props.withdrawalsPermissions.actions ? true : false} id={row._id} status={row.status} approve={()=>{withdrawApprove(row)}} reject={()=>{withdrawReject(row)}} /> : ""}
                                 </Td>
                               )}
                             </Tr>

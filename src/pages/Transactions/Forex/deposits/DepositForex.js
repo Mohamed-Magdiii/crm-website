@@ -3,7 +3,7 @@ import React, {
 } from "react";
 import { useDispatch, connect } from "react-redux";
 import {
-  Row, Col, Card, CardBody, CardHeader, CardTitle, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown
+  Row, Col, Card, CardBody, CardHeader, CardTitle, Dropdown, DropdownToggle, DropdownMenu, DropdownItem
 } from "reactstrap";
 import AddForexDepositModal from "./AddForexDepositModal";
 import { fetchForexDeposits } from "store/forexTransactions/deposits/actions";
@@ -24,7 +24,6 @@ import { fetchForexDepositsGatewaysStart } from "store/forexGateway/actions";
 
 function DepositForex(props) {
   const dispatch = useDispatch();
-  const customerId = JSON.parse(localStorage.getItem("authUser")).roleId._id;
   const [searchInput, setSearchInput] = useState("");
   const [showNotication, setShowNotifaction] = useState(false);
   const [sizePerPage, setSizePerPage] = useState(10);
@@ -132,23 +131,27 @@ function DepositForex(props) {
         );
       }
     },
+    // {
+    //   dataField: "",
+    //   isDummyField: true,
+    //   editable: false,
+    //   text: props.t("Actions"),
+    //   formatter: () => (
+    //     <UncontrolledDropdown className={`"chat-noti-dropdown" ${!props.forexDepositsPermissions ? "d-none" : ""}`} >
+    //       <DropdownToggle tag="i" className="text-muted" style={{ cursor: "pointer" }}>
+    //         <i className="mdi mdi-dots-horizontal font-size-18" />
+    //       </DropdownToggle>
+    //       <DropdownMenu className="dropdown-menu-end">
+    //         <DropdownItem href="#">{props.t("Approve")}</DropdownItem>
+    //         <DropdownItem href="#">{props.t("Reject")}</DropdownItem>
+    //       </DropdownMenu>
+    //     </UncontrolledDropdown>
+    //   )
+    // },
     {
-      dataField: "",
-      isDummyField: true,
-      editable: false,
-      text: props.t("Actions"),
-      formatter: () => (
-        <UncontrolledDropdown>
-          <DropdownToggle tag="i" className="text-muted" style={{ cursor: "pointer" }}>
-            <i className="mdi mdi-dots-horizontal font-size-18" />
-          </DropdownToggle>
-          <DropdownMenu className="dropdown-menu-end">
-            <DropdownItem href="#">{props.t("Approve")}</DropdownItem>
-            <DropdownItem href="#">{props.t("Reject")}</DropdownItem>
-          </DropdownMenu>
-        </UncontrolledDropdown>
-      )
-    },
+      dataField: "dropdown",
+      text:props.t("Actions")
+    }
   ];
 
   const handleSearchInput = (e) => {
@@ -157,10 +160,9 @@ function DepositForex(props) {
 
   const loadForexDeposits = (page, limit) => {
     dispatch(fetchForexDeposits({
-      limit,
-      page,
-      customerId
-    }));
+      limit, 
+      page
+    }));   
   };
 
   const loadForexGateways = () => {
@@ -259,11 +261,11 @@ function DepositForex(props) {
                           {!props.fetchLoading && props.forexDeposits.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
                               {columns.map((column, index) =>
-                                <Td key={`${rowIndex}-${index}`} className="pt-4">
-                                  {column.dataField === "checkbox" ? <input className="deposit-checkbox" type="checkbox" /> : ""}
-                                  {column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
-                                  {/* {column.dataField === "dropdown" ? <CustomDropdown permission={props.depositsPermissions.actions ? true : false}
-                                    id={row._id} status={row.status} approve={() =>  depositApprove(row) } reject={() => { depositReject(row) }} /> : ""} */}
+                                <Td key={`${rowIndex}-${index}`} className= "pt-4">
+                                  { column.dataField === "checkbox" ? <input className = "deposit-checkbox" type="checkbox"/> : ""}
+                                  { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
+                                  { column.dataField === "dropdown" ? <CustomDropdown  permission={props.depositsPermissions.actions ? true : false}
+                                    id={row._id} status={row.status} /> : ""}
                                 </Td>
                               )}
                             </Tr>
@@ -301,8 +303,9 @@ const mapStateToProps = (state) => ({
   nextPage: state.forexDepositReducer.nextPage,
   pagingCounter: state.forexDepositReducer.pagingCounter,
   prevPage: state.forexDepositReducer.prevPage,
-  depositsPermissions: state.Profile.depositsPermissions || {},
-  depositResponseMessage: state.forexDepositReducer.depositResponseMessage,
-  // tradingAccounts: state.tradingAccountsReducer.tradingAccounts
+  depositsPermissions : state.Profile.depositsPermissions || {},
+  depositResponseMessage:state.forexDepositReducer.depositResponseMessage,
+  tradingAccounts: state.tradingAccountReducer.tradingAccounts,
+  forexDepositsPermissions: state.Profile.forexDepositsPermissions || {},
 });
 export default connect(mapStateToProps, null)(withTranslation()(DepositForex));

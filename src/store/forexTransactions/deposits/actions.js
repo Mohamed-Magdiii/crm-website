@@ -6,7 +6,8 @@ import {
   ADD_FOREX_DEPOSIT_REQUESTED,
   ADD_FOREX_DEPOSIT_SUCCESS,
   ADD_FOREX_DEPOSIT_FAIL,
-  ADD_FOREX_DEPOSIT_CLEAR
+  ADD_FOREX_DEPOSIT_CLEAR,
+  ADD_FOREX_DEPOSIT_ERROR_CLEAR
 } from "./actionTypes";
 
 
@@ -52,5 +53,10 @@ export const addForexDepositClear = (data) => {
   return {
     type: ADD_FOREX_DEPOSIT_CLEAR,
     payload: data
+  };
+};
+export const addForexDepositErrorClear = () => {
+  return {
+    type: ADD_FOREX_DEPOSIT_ERROR_CLEAR
   };
 };

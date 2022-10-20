@@ -1,7 +1,8 @@
 import {
   call,
   put,
-  takeEvery
+  takeEvery,
+  delay
 } from "redux-saga/effects";
 import { 
   FETCH_FOREX_WITHDRAWALS_REQUESTED,
@@ -13,7 +14,8 @@ import {
 
   addForexWithdrawalSuccess,
   addForexWithdrawalFail,
-  addForexWithdrawalClear
+  addForexWithdrawalClear,
+  addForexWithdrawalErrorClear
 } from "./actions";
 import * as forexWithdrawalApis from "apis/forexWithdrawal";
 import { showSuccessNotification } from "store/notifications/actions";
@@ -35,6 +37,8 @@ function * addForexWithdrawal(params){
     yield put(addForexWithdrawalClear());
   } catch (err){
     yield put(addForexWithdrawalFail(err.message));
+    yield delay(5000);
+    yield put(addForexWithdrawalErrorClear());
   }
 }
 

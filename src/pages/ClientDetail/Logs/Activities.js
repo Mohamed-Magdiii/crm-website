@@ -20,6 +20,11 @@ import {
   LOG_TYPES,
 } from "constants/logs";
 
+const formatDate = (date) => {
+  let d = new Date(date);
+  return `${d.toLocaleDateString()}, ${d.toLocaleTimeString()}`;
+};
+
 function Activities(props) {
 //   const clientId = props.clientId;
 // const dispatch = useDispatch();
@@ -80,6 +85,43 @@ function Activities(props) {
       case LOG_TYPES.WALLET:
         message = `${props.t("Creation of wallet was successful")} (${asset})`;
         break;
+        // bank accs
+      case LOG_TYPES.ADD_BANK_ACCOUNT:
+        message = `${props.t(`New ${content.bankName} bank account added`)}`;
+        break;
+      case LOG_TYPES.EDIT_BANK_ACCOUNT:
+        message = `${props.t(`${content.bankName} bank info changed`)}`;
+        break;
+      case LOG_TYPES.DELETE_BANK_ACCOUNT:
+        message = `${props.t("A bank account has been deleted")}`;
+        break;
+        //docs
+      case LOG_TYPES.CHANGE_DOC_STATUS:
+        message = `${props.t(`Document status is ${details.status} ${details.rejectionReason ? `, reason is ${details.rejectionReason}` : ""}`)}`;
+        break;
+      case LOG_TYPES.OVERWRITE_DOCS:
+        message = `${props.t("Document(s) has been overwritten")}`;
+        break;
+      case LOG_TYPES.UPLOAD_DOCS:
+        message = `${content.type } ${props.t("document(s) has been uploaded")}`;
+        break;
+        // todos
+      case LOG_TYPES.ADD_TODO:
+        message = `${props.t(`${content.type == "0" ? "Todo" : "Reminder"}`)} ${content.note} ${props.t("at")} ${formatDate(content.timeEnd)}` ;
+        break;
+      case LOG_TYPES.EDIT_TODO:
+        message = `${props.t(`${content.type == "0" ? "Todo" : "Reminder"}`)} ${props.t("has been edited")}` ;
+        break;
+      case LOG_TYPES.DELETE_TODO:
+        message = `${props.t(`${content.type == "0" ? "Todo" : "Reminder"}`)} ${props.t("has been deleted")}` ;
+        break;
+        // customer
+      case LOG_TYPES.EDIT_CUSTOMER_INFO:
+        message = `${props.t("Profile information has been updated")}` ;
+        break;
+      case LOG_TYPES.PROFILE_COMPLETED:
+        message = `${props.t("Customer has completed his profile")}` ;
+        break;
     }
     return message;
   };
@@ -127,11 +169,7 @@ function Activities(props) {
     {
       dataField: "createdAt",
       text: props.t("Date Created"),
-      formatter: (val) => {
-        let d = new Date(val.createdAt);
-        d = `${d.toLocaleDateString()}, ${d.toLocaleTimeString()}`;
-        return d;
-      }
+      formatter: (val) => formatDate(val.createdAt),
     },
     {
       dataField: "content",
