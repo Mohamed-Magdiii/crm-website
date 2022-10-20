@@ -32,7 +32,9 @@ function ClientWallets(props) {
 
   const dispatch = useDispatch();
   const loadClientWalletDetails = () => {
-    dispatch(fetchClientWallets(clientId));
+    dispatch(fetchClientWallets({
+      belongsTo: clientId
+    }));
   };
   useEffect(() => {
     loadClientWalletDetails();

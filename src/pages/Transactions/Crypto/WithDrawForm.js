@@ -15,20 +15,24 @@ import React, { useState, useEffect } from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { makeWithdrawalStart } from "store/transactions/withdrawal/action";
 import { fetchGatewaysOfWithdrawalsStart } from "store/gateway/action";
-import { fetchWalletStart, clearWallets } from "store/wallet/action";
+import { 
+  fetchWalletStart, clearWallets, fetchClientWallets 
+} from "store/wallet/action";
 import { fetchClientsStart } from "store/client/actions";
 import { withTranslation } from "react-i18next";
 import Select from "react-select";
 // import AvFieldSelect from "components/Common/AvFieldSelect";
 
 function WithdrawForm(props){
-
   const [open, setWithdrawalModal] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [selectedClient, setSelectedClient] = useState("");
   const [selectedWalletId, setSelectedWalletId] = useState("");
   const [gateway, setGateway] = useState("");
   const [type, setType] = useState("LIVE");
+  const [gatewayError, setGatewayError] = useState(false);
+
+  const gatewayErrorStyle = gatewayError ? "1px solid red" : "1px solid rgb(200, 200, 200)";
 
   const dispatch = useDispatch();
   const { create } = props.withdrawalsPermissions;
@@ -37,20 +41,21 @@ function WithdrawForm(props){
     dispatch(makeWithdrawalStart({
       customerId:selectedClient,
       walletId: selectedWalletId,
-      // gateway,
+      gateway,
       ...values
     }));
     setSearchInput("");
     dispatch(clearWallets());
     
   }; 
-  const selectClient = (id)=>{
-    setSelectedClient(id);
-    dispatch(fetchWalletStart({
-      belongsTo:id,
-      customerId:id,
+
+  useEffect(() => {
+    selectedClient &&
+    dispatch(fetchClientWallets({
+      belongsTo: selectedClient
     }));
-  };
+  }, [selectedClient]);
+
   const selectType = (type)=>{
     setType(type);
     if (selectedClient.length > 0)
@@ -61,12 +66,13 @@ function WithdrawForm(props){
   };
   const toggleAddModal = () => {
     setWithdrawalModal(!open);
+    setGatewayError(false);
   };
 
   useEffect(()=>{
     dispatch(fetchClientsStart({
-      limit:props.totalDocs,
-      type
+      page: 1,
+      // type
     }));
     dispatch(fetchGatewaysOfWithdrawalsStart());
     if (searchInput.length >= 3){
@@ -84,13 +90,6 @@ function WithdrawForm(props){
     }
   }, [props.withdrawalModalClear]);
   
-  const validateBiggerThanZero = (value, ctx, input, cb) =>{
-    if (value == 0){
-      cb("Should be bigger than 0");
-    } else
-      cb(true);
-  };
-  
   return (
     <React.Fragment >
       <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> {props.t("Make Withdraw")}</Link>
@@ -107,50 +106,36 @@ function WithdrawForm(props){
             }}
           >
             
-            <Row className="mb-2">
-              <Col md="6">
-                <Label>{props.t("Client")}</Label>
+            <Row className="mb-3">
+              <Col md="6">                      
                 <div>
-                  <Select 
-                    onChange={(e) => { 
-                      selectClient(e.value.id);
-                    }}
-                    isSearchable = {true}
-                    options={props.loading ? [] : props.clients.map((item) => (
-                      {
-                        label : `${item.firstName} ${item.lastName}`,
-                        value : {
-                          name: `${item.firstName} ${item.lastName}`,
-                          id: `${item._id}`
+                  <Label>{props.t("Client")}</Label>
+                  <div>
+                    <Select 
+                      required
+                      onChange={(e) => {
+                        setSelectedClient(e.value?.id);
+                      }}
+                      isSearchable = {true}
+                      options={props.clients.map((item) => (
+                        {
+                          label : `${item.firstName} ${item.lastName}`,
+                          value : {
+                            name: `${item.firstName} ${item.lastName}`,
+                            id: `${item._id}`
+                          }
                         }
-                      }
-
-                    ))}
-                    classNamePrefix="select2-selection"
-                    placeholder = "choose client name"
-                    onInputChange = {(e)=>setSearchInput(e)}
-                    name = "clientId"
-                    isRequired = {true}
-                    isLoading={props.loading}
-                  />
-                  <AvField
-                    name="client"
-                    type="text"
-                    errorMessage={props.t("Choose a client")}
-                    validate={{ required: { value: true } }}
-                    value={selectedClient}
-                    style={{
-                      opacity: 0,
-                      height: 0,
-                      width: 0,
-                      margin: -10
-                    }}
-                  />
+                      ))}
+                      classNamePrefix="select2-selection"
+                      placeholder={props.t("Choose A Client")}    
+                    />
+                  </div>
                 </div>
-              
               </Col>
+
+              {/* type */}
               <Col md="6">
-                <Label>{props.t("Type")}</Label>   
+                <Label>{props.t("Type")}</Label>
                 <div>
                   <Select 
                     defaultValue={{
@@ -169,36 +154,25 @@ function WithdrawForm(props){
                       value:"DEMO"
                     }]}
                     classNamePrefix="select2-selection"
-                    placeholder = "choose a type for deposit"
-                  />
-                  <AvField
-                    name="type"
-                    type="text"
-                    errorMessage={props.t("Choose a type")}
-                    validate={{ required: { value: true } }}
-                    value={selectType}
-                    style={{
-                      opacity: 0,
-                      height: 0,
-                      width: 0,
-                      margin: -10
-                    }}
+                    placeholder={props.t("choose a type for deposit")}
                   />
                 </div>
               </Col>
+            </Row>
+
+            <Row className="mb-3">
+              {/* wallet */}
               <Col md="12" className="mt-3">
                 <Label>{props.t("Wallet")}</Label>
                 <div>
                   <Select 
                     onChange={(e) => {
-                    
                       setSelectedWalletId(e.value.id);
-                    
                     }}
                     isSearchable = {true}
                     options={props.wallets.map((wallet) => (
                       {
-                        label : `${wallet.asset} ${wallet.amount} ${wallet.asset}`,
+                        label : `${wallet.asset}-(Balance ${wallet.amount} ${wallet.asset})`,
                         value : {
                           id: `${wallet._id}`
                         }
@@ -206,26 +180,12 @@ function WithdrawForm(props){
 
                     ))}
                     classNamePrefix="select2-selection"
-                    placeholder = "choose your wallet"
-                  />
-                  <AvField
-                    name="wallet"
-                    type="text"
-                    errorMessage={props.t("Choose a wallet")}
-                    validate={{ required: { value: true } }}
-                    value={selectedWalletId}
-                    style={{
-                      opacity: 0,
-                      height: 0,
-                      width: 0,
-                      margin: -10
-                    }}
+                    placeholder={props.t("choose your wallet")}
                   />
                 </div>
-              
               </Col>
-      
-            </Row>  
+            </Row>
+          
             <div className="mb-3">
               <Label>{props.t("Gateway")}</Label>
               <div>
@@ -238,52 +198,44 @@ function WithdrawForm(props){
                     {
                       label : `${props.gateways[key]}`,
                       value : {
-                        gateway : `${props.gateways[key]}`
+                        gateway: `${props.gateways[key]}`
                       }
                     }
                   ))}
                   classNamePrefix="select2-selection"
-                  placeholder = "Choose a gateway"
-                />
-                <AvField
-                  name="gateway"
-                  type="text"
-                  errorMessage={props.t("Choose a gateway")}
-                  validate={{ required: { value: true } }}
-                  value={gateway}
+                  placeholder = {props.t("Choose Valid Gateway")}
                   style={{
-                    opacity: 0,
-                    height: 0,
-                    width: 0,
-                    margin: -10
+                    border: gatewayErrorStyle
                   }}
                 />
+                {gatewayError && <small className="text-danger">{props.t("Choose Valid Gateway")}</small>}
               </div>
             </div>
-            
-               
+              
             <div className="mb-3">
               <AvField
                 name="amount"
                 label={props.t("Amount")}
-                placeholder={props.t("enter amount")}
+                placeholder={props.t("Enter amount")}
                 type="number"
-                min="0"
+                min="1"
                 errorMessage={props.t("Enter Valid Amount")}
                 validate = {{
-                  required :{ value:true },
-                  custom:validateBiggerThanZero
+                  required :{ value:true }
                 }}
               />
             </div>
+
             <div className="mb-3">
               <AvField
                 name="note"
                 label={props.t("Note")}
-                placeholder={props.t("enter note")}
+                placeholder={props.t("Enter Note")}
                 type="text"
                 errorMessage={props.t("Enter Valid Note")}
-                validate={{ required: { value: true } }}
+                validate={{ 
+                  required:{ value: false }
+                }}
               />
             </div>
     
@@ -295,7 +247,7 @@ function WithdrawForm(props){
           </AvForm>
           {props.error && <UncontrolledAlert color="danger">
             <i className="mdi mdi-block-helper me-2"></i>
-            {props.t(props.error)}
+            {props.t(props.addWithdrawalErrorDetails)}
           </UncontrolledAlert>}
 
         </ModalBody>
@@ -305,11 +257,12 @@ function WithdrawForm(props){
 }
 const mapStateToProps = (state) => ({
   gateways:state.gatewayReducer.gateways || [],
-  error: state.withdrawalReducer.error,
+  error: state.withdrawalReducer.addWithdrawalError,
+  addWithdrawalErrorDetails: state.withdrawalReducer.addWithdrawalErrorDetails,
   withdrawResponseMessage:state.withdrawalReducer.withdrawResponseMessage,
   withdrawalModalClear:state.withdrawalReducer.withdrawalModalClear,
   clients:state.clientReducer.clients || [],
-  wallets:state.walletReducer.wallets || [],
+  wallets:state.walletReducer.docs || [],
   withdrawalsPermissions: state.Profile.withdrawalsPermissions || {}, 
   disableWithdrawalButton : state.withdrawalReducer.disableWithdrawalButton,
   totalDocs:state.clientReducer.totalDocs,

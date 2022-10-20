@@ -3,14 +3,14 @@ import React, {
 } from "react";
 import { useDispatch, connect } from "react-redux";
 import {
-  Row, Col, Card, CardBody, CardHeader, CardTitle, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown
+  Row, Col, Card, CardBody, CardHeader, CardTitle, Dropdown, DropdownToggle, DropdownMenu, DropdownItem
 } from "reactstrap";
 import SearchBar from "components/Common/SearchBar";
 import CustomPagination from "components/Common/CustomPagination";
 import {
   Table, Thead, Tbody, Tr, Th, Td
 } from "react-super-responsive-table";
-// import CustomDropdown from "components/Common/CustomDropDown";
+import CustomDropdown from "components/Common/CustomDropDown";
 import TableLoader from "components/Common/TableLoader";
 import Notification from "components/Common/Notification";
 import logo from "../../../../assets/images/logo-sm.svg";
@@ -23,7 +23,6 @@ import AddCreditModal from "./AddCreditModal";
 
 function Credit(props){
   const dispatch = useDispatch();
-  const customerId = JSON.parse(localStorage.getItem("authUser")).roleId._id;
   const [searchInput, setSearchInput] = useState("");
   const [showNotication, setShowNotifaction] = useState(false);
   const [sizePerPage, setSizePerPage] = useState(10);
@@ -101,22 +100,13 @@ function Credit(props){
       }
     },
     {
-      dataField: "",
-      isDummyField: true,
-      editable: false,
-      text: props.t("Actions"),
-      formatter: () => (
-        <UncontrolledDropdown>
-          <DropdownToggle tag="i" className="text-muted" style={{ cursor: "pointer" }}>
-            <i className="mdi mdi-dots-horizontal font-size-18" />
-          </DropdownToggle>
-          <DropdownMenu className="dropdown-menu-end">
-            <DropdownItem href="#">{props.t("Approve")}</DropdownItem>
-            <DropdownItem href="#">{props.t("Reject")}</DropdownItem>
-          </DropdownMenu>
-        </UncontrolledDropdown>
-      )
+      dataField: "note",
+      text: props.t("Note")
     },
+    {
+      dataField: "dropdown",
+      text:props.t("Actions")
+    }
   ];
   
   const handleSearchInput = (e)=>{
@@ -126,8 +116,7 @@ function Credit(props){
   const loadCredits = (page, limit)=>{
     dispatch(fetchCredits({
       limit, 
-      page,
-      customerId
+      page
     }));   
   };
   
@@ -220,8 +209,8 @@ function Credit(props){
                                 <Td key={`${rowIndex}-${index}`} className= "pt-4">
                                   { column.dataField === "checkbox" ? <input className = "deposit-checkbox" type="checkbox"/> : ""}
                                   { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
-                                  {/* {column.dataField === "dropdown" ? <CustomDropdown  permission={props.depositsPermissions.actions ? true : false}
-                                      id={row._id} status={row.status} approve={()=>{depositApprove(row)}} reject={()=>{depositReject(row)}} /> : ""} */}
+                                  { column.dataField === "dropdown" ? <CustomDropdown  permission={props.creditPermissions.actions ? true : false}
+                                    id={row._id} status={row.status} /> : ""}
                                 </Td>
                               )}
                             </Tr>
@@ -261,6 +250,7 @@ const mapStateToProps = (state) => ({
   depositsPermissions : state.Profile.depositsPermissions || {},
   depositResponseMessage:state.creditReducer.depositResponseMessage,
   tradingAccounts: state.tradingAccountReducer.tradingAccounts,
-  addCreditSuccess: state.creditReducer.addCreditSuccess
+  addCreditSuccess: state.creditReducer.addCreditSuccess,
+  creditPermissions: state.Profile.creditPermissions
 });
 export default connect(mapStateToProps, null)(withTranslation()(Credit));

@@ -1,7 +1,8 @@
 import {
   call,
   put,
-  takeEvery
+  takeEvery,
+  delay
 } from "redux-saga/effects";
 import { 
   ADD_DEPOSIT_START, 
@@ -52,6 +53,7 @@ function * addDeposit({ payload:{ deposit } }){
     }
   } catch (error){
     yield put(depositError(error));
+    yield delay(5000);
     yield put(errorClear());
   } 
 }

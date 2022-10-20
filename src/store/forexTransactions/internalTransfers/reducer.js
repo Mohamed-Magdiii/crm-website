@@ -6,15 +6,17 @@ import {
   ADD_INTERNAL_TRANSFER_REQUESTED,
   ADD_INTERNAL_TRANSFER_SUCCESS,
   ADD_INTERNAL_TRANSFER_FAIL,
-  ADD_INTERNAL_TRANSFER_CLEAR
+  ADD_INTERNAL_TRANSFER_CLEAR,
+  ADD_INTERNAL_TRANSFER_ERROR_CLEAR
 } from "./actionTypes";
 
 const initalState = {
-  internalTransfers:[],
-  loading:false,
-  error:"",
-  modalClear:false,
-  internalTransferResponseMessage:"",
+  internalTransfers: [],
+  fetchInternalTransfersLoading: false,
+  addInternalTransferLoading: false,
+  error: "",
+  modalClear: false,
+  internalTransferResponseMessage: "",
   addInternalTransferClearingCounter: 0
 };
 
@@ -24,7 +26,7 @@ const internalTransferReducer = (state = initalState, action) => {
     case FETCH_INTERNAL_TRANSFERS_REQUESTED:
       state = {
         ...state,
-        loading: true
+        fetchInternalTransfersLoading: true
       };
       break;
     case FETCH_INTERNAL_TRANSFERS_SUCCESS:
@@ -40,13 +42,13 @@ const internalTransferReducer = (state = initalState, action) => {
         pagingCounter: action.payload.result.pagingCounter,
         prevPage: action.payload.result.prevPage,
         totalPages: action.payload.result.totalPages,
-        loading: false,  
+        fetchInternalTransfersLoading: false,  
       };
       break;
     case FETCH_INTERNAL_TRANSFERS_FAIL:
       state = {
         ...state,
-        loading: false,
+        fetchInternalTransfersLoading: false,
         internalTransferError: action.payload
       };
       break;
@@ -55,7 +57,7 @@ const internalTransferReducer = (state = initalState, action) => {
     case ADD_INTERNAL_TRANSFER_REQUESTED:
       state = {
         ...state,
-        loading: true
+        addInternalTransferLoading: true
       };
       break;
     case ADD_INTERNAL_TRANSFER_SUCCESS:
@@ -71,21 +73,29 @@ const internalTransferReducer = (state = initalState, action) => {
         ...state,
         addInternalTransferSuccess: false,
         addInternalTransferFail: true,
-        loading: false,
+        addInternalTransferLoading: false,
         addInternalTransferFailDetails: action.payload.error
       };
       break;
     case ADD_INTERNAL_TRANSFER_CLEAR:
       state = {
         ...state,
-        loading: false,
+        addInternalTransferLoading: false,
         addInternalTransferClearingCounter: state.addInternalTransferClearingCounter + 1,
         addInternalTransferFail: false,
         addInternalTransferSuccess: false,
         modalClear: true
       };
       break;
-    
+    case ADD_INTERNAL_TRANSFER_ERROR_CLEAR:
+      state = {
+        ...state,
+        addInternalTransferLoading: false,
+        addInternalTransferFail: false,
+        addInternalTransferFailDetails: null
+      };
+      break;
+      
     default:
       state = { ...state };
   }

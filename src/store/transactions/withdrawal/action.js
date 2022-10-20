@@ -8,6 +8,7 @@ import {
   WITHDRAW_APPROVE,
   WITHDRAW_REJECT,
   WITHDRAW_STATUS_CHANGE_SUCCESS,
+  WITHDRAWAL_ERROR_CLEAR,
 
   FETCH_CLIENT_WITHDRAWALS_REQUESTED,
   FETCH_CLIENT_WITHDRAWALS_SUCCESS,
@@ -92,5 +93,11 @@ export const fetchClientWithdrawalsFail = (error) => {
 export const errorClear = ()=>{
   return {
     type:ERROR_CLEAR
+  };
+};
+
+export const withdrawalErrorClear = () => {
+  return {
+    type: WITHDRAWAL_ERROR_CLEAR
   };
 };

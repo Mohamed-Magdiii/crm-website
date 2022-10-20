@@ -6,9 +6,12 @@ import {
   FETCH_ACCOUNT_TYPES_START,
   FETCH_TRADING_ACCOUNT_START,
   CREATE_TRADING_ACCOUNT_START,
+  FETCH_TRADING_ACCOUNTS_REQUESTED,
 } from "./actionTypes";
 
 import {
+  fetchTradingAccountsSuccess,
+  fetchTradingAccountsFail,
   fetchAccountTypesEnd,
   fetchTradingAccountEnd,
   createAccountClear,
@@ -19,6 +22,14 @@ import { showErrorNotification, showSuccessNotification } from "store/notificati
 //Include Both Helper File with needed methods
 import * as accountsApi from "../../apis/tradingAccounts";
 
+function * fetchTradingAccountsByLogin(params){
+  try {
+    const data = yield call(accountsApi.getTradingAccountByLogin, params);
+    yield put(fetchTradingAccountsSuccess(data));
+  } catch (err){
+    yield put(fetchTradingAccountsFail(err.message));
+  }
+}
 
 function * fetchAccountTypes(params){
   try {
@@ -32,12 +43,11 @@ function * fetchAccountTypes(params){
 
 function * fetchTradingAccounts(params){
   try {
-    const data = yield call(accountsApi.getTradingAccounts, params);    
-    yield put(fetchTradingAccountEnd({ data }));
+    const data = yield call(accountsApi.getTradingAccounts, params);
+    yield put(fetchTradingAccountsSuccess(data));
+  } catch (err){
+    yield put(fetchTradingAccountEnd(err.message));
   }
-  catch (error){
-    yield put(fetchTradingAccountEnd({ error }));
-  } 
 }
 
 function * createTradingAccount(params){
@@ -52,11 +62,11 @@ function * createTradingAccount(params){
   } 
 }
 
-
-function* authSaga() {
+function * tradingAccountSaga(){
+  yield takeEvery(FETCH_TRADING_ACCOUNTS_REQUESTED, fetchTradingAccountsByLogin);
   yield takeEvery(FETCH_ACCOUNT_TYPES_START, fetchAccountTypes);
   yield takeEvery(FETCH_TRADING_ACCOUNT_START, fetchTradingAccounts);
   yield takeEvery(CREATE_TRADING_ACCOUNT_START, createTradingAccount);
 }
 
-export default authSaga;
+export default tradingAccountSaga;

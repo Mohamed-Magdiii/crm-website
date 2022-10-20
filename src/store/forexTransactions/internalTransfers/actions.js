@@ -6,7 +6,8 @@ import {
   ADD_INTERNAL_TRANSFER_REQUESTED,
   ADD_INTERNAL_TRANSFER_SUCCESS,
   ADD_INTERNAL_TRANSFER_FAIL,
-  ADD_INTERNAL_TRANSFER_CLEAR
+  ADD_INTERNAL_TRANSFER_CLEAR,
+  ADD_INTERNAL_TRANSFER_ERROR_CLEAR
 } from "./actionTypes";
 
 
@@ -53,5 +54,10 @@ export const addInternalTransferClear = (data) => {
   return {
     type: ADD_INTERNAL_TRANSFER_CLEAR,
     payload: data
+  };
+};
+export const addInternalTransferErrorClear = () => {
+  return {
+    type: ADD_INTERNAL_TRANSFER_ERROR_CLEAR
   };
 };

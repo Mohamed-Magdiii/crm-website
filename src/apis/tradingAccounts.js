@@ -2,6 +2,16 @@
 import qs from "qs";
 import * as axiosHelper from "./api_helper";
 
+// fetch a trading account by login number
+export const getTradingAccountByLogin = async ({ payload })=>{
+  const result = await axiosHelper.get(`/accounts/login/${payload.login}`);
+  if (!result.status) {
+    throw new Error(result.message);
+  }
+
+  return result;
+};
+
 export const getAccountTypes = async({ payload }) => {
   const data = await axiosHelper.get("/accounts/account-types");
   return data.result;

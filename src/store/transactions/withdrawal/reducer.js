@@ -1,7 +1,8 @@
 import {
   FETCH_CLIENT_WITHDRAWALS_REQUESTED,
   FETCH_CLIENT_WITHDRAWALS_SUCCESS,
-  FETCH_CLIENT_WITHDRAWALS_FAIL
+  FETCH_CLIENT_WITHDRAWALS_FAIL,
+  WITHDRAWAL_ERROR_CLEAR
 } from "./actionTypes";
 
 const initalState = {
@@ -46,8 +47,6 @@ const withdrawalReducer = (state = { initalState }, action)=>{
     case "MAKE_WITHDRWAL_SUCCESS":
       state = {
         ...state,
-        // withdrawals:[{ ...action.payload.withdrawal }, ...state.withdrawals],
-        // totalDocs:state.totalDocs + 1,
         withdrawResponseMessage:action.payload.withdrawal.status,
 
       };
@@ -78,13 +77,15 @@ const withdrawalReducer = (state = { initalState }, action)=>{
         ...state,
         withdrawalModalClear:true,
         withdrawResponseMessage:"",
-        disableWithdrawalButton: false
+        disableWithdrawalButton: false,
+        addWithdrawalError:false,
       };
       break;
     case "WITHDRAWAL_ERROR": 
       state = {
         ...state,
-        error:action.payload.error,
+        addWithdrawalError:true,
+        addWithdrawalErrorDetails: action.payload.error,
         disableWithdrawalButton:false
       };
       break;
@@ -119,9 +120,16 @@ const withdrawalReducer = (state = { initalState }, action)=>{
         errorDetails: action.payload.error
       };
       break;
+    case WITHDRAWAL_ERROR_CLEAR:
+      state = {
+        ...state, 
+        addWithdrawalErrorDetails: null,
+        addWithdrawalError: false
+      };
+      break;
+
     default:
       state = { ...state };
-  
   }
   return state;
 };

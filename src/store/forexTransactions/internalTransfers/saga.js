@@ -1,7 +1,8 @@
 import {
   call,
   put,
-  takeEvery
+  takeEvery,
+  delay
 } from "redux-saga/effects";
 import { 
   FETCH_INTERNAL_TRANSFERS_REQUESTED,
@@ -13,7 +14,8 @@ import {
 
   addInternalTransferSuccess,
   addInternalTransferFail,
-  addInternalTransferClear
+  addInternalTransferClear,
+  addInternalTransferErrorClear
 } from "./actions";
 import * as internalTransferApis from "apis/internalTransfer";
 import { showSuccessNotification } from "store/notifications/actions";
@@ -35,6 +37,8 @@ function * addInternalTransfer(params){
     yield put(addInternalTransferClear());
   } catch (err){
     yield put(addInternalTransferFail(err.message));
+    yield delay(5000);
+    yield put(addInternalTransferErrorClear());
   }
 }
 

@@ -6,7 +6,8 @@ import {
   ADD_FOREX_WITHDRAWAL_REQUESTED,
   ADD_FOREX_WITHDRAWAL_SUCCESS,
   ADD_FOREX_WITHDRAWAL_FAIL,
-  ADD_FOREX_WITHDRAWAL_CLEAR
+  ADD_FOREX_WITHDRAWAL_CLEAR,
+  ADD_FOREX_WITHDRAWAL_ERROR_CLEAR
 } from "./actionTypes";
 
 
@@ -53,5 +54,10 @@ export const addForexWithdrawalClear = (data) => {
   return {
     type: ADD_FOREX_WITHDRAWAL_CLEAR,
     payload: data
+  };
+};
+export const addForexWithdrawalErrorClear = () => {
+  return {
+    type: ADD_FOREX_WITHDRAWAL_ERROR_CLEAR
   };
 };
