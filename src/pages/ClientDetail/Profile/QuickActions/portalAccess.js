@@ -21,12 +21,12 @@ function PortalAccess(props){
     setOpen(!open);
   };
   
-  useEffect(()=>{
-    if (editSuccess)
-      setTimeout(() => {
-        toggleModal();
-      }, 1000);
-  }, [editSuccess]);
+  // useEffect(()=>{
+  //   if (editSuccess)
+  //     setTimeout(() => {
+  //       toggleModal();
+  //     }, 1000);
+  // }, [editSuccess]);
 
   return (
     <React.Fragment>

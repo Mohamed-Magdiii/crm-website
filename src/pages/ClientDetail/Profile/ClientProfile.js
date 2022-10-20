@@ -113,7 +113,7 @@ function ClientDetails(props) {
               <Row>
                 {/* input fields to the left side */}
                 <Col md="9" sm="12" xs="12" className="mb-3">
-                  <Card style={{ height: "100%" }}>
+                  <Card style={{ height:"85%" }}>
                     <CardHeader className="d-flex flex-column gap-3">
                       <div className="d-flex justify-content-between align-items-center">
                         <CardTitle>{props.t("General information")}</CardTitle>
@@ -445,14 +445,11 @@ function ClientDetails(props) {
                                     setClientData((state)=>{ 
                                       return {
                                         ...state, 
-                                        gender:e.target.value
+                                        gender:e.value
                                       };});
                                   }}
                                   label={props.t("Gender")}
                                   options = {[{
-                                    value: "",
-                                    label: "Select Gender"
-                                  }, {
                                     value: "male",
                                     label: "Male"
                                   }, {
@@ -753,6 +750,14 @@ function ClientDetails(props) {
                           </div>
                         </div>
                       </AvForm>
+                      
+                    </CardBody>
+                  </Card>
+                  <Card style={{
+                    overflow:"visible",
+                    height:"15%" 
+                  }}>
+                    <CardBody style={{ position:"relative" }}>
                       <AvForm
                         onValidSubmit={(e, v) => {
                           loadUpdatedClientDetailsHandler(e, v);
@@ -803,8 +808,8 @@ function ClientDetails(props) {
                 </Col>
 
                 {/* quick actions to the right side */}
-                <Col md="3" sm="12" xs="12">
-                  <Card className="pb-4">
+                <Col md="3" sm="12" xs="12" className="mb-3">
+                  <Card style={{ height:"65%" }}>
                     <CardHeader className="d-flex flex-column gap-3">
                       <div className="d-flex justify-content-between align-items-center">
                         <CardTitle>{props.t("Quick actions")}</CardTitle>
@@ -849,8 +854,7 @@ function ClientDetails(props) {
                       </CardBody>                      
                     </CardBody>
                   </Card>
-                  <Card>
-                    <CardTitle></CardTitle>
+                  <Card style={{ height:"35%" }}>
                     <CardBody>
                       <AvForm onValidSubmit = {(e, v)=>{
                         dispatch(editClientDetails({
@@ -926,7 +930,7 @@ function ClientDetails(props) {
                     </CardBody>
                   </Card>
                 </Col>
-                <Col  className="mt-2">
+                <Col  className="mt-4">
                   <Row>
                     <Col md="6" sm="12" xs="12">
                       <Card>

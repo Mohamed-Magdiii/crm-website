@@ -37,10 +37,7 @@ function Security(props) {
             <i className="mdi mdi-dots-vertical"></i>
           </DropdownToggle>
 
-          <DropdownMenu style={{
-            zIndex:"5",
-            position:"relative" 
-          }}>
+          <DropdownMenu className="dropdown-menu-end">
             <DropdownItem to="#" disabled={action.disabled} onClick={action.onClick}>{action.title}</DropdownItem>
           </DropdownMenu>
         </UncontrolledDropdown>);
@@ -65,7 +62,6 @@ function Security(props) {
   return (<>
     <div className="table-rep-plugin">
       <div
-        className="table-responsive mb-0"
         data-pattern="priority-columns"
       >
         <Table
@@ -79,7 +75,11 @@ function Security(props) {
               )}
             </Tr>
           </Thead>
-          <Tbody className="text-center" style={{ fontSize: "13px" }}>
+          <Tbody className="text-center" style={{
+            fontSize: "13px",
+            height:"100%",
+            overflow:"hidden"
+          }}>
             {props.loading && <TableLoader colSpan={4} />}
             {!props.loading && tabs.map((row, rowIndex) =>
               <tr key={rowIndex} >
