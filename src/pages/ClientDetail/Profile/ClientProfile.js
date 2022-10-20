@@ -113,7 +113,7 @@ function ClientDetails(props) {
               <Row>
                 {/* input fields to the left side */}
                 <Col md="9" sm="12" xs="12" className="mb-3">
-                  <Card style={{ height:"85%" }}>
+                  <Card>
                     <CardHeader className="d-flex flex-column gap-3">
                       <div className="d-flex justify-content-between align-items-center">
                         <CardTitle>{props.t("General information")}</CardTitle>
@@ -755,7 +755,6 @@ function ClientDetails(props) {
                   </Card>
                   <Card style={{
                     overflow:"visible",
-                    height:"15%" 
                   }}>
                     <CardBody style={{ position:"relative" }}>
                       <AvForm
@@ -765,7 +764,7 @@ function ClientDetails(props) {
                       >
                         <Row>
                           <Col md="5">
-                            <div className="mt-2">
+                            <div className="my-2">
                               <AvFieldSelect 
                                 name="agent"
                                 options={agentOptions}
@@ -776,7 +775,7 @@ function ClientDetails(props) {
                             </div>
                           </Col>
                           <Col md="5">
-                            <div className="mt-2">
+                            <div className="my-2">
                               <AvFieldSelect
                                 name="callStatus"
                                 label={props.t("Call status")}
@@ -790,8 +789,8 @@ function ClientDetails(props) {
                               />
                             </div>
                           </Col> 
-                          <Col md="2" className="d-flex align-items-end justify-content-end">
-                            <div>
+                          <Col md="2" className="d-flex align-items-end justify-content-center">
+                            <div className="mt-3">
                               <Button 
                                 disabled={props.updating}  
                                 type="submit" 
@@ -809,7 +808,7 @@ function ClientDetails(props) {
 
                 {/* quick actions to the right side */}
                 <Col md="3" sm="12" xs="12" className="mb-3">
-                  <Card style={{ height:"65%" }}>
+                  <Card>
                     <CardHeader className="d-flex flex-column gap-3">
                       <div className="d-flex justify-content-between align-items-center">
                         <CardTitle>{props.t("Quick actions")}</CardTitle>
@@ -854,7 +853,7 @@ function ClientDetails(props) {
                       </CardBody>                      
                     </CardBody>
                   </Card>
-                  <Card style={{ height:"35%" }}>
+                  <Card>
                     <CardBody>
                       <AvForm onValidSubmit = {(e, v)=>{
                         dispatch(editClientDetails({
@@ -930,7 +929,7 @@ function ClientDetails(props) {
                     </CardBody>
                   </Card>
                 </Col>
-                <Col  className="mt-4">
+                <Col>
                   <Row>
                     <Col md="6" sm="12" xs="12">
                       <Card>
