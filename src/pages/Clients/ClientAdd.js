@@ -8,21 +8,26 @@ import {
   Col,
   Row
 } from "reactstrap";
+import { debounce } from "lodash";
 import { withTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React, { 
+  useState, 
+  useEffect, 
+  useCallback,
+} from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 
 import { addNewClient } from "../../store/client/actions";
 import { fetchLeadsStart } from "../../store/leads/actions";
 import CountryDropDown from "../../components/Common/CountryDropDown";
 import { fetchUsers } from "store/users/actions";
-import { checkClientEmailApi } from "apis/checkemail";
+import { checkClientEmailApi } from "apis/client";
+import { emailCheck } from "common/utils/emailCheck";
 
 function ClientForm(props){
   const dispatch = useDispatch();
   const [addModal, setAddUserModal] = useState(false);
-  const [duplicatedEmail, setDuplicatedEmail] = useState(false);
   const [ selectedCountry, setCountry] = useState("");
   const { create } = props.clientPermissions;
   const handleAddLead = (event, values) => {
@@ -39,7 +44,6 @@ function ClientForm(props){
 
   const toggleAddModal = () => {
     setAddUserModal(!addModal);
-    setDuplicatedEmail(false);
   };
 
   useEffect(() => {
@@ -67,12 +71,11 @@ function ClientForm(props){
     }
   }, [props.showAddSuccessMessage]);
 
-  const emailCheck = async (value, ctx, input, cb) => {
-    const emailCheck = await checkClientEmailApi(value);
-    if (!emailCheck.status)
-      cb(emailCheck.message);
-    cb(true);
-  };
+  const debouncedChangeHandler = useCallback(
+    debounce((value, ctx, input, cb) => 
+      emailCheck(value, ctx, input, cb, checkClientEmailApi), 1000
+    ), []
+  );
 
   return (
     <React.Fragment >
@@ -88,7 +91,6 @@ function ClientForm(props){
           <AvForm
             className='p-4'
             onValidSubmit={(e, v) => {
-              !duplicatedEmail &&
               handleAddLead(e, v);
             }}
           >
@@ -125,12 +127,12 @@ function ClientForm(props){
                     name="email"
                     label={props.t("Email")}
                     placeholder={props.t("Enter Email")}
-                    type="email"
+                    type="text"
                     errorMessage={props.t("Enter Valid Email")}
                     validate={{
-                      required: { value: true },
-                      email: { value: true },
-                      custom: emailCheck
+                      required: true,
+                      email: true,
+                      async: debouncedChangeHandler
                     }}
                   />
                 </div>
