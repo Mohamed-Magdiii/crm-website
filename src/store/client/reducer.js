@@ -300,15 +300,24 @@ export const clientReducer = (state = initalState, action)=>{
       return {
         ...state,
         disable2FA: {
-          loading:true
+          loading:true,
+          success: false,
         }
       };
     case CLIENT_DISABLE_2FA_SUCCESS:
+      return {
+        ...state,
+        disable2FA:{
+          loading: false,
+          success: true,
+        }
+      };
     case CLIENT_DISABLE_2FA_FAIL:
       return {
         ...state,
         disable2FA:{
-          loading:false
+          loading:false,
+          success:false
         }
       };
     default:

@@ -18,6 +18,7 @@ import CountryDropDown from "../../components/Common/CountryDropDown";
 import { fetchClientsStart } from "store/client/actions";
 import { fetchUsers } from "store/users/actions";
 import { withTranslation } from "react-i18next";
+import { checkLeadEmailApi } from "apis/checkemail";
 
 function LeadForm(props) {
   const dispatch = useDispatch();
@@ -68,12 +69,13 @@ function LeadForm(props) {
     }
   }, [props.showAddSuccessMessage]);
 
-  const emailCheck = (value, ctx, input, cb)=>{
-    const found = props.leads.find((item) => item.email === value.toLowerCase());
-    if (found)
-      cb(("Email already Exists"));
+  const emailCheck = async (value, ctx, input, cb) => {
+    const emailCheck = await checkLeadEmailApi(value);
+    if (!emailCheck.status)
+      cb((emailCheck.message));
     cb(true);
   };
+
   return (
     <React.Fragment >
       <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}>
@@ -144,7 +146,7 @@ function LeadForm(props) {
                     type="text"
                     errorMessage={props.t("Enter valid phone")}
                     onKeyPress={(e) => {
-                      if (/^[+]?\d+$/.test(e.key) || (e.key === "+" && e.target?.value?.length === 0) ) {
+                      if (/^[+]?\d+$/.test(e.key) || (e.key === "+") ) {
                         return true;
                       } else {
                         e.preventDefault();
