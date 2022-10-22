@@ -40,30 +40,29 @@ function Leverage(props){
       }
     }, 
     {
-      dataField: "createdBy",
-      text: "Created By",
-      formatter: (val) => {return (val.createdBy && val.createdBy.firstName) ? `${captilazeFirstLetter(val.createdBy.firstName)} ${captilazeFirstLetter(val.createdBy.lastName)}` : ""},
-    },
-    {
       dataField:"customerId",
       text:"Client",
       formatter:(val)=> {return (val.customerId && val.customerId.firstName) ? `${captilazeFirstLetter(val.customerId.firstName)} ${captilazeFirstLetter(val.customerId.lastName)}` : ""}
     },
     {
-      dataField:"content.login",
+      dataField:"content",
       text:"Trading account",
+      formatter: (val) =>  {return val.content.login}
     },
     {
       dataField:"type",
       text:"Platform",
     },
     {
-      dataField:"content.from",
+      dataField:"content",
       text:"Leverage",
+      formatter: (val) =>  {return val.content.from}
+
     },
     {
-      dataField:"content.to",
+      dataField:"content",
       text:"Requested Leverage",
+      formatter: (val) =>  {return val.content.to}
     },
     {
       dataField:"type",
