@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 import React, {
   useEffect, useRef, useState 
 } from "react";
@@ -201,14 +202,16 @@ function UploadAdditionalDocs (props) {
 
   const uploadDoc = async () => {
     try {
+      // eslint-disable-next-line no-debugger
+      debugger;
       if (Object.keys(memFiles).length > 0)
       { 
+        debugger;
         var formData = new FormData();
         Object.keys(memFiles).forEach((key) => {
-          for (let index = 0; index < memFiles[key].length; index++) {
-            const file = memFiles[key][index];
-            formData.append(key, file);
-          }
+          debugger;
+          const file = memFiles[key];
+          formData.append(key, file);
         });
         dispatch(uploadDocsStart({
           clientId: props.clientId,
@@ -218,6 +221,7 @@ function UploadAdditionalDocs (props) {
       // const tmp = await uploadDocuments(props.clientId, formData);
       // console.log("result ", tmp);
     } catch (error) {
+      debugger;
     }
   };
   const options = [{

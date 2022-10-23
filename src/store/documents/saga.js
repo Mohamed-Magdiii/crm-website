@@ -45,10 +45,11 @@ function * uploadDocs({ payload }){
   try {   
     const documents = [];
     for (const pair of payload.formData.entries()) {
-      console.log(pair[0], pair[1]);
+      console.log(pair);
       if (pair[1] !== "undefined")
         documents.push(pair[0]);
     }
+    console.log(documents);
     const data = yield call(documentsApi.uploadDocuments, payload);   
     yield put(uploadDocsSuccess(data));
     yield put(uploadDocsClear());
