@@ -61,9 +61,8 @@ function * editFeeGroup({ payload }){
       _id:id, 
       ...body
     }));
-    yield put(showSuccessNotification("Fee Group has been updated successfully!"));
-    yield delay(1000);
     yield put(editModalClear());
+    yield put(showSuccessNotification("Fee Group has been updated successfully!"));
   } catch (error){
     yield put(apiError(error));
     yield delay(2000);

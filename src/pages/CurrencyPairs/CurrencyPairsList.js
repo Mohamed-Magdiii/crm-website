@@ -10,6 +10,7 @@ import {
   Input,
   Label,
   Row,
+  Spinner
 } from "reactstrap";
 import {
   Table, Thead, Tbody, Tr, Th, Td
@@ -17,10 +18,12 @@ import {
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 import TableLoader from "components/Common/TableLoader";
 import CustomPagination from "components/Common/CustomPagination";
-import { fetchMarketsStart } from "store/markets/actions";
+import { fetchMarketsStart, changeMarketStatus } from "store/markets/actions";
 import MarketForm from "./MarketAdd";
 import MarketEdit from "./MarketEdit";
 import { Link } from "react-router-dom";
+import { captilazeFirstLetter } from "common/utils/manipulateString";
+import { MetaTags } from "react-meta-tags";
 
 function CurrencyPairsList(props) {
   const [selectedMarket, ] = useState();
@@ -43,8 +46,10 @@ function CurrencyPairsList(props) {
     );
   };
 
-  const switchSelectedMarketStatusHandler = (selectedItem) => {
-    selectedItem.active = !selectedItem.active;
+  // a function to switch status of a selected system email
+  const updateStatus = (event, item, index) => {
+    dispatch(changeMarketStatus(item._id, index, !item.active ? "activate" : "deactivate"));
+    event.preventDefault();
   };
 
   useEffect(() => {
@@ -52,6 +57,7 @@ function CurrencyPairsList(props) {
       setDeleteModal(false);
     }
   }, [props.deleteModalClear]);
+
   const columns = [
     {
       dataField: "createdAt",
@@ -61,6 +67,9 @@ function CurrencyPairsList(props) {
     {
       dataField: "name",
       text: props.t("Name"),
+      formatter: (item) => (
+        captilazeFirstLetter(item.name)
+      )
     },
     {
       dataField: "pairName",
@@ -97,23 +106,26 @@ function CurrencyPairsList(props) {
     {
       dataField: "active",
       text: props.t("Active"),
-      formatter: (item) => (
+      formatter: (item, index) => (
         <div className="d-flex gap-3">
-          <Input
-            type="checkbox"
-            id={item.id}
-            switch="none"
-            defaultChecked={item.active}
-            onClick={() => {
-              switchSelectedMarketStatusHandler(item);
-            }}
-          />
-          <Label
-            className="me-1"
-            htmlFor={item.id}
-            data-on-label={props.t("Active")}
-            data-off-label=""
-          ></Label>
+          {
+            props.changeStatusLoading && props.changeStatusIndex === index
+              ? 
+              <React.Fragment>
+                <Spinner className="ms-2" color="primary" />  
+              </React.Fragment> 
+              : 
+              <React.Fragment>
+                <Input
+                  checked={item.active}
+                  type="checkbox"
+                  onChange={(e) => {updateStatus(e, item, index)}}
+                  id={item.id}
+                  switch="none"
+                />
+                <Label className="me-1" htmlFor={item.id} data-on-label="" data-off-label="" />
+              </React.Fragment>
+          }
         </div>
       ),
     },
@@ -121,6 +133,11 @@ function CurrencyPairsList(props) {
 
   return (
     <React.Fragment>
+      <MetaTags>
+        <title>
+          Currency Pairs
+        </title>
+      </MetaTags>
       <div className="page-content">
         <div className="container-fluid">
           <h2>{t("Currency Pairs")}</h2>
@@ -151,7 +168,7 @@ function CurrencyPairsList(props) {
                             ))}
                           </Tr>
                         </Thead>
-                        <Tbody>
+                        <Tbody className="text-center" style={{ fontSize: "13px" }}>
                           {props.loading && <TableLoader colSpan={12} />}
                           {!props.loading &&
                             props.markets.map((row, rowIndex) => (
@@ -212,6 +229,8 @@ const mapStateToProps = (state) => ({
   prevPage: state.marketsReducer.prevPage,
   deleteLoading: state.marketsReducer.deleteLoading,
   deleteModalClear: state.marketsReducer.deleteModalClear,
+  changeStatusIndex: state.marketsReducer.changeStatusIndex,
+  changeStatusLoading: state.marketsReducer.changeStatusLoading
 });
 export default connect(
   mapStateToProps,

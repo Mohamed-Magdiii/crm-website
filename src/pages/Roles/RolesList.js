@@ -21,8 +21,10 @@ import TableLoader from "components/Common/TableLoader";
 import DeleteModal from "components/Common/DeleteModal";
 import RolesAdd from "./RolesAdd";
 import RolesEdit from "./RolesEdit";
+import { captilazeFirstLetter } from "common/utils/manipulateString";
+import { MetaTags } from "react-meta-tags";
+
 function RolesList(props){
-  
   const [editModal, setEditUserModal] = useState(false);
   const [deleteModal, setDeleteUserModal] = useState(false);
   const [selectedRole, setSelectedRole] = useState();
@@ -35,18 +37,21 @@ function RolesList(props){
     }, 
     {
       dataField:"title",
-      text:"Title"
+      text:"Title",
+      formatter: (item) => (
+        captilazeFirstLetter(item.title)
+      )
     },
     {
       dataField: "createdBy",
       text: "Created By",
-      formatter: (val) => {return (val.createdBy && val.createdBy.firstName) ? `${val.createdBy.firstName} ${val.createdBy.lastName}` : ""},
+      formatter: (val) => {return (val.createdBy && val.createdBy.firstName) ? `${captilazeFirstLetter(val.createdBy.firstName)} ${captilazeFirstLetter(val.createdBy.lastName)}` : ""},
     },
     {
       dataField: "isActive",
       text: "Status",
       formatter: (item, index) => (
-        <div className="d-flex gap-3">
+        <div className="d-flex gap-3 justify-content-center">
           {(props.changeStatusLoading && props.changeStatusLoadingIndex === index) ? <React.Fragment>
             <Spinner className="ms-2" color="primary" />  
           </React.Fragment> : <React.Fragment>
@@ -70,7 +75,7 @@ function RolesList(props){
       editable: false,
       text: "Action",
       formatter: (item) => (
-        <div className="d-flex gap-3">
+        <div className="d-flex gap-3 justify-content-center">
           <Link className="text-success" to="#">
             <i
               className={`mdi mdi-pencil font-size-18 ${!update ? "d-none" : ""}`}
@@ -89,12 +94,12 @@ function RolesList(props){
       ),
     },
   ];
-  const [sizePerPage, setSizePerPage] = useState(5);
+  const [sizePerPage, setSizePerPage] = useState(10);
   const dispatch = useDispatch();
   
   useEffect(()=>{
     loadRoles(1, sizePerPage);
-  }, [sizePerPage, 1]);
+  }, [sizePerPage, 1, props.editResult]);
 
   const loadRoles = (page, limit) => {
     dispatch(fetchRoles({
@@ -117,10 +122,14 @@ function RolesList(props){
       setDeleteUserModal(false);
     }
   }, [props.deleteClearingCounter]);
-  
 
   return (
     <React.Fragment>
+      <MetaTags>
+        <title>
+          Roles
+        </title>
+      </MetaTags>
       <div className="page-content">
         <div className="container-fluid">
           <h2>Roles</h2>
@@ -148,7 +157,7 @@ function RolesList(props){
                             )}
                           </Tr>
                         </Thead>
-                        <Tbody>
+                        <Tbody className="text-center" style={{ fontSize: "13px" }}>
                           {props.loading && <TableLoader colSpan={4} />}
                           {!props.loading && props.docs.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
@@ -202,7 +211,8 @@ const mapStateToProps = (state) => ({
   prevPage: state.rolesReducer.prevPage,
   deleteLoading: state.rolesReducer.deleteLoading,
   deleteClearingCounter: state.rolesReducer.deleteClearingCounter,
-  rolesPermissions: state.Profile.rolesPermissions || {}
+  rolesPermissions: state.Profile.rolesPermissions || {},
+  editResult: state.rolesReducer.editResult
 
 });
 export default connect(mapStateToProps, null)(RolesList);

@@ -13,9 +13,8 @@ import DeleteModal from "components/Common/DeleteModal";
 import CountriesEdit from "./CountriesEdit";
 import { removeItem } from "store/dictionary/actions";
 import { withTranslation } from "react-i18next";
-import { captilazeFirstLetter } from "common/utils/manipulateString";
-function CountriesTab(props){
-  
+
+function CountriesTab(props){  
   const [deleteModal, setDeleteModal] = useState(false);
   const [deletedItem, setDeletedItem] = useState();
   const [editModal, setEditModal] = useState();
@@ -36,12 +35,12 @@ function CountriesTab(props){
     {
       dataField:"alpha2",
       text:props.t("Alpha2"),
-      formatter:(val)=>captilazeFirstLetter(val.alpha2)
+      formatter:(val)=>val.alpha2.toUpperCase()
     }, 
     {
       dataField:"alpha3",
       text:props.t("Alpha3"),
-      formatter:(val)=>captilazeFirstLetter(val.alpha3)
+      formatter:(val)=>val.alpha3.toUpperCase()
     },
     {
       dataField:"callingCode",

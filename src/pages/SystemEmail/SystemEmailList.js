@@ -26,6 +26,7 @@ import DeleteModal from "components/Common/DeleteModal";
 import SystemEmailAdd from "./SystemEmailAdd";
 import SystemEmailEditModal from "./SystemEmailEditModal";
 import SystemEmailHTMLPreviewModal from "./SystemEmailHTMLPreviewModal";
+import { MetaTags } from "react-meta-tags";
 
 function SystemEmailsList(props){
   const [deleteModal, setDeleteModal] = useState(false);
@@ -56,7 +57,7 @@ function SystemEmailsList(props){
     {
       dataField: "createdBy",
       text: props.t("Created By"),
-      formatter: (val) => {return (val.createdBy && val.createdBy.firstName) ? `${val.createdBy.firstName} ${val.createdBy.lastName}` : " "},
+      formatter: (val) => {return (val.createdBy && val.createdBy.firstName) ? `${capitalToReadable(val.createdBy.firstName)} ${capitalToReadable(val.createdBy.lastName)}` : " "},
     },
     {
       dataField: "title",
@@ -86,7 +87,7 @@ function SystemEmailsList(props){
     {
       dataField: "content",
       text: props.t("Default Subject"),
-      formatter: (val) => {return val.content["en"] && val.content["en"].subject || " "}
+      formatter: (val) => {return val.content["en"] && capitalToReadable(val.content["en"].subject) || " "}
     },
     {
       dataField: "isActive",
@@ -135,7 +136,7 @@ function SystemEmailsList(props){
       editable: false,
       text: props.t("Actions"), 
       formatter: (item) => (
-        <div className="d-flex gap-3">
+        <div className="d-flex gap-3 justify-content-center">
           <Link className={`text-success ${!update ? "d-none" : ""}`} to="#">
             <i
               className="mdi mdi-pencil font-size-18"
@@ -155,7 +156,7 @@ function SystemEmailsList(props){
     }
   ];
 
-  const [sizePerPage, setSizePerPage] = useState(5);
+  const [sizePerPage, setSizePerPage] = useState(10);
   const dispatch = useDispatch();
   const loadSystemEmailsFunction = (page, limit) => {
     dispatch(fetchSystemEmails({
@@ -182,6 +183,11 @@ function SystemEmailsList(props){
 
   return (
     <React.Fragment>
+      <MetaTags>
+        <title>
+          System Emails
+        </title>
+      </MetaTags>
       <div className="page-content">
         <div className="container-fluid">
           <h2>{props.t("System emails")}</h2>
@@ -190,7 +196,7 @@ function SystemEmailsList(props){
               <Card>
                 <CardHeader className="d-flex justify-content-between  align-items-center">
                   <CardTitle>{props.t("System emails list")} ({props.totalDocs})</CardTitle>
-                  <SystemEmailAdd />
+                  <SystemEmailAdd allSystemEmails={props.docs}/>
                 </CardHeader>
                 <CardBody>
                   <div className="table-rep-plugin">
@@ -209,18 +215,35 @@ function SystemEmailsList(props){
                             )}
                           </Tr>
                         </Thead>
-                        <Tbody>
-                          {props.loading && <TableLoader colSpan={4} />}
-                          {!props.loading && props.docs.map((row, rowIndex) =>
-                            <Tr key={rowIndex}>
-                              {columns.map((column, index) =>
-                                <Td key={`${rowIndex}-${index}`}>
-                                  { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
-                                </Td>
+                        {
+                          props.totalDocs === 0 
+                            ?
+                            <Tbody>
+                              {props.loading && <TableLoader colSpan={4} />}                            
+                              {!props.loading && /*props.totalDocs === 0 && */
+                                <>
+                                  <Tr>
+                                    <Td colSpan={"100%"} className="fw-bolder text-center" st>
+                                      <h3 className="fw-bolder text-center">No records</h3>
+                                    </Td>
+                                  </Tr>
+                                </>
+                              }
+                            </Tbody>
+                            :
+                            <Tbody className="text-center" style={{ fontSize: "13px" }}>
+                              {props.loading && <TableLoader colSpan={4} />}
+                              {!props.loading && props.docs.map((row, rowIndex) =>
+                                <Tr key={rowIndex}>
+                                  {columns.map((column, index) =>
+                                    <Td key={`${rowIndex}-${index}`}>
+                                      { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
+                                    </Td>
+                                  )}
+                                </Tr>
                               )}
-                            </Tr>
-                          )}
-                        </Tbody>
+                            </Tbody>
+                        }
                       </Table>
                       <CustomPagination
                         {...props}

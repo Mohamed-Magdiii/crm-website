@@ -27,9 +27,7 @@ import {
   editModalClear,
   deleteModalClear
 } from "./actions";
-
 import { showSuccessNotification } from "store/notifications/actions";
-
 function * getFeeGroups({ payload :{ params } }){
   try {
     const result = yield call(fetchFeeGroups, params);
@@ -45,7 +43,7 @@ function * addNewFeesGroup ({ payload }){
     const { status, result } = data;
     if (status === true){
       yield put(addTransactionFeeGroupSuccess(result));
-      yield put(showSuccessNotification("New Transaction Fees Group is added successfully!"));
+      yield put(showSuccessNotification("Transaction Fee Group has been added successfully!"));
       yield delay(2000);
       yield put(addModalClear());
     }
@@ -63,6 +61,7 @@ function * editFeeGroup({ payload }){
       _id:id, 
       ...body
     }));
+    yield put(showSuccessNotification("Transaction Fee Group has been updated successfully!"));
     yield delay(2000);
     yield put(editModalClear());
   } catch (error){
@@ -75,6 +74,7 @@ function * deleteFeegroup ({ payload : { id } }){
   try {
     yield call(deleteFeeGroup, id);
     yield put(deleteTransactionFeeGroupSuccess(id));
+    yield put(showSuccessNotification("Transaction Fee Group has been deleted successfully!"));
     yield delay(1000);
     yield put(deleteModalClear());
   } catch (error){

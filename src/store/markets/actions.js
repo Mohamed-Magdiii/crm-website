@@ -7,7 +7,10 @@ import {
   ADD_MARKET_CLEAR, 
   EDIT_MARKET_START, 
   EDIT_MARKET_SUCCESS,
-  EDIT_MARKET_CLEAR
+  EDIT_MARKET_CLEAR,
+
+  CHANGE_MARKET_STATUS_REQUESTED,
+  CHANGE_MARKET_STATUS_DONE
 } from "./actionTypes";
 
 export const fetchMarketsStart = (params) => {
@@ -70,5 +73,23 @@ export const marketEditModalClear = (data)=>{
   return {
     type:EDIT_MARKET_CLEAR,
     payload:data
+  };
+};
+
+// change market status
+export const changeMarketStatus = (id, index, status) => {
+  return {
+    type: CHANGE_MARKET_STATUS_REQUESTED,
+    payload: {
+      id,
+      index,
+      status
+    }
+  };
+};
+export const changeMarketStatusDone = (params = {}) => {
+  return {
+    type: CHANGE_MARKET_STATUS_DONE,
+    payload: params
   };
 };

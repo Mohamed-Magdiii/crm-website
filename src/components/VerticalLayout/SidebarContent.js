@@ -20,12 +20,15 @@ import { withRouter, Link } from "react-router-dom";
 
 const SidebarContent = (props) => {
   const ref = useRef();
-  
+
   const { get:getUser } = props.userPermissions;
   const { get:getClient } = props.clientPermissions;
   const { get:getLeads } = props.leadsPermissions;
   const { get:getDeposits } = props.depositsPermissions;
   const { get:getWithdrawals } = props.withdrawalsPermissions;
+  const { get:getInternalTransfers } = props.internalTransferPermissions;
+  const { get:getCredits } = props.creditPermissions;
+  const { get:getConverts } = props.convertPermissions;
   const { get:getMarkups } = props.markupsPermissions;
   const { get:getRoles } = props.rolesPermissions;
   const { get:getDictionaries } = props.dictionariesPermissions;
@@ -150,43 +153,37 @@ const SidebarContent = (props) => {
                   <Link to="/transactions/deposit" className= {`${!getDeposits ? "d-none" : ""}`}>{props.t("Deposit")}</Link>
                 </li>
                 <li>
-                  <Link to="/transactions/withdrawals" className = {`${!getWithdrawals ? "d-none" : ""}`}>{props.t("Withdrawals")}</Link>
+                  <Link to="/transactions/withdrawals" className = {`${!getWithdrawals ? "d-none" : ""}`}>{props.t("Withdrawal")}</Link>
+                </li> 
+                <li>
+                  <Link to="/transactions/internal-transfer" /*className={`${!getInternalTransfers ? "d-none" : ""}`}*/>{props.t("Internal Transfer")}</Link>
+                </li> 
+                <li>
+                  <Link to="/transactions/credit" /*className={`${!getCredits ? "d-none" : ""}`}*/>{props.t("Credit")}</Link>
+                </li>
+                <li>
+                  <Link to="/transactions/convert" /*className={`${!getConverts ? "d-none" : ""}`}*/>{props.t("Convert")}</Link>
                 </li>   
               </ul>
             </li>
-            <li>
+            {/* <li>
               <Link to='/positions' className="">
                 <FeatherIcon icon="cast"/>
                 <span>{props.t("Positions")}</span> 
               </Link> 
-            </li>
+            </li> */}
             <li>
               <Link to="/calendar/reminders" className="">
                 <FeatherIcon icon="calendar" />
                 <span>{props.t("Reminders/Todos")}</span>
               </Link> 
             </li>
-            <li>
+            {/* <li>
               <Link to='/marketing' className="">
                 <FeatherIcon icon="link-2"/>
                 <span>{props.t("Marketing")}</span> 
               </Link> 
-            </li> 
-            <li>
-              <Link to="/requests" className="has-arrow">
-                <FeatherIcon icon="clipboard" />
-                <span>{props.t("Requests")}</span>
-              </Link>
-              <ul className="sub-menu">
-                <li>
-                  <Link to="/requests/list-coin">{props.t("List Coin")}</Link>
-                </li>
-                <li>
-                  <Link to="/requests/otc">{props.t("OTC Request")}</Link>
-                </li>   
-              </ul>
-            </li> 
-          
+            </li>  */}          
             <li>
               <Link to="/settings" className="has-arrow">
                 <FeatherIcon icon="tool" />
@@ -220,9 +217,6 @@ const SidebarContent = (props) => {
                 <li>
                   <Link to="/currency-pairs" className={`${!getCurrencyPair ? "d-none" : ""}`}>{props.t("Currency Pairs")}</Link>
                 </li>   
-                <li>
-                  <Link to="/markups" className={`${!getMarkups ? "d-none" : ""}`}>{props.t("Markups")}</Link>
-                </li>   
 
               </ul>
             </li> 
@@ -239,10 +233,13 @@ const SidebarContent = (props) => {
                   <Link to="/transaction-fee-groups" >{props.t("Transaction Fee Groups")}</Link>
                 </li>
                 <li>
+                  <Link to="/markups" className={`${!getMarkups ? "d-none" : ""}`}>{props.t("Markups")}</Link>
+                </li>   
+                <li>
                   <Link to="/orders-profit" className={`${!getOrderProfit ? "d-none" : ""}`}>{props.t("Order Profit")}</Link>
                 </li>    
                 <li>
-                  <Link to="/transactions-profit" className={`${!getTransactionProfit ? "d-none" : ""}`}>{props.t("Transaction Profit")}</Link>
+                  <Link to="/transactions-profit" className={`${!getTransactionProfit ? "d-none" : ""}`}>{props.t("Exchange Balance")}</Link>
                 </li>          
               </ul>
             </li>
@@ -274,7 +271,9 @@ const mapStateToProps = (state) => ({
   markupsPermissions : state.Profile.markupsPermissions || {},
   transactionFeeGroupsPermissions : state.Profile.transactionFeeGroupsPermissions || {},
   orderProfitPermissions : state.Profile.orderProfitPermissions || {},
-  transactionProfitPermissions : state.Profile.transactionProfitPermissions || {}
-
+  transactionProfitPermissions : state.Profile.transactionProfitPermissions || {},
+  internalTransferPermissions : state.Profile.internalTransferPermissions || {},
+  creditPermissions : state.Profile.creditPermissions || {},
+  convertPermissions : state.Profile.convertPermissions || {},
 });
 export default withTranslation()(withRouter(connect(mapStateToProps, null) (SidebarContent)));

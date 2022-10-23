@@ -19,6 +19,7 @@ import ClientAddWallet from "./ClientAddWallet";
 import DeleteModal from "components/Common/DeleteModal";
 import WalletEditModal from "./WalletEditModal";
 import QrPukModal from "./QrPukModal";
+import { captilazeFirstLetter } from "common/utils/manipulateString";
 // import { editBankAccount } from "store/bankAccount/actions";
 
 function ClientWallets(props) {
@@ -31,7 +32,9 @@ function ClientWallets(props) {
 
   const dispatch = useDispatch();
   const loadClientWalletDetails = () => {
-    dispatch(fetchClientWallets(clientId));
+    dispatch(fetchClientWallets({
+      belongsTo: clientId
+    }));
   };
   useEffect(() => {
     loadClientWalletDetails();
@@ -49,7 +52,10 @@ function ClientWallets(props) {
   const columns = [ 
     {
       dataField: "asset",
-      text: props.t("Asset")
+      text: props.t("Asset"),
+      formatter: (item) => (
+        captilazeFirstLetter(item.asset)
+      )
     },
     {
       dataField: "amount",
@@ -180,7 +186,7 @@ function ClientWallets(props) {
                               }
                             </Tbody>
                             :
-                            <Tbody>
+                            <Tbody className="text-center">
                               {props.loading && <TableLoader colSpan={4} />}
                               {(!props.loading && props.docs) && props.docs.map((row, rowIndex) =>
                                 <Tr key={rowIndex}>

@@ -19,6 +19,7 @@ import FeeGroupAdd from "./feeGroupAdd";
 import FeeGroupEdit from "./feeGroupEdit";
 import { fetchMarketsStart } from "store/markets/actions";
 import { checkAllBoxes } from "common/utils/checkAllBoxes";
+import { MetaTags } from "react-meta-tags";
 function FeeGroupsList(props) {
   const [deleteModal, setDeleteModal] = useState(false);
   const [deletedItem, setDeletedItem] = useState();
@@ -42,7 +43,7 @@ function FeeGroupsList(props) {
     },
     {
       dataField: "isPercentage",
-      text: props.t("isPercentage"),
+      text: props.t("Is Percentage"),
       formatter: (val) => (val.isPercentage ? "TRUE" : "FALSE"),
     },
     {
@@ -126,6 +127,11 @@ function FeeGroupsList(props) {
 
   return (
     <React.Fragment>
+      <MetaTags>
+        <title>
+          Trading Fee Groups
+        </title>
+      </MetaTags>
       <div className="page-content"> 
         <div className="container-fluid">
           <h2>{props.t("Trading Fee Group")}</h2>
@@ -155,7 +161,11 @@ function FeeGroupsList(props) {
                             )}
                           </Tr>
                         </Thead>
-                        <Tbody style={{ fontSize: "13px" }}>
+                        <Tbody style={{
+                          fontSize: "12px",
+                          textAlign: "center",
+                          textTransform: "capitalize"
+                        }}>
                           {props.loading && <TableLoader colSpan={4} />}
                           {!props.loading && props.feeGroups.map((row, rowIndex) =>
                             <Tr key={rowIndex}>

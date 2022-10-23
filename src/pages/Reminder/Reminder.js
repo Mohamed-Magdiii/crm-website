@@ -22,14 +22,14 @@ import TodoAdd from "components/Common/TodoAdd";
 // import Loader from "components/Common/Loader";
 
 import "@fullcalendar/bootstrap/main.css";
-import { fetchTodosStart } from "store/actions";
+import { editTodoStart, fetchTodosStart } from "store/actions";
 
 //redux
 import ViewTodo from "./ViewTodo";
+import moment from "moment";
 
 const Reminder = (props) => {
   const dispatch = useDispatch();
-
   const [events, setEvents] = useState([]);
   const [selectedDay, setSelectedDay] = useState(0);
   const [dateRange, setDateRange] = useState({
@@ -49,7 +49,7 @@ const Reminder = (props) => {
     setEvents(props.todos.map(obj => {
       return {
         ...obj,
-        className: obj.type === 1 ? "bg-success text-white" : "bg-info text-white",
+        className: obj.type == 1 ? "bg-success text-white" : "bg-info text-white",
         id: obj._id,
         title: obj.note,
         start: obj.timeEnd,
@@ -60,7 +60,6 @@ const Reminder = (props) => {
 
   const handleDateClick = (arg) => {
     var date = new Date(arg["date"]);
-    date.setDate(date.getDate() + 1);
     setSelectedDay(date.toISOString());
     setAddReminderModal(true);
   };
@@ -86,6 +85,23 @@ const Reminder = (props) => {
         end: arg.endStr,
       }));
     }
+  };
+
+  const handleDrop  = (args) => {
+    const todo = args.oldEvent._def.extendedProps;
+    const end = moment(args.event.start);
+    const now = moment();
+    if (now.diff(end) > 0){
+      args.revert();
+    } else 
+      dispatch(editTodoStart({
+        id:todo._id,
+        timeEnd:args.event.start, 
+        note: todo.note,
+        time: todo.createAt,
+        type: todo.type,
+        status: todo.status
+      }));
   };
 
   return (
@@ -133,9 +149,8 @@ const Reminder = (props) => {
                 selectable={true}
                 dateClick={handleDateClick}
                 eventClick={handleEventClick}
-
+                eventDrop={handleDrop}
                 datesSet={dateRangeChange}
-                
               />
             </CardBody>
           </Card>

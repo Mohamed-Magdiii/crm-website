@@ -9,6 +9,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 
 import { withRouter, Link } from "react-router-dom";
+import { withTranslation } from "react-i18next";
 
 // availity-reactstrap-validation
 import { AvForm, AvField } from "availity-reactstrap-validation";
@@ -18,19 +19,19 @@ import * as content from "content";
 import { userForgetPassword } from "../../store/actions";
 
 // import images
-import logo from "../../assets/images/logo-sm.svg";
+// import logo from "../../assets/images/logo-sm.svg";
 import CarouselPage from "./CarouselPage";
 
 const ForgetPasswordPage = props => {
   const dispatch = useDispatch();
-
+  
   const { forgetError, forgetSuccessMsg } = useSelector(state => ({
     forgetError: state.ForgetPassword.forgetError,
     forgetSuccessMsg: state.ForgetPassword.forgetSuccessMsg,
   }));
 
   function handleValidSubmit(event, values) {
-    dispatch(userForgetPassword(values, props.history));
+    dispatch(userForgetPassword(values.email));
   }
 
   return (
@@ -49,13 +50,13 @@ const ForgetPasswordPage = props => {
                   <div className="d-flex flex-column h-100">
                     <div className="mb-4 mb-md-5 text-center">
                       <Link to="/dashboard" className="d-block auth-logo">
-                        <img src={logo} alt="" height="28" /> <span className="logo-txt">{content.clientName}</span>
+                        <img src={content.mainLogo} alt="" height="28" /> <span className="logo-txt">{content.clientName}</span>
                       </Link>
                     </div>
                     <div className="auth-content my-auto">
                       <div className="text-center">
-                        <h5 className="mb-0">Reset Password</h5>
-                        <p className="text-muted mt-2">Reset Password with {content.clientName}.</p>
+                        <h5 className="mb-0">{props.t("Reset Password")}</h5>
+                        <p className="text-muted mt-2">{props.t("Reset Password with")} {content.clientName}.</p>
                       </div>
 
                       {forgetError && forgetError ? (
@@ -75,9 +76,9 @@ const ForgetPasswordPage = props => {
                         <div className="mb-3">
                           <AvField
                             name="email"
-                            label="Email"
+                            label={props.t("Email")}
                             className="form-control"
-                            placeholder="Enter email"
+                            placeholder={props.t("Enter email")}
                             type="email"
                             required
                           />
@@ -88,8 +89,8 @@ const ForgetPasswordPage = props => {
                       </AvForm>
 
                       <div className="mt-5 text-center">
-                        <p className="text-muted mb-0">Remember It ?  <a href="auth-login.html"
-                          className="text-primary fw-semibold"> Sign In </a> </p>
+                        <p className="text-muted mb-0">{props.t("Remember It")}?  <a href="/login"
+                          className="text-primary fw-semibold"> {props.t("Sign In")} </a> </p>
                       </div>
                     </div>
                     <div className="mt-4 mt-md-5 text-center">
@@ -111,4 +112,4 @@ ForgetPasswordPage.propTypes = {
   history: PropTypes.object,
 };
 
-export default withRouter(ForgetPasswordPage);
+export default withTranslation()(withRouter(ForgetPasswordPage));

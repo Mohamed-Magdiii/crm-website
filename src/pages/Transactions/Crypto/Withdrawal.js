@@ -17,7 +17,7 @@ import {
 import SearchBar from "components/Common/SearchBar";
 import CustomDropdown from "components/Common/CustomDropDown";
 import Notification from "components/Common/Notification";
-import logo from "../../assets/images/logo-sm.svg";
+import logo from "../../../assets/images/logo-sm.svg";
 import { withTranslation } from "react-i18next";
 import { checkAllBoxes } from "common/utils/checkAllBoxes";
 import { Link } from "react-router-dom";
@@ -104,12 +104,9 @@ function Withdrawal(props){
       text:props.t("Amount"),
       formatter: (val) => (val?.amount?.$numberDecimal || val?.amount || ""),
     },
-    
-    
     {
       dataField: "dropdown",
       text:props.t("Action")
-  
     },
     {
       dataField: "",
@@ -117,7 +114,7 @@ function Withdrawal(props){
       editable: false,
       text: props.t("Details"),
       formatter: (val) => (
-        <div className="d-flex gap-3">
+        <div className="text-center">
           <Link className={`${val.gateway === "BLOCKCHAIN" ? "text-success" : "text-muted"}`} to="#">
             <i
               className="mdi mdi-eye font-size-20"
@@ -162,59 +159,73 @@ function Withdrawal(props){
   return (
 
     <React.Fragment>
-      <div className="page-content">
-        <div className="container-fluid">
-          <Notification onClose={closeNotifaction}
-            body={props.t("The update of the withdraw has been made successfully")}
-            show={showNotication}
-            header={props.t("Withdraw update")}
-            time={props.t("Now")}
-            logo={logo}/>
-          <Row>
-            <Col className="col-12">
-              <Card>
-                <CardHeader className="d-flex flex-column gap-3 ">
-                  <div className="d-flex justify-content-between align-items-center">
-                    <CardTitle>{props.t(`Withdrawals(${props.totalDocs})`)}</CardTitle>
-                    <WithDrawForm />
-                  </div>
-                  <div className="d-flex justify-content-between align-items-center">
-                    <SearchBar handleSearchInput={handleSearchInput} placeholder={props.t("Search for withdrawals")}/>
-                    <div>
-                      <Dropdown
-                        isOpen={btnprimary1}
-                        toggle={() => setBtnprimary1(!btnprimary1)}
-                      >
-                        <DropdownToggle tag="button" className="btn btn-primary">
-                          {selected} <i className="mdi mdi-chevron-down" />
-                        </DropdownToggle>
-                        <DropdownMenu>
-                          <DropdownItem value="LIVE" onClick={(e)=>{setSelected(e.target.value)}}>LIVE</DropdownItem>
-                          <DropdownItem value="DEMO" onClick={(e)=>{setSelected(e.target.value)}}>DEMO</DropdownItem>
-                        </DropdownMenu>
-                      </Dropdown>
-                    </div>
-                  </div>
-                </CardHeader>
-          
-                <CardBody>
-                  <div className="table-rep-plugin">
-                    <div
-                      className="table-responsive mb-0"
-                      data-pattern="priority-columns"
-                    >
-                      <Table
-                        id="tech-companies-1"
-                        className="table  table-hover "
-                      >
-                        <Thead className="text-center table-light" >
-                          <Tr>
-                            {columns.map((column, index) =>
-                              <Th data-priority={index} key={index}>{column.text}</Th>
-                            )}
-                          </Tr>
-                        </Thead>
-                        <Tbody  style = {{ fontSize : "13px" }}>
+      <Notification onClose={closeNotifaction}
+        body={props.t("The update of the withdraw has been made successfully")}
+        show={showNotication}
+        header={props.t("Withdraw update")}
+        time={props.t("Now")}
+        logo={logo}/>
+      <Row>
+        <Col className="col-12">
+          <Card>
+            <CardHeader className="d-flex flex-column gap-3 ">
+              <div className="d-flex justify-content-between align-items-center">
+                <CardTitle>{props.t(`Withdrawals(${props.totalDocs})`)}</CardTitle>
+                <WithDrawForm />
+              </div>
+              <div className="d-flex justify-content-between align-items-center">
+                <SearchBar handleSearchInput={handleSearchInput} placeholder={props.t("Search for withdrawals")}/>
+                <div>
+                  <Dropdown
+                    isOpen={btnprimary1}
+                    toggle={() => setBtnprimary1(!btnprimary1)}
+                  >
+                    <DropdownToggle tag="button" className="btn btn-primary">
+                      {selected} <i className="mdi mdi-chevron-down" />
+                    </DropdownToggle>
+                    <DropdownMenu>
+                      <DropdownItem value="LIVE" onClick={(e)=>{setSelected(e.target.value)}}>LIVE</DropdownItem>
+                      <DropdownItem value="DEMO" onClick={(e)=>{setSelected(e.target.value)}}>DEMO</DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
+                </div>
+              </div>
+            </CardHeader>
+      
+            <CardBody>
+              <div className="table-rep-plugin">
+                <div
+                  className="table-responsive mb-0"
+                  data-pattern="priority-columns"
+                >
+                  <Table
+                    id="tech-companies-1"
+                    className="table  table-hover "
+                  >
+                    <Thead className="text-center table-light" >
+                      <Tr>
+                        {columns.map((column, index) =>
+                          <Th data-priority={index} key={index}>{column.text}</Th>
+                        )}
+                      </Tr>
+                    </Thead>
+                    {
+                      props.totalDocs === 0
+                        ?
+                        <Tbody>
+                          {props.loading && <TableLoader colSpan={4} />}                            
+                          {!props.loading &&
+                            <>
+                              <Tr>
+                                <Td colSpan={"100%"} className="fw-bolder text-center" st>
+                                  <h3 className="fw-bolder text-center">No records</h3>
+                                </Td>
+                              </Tr>
+                            </>
+                          }
+                        </Tbody>
+                        :
+                        <Tbody  style={{ fontSize : "13px" }} className="text-center">
                           {props.loading && <TableLoader colSpan={4} />}
                           {!props.loading && props.withdrawals.map((row, rowIndex) =>
                             <Tr key={rowIndex}>
@@ -222,30 +233,28 @@ function Withdrawal(props){
                                 <Td key={`${rowIndex}-${index}`} className = "pt-4">
                                   { column.dataField === "checkbox" ? <input className= "withdraw-checkbox"  type="checkbox"/> : ""}
                                   { column.formatter ? column.formatter(row, rowIndex) : row[column.dataField]}
-                                  {column.dataField === "dropdown" ? <CustomDropdown permission={props.withdrawalsPermissions.actions ? true : false} id={row._id} status={row.status} approve={()=>{withdrawApprove(row)}} reject={()=>{withdrawReject(row)}}/> : ""}
+                                  {column.dataField === "dropdown" ? <CustomDropdown permission={props.withdrawalsPermissions.actions ? true : false} id={row._id} status={row.status} approve={()=>{withdrawApprove(row)}} reject={()=>{withdrawReject(row)}} /> : ""}
                                 </Td>
                               )}
                             </Tr>
                           )}
                         </Tbody>
-                      </Table>
-                      <CustomPagination
-                        {...props}
-                        setSizePerPage={setSizePerPage}
-                        sizePerPage={sizePerPage}
-                        onChange={loadWithdrawals}
-                        docs={props.withdrawals}
-                      />
-                    </div>
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </div>
-        <DetailsModal open= {detailsModal} rawData={selectedContent} onClose={()=>setDetailsModal(false)}/>
-      </div>
-      
+                    }
+                  </Table>
+                  <CustomPagination
+                    {...props}
+                    setSizePerPage={setSizePerPage}
+                    sizePerPage={sizePerPage}
+                    onChange={loadWithdrawals}
+                    docs={props.withdrawals}
+                  />
+                </div>
+              </div>
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
+      <DetailsModal open= {detailsModal} rawData={selectedContent} onClose={()=>setDetailsModal(false)}/>
     </React.Fragment>
     
   );

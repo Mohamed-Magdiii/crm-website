@@ -27,9 +27,10 @@ import {
 
   fetchClientWithdrawalsSuccess,
   fetchClientWithdrawalsFail, 
-  errorClear
+  withdrawalErrorClear
 } from "./action";
 import { showSuccessNotification } from "store/notifications/actions";
+
 function *fetchWithdrawals(params){
   try {
     const data = yield call(getWithdrawals, params);
@@ -43,19 +44,14 @@ function *fetchWithdrawals(params){
 function * makeWithdrawal({ payload:{ withdrawal } }){
   try {
     const data = yield call(addWithdrawal, withdrawal);
-    const { status, result } = data;
-    
-    if (status){
-      yield put(makeWithdrawalSuccess(result));
-      yield put(showSuccessNotification(`Withdrawal has been ${result.status}`));
-      yield delay(1000);
-      yield put(modalClear());
-    }
-    
+    const { result } = data;
+    yield put(makeWithdrawalSuccess(result));
+    yield put(modalClear());
+    yield put(showSuccessNotification("Withdrawal has been added successfuly"));
   } catch (error){
     yield put(withdrawalError(error.message));
-    yield delay(1000);
-    yield put(errorClear());
+    yield delay(5000);
+    yield put(withdrawalErrorClear());
   }
 
 }

@@ -128,7 +128,7 @@ const teamsReducer = (state = initialState, action) => {
       state = {
         ...state,
         addResult: action.payload,
-        docs: [action.payload, ...state.docs],
+        docs: [...state.docs, action.payload],
         addSuccess: true,
         addError: false,
         addLoading: false,
@@ -162,20 +162,19 @@ const teamsReducer = (state = initialState, action) => {
       break;
     case EDIT_TEAMS_DONE:
       // eslint-disable-next-line no-case-declarations
-      // const { id, ...payload } = action.payload;
+      const { id, ...payload } = action.payload;
       state = {
         ...state,
-        // docs: state.docs.map(obj => {
-        //   if (obj._id === id) {
-        //     return {
-        //       ...obj,
-        //       title: payload.result.title,
-        //       permissions: payload.result.permissions,
-        //     };
-        //   } else {
-        //     return obj;
-        //   }
-        // }),
+        docs: state.docs.map(obj => {
+          if (obj._id === id) {
+            return {
+              ...obj,
+              ...action.payload.result
+            };
+          } else {
+            return obj;
+          }
+        }),
         editLoading: false,
         editResult: action.payload.result,
         editSuccess: true,
@@ -209,21 +208,18 @@ const teamsReducer = (state = initialState, action) => {
       };
       break;
     case EDIT_TEAMS_MEMBERS_DONE:
-      // eslint-disable-next-line no-case-declarations
-      // const { id, ...payload } = action.payload;
       state = {
         ...state,
-        // docs: state.docs.map(obj => {
-        //   if (obj._id === id) {
-        //     return {
-        //       ...obj,
-        //       title: payload.result.title,
-        //       permissions: payload.result.permissions,
-        //     };
-        //   } else {
-        //     return obj;
-        //   }
-        // }),
+        docs: state.docs.map(obj => {
+          if (obj._id === action.payload.id) {
+            return {
+              ...obj,
+              members:[...obj.members, { id:action.payload.id } ]
+            };
+          } else {
+            return obj;
+          }
+        }),
         editLoading: false,
         editResult: action.payload.result,
         editSuccess: true,

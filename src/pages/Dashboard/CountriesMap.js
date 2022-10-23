@@ -66,7 +66,7 @@ const CountriesMap = (props) => {
       <Card className="card-animate countries-map">
         <CardBody>
           <CardTitle className="d-flex justify-content-between align-items-center">
-            <div>Customers Map</div>
+            <div>{props.t("Customers Map")}</div>
             <div className="btn-group btn-group-sm mt-2" role="group" aria-label="Basic example">
               <button type="button" className={dataStr.type === 0 ? "btn btn-primary" : "btn btn-info"}  onClick={()=>{changeCustomerType(0)}}>Clients</button>
               <button type="button" className={dataStr.type === 1 ? "btn btn-primary" : "btn btn-info"} onClick={()=>{changeCustomerType(1)}}>Leads</button>

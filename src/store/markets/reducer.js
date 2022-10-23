@@ -1,5 +1,16 @@
 import {
-  FETCH_MARKETS_START, FETCH_MARKETS_SUCCESS, EDIT_MARKET_START, EDIT_MARKET_SUCCESS, EDIT_MARKET_CLEAR, ADD_NEW_MARKET, ADD_NEW_MARKET_SUCCESS, ADD_MARKET_CLEAR, ADD_MARKET_ERROR
+  FETCH_MARKETS_START, 
+  FETCH_MARKETS_SUCCESS, 
+  EDIT_MARKET_START, 
+  EDIT_MARKET_SUCCESS, 
+  EDIT_MARKET_CLEAR, 
+  ADD_NEW_MARKET, 
+  ADD_NEW_MARKET_SUCCESS, 
+  ADD_MARKET_CLEAR, 
+  ADD_MARKET_ERROR,
+
+  CHANGE_MARKET_STATUS_REQUESTED,
+  CHANGE_MARKET_STATUS_DONE
 } from "./actionTypes";
 
 const initialState = {
@@ -80,6 +91,26 @@ const marketsReducer = (state = initialState, action)=>{
         ...state,
         error:action.payload
       };
+    
+    // change market status
+    case CHANGE_MARKET_STATUS_REQUESTED:
+      return {
+        ...state,
+        changeStatusLoading:true,
+        changeStatusIndex: action.payload.index,
+      };
+    case CHANGE_MARKET_STATUS_DONE:
+      return {
+        ...state,
+        markets: state.markets.map((market, index) => {
+          if (index === action.payload.index && !action.payload.error) {
+            market.active = !market.active;
+          }
+          return market;
+        }),
+        changeStatusLoading: false
+      };
+      
     default:
       return state;
   }

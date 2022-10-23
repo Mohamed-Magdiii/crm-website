@@ -15,8 +15,9 @@ import { withTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 import DeleteModal from "components/Common/DeleteModal";
-import TodoAdd from "components/Common/TodoAdd";
+import TodoEdit from "components/Common/TodoEdit";
 import { deleteTodosStart } from "store/actions";
+import moment from "moment";
 
 function EditReminderModal(props) {
   const [showEditModal, setShowEditModal] = useState(false);
@@ -63,14 +64,17 @@ function EditReminderModal(props) {
   }, [props.deletingClearCounter]);
 
   const deleteRole = () => {
-    dispatch(deleteTodosStart(todoObj._id));
+    dispatch(deleteTodosStart({
+      id: todoObj._id, 
+      type: todoObj.type
+    }));
   };
   
   return (
     <React.Fragment >
       <Modal isOpen={props.show} toggle={props.onClose} centered={true}>
         <ModalHeader toggle={props.onClose} tag="h4">
-          Edit Reminder
+          { todoObj.type == "0" ? "Todo" : "Reminder" }
         </ModalHeader>
         <ModalBody >
           <div className="row">
@@ -78,7 +82,7 @@ function EditReminderModal(props) {
               <Row>
                 <Col className="col-10">
                   <div className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-3">
-                    <h6>{todoObj.customerId.firstName + " " + todoObj.customerId.lastName}</h6>
+                    <h6 style={{ textTransform:"capitalize" }}>{todoObj.customerId.firstName + " " + todoObj.customerId.lastName}</h6>
                   </div>
                 </Col>
                 <Col className="col-2">
@@ -100,38 +104,31 @@ function EditReminderModal(props) {
                 </Col>
               </Row>
               <div className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-3">
-                Reminder At :<span> &nbsp; </span>{todoObj.timeEnd}
+                { todoObj.type == "0" ? "Todo" : "Reminder" } At :<span> &nbsp; </span>
+                <span>
+                  <span>
+                    {moment(todoObj.timeEnd).format("YYYY-MM-DD")}
+                  </span>
+                  <span className="ms-3">
+                    {moment(todoObj.timeEnd).format("HH:mm")}
+                  </span>
+                </span>
               </div>
               <div className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-3">
                 Created By :<span> &nbsp; </span> {todoObj.createdBy.firstName + " " + todoObj.createdBy.lastName}
               </div>
               <div className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12">
-                Reminder Note : <span> &nbsp; </span> {todoObj.note}
+                { todoObj.type == "0" ? "Todo" : "Reminder" }  Note : <span> &nbsp; </span> {todoObj.note}
                 {/* <br /> */}
               </div>
-              <div className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-3">
-                {todoObj.type == "0" &&
-                  <>
-                    Type : <span> &nbsp; </span>Todo
-                  </>
-                }
-                {todoObj.type == "1" &&
-                  <>
-                    Type :<span> &nbsp; </span> Reminder
-                  </>
-                }
-                {/* <h5>Created By: {createdBy?.firstName + " " + createdBy?.lastName}</h5> */}
-              </div>
-
             </div>
           </div>
-          <TodoAdd
+          <TodoEdit
             show={showEditModal} 
             data={props.data} 
             onClose={() => { setShowEditModal(false) }}
             hidenAddButton={true}
           />
-
         </ModalBody>
       </Modal>
       <DeleteModal

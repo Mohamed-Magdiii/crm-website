@@ -37,6 +37,7 @@ export const updateClientDetails = async ({ payload }) => {
 
   return data;
 };
+
 export const updateClientEmploymentStatus = async (payload )=>{
   const { id, values } = payload;
   const data = await axiosHelper.patch(`/clients/${id}/experience`, { experience:{ ...values } });
@@ -46,6 +47,7 @@ export const updateClientEmploymentStatus = async (payload )=>{
   }
   return data;
 };
+
 export const updateClientFinancialInfo = async (payload)=>{
   const { id, values } = payload;
   const data = await axiosHelper.patch(`/clients/${id}/financial-info`, { financialInfo : { ...values } });
@@ -55,6 +57,7 @@ export const updateClientFinancialInfo = async (payload)=>{
   }
   return data;
 };
+
 export const resetPassowrd = async (payload)=>{
   const { id, values } = payload;
   const data = await axiosHelper.post(`/clients/${id}/reset-password`, values);
@@ -64,6 +67,7 @@ export const resetPassowrd = async (payload)=>{
   }
   return data;
 };
+
 export const forgotPassword = async(payload)=>{
   const { id, email } = payload;
   const data = await axiosHelper.post(`/clients/${id}/forgot-password`, { email });
@@ -71,4 +75,19 @@ export const forgotPassword = async(payload)=>{
     throw new Error("Error Sending Email");
   }
   return data;
+};
+
+export const disable2FA = async (payload)=>{
+  const { id  } = payload;
+  const res = await axiosHelper.post("/clients/disable-2fa", { customerId: id });
+  if (res.status)
+    return res.status;
+  else throw new Error(res.message);
+};
+
+export const checkClientEmailApi = async (payload) => {
+  // eslint-disable-next-line no-debugger
+  debugger;
+  const result = await axiosHelper.get(`/clients/check-email?${qs.stringify(payload, { encode: false })}`);
+  return result;
 };
