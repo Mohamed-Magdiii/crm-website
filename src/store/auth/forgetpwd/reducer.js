@@ -2,6 +2,7 @@ import {
   FORGET_PASSWORD,
   FORGET_PASSWORD_SUCCESS,
   FORGET_PASSWORD_ERROR,
+  FORGET_PASSWORD_CLEAR,
 } from "./actionTypes";
 
 const initialState = {
@@ -30,6 +31,14 @@ const forgetPassword = (state = initialState, action) => {
         forgetError: action.payload 
       };
       break;
+    case FORGET_PASSWORD_CLEAR:
+      state = {
+        ...state,
+        forgetSuccessMsg: null,
+        forgetError: null
+      };
+      break;
+    
     default:
       state = { ...state };
       break;

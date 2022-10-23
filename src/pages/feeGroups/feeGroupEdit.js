@@ -98,8 +98,6 @@ function feeGroupAdd(props) {
                   />
                 </div>
               </Col>
-           
-              
             </Row>
             <Row>
               <Col className= "d-flex flex-column justify-content-center"><label>Default:</label></Col>
@@ -109,15 +107,11 @@ function feeGroupAdd(props) {
                     name="value"
                     label={props.t("Value")}
                     placeholder={props.t("Enter value")}
-                    type="text"
+                    type="number"
+                    min="0"
                     value={v ? v.$numberDecimal : ""}
                     validate = {{
-                      required :{ value:true },
-                      pattern : {
-                        // eslint-disable-next-line no-useless-escape
-                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
-                        errorMessage : "Value must be a number"
-                      }
+                      required :{ value:true }
                     }} 
                     onChange = {(e)=>setValue(e.target.value)}
                   />
@@ -129,16 +123,12 @@ function feeGroupAdd(props) {
                     name="maxValue"
                     label={props.t("Max Value")}
                     placeholder={props.t("Enter Max")}
-                    type="text"
+                    type="number"
+                    min="0"
                     value= {maxValue ? maxValue.$numberDecimal : ""}
                     onChange = {(e)=>setMaxAmount(e.target.value)}
                     validate = {{
-                      required :{ value:true },
-                      pattern : {
-                        // eslint-disable-next-line no-useless-escape
-                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
-                        errorMessage : "Max Value must be a number"
-                      }
+                      required :{ value:true }
                     }} 
                   />
                 </div>
@@ -149,16 +139,12 @@ function feeGroupAdd(props) {
                     name="minValue"
                     label={props.t("Min Value")}
                     placeholder={props.t("Enter Min")}
-                    type="text"
+                    type="number"
+                    min="0"
                     value={ minValue ? minValue.$numberDecimal : ""}
                     onChange = {(e)=>setMinAmount(e.target.value)}
                     validate = {{
-                      required :{ value:true },
-                      pattern : {
-                        // eslint-disable-next-line no-useless-escape
-                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
-                        errorMessage : "Min Value must be a number"
-                      }
+                      required :{ value:true }
                     }} 
                   />
                 </div>
@@ -166,7 +152,6 @@ function feeGroupAdd(props) {
             </Row> 
           
             <div className="mb-3">
-            
               <input 
                 checked={isPercentage}
                 type="checkbox"
@@ -174,12 +159,9 @@ function feeGroupAdd(props) {
                 onChange={()=>setIsPercentage(preValue=>!preValue)} 
                 value={isPercentage ? "True" : "False"} />
               <Label check for="isPercentage">Is Percentage</Label>
-        
             </div>
             <Col xl={12}>
               <Card>
-              
-              
                 <div className="accordion" id="accordion">
                   <div className="accordion-item">
                     <h2 className="accordion-header" id="headingOne">
@@ -200,11 +182,8 @@ function feeGroupAdd(props) {
                     <Collapse isOpen={col1} className="accordion-collapse">
                       <div className="accordion-body">
                         <div className="text-muted">
-                        
-                          {props.markets.map((market, i)=>{
-                              
+                          {props.markets.map((market, i)=>{ 
                             const { pairName } = market;
-                              
                             return (
                               <Row key={market._id}>
                                 <Col className="d-flex flex-column justify-content-center"><label>{pairName}</label></Col>
@@ -212,14 +191,11 @@ function feeGroupAdd(props) {
                                   <AvField 
                                     name={`fee${i}`} 
                                     label="Value" 
+                                    type="number"
+                                    min="0"
                                     defaultValue={ v ? v.$numberDecimal : ""} 
                                     validate = {{
-                                      required :{ value:true },
-                                      pattern : {
-                                        // eslint-disable-next-line no-useless-escape
-                                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
-                                        errorMessage : "Value must be a number"
-                                      }
+                                      required :{ value:true }
                                     }} 
                                     value={value}></AvField>
                                 </Col>
@@ -227,15 +203,12 @@ function feeGroupAdd(props) {
                                   <AvField 
                                     name={`maxAmount${i}`} 
                                     label="Max Value" 
+                                    type="number"
+                                    min="0"
                                     defaultValue={ maxValue ? maxValue.$numberDecimal : "" }
                                     value={maxAmount}
                                     validate = {{
-                                      required :{ value:true },
-                                      pattern : {
-                                        // eslint-disable-next-line no-useless-escape
-                                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
-                                        errorMessage : "Max value must be a number"
-                                      }
+                                      required :{ value:true }
                                     }} 
                                   ></AvField>
                                 </Col>
@@ -243,29 +216,22 @@ function feeGroupAdd(props) {
                                   <AvField 
                                     name={`minAmount${i}`} 
                                     label="Min Value"
+                                    type="number"
+                                    min="0"
                                     defaultValue = { minValue ? minValue.$numberDecimal : ""}
                                     validate = {{
-                                      required :{ value:true },
-                                      pattern : {
-                                        // eslint-disable-next-line no-useless-escape
-                                        value :"^[0-9]+(\\.([0-9]{1,4}))?$",
-                                        errorMessage : "Min Value must be a number"
-                                      }
+                                      required :{ value:true }
                                     }} 
                                     value={minAmount}></AvField>
-                                 
                                 </Col>
                               </Row>
-                            
                             );
                           })}   
-                          
                         </div>
                       </div>
                     </Collapse>
                   </div>
                 </div>
-                
               </Card>
             </Col>
             <div className='text-center pt-3 p-2'>
@@ -282,7 +248,6 @@ function feeGroupAdd(props) {
               </UncontrolledAlert>
             )
           }
-        
         </ModalBody>
       </Modal>
     </React.Fragment>

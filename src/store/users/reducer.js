@@ -126,6 +126,16 @@ const usersReducer = (state = initialState, action) => {
     case EDIT_USERS_START:
       state = {
         ...state,
+        docs:state.docs.map((doc)=>{
+          if (doc._id === action.payload.id){
+            return {
+              ...doc,
+              ...action.payload.values
+            };
+          }
+          else 
+            return doc;
+        }),
         editLoading: true,
       };
       break;

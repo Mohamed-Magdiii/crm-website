@@ -100,7 +100,7 @@ function TransactionFeeGroupEdit(props) {
                   <AvField
                     name="title"
                     label={props.t("Title")}
-                    placeholder={props.t("title")}
+                    placeholder={props.t("Enter Enter Title")}
                     type="text"
                     value={selectedItem.title}
                     errorMessage={props.t("Enter Valid title")}
@@ -115,8 +115,9 @@ function TransactionFeeGroupEdit(props) {
                   <AvField
                     name="value"
                     label={props.t("Value")}
-                    placeholder={props.t("value")}
-                    type="text"
+                    placeholder={props.t("Enter Enter value")}
+                    type="number"
+                    min="0"
                     value={selectedItem.value?.$numberDecimal}
                     errorMessage={props.t("Enter valid fees group value")}
                     validate={{ required: { value: true } }}
@@ -129,8 +130,9 @@ function TransactionFeeGroupEdit(props) {
                   <AvField
                     name="minValue"
                     label={props.t("Min value")}
-                    placeholder={props.t("min value")}
-                    type="text"
+                    placeholder={props.t("Enter Enter min value")}
+                    type="number"
+                    min="0"
                     value={selectedItem.minValue?.$numberDecimal}
                     errorMessage={props.t("Enter valid min fees group value")}
                     validate={{ required: { value: true } }}
@@ -142,8 +144,9 @@ function TransactionFeeGroupEdit(props) {
                   <AvField
                     name="maxValue"
                     label={props.t("Max Value")}
-                    placeholder={props.t("Max Value")}
-                    type="text"
+                    placeholder={props.t("Enter Enter Max Value")}
+                    type="number"
+                    min="0"
                     value={selectedItem.maxValue?.$numberDecimal}
                     errorMessage={props.t("Enter Valid max feees group value")}
                     validate={{ required: { value: true } }}
@@ -196,8 +199,9 @@ function TransactionFeeGroupEdit(props) {
                                     name={`value${index}`}
                                     label={props.t("Value")}
                                     value={value?.value}
-                                    placeholder={props.t("Value")}
+                                    placeholder={props.t("Enter Value")}
                                     type="number"
+                                    min="0"
                                   />
                                 </Col>
                                 <Col >
@@ -205,8 +209,9 @@ function TransactionFeeGroupEdit(props) {
                                     name={`minValue${index}`}
                                     label={props.t("Min Value")}
                                     value={value?.minValue}
-                                    placeholder={props.t("Min Value")}
+                                    placeholder={props.t("Enter Min Value")}
                                     type="number"
+                                    min="0"
                                   />
                                 </Col>
                                 <Col >
@@ -214,8 +219,9 @@ function TransactionFeeGroupEdit(props) {
                                     name={`maxValue${index}`}
                                     label={props.t("Max Value")}
                                     value={value?.maxValue}
-                                    placeholder={props.t("Max Value")}
+                                    placeholder={props.t("Enter Max Value")}
                                     type="number"
+                                    min="0"
                                   />
                                 </Col>
                               </Row>
@@ -233,7 +239,7 @@ function TransactionFeeGroupEdit(props) {
             </Row>
             <div className='text-center pt-3 p-2'>
               <Button disabled={disabled} type="submit" color="primary" className="">
-                {props.t("Update Transaction Fee Group")}
+                {props.t("Edit Transaction Fee Group")}
               </Button>
             </div>
           </AvForm>
@@ -245,14 +251,15 @@ function TransactionFeeGroupEdit(props) {
               </UncontrolledAlert>
             )
           }
-          {
+          {/* {
             props.showEditSuccessMessage && (
               <UncontrolledAlert color="success">
                 <i className="mdi mdi-check-all me-2" />
                 {props.t("Transaction Fees Group is updated successfully !!!")}
               </UncontrolledAlert>
             )
-          }
+          } */}
+        
         </ModalBody>
       </Modal>
     </React.Fragment>

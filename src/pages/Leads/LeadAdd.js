@@ -9,18 +9,27 @@ import {
   Col,
   Row
 } from "reactstrap";
-
+import { debounce } from "lodash";
 import { Link } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React, { 
+  useState, 
+  useEffect, 
+  useCallback, 
+} from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { addNewLead } from "../../store/leads/actions";
 import CountryDropDown from "../../components/Common/CountryDropDown";
+import { fetchClientsStart } from "store/client/actions";
+import { fetchUsers } from "store/users/actions";
 import { withTranslation } from "react-i18next";
-function LeadForm(props) {
+import { checkLeadEmailApi } from "apis/lead-api";
+import { emailCheck } from "common/utils/emailCheck";
 
+function LeadForm(props) {
+  const dispatch = useDispatch();
   const [addModal, setAddUserModal] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState("");
-  const dispatch = useDispatch();
+  const [duplicatedEmail, setDuplicatedEmail] = useState(false);
   const { create } = props.leadsPermissions;
   const handleAddLead = (event, values)=>{
     event.preventDefault();
@@ -38,13 +47,38 @@ function LeadForm(props) {
   const toggleAddModal = () => {
     setAddUserModal(!addModal);
   };
-  
+
+  const loadClients = (page, limit) => {
+    dispatch(fetchClientsStart({
+      limit,
+      page
+    }));
+  };
+
+  const loadUsers = (page, limit) => {
+    dispatch(fetchUsers({
+      limit,
+      page
+    }));
+  };
+
+  useEffect(() => {
+    loadClients();
+    loadUsers();
+  }, []);
+
   useEffect(()=>{
     if (!props.showAddSuccessMessage  && addModal) {
-    
       setAddUserModal(false);
+      setDuplicatedEmail(false);
     }
   }, [props.showAddSuccessMessage]);
+  
+  const debouncedChangeHandler = useCallback(
+    debounce((value, ctx, input, cb) => 
+      emailCheck(value, ctx, input, cb, checkLeadEmailApi), 1000
+    ), []
+  );
 
   return (
     <React.Fragment >
@@ -98,7 +132,11 @@ function LeadForm(props) {
                     placeholder={props.t("Enter Email")}
                     type="email"
                     errorMessage={props.t("Enter Valid Email")}
-                    validate={{ required: { value: true } }}
+                    validate={{
+                      required: true,
+                      email: true,
+                      async: debouncedChangeHandler
+                    }}
                   />
                 </div>
               </Col>
@@ -110,6 +148,13 @@ function LeadForm(props) {
                     placeholder={props.t("Enter Phone")}
                     type="text"
                     errorMessage={props.t("Enter valid phone")}
+                    onKeyPress={(e) => {
+                      if (/^[+]?\d+$/.test(e.key) || (e.key === "+") ) {
+                        return true;
+                      } else {
+                        e.preventDefault();
+                      }
+                    }}
                     validate={
                       { 
                         required: { value: true },
@@ -170,9 +215,12 @@ function LeadForm(props) {
 
 const mapStateToProps = (state) => ({
   error: state.leadReducer.error,
+  leads: state.leadReducer.leads,
   showAddSuccessMessage :state.leadReducer.showAddSuccessMessage,
   disableAddButton : state.leadReducer.disableAddButton,
-  leadsPermissions : state.Profile.leadsPermissions || {}
+  leadsPermissions : state.Profile.leadsPermissions || {},
+  clients: state.clientReducer.clients,
+  users: state.usersReducer.docs || []
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(LeadForm));

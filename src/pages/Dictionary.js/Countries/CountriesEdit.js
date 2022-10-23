@@ -77,13 +77,16 @@ function CountriesEdit(props){
                 placeholder={props.t("Enter Calling Code")}
                 type="text"
                 errorMessage={props.t("Enter valid calling code")}
-                validate={{
-                  
-                  required: { value: true },
-                  pattern :{
-                    value:"^[0-9]+$",
-                    errorMessage:"Calling code must be all in numbers"
+                onKeyPress={(e) => {
+                  if (!isNaN(e.key) && e.target.value.length > 0){
+                    return true;
                   }
+                  if (!/[0-9]/.test(e.key)) {
+                    e.preventDefault();
+                  }
+                }}
+                validate={{
+                  required: { value: true }
                 }}
               />
             </div>

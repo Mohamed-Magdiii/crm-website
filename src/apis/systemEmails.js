@@ -2,7 +2,7 @@ import qs from "qs";
 import * as axiosHelper from "./api_helper";
 
 export const getSystemEmails = async ({ payload }) => {
-  const data = await axiosHelper.get(`/system-emails/?${qs.stringify(payload)}`);
+  const data = await axiosHelper.get(`/systememail?${qs.stringify(payload)}`);
   if (data.isError){
     throw new Error(data.mesage);
   }
@@ -12,7 +12,7 @@ export const getSystemEmails = async ({ payload }) => {
 
 export const getSystemEmailById = async ({ payload }) => {
   const id = payload;
-  const data = await axiosHelper.get(`/system-emails/${id}`);
+  const data = await axiosHelper.get(`/systememail/${id}`);
   if (data.isError){
     throw new Error(data.message);
   }
@@ -21,7 +21,7 @@ export const getSystemEmailById = async ({ payload }) => {
 };
 
 export const addSystemEmail = async({ payload }) => {
-  const data = await axiosHelper.post("/system-emails", payload);
+  const data = await axiosHelper.post("/systememail", payload);
   if (data.isError) {
     throw new Error(data.message);
   } 
@@ -31,7 +31,7 @@ export const addSystemEmail = async({ payload }) => {
 
 export const editSystemEmail = async ({ payload }) => {
   const { id, values } = payload;
-  const data = await axiosHelper.patch(`/system-emails/${id}`, values);
+  const data = await axiosHelper.patch(`/systememail/${id}`, values);
   if (data.isError){
     throw new Error(data.message);
   }
@@ -41,7 +41,7 @@ export const editSystemEmail = async ({ payload }) => {
 
 export const editSystemEmailContent = async ({ payload }) => {
   const { id, values } = payload;
-  const data = await axiosHelper.patch(`/system-emails/${id}/content`, values);
+  const data = await axiosHelper.patch(`/systememail/${id}/content`, values);
   if (data.isError){
     throw new Error(data.message);
   }
@@ -51,7 +51,7 @@ export const editSystemEmailContent = async ({ payload }) => {
 
 export const deleteSystemEmail = async ({ payload }) => {
   // here the payload is just the id for system email to be deleted 
-  const data = await axiosHelper.del(`/system-emails/${payload}`);
+  const data = await axiosHelper.del(`/systememail/${payload}`);
   if (data.isError){
     throw new Error(data.message);
   }
@@ -61,7 +61,7 @@ export const deleteSystemEmail = async ({ payload }) => {
 
 export const fetchSystemEmailHTML = async ({ payload }) => {
   const { id, lang } = payload;
-  const data = await axiosHelper.get(`/system-emails/${id}/preview/${lang}`);
+  const data = await axiosHelper.get(`/systememail/${id}/preview/${lang}`);
   if (data.isError){
     throw new Error(data.message);
   }
@@ -71,7 +71,7 @@ export const fetchSystemEmailHTML = async ({ payload }) => {
 
 export const changeSystemEmailStatus = async({ payload }) => {
   const { id, status } = payload;
-  const data = await axiosHelper.post(`/system-emails/${id}/${status}`);
+  const data = await axiosHelper.post(`/systememail/${id}/${status}`);
   if (data.isError) {
     throw new Error(data.message);
   } 

@@ -21,6 +21,8 @@ import TableLoader from "components/Common/TableLoader";
 import DeleteModal from "components/Common/DeleteModal";
 import UsersAddModal from "./UsersAddModal";
 import UsersEditModal from "./UsersEditModal";
+import { showErrorNotification } from "store/notifications/actions";
+import { MetaTags } from "react-meta-tags";
 function UsersList() {
 
   const [editModal, setEditUserModal] = useState(false);
@@ -42,7 +44,6 @@ function UsersList() {
     deleteLoading,
     deleteClearingCounter,
     roles,
-    clearingCounter,
     userPermissions
     // editClearingCounter,
   } = useSelector((state) => ({
@@ -124,7 +125,7 @@ function UsersList() {
       editable: false,
       text: "Action",
       formatter: (user) => (
-        <div className="text-center">
+        <div className="d-flex gap-3 justify-content-center">
           <Link className="text-success" to="#">
             <i
               className={`mdi mdi-pencil font-size-18 ${!update ? "d-none" : ""}`}
@@ -151,7 +152,7 @@ function UsersList() {
   useEffect(() => {
     loadUsers(currentPage, sizePerPage);
     loadRoles(1, 100);
-  }, [sizePerPage, 1, clearingCounter]);
+  }, [sizePerPage, 1]);
 
   const loadUsers = (page, limit) => {
     setcurrentPagePage(page);
@@ -179,7 +180,12 @@ function UsersList() {
 
   };
   const deleteUser = () => {
-    dispatch(deleteUsers(selectedUser._id));
+    const currentUser = JSON.parse(localStorage.getItem("authUser"));
+    if (selectedUser.email == currentUser.email){
+      dispatch(showErrorNotification("Cannot delete same user as you logged in right now!"));
+      setDeleteUserModal(false);
+    } else
+      dispatch(deleteUsers(selectedUser._id));
   };
 
   const statusUser = (user) => {
@@ -197,6 +203,11 @@ function UsersList() {
       loadUsers(1, sizePerPage);
     }
   };
+
+  const allUsersEmails = docs.map((doc) => (
+    doc.email
+  ));
+
   useEffect(() => {
     if (deleteClearingCounter > 0 && deleteModal) {
       setDeleteUserModal(false);
@@ -205,6 +216,11 @@ function UsersList() {
 
   return (
     <React.Fragment>
+      <MetaTags>
+        <title>
+          Users
+        </title>
+      </MetaTags>
       <div className="page-content">
         <div className="container-fluid">
           <h2>Users</h2>
@@ -215,7 +231,7 @@ function UsersList() {
                   <CardTitle>
                     Users List ({totalDocs})
                   </CardTitle>
-                  <UsersAddModal usersRoles={roles} />
+                  <UsersAddModal usersRoles={roles} allUsersEmails={allUsersEmails} />
                 </CardHeader>
                 <CardBody>
                   <div className="search-box me-2 mb-2 d-inline-block">
@@ -280,7 +296,7 @@ function UsersList() {
               </Card>
             </Col>
           </Row>
-          {<UsersEditModal open={editModal} user={selectedUser} usersRoles={roles} onClose={() => { setEditUserModal(false) }} />}
+          {<UsersEditModal allUsersEmails={allUsersEmails} open={editModal} user={selectedUser} usersRoles={roles} onClose={() => { setEditUserModal(false) }} />}
           {<DeleteModal loading={deleteLoading} onDeleteClick={deleteUser} show={deleteModal} onCloseClick={() => { setDeleteUserModal(false) }} />}
         </div>
       </div>

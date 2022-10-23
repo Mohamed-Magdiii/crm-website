@@ -1,5 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { getUserProfile } from "store/auth/profile/actions";
+import { fetchAccountTypes } from "store/tradingAccounts/actions";
+
 import { useEffect } from "react";
 function usePermissions(){
   const dispatch = useDispatch();
@@ -41,6 +43,7 @@ function usePermissions(){
   useEffect(()=>{
     if (localStorage.getItem("authUser")){
       dispatch(getUserProfile());
+      dispatch(fetchAccountTypes());
     }
      
   }, []);

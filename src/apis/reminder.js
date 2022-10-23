@@ -32,9 +32,19 @@ export const updateTodo = async (id, params) => {
   return data.result;
 };
 
-export const deleteTodo = async (id) => {
+export const deleteTodo = async (payload) => {
   // const { id, values } = payload;
-  const data = await axiosHelper.del("/todos/" + id);
+  const data = await axiosHelper.del("/todos/" + payload.id);
+  if (data.isError) {
+    throw new Error(data.message);
+  }
+  return data.result;
+};
+
+export const editTodo = async (params)=>{
+  const id = params.id;
+  delete params.id;
+  const data = await axiosHelper.patch("/todos/" + id, params);
   if (data.isError) {
     throw new Error(data.message);
   }

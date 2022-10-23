@@ -20,7 +20,7 @@ import * as content from "content";
 import { loginUser } from "../../store/actions";
 
 // import images
-import logo from "../../assets/images/logo-sm.svg";
+// import logo from "../../assets/images/logo-sm.svg";
 
 //Import config
 
@@ -34,7 +34,6 @@ const Login = props => {
   }));
   // handleValidSubmit
   const handleValidSubmit = (event, values) => {
-    
     event.preventDefault();
     dispatch(loginUser(values, props.history));
   };
@@ -54,7 +53,7 @@ const Login = props => {
                   <div className="d-flex flex-column h-100">
                     <div className="mb-4 mb-md-5 text-center">
                       <Link to="/dashboard" className="d-block auth-logo">
-                        <img src={logo} alt="" height="28" /> <span className="logo-txt">{content.clientName}</span>
+                        <img src={content.mainLogo} alt="" height="28" /> <span className="logo-txt">{content.clientName}</span>
                       </Link>
                     </div>
                     
@@ -78,14 +77,17 @@ const Login = props => {
                         />
                       </div>
                       <div className="mb-3">
-                        <div className="d-flex align-items-start">
-                          <div className="flex-grow-1">
-                            <label className="form-label">Password</label>
-                          </div>
-                            
-                        </div>
-
                         <div className="mb-3">
+                          <div className="d-flex align-items-start">
+                            <div className="flex-grow-1">
+                              <label className="form-label">Password</label>
+                            </div>
+                            <div className="flex-shrink-0">
+                              <div className="">
+                                <Link to="/forgot-password" className="text-muted">Forgot password?</Link>
+                              </div>
+                            </div>
+                          </div>
                           <AvField
                             name="password"
                             value=""
@@ -97,16 +99,18 @@ const Login = props => {
                           />
                         </div>
                       </div>
-                        
+  
                       <div className="mb-3">
                         <button className="btn btn-primary w-100 waves-effect waves-light" type="submit">Log In</button>
                       </div>
                     </AvForm>
                      
-
                     <div className="mt-5 text-center">
-                      <p className="text-muted mb-0">Don&#39;t have an account ? <Link to="/register"
-                        className="text-primary fw-semibold"> Signup now </Link> </p>
+                      <p className="text-muted mb-0"> Don&#39;t have an account ? 
+                        <Link to="/register" className="text-primary fw-semibold"> 
+                          Signup now 
+                        </Link>
+                      </p>
                     </div>
                   </div>
                   <div className="mt-4 mt-md-5 text-center">

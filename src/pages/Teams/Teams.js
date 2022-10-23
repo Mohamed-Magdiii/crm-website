@@ -23,6 +23,7 @@ import TeamsAddModal from "./TeamsAddModal";
 import TeamsEditModal from "./TeamsEditModal";
 import TeamsEditMembersModal from "./TeamsEditMembersModal";
 import { showSuccessNotification } from "store/notifications/actions";
+import { MetaTags } from "react-meta-tags";
 
 function Teams() {
 
@@ -50,7 +51,6 @@ function Teams() {
     deleteLoading,
     deleteClearingCounter,
     // roles,
-    clearingCounter,
     // editClearingCounter,
     teamsPermissions
   } = useSelector((state) => ({
@@ -160,7 +160,7 @@ function Teams() {
 
   useEffect(() => {
     loadTeams(currentPage, sizePerPage);
-  }, [sizePerPage, 1, clearingCounter, editLoad]);
+  }, [sizePerPage]);
 
   const loadTeams = (page, limit) => {
     setcurrentPagePage(page);
@@ -198,6 +198,11 @@ function Teams() {
 
   return (
     <React.Fragment>
+      <MetaTags>
+        <title>
+          Teams
+        </title>
+      </MetaTags>
       <div className="page-content">
         <div className="container-fluid">
           <h2>Teams</h2>

@@ -31,11 +31,9 @@ function CustomDropdown({ id, status, approve, reject, permission, ...props }){
           <DropdownMenu className="dropdown-menu-end">
             <DropdownItem onClick={()=>approve(id)}href="#">{props.t("Approve")}</DropdownItem>
             <DropdownItem onClick={()=>reject(id)} href="#">{props.t("Reject")}</DropdownItem>
-                
           </DropdownMenu>
         </Dropdown>
       </div>
-          
     </div>
   );
 }

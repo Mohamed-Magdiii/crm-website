@@ -8,21 +8,28 @@ import {
   Col,
   Row
 } from "reactstrap";
+import { debounce } from "lodash";
 import { withTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React, { 
+  useState, 
+  useEffect, 
+  useCallback,
+} from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 
-import { 
-  addNewClient
-} from "../../store/client/actions";
+import { addNewClient } from "../../store/client/actions";
+import { fetchLeadsStart } from "../../store/leads/actions";
 import CountryDropDown from "../../components/Common/CountryDropDown";
-function ClientForm(props){
+import { fetchUsers } from "store/users/actions";
+import { checkClientEmailApi } from "apis/client";
+import { emailCheck } from "common/utils/emailCheck";
 
-  const [addModal, setAddUserModal] = useState(false);
-  const { create } = props.clientPermissions;
+function ClientForm(props){
   const dispatch = useDispatch();
+  const [addModal, setAddUserModal] = useState(false);
   const [ selectedCountry, setCountry] = useState("");
+  const { create } = props.clientPermissions;
   const handleAddLead = (event, values) => {
     event.preventDefault();
     dispatch(addNewClient({
@@ -40,14 +47,42 @@ function ClientForm(props){
   };
 
   useEffect(() => {
+    loadLeads();
+    loadUsers();
+  }, []);
+  
+  const loadLeads = (page, limit) => {
+    dispatch(fetchLeadsStart({
+      limit,
+      page
+    }));
+  };
+
+  const loadUsers = (page, limit) => {
+    dispatch(fetchUsers({
+      limit,
+      page
+    }));
+  };
+
+  useEffect(() => {
     if (!props.showAddSuccessMessage  && addModal) {
       setAddUserModal(false);
     }
   }, [props.showAddSuccessMessage]);
 
+  const debouncedChangeHandler = useCallback(
+    debounce((value, ctx, input, cb) => 
+      emailCheck(value, ctx, input, cb, checkClientEmailApi), 1000
+    ), []
+  );
+
   return (
     <React.Fragment >
-      <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`}  onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> {props.t("Add New Client")}</Link>
+      <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`}  onClick={toggleAddModal}>
+        <i className="bx bx-plus me-1" /> 
+        {props.t("Add New Client")}
+      </Link>
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
           {props.t("Add New Client")}
@@ -92,9 +127,13 @@ function ClientForm(props){
                     name="email"
                     label={props.t("Email")}
                     placeholder={props.t("Enter Email")}
-                    type="email"
+                    type="text"
                     errorMessage={props.t("Enter Valid Email")}
-                    validate={{ required: { value: true } }}
+                    validate={{
+                      required: true,
+                      email: true,
+                      async: debouncedChangeHandler
+                    }}
                   />
                 </div>
               </Col>
@@ -105,7 +144,13 @@ function ClientForm(props){
                     label={props.t("Phone")}
                     placeholder={props.t("Enter Your Phone")}
                     type="text"
-                   
+                    onKeyPress={(e) => {
+                      if (/^[+]?\d+$/.test(e.key) || e.key === "+") {
+                        return true;
+                      } else {
+                        e.preventDefault();
+                      }
+                    }}
                     validate={
                       { 
                         required: { value: true },
@@ -132,12 +177,8 @@ function ClientForm(props){
                     // eslint-disable-next-line no-useless-escape
                     value:"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$",
                     errorMessage :"Must contain at least eight characters, at least one number and both lower and uppercase letters and special characters"
-                  }
-                  
-                }
-                }
-                
-                
+                  } 
+                }}
               />
             </div>
             <div className="mb-3">
@@ -165,7 +206,9 @@ const mapStateToProps = (state) => ({
   error: state.clientReducer.error,
   clientPermissions: state.Profile.clientPermissions,
   showAddSuccessMessage: state.clientReducer.showAddSuccessMessage,
-  disableAddButton: state.clientReducer.disableAddButton
-
+  disableAddButton: state.clientReducer.disableAddButton,
+  clients: state.clientReducer.clients,
+  leads: state.leadReducer.leads,
+  users: state.usersReducer.docs || []
 });
 export default connect(mapStateToProps, null)(withTranslation()(ClientForm));

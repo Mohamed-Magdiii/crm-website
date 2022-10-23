@@ -6,13 +6,14 @@ import {
 import {
   Modal, ModalHeader,
   ModalBody,
-  Row, Col
+  Row, Col, UncontrolledAlert,
 } from "reactstrap";
 import {
   AvForm, AvField, AvRadio, AvRadioGroup
 } from "availity-reactstrap-validation";
 import { withTranslation } from "react-i18next";
 import { AsyncPaginate } from "react-select-async-paginate";
+import moment from "moment";
 
 import { addTodosStart } from "store/todos/actions";
 
@@ -49,9 +50,9 @@ const loadClientsOptions = async (search, page) => {
   };
 };
 
-function TodoAdd (props) {
+function TodoAdd(props) {
   const [addModal, setAddTodoModal] = useState(false);
-  
+
   const dispatch = useDispatch();
   const { create = true } = props.todosPermissions;
   const toggleAddModal = () => {
@@ -62,11 +63,11 @@ function TodoAdd (props) {
   };
   const handleAddTodo = (e, values) => {
     dispatch(addTodosStart({
-      ...values, 
+      ...values,
       id: todoObj._id
     }));
   };
-  useEffect(()=>{
+  useEffect(() => {
     if (props.clearingCounter > 0 && addModal) {
       setAddTodoModal(false);
       if (props.onClose) {
@@ -75,7 +76,7 @@ function TodoAdd (props) {
     }
   }, [props.clearingCounter]);
 
-  useEffect(()=>{
+  useEffect(() => {
     setAddTodoModal(props.show);
   }, [props.show]);
 
@@ -103,8 +104,26 @@ function TodoAdd (props) {
     };
   };
 
-  useEffect(()=>{
-    if (props.data && props.data.customerId && props.data.customerId._id) {
+  /**
+   * For reminders page
+    */
+  // TODO - get enums from the backend
+  const statusOptions = ["open", "ongoing", "completed"];
+
+  const handleChangeDate = async (value, ctx, input, cb)=>{
+    delete input.validations.min;
+    const now = moment();
+    const v = moment(value);
+    if (!value){
+      cb("Date is required");
+    }
+    if (now.diff(v) > 0)
+      cb("Can't choose past dates");
+    else
+      cb(true);
+  };
+  useEffect(() => {
+    if (props?.data?.customerId?._id) {
       setTodoObj(props.data);
     }
     if (props.selectedDay) {
@@ -119,11 +138,11 @@ function TodoAdd (props) {
   return (
     <React.Fragment >
       {!props.hidenAddButton &&
-        <Link to="#"  className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i> Add New Todo</Link>
+        <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}><i className="bx bx-plus me-1"></i>Add New Todo</Link>
       }
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
-            Add New Todo
+          {(todoObj._id ? "Edit " : "New ") + "Todo/Reminder"}
         </ModalHeader>
         <ModalBody >
           <AvForm onValidSubmit={handleAddTodo}>
@@ -139,7 +158,7 @@ function TodoAdd (props) {
                   value={props.selectedClient?._id}
                 />
               </React.Fragment>}
-              {props.data && props.data.customerId && <React.Fragment>
+              {props?.data?.customerId && <React.Fragment>
                 <Col className="col-12 mb-3">
                   <label>{props.t("Client")}</label>
                   <h5>{props.t(props.data.customerId.firstName + " " + props.data.customerId.lastName)}</h5>
@@ -152,7 +171,7 @@ function TodoAdd (props) {
                   value={clientValue}
                   loadOptions={loadPageOptions}
                   placeholder="Choose Client Name ..."
-                  onChange={(obj)=>{setclientValue(obj)}}
+                  onChange={(obj) => { setclientValue(obj) }}
                   errorMessage="please select Client"
                   validate={{ required: { value: true } }}
                 />
@@ -166,61 +185,84 @@ function TodoAdd (props) {
                     required: { value: true },
                   }}
                 />
-
               </Col>}
-
               <Col className="col-12 mb-3">
                 <AvField
+                  className="form-control"
                   name="note"
-                  label={props.t("Reminder Note")}
-                  type="text"
+                  label={props.t("Note")}
+                  type="textarea"
+                  rows="4"
                   value={todoObj.note}
-                  errorMessage={props.t("Invalid Reminder Note")}
+                  placeholder={props.t("Enter Your Note")}
+                  errorMessage={props.t("Invalid Note")}
                   validate={{
                     required: { value: true },
                   }}
                 />
-                
               </Col>
               <Col className="col-12 mb-3">
                 <AvField
                   type="datetime-local"
                   name="timeEnd"
-                  // value="testing"
-                  // value={todoObj.timeEnd.slice(0, -5) || new Date().toISOString().slice(0, -5)}
-                  label={props.t("Reminder")}
-                  errorMessage={props.t("Invalid Reminder Note")}
+                  value={todoObj?.timeEnd ? String(moment(todoObj.timeEnd).format("YYYY-MM-DDTHH:mm")) : ""}
+                  label={props.t("Date")}
+                  min= {moment().format("YYYY-MM-DDTHH:mm")}
+                  validate={{
+                    required: { value : true },
+                    custom: handleChangeDate
+                  }}
                 >
                 </AvField>
               </Col>
+              {/* Show todo status enums while editing only, while creating default status is 'open'  */}
+              {todoObj._id && <Col className="col-12 mb-3">
+                <AvField type="select" name="status" label={props.t("Status")} value={todoObj.status}>
+                  {statusOptions.map((item) => {
+                    return (
+                      <option key={item} value={item}>
+                        {props.t(item)}
+                      </option>
+                    );
+                  })}
+                </AvField>
+              </Col>}
               <Col className="col-12 mb-3">
+                <label htmlFor="type">Type</label>
                 <AvRadioGroup
                   inline
                   name="type"
-                  value={todoObj.type}
-                  label={props.t("Type")}
+                  value={String(todoObj.type)}
                   required
-                  errorMessage={props.t("Invalid Reminder type")}
+                  errorMessage={props.t("Invalid type")}
                 >
-                  <AvRadio label={props.t("Reminder")} value={1} />
-                  <AvRadio label={props.t("Todo")} value={0} />
+                  <AvRadio label={props.t("Reminder")} value="1" />
+                  <AvRadio label={props.t("Todo")} value="0" />
                 </AvRadioGroup>
               </Col>
-
             </Row>
             <Row>
               <Col>
-                <div className="text-end">
+                <div className="text-center">
                   <button
                     type="submit"
                     className="btn btn-success save-event"
+                    disabled={props.adding}
                   >
-                    {props.t("Add")}
+                    {(todoObj._id ? props.t("Edit") : props.t("Add"))}
                   </button>
                 </div>
               </Col>
             </Row>
           </AvForm>
+          {
+            props.error && (
+              <UncontrolledAlert className="mt-4" color="danger">
+                <i className="mdi mdi-block-helper me-2" />
+                {props.t(props.error)}
+              </UncontrolledAlert>
+            )
+          }
         </ModalBody>
       </Modal>
     </React.Fragment>
@@ -229,6 +271,9 @@ function TodoAdd (props) {
 
 
 const mapStateToProps = (state) => ({
+  error: state.todosReducer.addError,
+  adding: state.todosReducer.adding,
+  loading: state.todosReducer.loading,
   todosPermissions: state.Profile.todosPermissions || {},
   clearingCounter: state.todosReducer.clearingCounter || 0,
 });

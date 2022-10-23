@@ -33,6 +33,7 @@ import ClientAddBankAccountModal from "../Bank/ClientAddBankAccountModal";
 import Transaction from "./QuickActions/Transaction";
 import ConvertWallet from "./QuickActions/Wallet";
 import PortalAccess from "./QuickActions/portalAccess";
+import _ from "lodash";
 function ClientDetails(props) {
   const [deleteModal, setDeleteModal] = useState(false);
   const clientId = props.clientId;
@@ -91,6 +92,13 @@ function ClientDetails(props) {
       setDeleteModal(false);
     }
   },  [props.showPortalAccessModal]);
+
+  const [clientData, setClientData] = useState(props.clientDetails);
+
+  useEffect(()=>{
+    setClientData(props.clientDetails);
+  }, [props.clientDetails]);
+
   return (
     <React.Fragment>
       {(props.clientProfileloading || props.usersLoading || props.dictLoading) && 
@@ -105,7 +113,7 @@ function ClientDetails(props) {
               <Row>
                 {/* input fields to the left side */}
                 <Col md="9" sm="12" xs="12" className="mb-3">
-                  <Card style={{ height: "100%" }}>
+                  <Card style={{ overflow:"visible" }}>
                     <CardHeader className="d-flex flex-column gap-3">
                       <div className="d-flex justify-content-between align-items-center">
                         <CardTitle>{props.t("General information")}</CardTitle>
@@ -125,6 +133,13 @@ function ClientDetails(props) {
                                 <AvFieldSelect
                                   name="title"
                                   type="text"
+                                  onChange={(e)=>{
+                                    setClientData((state)=>{ 
+                                      return {
+                                        ...state, 
+                                        title:e.value
+                                      };});
+                                  }}
                                   errorMessage={props.t("Title is required")}
                                   validate={{ required: { value: true } }}
                                   value={props.clientDetails.title}
@@ -143,6 +158,13 @@ function ClientDetails(props) {
                                 <AvField
                                   name="firstName"
                                   label={props.t("First name")}
+                                  onChange={(e)=>{
+                                    setClientData((state)=>{ 
+                                      return {
+                                        ...state, 
+                                        firstName:e.target.value
+                                      };});
+                                  }}
                                   placeholder={props.t("Enter First Name")}
                                   type="text"
                                   errorMessage={props.t("Enter First Name")}
@@ -158,6 +180,13 @@ function ClientDetails(props) {
                                   label={props.t("Last name")}
                                   placeholder={props.t("Enter Last Name")}
                                   type="text"
+                                  onChange={(e)=>{
+                                    setClientData((state)=>{ 
+                                      return {
+                                        ...state, 
+                                        lastName:e.target.value
+                                      };});
+                                  }}
                                   errorMessage={props.t("Enter Last Name")}
                                   validate={{ required: { value: true } }}
                                   value={props.clientDetails.lastName}
@@ -171,6 +200,13 @@ function ClientDetails(props) {
                                   label={props.t("Phone")}
                                   placeholder={props.t("Enter Phone")}
                                   type="text"
+                                  onChange={(e)=>{
+                                    setClientData((state)=>{ 
+                                      return {
+                                        ...state, 
+                                        phone:e.target.value
+                                      };});
+                                  }}
                                   errorMessage={props.t("Phone is required")}
                                   validate={
                                     { 
@@ -197,6 +233,19 @@ function ClientDetails(props) {
                                   label={props.t("Mobile")}
                                   placeholder={props.t("Mobile")}
                                   type="text"
+                                  onChange={(e)=>{
+                                    if (e.target.value == ""){
+                                      setClientData((state)=> { 
+                                        delete state.mobile;
+                                        return { ...state };
+                                      });
+                                    } else
+                                      setClientData((state)=>{ 
+                                        return {
+                                          ...state, 
+                                          mobile:e.target.value
+                                        };});
+                                  }}
                                   validate={
                                     { 
                                       pattern :{
@@ -217,6 +266,13 @@ function ClientDetails(props) {
                                   label={props.t("Email")}
                                   placeholder={props.t("Email")}
                                   type="text"
+                                  onChange={(e)=>{
+                                    setClientData((state)=>{ 
+                                      return {
+                                        ...state, 
+                                        email:e.target.value
+                                      };});
+                                  }}
                                   errorMessage={props.t("Email is required")}
                                   validate={{ required: { value: true } }}
                                   value={props.clientDetails.email}
@@ -230,6 +286,19 @@ function ClientDetails(props) {
                                   label={props.t("Date of birth")}
                                   placeholder={props.t("Enter Date of birth")}
                                   type="date"
+                                  onChange={(e)=>{
+                                    setClientData((state)=>{ 
+                                      if (e.target.value == ""){
+                                        setClientData((state)=> { 
+                                          delete state.dob;
+                                          return { ...state };
+                                        });
+                                      } else
+                                        return {
+                                          ...state, 
+                                          dob:e.target.value
+                                        };});
+                                  }}
                                   errorMessage={props.t("Enter Date of birth")}
                                   validate={{ required: { value: true } }}
                                   value={props.clientDetails.dob}
@@ -241,6 +310,13 @@ function ClientDetails(props) {
                                 <AvFieldSelect 
                                   name="nationality"
                                   label={props.t("Nationality")}
+                                  onChange={(e)=>{
+                                    setClientData((state)=>{ 
+                                      return {
+                                        ...state, 
+                                        nationality:e.value
+                                      };});
+                                  }}
                                   errorMessage={props.t("Nationality is required")}
                                   validate={{ required: { value: true } }}
                                   value={props.clientDetails.nationality}
@@ -262,6 +338,13 @@ function ClientDetails(props) {
                                 <AvFieldSelect 
                                   name="country"
                                   label={props.t("Country")}
+                                  onChange={(e)=>{
+                                    setClientData((state)=>{ 
+                                      return {
+                                        ...state, 
+                                        country:e.value
+                                      };});
+                                  }}
                                   errorMessage={props.t("Country is required")}
                                   validate={{ required: { value: true } }}
                                   value={props.clientDetails.country}
@@ -281,6 +364,13 @@ function ClientDetails(props) {
                                   label={props.t("City")}
                                   placeholder={props.t("Enter City")}
                                   type="text"
+                                  onChange={(e)=>{
+                                    setClientData((state)=>{ 
+                                      return {
+                                        ...state, 
+                                        city:e.target.value
+                                      };});
+                                  }}
                                   errorMessage={props.t("Enter City")}
                                   validate={{ required: { value: true } }}
                                   value={props.clientDetails.city}
@@ -294,6 +384,19 @@ function ClientDetails(props) {
                                   label={props.t("Address")}
                                   placeholder={props.t("Address")}
                                   type="text"
+                                  onChange={(e)=>{
+                                    setClientData((state)=>{ 
+                                      if (e.target.value == ""){
+                                        setClientData((state)=> { 
+                                          delete state.address;
+                                          return { ...state };
+                                        });
+                                      } else
+                                        return {
+                                          ...state, 
+                                          address:e.target.value
+                                        };});
+                                  }}
                                   errorMessage={props.t("Address is required")}
                                   validate={{ required: { value: true } }}
                                   value={props.clientDetails.address}
@@ -307,6 +410,19 @@ function ClientDetails(props) {
                                   label={props.t("Address Line 2")}
                                   placeholder={props.t("Address Line 2")}
                                   type="text"
+                                  onChange={(e)=>{
+                                    if (e.target.value == ""){
+                                      setClientData((state)=> { 
+                                        delete state.address2;
+                                        return { ...state };
+                                      });
+                                    } else
+                                      setClientData((state)=>{ 
+                                        return {
+                                          ...state, 
+                                          address2:e.target.value
+                                        };});
+                                  }}
                                   errorMessage={props.t("Address is required")}
                                   // validate={{ required: { value: true } }}
                                   value={props.clientDetails.address2}
@@ -325,11 +441,15 @@ function ClientDetails(props) {
                                   errorMessage={props.t("Gender is required")}
                                   validate={{ required: { value: true } }}
                                   value={props.clientDetails.gender}
+                                  onChange={(e)=>{
+                                    setClientData((state)=>{ 
+                                      return {
+                                        ...state, 
+                                        gender:e.value
+                                      };});
+                                  }}
                                   label={props.t("Gender")}
                                   options = {[{
-                                    value: "",
-                                    label: "Select Gender"
-                                  }, {
                                     value: "male",
                                     label: "Male"
                                   }, {
@@ -346,6 +466,19 @@ function ClientDetails(props) {
                                   label={props.t("Postal Code")}
                                   placeholder={props.t("Postal Code")}
                                   type="text"
+                                  onChange={(e)=>{
+                                    if (e.target.value == ""){
+                                      setClientData((state)=> { 
+                                        delete state.zipCode;
+                                        return { ...state };
+                                      });
+                                    } else
+                                      setClientData((state)=>{ 
+                                        return {
+                                          ...state, 
+                                          zipCode:e.target.value
+                                        };});
+                                  }}
                                   value={props.clientDetails.zipCode}
                                 />
                               </div>
@@ -357,6 +490,13 @@ function ClientDetails(props) {
                                   label={props.t("Language")}
                                   placeholder={props.t("Language")}
                                   type="text"
+                                  onChange={(e)=>{
+                                    setClientData((state)=>{ 
+                                      return {
+                                        ...state, 
+                                        language:e.value
+                                      };});
+                                  }}
                                   errorMessage={props.t("Language is required")}
                                   validate={{ required: { value: true } }}
                                   value={props.clientDetails.language}  
@@ -371,6 +511,13 @@ function ClientDetails(props) {
                                   label={props.t("Source")}
                                   placeholder={props.t("Source")}
                                   type="text"
+                                  onChange={(e)=>{
+                                    setClientData((state)=>{ 
+                                      return {
+                                        ...state, 
+                                        source:e.target.value
+                                      };});
+                                  }}
                                   errorMessage={props.t("Source is required")}
                                   validate={{ required: { value: true } }}
                                   value={props.clientDetails.source}
@@ -386,6 +533,13 @@ function ClientDetails(props) {
                                 <AvFieldSelect
                                   name="usCitizen"
                                   type="text"
+                                  onChange={(e)=>{
+                                    setClientData((state)=>{ 
+                                      return {
+                                        ...state, 
+                                        usCitizen:e.value
+                                      };});
+                                  }}
                                   label={props.t("US Citizen")}
                                   errorMessage={props.t("US Citizen is required")}
                                   // validate={{ required: { value: true } }}
@@ -415,6 +569,19 @@ function ClientDetails(props) {
                                   label={props.t("Tax Identification Number")}
                                   placeholder={props.t("Tax Identification Number")}
                                   type="text"
+                                  onChange={(e)=>{
+                                    setClientData((state)=>{ 
+                                      if (e.target.value == ""){
+                                        setClientData((state)=> { 
+                                          delete state.taxIdentificationNumber;
+                                          return { ...state };
+                                        });
+                                      } else
+                                        return {
+                                          ...state, 
+                                          taxIdentificationNumber:e.target.value
+                                        };});
+                                  }}
                                   value={props.clientDetails.taxIdentificationNumber}
                                 />
                               </div>
@@ -426,6 +593,13 @@ function ClientDetails(props) {
                                   label={props.t("Politically exposed ?")}
                                   placeholder={props.t("Politically exposed ?")}
                                   type="text"
+                                  onChange={(e)=>{
+                                    setClientData((state)=>{ 
+                                      return {
+                                        ...state, 
+                                        politicallyExposed:e.value
+                                      };});
+                                  }}
                                   errorMessage={props.t("Politically exposed is required")}
                                   // validate={{ required: { value: true } }}
                                   value={props.clientDetails.politicallyExposed}
@@ -436,38 +610,7 @@ function ClientDetails(props) {
                           </Row>
 
                           {/* sith row */}
-                          <Row>
-                            <Col md="3">
-                              <div className="mt-2">
-                                <AvFieldSelect 
-                                  name="agent"
-                                  options={agentOptions}
-                                  label={props.t("Agent")}
-                                  errorMessage={props.t("Agent is required")}
-                                  // validate={{ required: { value: true } }}
-                                  value={props.clientDetails.agent && props.clientDetails.agent._id || ""}
-                                />
-                              </div>
-                            </Col>
-                            <Col md="3">
-                              <div className="mt-2">
-                                <AvFieldSelect
-                                  name="callStatus"
-                                  label={props.t("Call status")}
-                                  placeholder={props.t("Call status")}
-                                  errorMessage={props.t("Call status is required")}
-                                  validate={{ required: { value: true } }}
-                                  value={props.clientDetails.callStatus}
-                                  options={CALL_STATUSES.map(obj => {
-                                    return {
-                                      value: obj,
-                                      label: obj 
-                                    };
-                                  })}
-                                />
-                              </div>
-                            </Col> 
-                          </Row>
+                          
                         
                           {/* seventh row */}
                           <Row>
@@ -481,6 +624,16 @@ function ClientDetails(props) {
                                   placeholder={props.t("ID Type")}
                                   type="text"
                                   value={props.clientDetails.idDetails && props.clientDetails.idDetails.type}
+                                  onChange={(e)=>{
+                                    setClientData((state)=>{ 
+                                      return {
+                                        ...state, 
+                                        idDetails:{
+                                          ...state.idDetails,
+                                          type:e.value
+                                        }
+                                      };});
+                                  }}
                                   options = {[{
                                     value: "ID",
                                     label: "ID"
@@ -504,6 +657,16 @@ function ClientDetails(props) {
                                       value: country.en
                                     });
                                   })}
+                                  onChange={(e)=>{
+                                    setClientData((state)=>{ 
+                                      return {
+                                        ...state, 
+                                        idDetails:{
+                                          ...state.idDetails,
+                                          countryOfIssue:e.value
+                                        }
+                                      };});
+                                  }}
                                 />
                               </div>
                             </Col>
@@ -515,6 +678,16 @@ function ClientDetails(props) {
                                   placeholder={props.t("ID Number")}
                                   type="text"
                                   value={props.clientDetails.idDetails && props.clientDetails.idDetails.documentNo}
+                                  onChange={(e)=>{
+                                    setClientData((state)=>{ 
+                                      return {
+                                        ...state, 
+                                        idDetails:{
+                                          ...state.idDetails,
+                                          documentNo:e.value
+                                        }
+                                      };});
+                                  }}
                                 />
                               </div>
                             </Col>
@@ -526,6 +699,16 @@ function ClientDetails(props) {
                                   placeholder={props.t("Date of Issue")}
                                   type="date"
                                   value={props.clientDetails.idDetails && props.clientDetails.idDetails.dateOfIssue}
+                                  onChange={(e)=>{
+                                    setClientData((state)=>{ 
+                                      return {
+                                        ...state, 
+                                        idDetails:{
+                                          ...state.idDetails,
+                                          dateOfIssue:e.value
+                                        }
+                                      };});
+                                  }}
                                 />
                               </div>
                             </Col>
@@ -537,6 +720,16 @@ function ClientDetails(props) {
                                   placeholder={props.t("Date of expiry")}
                                   type="date"
                                   value={props.clientDetails.idDetails && props.clientDetails.idDetails.dateOfExpiry}
+                                  onChange={(e)=>{
+                                    setClientData((state)=>{ 
+                                      return {
+                                        ...state, 
+                                        idDetails:{
+                                          ...state.idDetails,
+                                          dateOfExpiry:e.value
+                                        }
+                                      };});
+                                  }}
                                 />
                               </div>
                             </Col>
@@ -548,7 +741,7 @@ function ClientDetails(props) {
                         <div className="d-flex justify-content-end">
                           <div className="p-4">
                             <Button 
-                              disabled={props.updating}  
+                              disabled={props.updating || _.isEqual(clientData, props.clientDetails)}  
                               type="submit" 
                               color="primary"
                             >
@@ -557,13 +750,65 @@ function ClientDetails(props) {
                           </div>
                         </div>
                       </AvForm>
+                      
+                    </CardBody>
+                  </Card>
+                  <Card style={{
+                    overflow:"visible",
+                  }}>
+                    <CardBody style={{ position:"relative" }}>
+                      <AvForm
+                        onValidSubmit={(e, v) => {
+                          loadUpdatedClientDetailsHandler(e, v);
+                        }}
+                      >
+                        <Row>
+                          <Col md="5">
+                            <div className="my-2">
+                              <AvFieldSelect 
+                                name="agent"
+                                options={agentOptions}
+                                label={props.t("Agent")}
+                                errorMessage={props.t("Agent is required")}
+                                value={props.clientDetails.agent && props.clientDetails.agent._id || ""}
+                              />
+                            </div>
+                          </Col>
+                          <Col md="5">
+                            <div className="my-2">
+                              <AvFieldSelect
+                                name="callStatus"
+                                label={props.t("Call status")}
+                                value={props.clientDetails.callStatus}
+                                options={CALL_STATUSES.map(obj => {
+                                  return {
+                                    value: obj,
+                                    label: obj 
+                                  };
+                                })}
+                              />
+                            </div>
+                          </Col> 
+                          <Col md="2" className="d-flex align-items-end justify-content-center">
+                            <div className="mt-3">
+                              <Button 
+                                disabled={props.updating}  
+                                type="submit" 
+                                color="primary"
+                              >
+                                {props.t("Update")}
+                              </Button>
+                            </div>
+                          </Col>
+                        </Row>
+                      </AvForm>
                     </CardBody>
                   </Card>
                 </Col>
 
                 {/* quick actions to the right side */}
-                <Col md="3" sm="12" xs="12">
-                  <Card className="pb-4">
+                <Col md="3" sm="12" xs="12" className="mb-3">
+                  <Card>
                     <CardHeader className="d-flex flex-column gap-3">
                       <div className="d-flex justify-content-between align-items-center">
                         <CardTitle>{props.t("Quick actions")}</CardTitle>
@@ -609,7 +854,6 @@ function ClientDetails(props) {
                     </CardBody>
                   </Card>
                   <Card>
-                    <CardTitle></CardTitle>
                     <CardBody>
                       <AvForm onValidSubmit = {(e, v)=>{
                         dispatch(editClientDetails({
@@ -685,7 +929,7 @@ function ClientDetails(props) {
                     </CardBody>
                   </Card>
                 </Col>
-                <Col  className="mt-2">
+                <Col>
                   <Row>
                     <Col md="6" sm="12" xs="12">
                       <Card>
