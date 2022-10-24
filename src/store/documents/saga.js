@@ -45,7 +45,6 @@ function * uploadDocs({ payload }){
   try {   
     const documents = [];
     for (const pair of payload.formData.entries()) {
-      console.log(pair[0], pair[1]);
       if (pair[1] !== "undefined")
         documents.push(pair[0]);
     }
