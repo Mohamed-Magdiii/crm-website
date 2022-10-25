@@ -84,6 +84,8 @@ function Accounts(props) {
       setShowDeleteModal(false);
     }
   }, [props.deletingClearCounter]);
+  
+  console.log(props.loading);
 
   return (
     <React.Fragment>
@@ -172,7 +174,7 @@ const mapStateToProps = (state) => ({
   clientDetails: state.clientReducer.clientDetails || {},
   accounts: state.tradingAccountReducer.accounts && state.tradingAccountReducer.accounts.docs || [],
   pagination: state.tradingAccountReducer.accounts || {},
-  loading: state.tradingAccountReducer.loading,
+  loading: state.tradingAccountReducer.loading || false,
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(Accounts));

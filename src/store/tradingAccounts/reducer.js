@@ -14,7 +14,7 @@ import {
 
 const initialState = {
   tradingAccounts:[],
-  loading:false,
+  loading : false,
   fetchTradingAccountsByCustomerIdLoading: false,
   error:"",
   modalClear:false,
@@ -46,7 +46,7 @@ const tradingAccountReducer = (state = initialState, action)=>{
         loading: true,
       };
       break;
-    case FETCH_TRADING_ACCOUNT_END:
+    case FETCH_TRADING_ACCOUNTS_SUCCESS:
       state = {
         ...state,
         loading: false,
