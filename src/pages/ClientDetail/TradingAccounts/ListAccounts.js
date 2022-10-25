@@ -84,9 +84,6 @@ function Accounts(props) {
       setShowDeleteModal(false);
     }
   }, [props.deletingClearCounter]);
-  
-  console.log(props.loading);
-
   return (
     <React.Fragment>
       <div className="">
