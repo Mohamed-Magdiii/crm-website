@@ -9,15 +9,21 @@ import {
   Col,
   Row
 } from "reactstrap";
-
+import { debounce } from "lodash";
 import { Link } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React, { 
+  useState, 
+  useEffect, 
+  useCallback, 
+} from "react";
 import { AvForm, AvField } from "availity-reactstrap-validation";
 import { addNewLead } from "../../store/leads/actions";
 import CountryDropDown from "../../components/Common/CountryDropDown";
 import { fetchClientsStart } from "store/client/actions";
 import { fetchUsers } from "store/users/actions";
 import { withTranslation } from "react-i18next";
+import { checkLeadEmailApi } from "apis/lead-api";
+import { emailCheck } from "common/utils/emailCheck";
 
 function LeadForm(props) {
   const dispatch = useDispatch();
@@ -67,13 +73,13 @@ function LeadForm(props) {
       setDuplicatedEmail(false);
     }
   }, [props.showAddSuccessMessage]);
+  
+  const debouncedChangeHandler = useCallback(
+    debounce((value, ctx, input, cb) => 
+      emailCheck(value, ctx, input, cb, checkLeadEmailApi), 1000
+    ), []
+  );
 
-  const emailCheck = (value, ctx, input, cb)=>{
-    const found = props.leads.find((item) => item.email === value.toLowerCase());
-    if (found)
-      cb(("Email already Exists"));
-    cb(true);
-  };
   return (
     <React.Fragment >
       <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`} onClick={toggleAddModal}>
@@ -88,7 +94,6 @@ function LeadForm(props) {
           <AvForm
             className='p-4'
             onValidSubmit={(e, v) => {
-              !duplicatedEmail && 
               handleAddLead(e, v);
             }}
           >
@@ -128,9 +133,9 @@ function LeadForm(props) {
                     type="email"
                     errorMessage={props.t("Enter Valid Email")}
                     validate={{
-                      required: { value: true },
-                      email: { value: true },
-                      custom: emailCheck
+                      required: true,
+                      email: true,
+                      async: debouncedChangeHandler
                     }}
                   />
                 </div>
@@ -144,7 +149,7 @@ function LeadForm(props) {
                     type="text"
                     errorMessage={props.t("Enter valid phone")}
                     onKeyPress={(e) => {
-                      if (/^[+]?\d+$/.test(e.key) || (e.key === "+" && e.target?.value?.length === 0) ) {
+                      if (/^[+]?\d+$/.test(e.key) || (e.key === "+") ) {
                         return true;
                       } else {
                         e.preventDefault();

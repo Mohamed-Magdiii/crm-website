@@ -51,3 +51,8 @@ export const assignSalesAgent = async  ({ payload })=>{
   const data = await axiosHelper.post(`/users/${agentId}/assign`, body);
   return data;
 };
+
+export const checkUserEmailApi = async (payload) => {
+  const data = await axiosHelper.get(`/users/check-email?${qs.stringify(payload, { encode: false })}`);
+  return data;
+};

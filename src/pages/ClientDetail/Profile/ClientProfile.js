@@ -113,7 +113,7 @@ function ClientDetails(props) {
               <Row>
                 {/* input fields to the left side */}
                 <Col md="9" sm="12" xs="12" className="mb-3">
-                  <Card style={{ height: "100%" }}>
+                  <Card style={{ overflow:"visible" }}>
                     <CardHeader className="d-flex flex-column gap-3">
                       <div className="d-flex justify-content-between align-items-center">
                         <CardTitle>{props.t("General information")}</CardTitle>
@@ -445,14 +445,11 @@ function ClientDetails(props) {
                                     setClientData((state)=>{ 
                                       return {
                                         ...state, 
-                                        gender:e.target.value
+                                        gender:e.value
                                       };});
                                   }}
                                   label={props.t("Gender")}
                                   options = {[{
-                                    value: "",
-                                    label: "Select Gender"
-                                  }, {
                                     value: "male",
                                     label: "Male"
                                   }, {
@@ -613,53 +610,7 @@ function ClientDetails(props) {
                           </Row>
 
                           {/* sith row */}
-                          <Row>
-                            <Col md="3">
-                              <div className="mt-2">
-                                <AvFieldSelect 
-                                  name="agent"
-                                  options={agentOptions}
-                                  label={props.t("Agent")}
-                                  errorMessage={props.t("Agent is required")}
-                                  onChange={(e)=>{
-                                    setClientData((state)=>{ 
-                                      return {
-                                        ...state, 
-                                        agent:{
-                                          ...state.agent,
-                                          _id:e.value
-                                        }
-                                      };});
-                                  }}
-                                  // validate={{ required: { value: true } }}
-                                  value={props.clientDetails.agent && props.clientDetails.agent._id || ""}
-                                />
-                              </div>
-                            </Col>
-                            <Col md="3">
-                              <div className="mt-2">
-                                <AvFieldSelect
-                                  name="callStatus"
-                                  label={props.t("Call status")}
-                                  placeholder={props.t("Call status")}
-                                  value={props.clientDetails.callStatus}
-                                  onChange={(e)=>{
-                                    setClientData((state)=>{ 
-                                      return {
-                                        ...state, 
-                                        callStatus:e.value
-                                      };});
-                                  }}
-                                  options={CALL_STATUSES.map(obj => {
-                                    return {
-                                      value: obj,
-                                      label: obj 
-                                    };
-                                  })}
-                                />
-                              </div>
-                            </Col> 
-                          </Row>
+                          
                         
                           {/* seventh row */}
                           <Row>
@@ -799,13 +750,65 @@ function ClientDetails(props) {
                           </div>
                         </div>
                       </AvForm>
+                      
+                    </CardBody>
+                  </Card>
+                  <Card style={{
+                    overflow:"visible",
+                  }}>
+                    <CardBody style={{ position:"relative" }}>
+                      <AvForm
+                        onValidSubmit={(e, v) => {
+                          loadUpdatedClientDetailsHandler(e, v);
+                        }}
+                      >
+                        <Row>
+                          <Col md="5">
+                            <div className="my-2">
+                              <AvFieldSelect 
+                                name="agent"
+                                options={agentOptions}
+                                label={props.t("Agent")}
+                                errorMessage={props.t("Agent is required")}
+                                value={props.clientDetails.agent && props.clientDetails.agent._id || ""}
+                              />
+                            </div>
+                          </Col>
+                          <Col md="5">
+                            <div className="my-2">
+                              <AvFieldSelect
+                                name="callStatus"
+                                label={props.t("Call status")}
+                                value={props.clientDetails.callStatus}
+                                options={CALL_STATUSES.map(obj => {
+                                  return {
+                                    value: obj,
+                                    label: obj 
+                                  };
+                                })}
+                              />
+                            </div>
+                          </Col> 
+                          <Col md="2" className="d-flex align-items-end justify-content-center">
+                            <div className="mt-3">
+                              <Button 
+                                disabled={props.updating}  
+                                type="submit" 
+                                color="primary"
+                              >
+                                {props.t("Update")}
+                              </Button>
+                            </div>
+                          </Col>
+                        </Row>
+                      </AvForm>
                     </CardBody>
                   </Card>
                 </Col>
 
                 {/* quick actions to the right side */}
-                <Col md="3" sm="12" xs="12">
-                  <Card className="pb-4">
+                <Col md="3" sm="12" xs="12" className="mb-3">
+                  <Card>
                     <CardHeader className="d-flex flex-column gap-3">
                       <div className="d-flex justify-content-between align-items-center">
                         <CardTitle>{props.t("Quick actions")}</CardTitle>
@@ -851,7 +854,6 @@ function ClientDetails(props) {
                     </CardBody>
                   </Card>
                   <Card>
-                    <CardTitle></CardTitle>
                     <CardBody>
                       <AvForm onValidSubmit = {(e, v)=>{
                         dispatch(editClientDetails({
@@ -927,7 +929,7 @@ function ClientDetails(props) {
                     </CardBody>
                   </Card>
                 </Col>
-                <Col  className="mt-2">
+                <Col>
                   <Row>
                     <Col md="6" sm="12" xs="12">
                       <Card>
