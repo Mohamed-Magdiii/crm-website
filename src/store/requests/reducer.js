@@ -91,8 +91,7 @@ const requestsReducer = (state = initialState, action) => {
         isApproveOrReject: true,
       };
       break;
-
-      // LEVERAGE REDUCERS
+    // LEVERAGE REDUCERS
     case FETCH_LEVERAGE_REQUESTS_START:
       state = {
         ...state,
@@ -128,7 +127,6 @@ const requestsReducer = (state = initialState, action) => {
         loading: true
       };
       break;
-
     case LEVERAGE_REQUEST_STATUS_CHANGE_TO_APPROVE_SUCCESS:
       // eslint-disable-next-line no-case-declarations
       state = {

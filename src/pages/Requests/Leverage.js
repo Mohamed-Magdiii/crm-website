@@ -102,7 +102,7 @@ function Leverage(props){
     loadLeverages(1, sizePerPage);
   }, [sizePerPage, 1, props.isApproveOrReject]);
 
-  const loadLeverages = (page, limit) => {
+  const loadLeverages  = (page, limit) => {
     dispatch(fetchLeverages({
       page,
       limit,

@@ -2,7 +2,8 @@ import {
   call, put, takeEvery 
 } from "redux-saga/effects";
 import {
-  fetchIbStartsSuccess, fetchIbStartsError, ibRequestStateChange, ibRequestToApproveStateChange, ibRequestToRejectStateChange, fetchLeverageStartsSuccess, fetchLeverageStartsError, leverageRequestToApproveStateChange, leverageRequestToRejectStateChange 
+  fetchIbStartsSuccess, fetchIbStartsError, ibRequestStateChange, ibRequestToApproveStateChange, ibRequestToRejectStateChange,
+  fetchLeverageStartsSuccess, fetchLeverageStartsError, leverageRequestToApproveStateChange, leverageRequestToRejectStateChange
 }  from "./actions";
 import * as actionTypes from "./actionTypes";
 import * as requestApi from "../../apis/requests";
@@ -16,8 +17,6 @@ function * fetchIbs(params) {
   catch (error) {
     yield put(fetchIbStartsError(error));
   }
-
-
 }
 
 
@@ -41,7 +40,6 @@ function* ibRequestReject( params){
   
 }
 
-
 function * fetchLeverages(params) {
   try {
     const data = yield call(requestApi.getLeveragesRequsts, params);
@@ -50,8 +48,6 @@ function * fetchLeverages(params) {
   catch (error) {
     yield put(fetchLeverageStartsError(error));
   }
-
-
 }
 
 
@@ -62,7 +58,6 @@ function* leverageRequestApprove( params){
     yield put(leverageRequestToApproveStateChange(result));
   } catch (error) {
   }
-  
 }
 
 function* leverageRequestReject( params){
@@ -72,7 +67,6 @@ function* leverageRequestReject( params){
     yield put(leverageRequestToRejectStateChange(result));
   } catch (error) {
   }
-  
 }
 
 function* requestSaga() {

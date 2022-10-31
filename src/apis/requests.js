@@ -22,7 +22,6 @@ export const rejectIbRequest = async (data) =>{
   return result;
 };
 
-
 export const getLeveragesRequsts = async ({ payload }) => {
   const data = await axiosHelper.get(`/requests/leverage?${qs.stringify(payload)}`);
   if (data.isError){
