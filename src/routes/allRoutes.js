@@ -38,6 +38,7 @@ import InternalTransferIndex from "pages/Transactions/Forex/internalTransfer/Int
 import CreditIndex from "pages/Transactions/Forex/credit/CreditIndex";
 import ConvertIndex from "pages/Transactions/Forex/convert/ConvertIndex";
 import IbRequest from "pages/Requests/IbRequest";
+import Leverage from "pages/Requests/Leverage";
 
 function userRoutes() {
   const object = usePermissions();
@@ -194,6 +195,10 @@ function userRoutes() {
     {
       path: "/requests/ib",
       component: IbRequest,
+    },
+    {
+      path: "/requests/leverage",
+      component: Leverage,
     },
     {
       path: "/",
