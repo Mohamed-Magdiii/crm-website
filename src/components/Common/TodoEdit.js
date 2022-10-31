@@ -114,8 +114,6 @@ function TodoAdd (props) {
       });
     }
   }, [props.data, props.selectedDay]);
-
-
   return (
     <React.Fragment >
       {!props.hidenAddButton &&
@@ -123,7 +121,7 @@ function TodoAdd (props) {
       }
       <Modal isOpen={addModal} toggle={toggleAddModal} centered={true}>
         <ModalHeader toggle={toggleAddModal} tag="h4">
-            Edit Todo
+            Edit { props.data.type === 0 ? "Todo" : "Reminder" }
         </ModalHeader>
         <ModalBody >
           <AvForm onValidSubmit={handleAddTodo}>
@@ -172,7 +170,7 @@ function TodoAdd (props) {
               <Col className="col-12 mb-3">
                 <AvField
                   name="note"
-                  label={props.t("Reminder Note")}
+                  label={props.t("Note")}
                   type="text"
                   value={todoObj.note}
                   errorMessage={props.t("Invalid Reminder Note")}
@@ -187,7 +185,7 @@ function TodoAdd (props) {
                   type="datetime-local"
                   name="timeEnd"
                   value={todoObj.timeEnd.slice(0, -5) || new Date().toISOString().slice(0, -5)}
-                  label={props.t("Reminder")}
+                  label={props.t("Date")}
                   errorMessage={props.t("Invalid Reminder Note")}
                 >
                 </AvField>

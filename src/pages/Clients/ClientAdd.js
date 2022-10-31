@@ -76,7 +76,7 @@ function ClientForm(props){
       emailCheck(value, ctx, input, cb, checkClientEmailApi), 1000
     ), []
   );
-
+  console.log(props.error);
   return (
     <React.Fragment >
       <Link to="#" className={`btn btn-primary ${!create ? "d-none" : ""}`}  onClick={toggleAddModal}>
@@ -142,7 +142,7 @@ function ClientForm(props){
                   <AvField
                     name="phone"
                     label={props.t("Phone")}
-                    placeholder={props.t("Enter Your Phone")}
+                    placeholder={props.t("Enter valid Phone")}
                     type="text"
                     onKeyPress={(e) => {
                       if (/^[+]?\d+$/.test(e.key) || e.key === "+") {
@@ -171,6 +171,7 @@ function ClientForm(props){
                 label={props.t("Password")}
                 placeholder={props.t("Enter Your Password")}
                 type="password"
+                errorMessage={props.t("Enter Valid Password")}
                 validate= {{
                   required: { value : true },
                   pattern :{ 

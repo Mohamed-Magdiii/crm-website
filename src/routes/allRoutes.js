@@ -39,8 +39,6 @@ import CreditIndex from "pages/Transactions/Forex/credit/CreditIndex";
 import IbRequest from "pages/Requests/IbRequest";
 import Leverage from "pages/Requests/Leverage";
 import ConvertIndex from "pages/Transactions/Forex/convert/ConvertIndex";
-import IbRequest from "pages/Requests/IbRequest";
-import Leverage from "pages/Requests/Leverage";
 
 function userRoutes() {
   const object = usePermissions();

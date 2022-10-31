@@ -12,8 +12,8 @@ export const getClients = async ({ payload }) => {
 
 export const addClient = async (values) => {  
   const data = await axiosHelper.post("/clients", { ...values });
-  if (data.isSuccess === false){
-    throw new Error("Invalid data");
+  if (data.isError){
+    throw new Error(data.message);
   }
   return data;
 };
@@ -87,7 +87,6 @@ export const disable2FA = async (payload)=>{
 
 export const checkClientEmailApi = async (payload) => {
   // eslint-disable-next-line no-debugger
-  debugger;
   const result = await axiosHelper.get(`/clients/check-email?${qs.stringify(payload, { encode: false })}`);
   return result;
 };

@@ -62,7 +62,7 @@ function * addNewClient({ payload }) {
       yield put(addModalClear());
     }
   } catch (error){
-    yield put(apiError("Invalid data"));
+    yield put(apiError(error));
     yield delay(2000);
     yield put(apiError(""));
   }
