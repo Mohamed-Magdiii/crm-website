@@ -49,6 +49,7 @@ export async function post(url, data, config = {}) {
   return axiosApi
     .post(path, { ...data }, { ...config })
     .then(response => {
+      console.log(response.config);
       return response.data;
     }).catch(err => apiErrorHandler(err));
 }
