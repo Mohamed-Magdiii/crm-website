@@ -11,7 +11,7 @@ import {
 import {
   AvForm, AvField
 } from "availity-reactstrap-validation";
-import { editUser } from "store/users/actions";
+// import { editUser } from "store/users/actions";
 
 
 function EditProfileData(props) {
@@ -19,10 +19,10 @@ function EditProfileData(props) {
 
   const dispatch = useDispatch();
   const handleEditUser = (e, values) => {
-    dispatch(editUser({
-      id: user._id,
-      values
-    }));
+    // dispatch(editUser({
+    //   id: user._id,
+    //   values
+    // }));
   };
   useEffect(() => {
     if (props.editClearingCounter > 0 && open) {

@@ -11,7 +11,7 @@ import {
 import {
   AvForm, AvField
 } from "availity-reactstrap-validation";
-import { editUserPass } from "store/users/actions";
+// import { editUserPass } from "store/users/actions";
 
 
 function UsersEditModal(props) {
@@ -19,10 +19,10 @@ function UsersEditModal(props) {
 
   const dispatch = useDispatch();
   const handleEditPassword = (e, values) => {
-    dispatch(editUserPass({
-      id: userPass._id,
-      values
-    }));
+    // dispatch(editUserPass({
+    //   id: userPass._id,
+    //   values
+    // }));
   };
   useEffect(() => {
     if (props.editClearingCounter > 0 && openPass) {

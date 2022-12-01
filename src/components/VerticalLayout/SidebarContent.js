@@ -21,25 +21,7 @@ import { withRouter, Link } from "react-router-dom";
 const SidebarContent = (props) => {
   const ref = useRef();
 
-  const { get:getUser } = props.userPermissions;
-  const { get:getClient } = props.clientPermissions;
-  const { get:getLeads } = props.leadsPermissions;
-  const { get:getDeposits } = props.depositsPermissions;
-  const { get:getWithdrawals } = props.withdrawalsPermissions;
-  const { get:getInternalTransfers } = props.internalTransferPermissions;
-  const { get:getCredits } = props.creditPermissions;
-  const { get:getConverts } = props.convertPermissions;
-  const { get:getMarkups } = props.markupsPermissions;
-  const { get:getRoles } = props.rolesPermissions;
-  const { get:getDictionaries } = props.dictionariesPermissions;
-  const { get : getFeeGroup } = props.feeGroupsPermissions;
-  // const { get : getTransactionFeeGroup } = props.transactionFeeGroupsPermissions;
-  const { get: getSystemEmail } = props.systemEmailsPermissions;
-  const { get: getTeams } = props.teamsPermissions;
-  const { get: getSymbols } = props.symbolsPermissions;
-  const { get :getCurrencyPair } = props.currencyPairsPermissions;
-  const { get :getOrderProfit } = props.orderProfitPermissions;
-  const { get :getTransactionProfit } = props.transactionProfitPermissions;
+ 
   const activateParentDropdown = useCallback(item => {
     item.classList.add("active");
     const parent = item.parentElement;
@@ -123,138 +105,18 @@ const SidebarContent = (props) => {
                 <span>{props.t("Dashboard")}</span>
               </Link>
             </li>
-          
-
             <li>
-              <Link to='/clients' className={`${!getClient ? "d-none"  : ""}`}>
-                <FeatherIcon icon="users"/>
-                <span>{props.t("Clients")}</span> 
-              </Link> 
-            </li>
-            <li>
-              <Link to='/leads' className={`${!getLeads ? "d-none" : ""}`}>
-                <FeatherIcon icon="monitor"/>
-                <span>{props.t("Leads")}</span> 
-              </Link> 
-            </li>
-            {/* <li>
-              <Link to="/assets" className="">
-                <FeatherIcon icon="dollar-sign"/>
-                <span>{props.t("Assets")}</span>
-              </Link>
-            </li> */}
-            <li>
-              <Link to="/requsts" className="has-arrow">
+              <Link to="/Insurance" className="has-arrow">
                 <FeatherIcon icon="trending-up" />
-                <span>{props.t("Requests")}</span>
+                <span>{props.t("Insurance")}</span>
               </Link>
               <ul className="sub-menu">
                 <li>
-                  <Link to="/requests/ib" className= {`${!getDeposits ? "d-none" : ""}`}>{props.t("IB Request")}</Link>
+                  <Link to="/insurance/lof" >{props.t("Line Of Bussiness")}</Link>
                 </li>
                 <li>
-                  <Link to="/requests/leverage" className = {`${!getWithdrawals ? "d-none" : ""}`}>{props.t("Change Leverage")}</Link>
+                  <Link to="/insurance/products">{props.t("Products")}</Link>
                 </li> 
-              </ul>
-            </li>
-            <li>
-              <Link to="/transactions" className="has-arrow">
-                <FeatherIcon icon="trending-up" />
-                <span>{props.t("Transactions")}</span>
-              </Link>
-              <ul className="sub-menu">
-                <li>
-                  <Link to="/transactions/deposit" className= {`${!getDeposits ? "d-none" : ""}`}>{props.t("Deposit")}</Link>
-                </li>
-                <li>
-                  <Link to="/transactions/withdrawals" className = {`${!getWithdrawals ? "d-none" : ""}`}>{props.t("Withdrawal")}</Link>
-                </li> 
-                <li>
-                  <Link to="/transactions/internal-transfer" /*className={`${!getInternalTransfers ? "d-none" : ""}`}*/>{props.t("Internal Transfer")}</Link>
-                </li> 
-                <li>
-                  <Link to="/transactions/credit" /*className={`${!getCredits ? "d-none" : ""}`}*/>{props.t("Credit")}</Link>
-                </li>
-                <li>
-                  <Link to="/transactions/convert" /*className={`${!getConverts ? "d-none" : ""}`}*/>{props.t("Convert")}</Link>
-                </li>   
-              </ul>
-            </li>
-            {/* <li>
-              <Link to='/positions' className="">
-                <FeatherIcon icon="cast"/>
-                <span>{props.t("Positions")}</span> 
-              </Link> 
-            </li> */}
-            <li>
-              <Link to="/calendar/reminders" className="">
-                <FeatherIcon icon="calendar" />
-                <span>{props.t("Reminders/Todos")}</span>
-              </Link> 
-            </li>
-            {/* <li>
-              <Link to='/marketing' className="">
-                <FeatherIcon icon="link-2"/>
-                <span>{props.t("Marketing")}</span> 
-              </Link> 
-            </li>  */}
-            <li>
-              <Link to="/settings" className="has-arrow">
-                <FeatherIcon icon="tool" />
-                <span>{props.t("Settings")}</span>
-              </Link>
-              <ul className="sub-menu">
-                <li>
-                  <Link to="/dictionaries" className= {`${!getDictionaries ? "d-none" : ""}`}>{props.t("Dictionaries")}</Link>
-                </li>
-                <li>
-                  <Link to="/users" className={`${!getUser ? "d-none" : ""}`}>{props.t("Users")}</Link>
-                </li>
-                <li>
-                  <Link to="/roles" className={`${!getRoles ? "d-none" : ""}`}>{props.t("Roles")}</Link>
-                </li>   
-                <li>
-                  <Link to="/system-emails" className={`${!getSystemEmail ? "d-none" : ""}`}>{props.t("System Emails")}</Link>
-                </li>
-                <li>
-                  <Link to="/user-logs">{props.t("User Logs")}</Link>
-                </li>   
-                <li>
-                  <Link to="/teams" className={`${!getTeams ? "d-none" : ""}`} >{props.t("Teams")}</Link>
-                </li>
-                <li>
-                  <Link to="/banners">{props.t("Banners")}</Link>
-                </li>   
-                <li>
-                  <Link to="/assets" className={`${!getSymbols ? "d-none" : ""}`}>{props.t("Symbols")}</Link>
-                </li>
-                <li>
-                  <Link to="/currency-pairs" className={`${!getCurrencyPair ? "d-none" : ""}`}>{props.t("Currency Pairs")}</Link>
-                </li>   
-
-              </ul>
-            </li> 
-            <li>
-              <Link to="/risk-management" className="has-arrow">
-                <FeatherIcon icon="alert-circle" />
-                <span>{props.t("Risk Management")}</span>
-              </Link>
-              <ul className="sub-menu">
-                <li>
-                  <Link to="/fee-groups" className={`${!getFeeGroup ? "d-none" : ""}`}>{props.t("Trading Fee Groups")}</Link>
-                </li>
-                <li>
-                  <Link to="/transaction-fee-groups" >{props.t("Transaction Fee Groups")}</Link>
-                </li>
-                <li>
-                  <Link to="/markups" className={`${!getMarkups ? "d-none" : ""}`}>{props.t("Markups")}</Link>
-                </li>   
-                <li>
-                  <Link to="/orders-profit" className={`${!getOrderProfit ? "d-none" : ""}`}>{props.t("Order Profit")}</Link>
-                </li>    
-                <li>
-                  <Link to="/transactions-profit" className={`${!getTransactionProfit ? "d-none" : ""}`}>{props.t("Exchange Balance")}</Link>
-                </li>          
               </ul>
             </li>
             
