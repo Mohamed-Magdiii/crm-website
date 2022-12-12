@@ -9,6 +9,9 @@ import Account from "./auth/register/reducer";
 import ForgetPassword from "./auth/forgetpwd/reducer";
 import ResetPasswordReducer from "./auth/resetpwd/reducer";
 import Profile from "./auth/profile/reducer";
+import lob from "./lob/reducer";
+import products from "./products/reducer";
+import teams from "./teams/reducer";
 
 
 //chat
@@ -24,7 +27,9 @@ const rootReducer = combineReducers({
   ResetPasswordReducer,
   Profile,
   chat,
-  
+  lob,
+  products,
+  teams
 });
 
 export default rootReducer;

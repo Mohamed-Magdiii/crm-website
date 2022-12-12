@@ -6,6 +6,9 @@ import ResetPasswordSaga from "./auth/resetpwd/saga";
 import ProfileSaga from "./auth/profile/saga";
 import LayoutSaga from "./layout/saga";
 import chatSaga from "./chat/saga";
+import LOB  from "./lob/saga";
+import products  from "./products/saga";
+import teams  from "./teams/saga";
 
 
 export default function* rootSaga() {
@@ -18,6 +21,8 @@ export default function* rootSaga() {
     fork(ProfileSaga),
     fork(LayoutSaga),
     fork(chatSaga),
-    
+    fork(LOB),
+    fork(products),
+    fork(teams),
   ]);
 }

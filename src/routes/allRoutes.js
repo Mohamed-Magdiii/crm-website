@@ -11,9 +11,11 @@ import Logout from "../pages/Authentication/Logout";
 import Register from "../pages/Authentication/Register";
 import ForgetPwd from "../pages/Authentication/ForgetPassword";
 import ResetPassword from "pages/Authentication/ResetPassword";
-
+import LobList from "../pages/lineOfBussiness/LobList";
 // import LeadsList from "../components/Leads/lead.record.list.component";
 import Page404 from "../pages/Authentication/Page404";
+import ProductsList from "./../pages/products/productsList";
+import ListTeam from "./../pages/teams/ListTeam";
 
 
 function userRoutes() {
@@ -34,11 +36,18 @@ function userRoutes() {
 
     },
    
-    // {
-    //   path: "/dictionaries",
-    //   component: DictionaryList,
-    //   get: dictionariesPermissions.get
-    // },
+    {
+      path: "/insurance/lob",
+      component: LobList,
+    },
+    {
+      path: "/insurance/products",
+      component: ProductsList,
+    },
+    {
+      path: "/teams",
+      component: ListTeam,
+    },
     {
       path: "/",
       exact: true,
