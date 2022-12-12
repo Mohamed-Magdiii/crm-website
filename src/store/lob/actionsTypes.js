@@ -1,0 +1,8 @@
+export const LOB_START = "LOB_START";
+export const LOB_SUCCESSFUL = "LOB_SUCCESSFUL";
+export const UPDATE_LOB_START = "UPDATE_LOB_START";
+export const UPDATE_LOB_SUCCESS = "UPDATE_LOB_SUCCESS";
+export const ADD_LOB_START = "ADD_LOB_START";
+export const ADD_LOB_SUCCESS = "ADD_LOB_SUCCESS";
+export const ADD_MODAL_CLEAR = "ADD_MODAL_CLEAR";
+export const API_ERROR = "API_ERROR";
