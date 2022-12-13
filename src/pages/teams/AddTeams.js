@@ -20,7 +20,7 @@ import { useDispatch } from "react-redux";
 import { addTeamsStart } from "./../../store/teams/actions";
 
 function AddTeams(props) {
-  const dispatch  = useDispatch();
+  const dispatch = useDispatch();
   const [addModal, setAddMarkupModal] = useState(false);
   const [lobError, setLobError] = useState(false);
   const [file, setFile] = useState(false);
@@ -32,17 +32,12 @@ function AddTeams(props) {
       setAddMarkupModal(false);
     }
   }, [props.modalClear]);
-  function formDataToJson(f) {
-    return Object.fromEntries(Array.from(f.keys(), k =>
-      k.endsWith("[]") ? [k.slice(0, -2), f.getAll(k)] : [k, f.get(k)]));
-  }
+
   const addTeamMember = (e, values) => {
     e.preventDefault();
-    const { image, ...data} = values;
     const formData = new FormData();
-    const myData = JSON.stringify(data);
-    formData.set("image", file);
-    formData.set("data", myData);
+    formData.append("image", file);
+    formData.append("data", JSON.stringify(values));
     dispatch(addTeamsStart(formData));
   };
   const validateFile = (value, ctx, input, cb) => {
@@ -69,6 +64,12 @@ function AddTeams(props) {
         <ModalHeader toggle={toggleAddModal} tag="h4">
           {props.t("Add")}
         </ModalHeader>
+        {props.successMessage && (
+          <UncontrolledAlert color="success">
+            <i className="mdi mdi-check-all me-2" />
+            {props.t("new member added")}
+          </UncontrolledAlert>
+        )}
         <ModalBody>
           <AvForm
             className="p-4"
@@ -90,7 +91,6 @@ function AddTeams(props) {
                   onChange={(e) => setFile(e.target.files[0])}
                 />
               </div>
-           
             </Row>
             <Row>
               <Col md="6">
@@ -125,12 +125,10 @@ function AddTeams(props) {
                 <div className="mb-3">
                   <AvField
                     name="name.en"
-                    label={props.t("Description English")}
-                    placeholder={props.t("Enter English Description")}
-                    type="textarea"
+                    label={props.t("name English")}
+                    placeholder={props.t("Enter English name")}
+                    type="text"
                     value=""
-                    rows={5}
-                    cols={5}
                     errorMessage={props.t("Enter Valid description")}
                     validate={{ required: { value: true } }}
                   />
@@ -140,9 +138,9 @@ function AddTeams(props) {
                 <div className="mb-3">
                   <AvField
                     name="name.ar"
-                    label={props.t("Description Arabic")}
-                    placeholder={props.t("Enter Descriptionb Arabic")}
-                    type="textarea"
+                    label={props.t("name Arabic")}
+                    placeholder={props.t("Enter nameb Arabic")}
+                    type="text"
                     value=""
                     rows={5}
                     cols={5}
@@ -150,6 +148,13 @@ function AddTeams(props) {
                     validate={{ required: { value: true } }}
                   />
                 </div>
+              </Col>
+              <Col md="6">
+                <AvField
+                  type="checkbox"
+                  name="isTopRated"
+                  label="Is Top Manager"
+                />
               </Col>
             </Row>
 
@@ -171,12 +176,6 @@ function AddTeams(props) {
             </UncontrolledAlert>
           )}
         </ModalBody>
-        {props.successMessage && (
-          <UncontrolledAlert color="success">
-            <i className="mdi mdi-check-all me-2" />
-            {props.t("LOB Group is updated successfully !!!")}
-          </UncontrolledAlert>
-        )}
       </Modal>
     </React.Fragment>
   );

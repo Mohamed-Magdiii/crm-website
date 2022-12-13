@@ -4,6 +4,7 @@ import {
 } from "./actionsTypes";
 
 export const fetchTeamsStart = (params)=>{
+  console.log(params);
   return {
     type:FETCH_TEAMS_START,
     payload:{ params }

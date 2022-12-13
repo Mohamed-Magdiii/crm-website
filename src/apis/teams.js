@@ -1,19 +1,18 @@
 import qs from "qs";
 import * as axiosHelper from "./api_helper";
 
-export const getTeams = async ({ payload }) => {
+export const getTeams = async (payload ) => {
   const data = await axiosHelper.get(`/teams?${qs.stringify(payload)}`);
   return data;
 };
 
 
-export const addTeam = async ({ payload }) => {
-
+export const addTeam = async ( payload ) => {
   const data = await axiosHelper.postFormData("/teams", payload);
   if (data.isError) {
     throw new Error(data.message);
   }
-  return data;
+  return data.result;
 };
 
 export const editTeamMembers = async ({ payload }) => {

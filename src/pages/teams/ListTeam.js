@@ -24,7 +24,11 @@ function ListTeam(props){
       text:"Image",
       formatter:(val) =>  (<img style = {{ width:"50px" }} src ={`${process.env.REACT_APP_API_CRM_DOMAIN}/images/${val.image}`} alt= ""/>)
     },
-
+    {
+      dataField:"isTopRated",
+      text:"Top Rated",
+      formatter: (val) => ( val.isTopRated ? (<span className="text-success">Yes</span>) : <span className="text-warning">No</span>)
+    },
     {
       dataField: "title",
       text: "Title-En",
@@ -74,8 +78,8 @@ function ListTeam(props){
   ];
   const dispatch = useDispatch();
   const [lang, setLang] = useState();
-  const [selectedItem, setSelectedItem] = useState();
-  const [editModal, setEditModal] = useState(false); 
+  // const [selectedItem, setSelectedItem] = useState();
+  // const [editModal, setEditModal] = useState(false); 
   const [sizePerPage, setSizePerPage] = useState(10);
   useEffect(()=>{
     setLang(localStorage.getItem("I18N_LANGUAGE")); 
@@ -83,13 +87,14 @@ function ListTeam(props){
   useEffect(() => {
     loadTeams(1, sizePerPage);
   }, [sizePerPage, 1]);
+
   const loadTeams = (page, limit) => {
     dispatch(fetchTeamsStart({
       limit,
       page 
     }));
+
   };
-  console.log(props.docs);
   return (
     <React.Fragment>
       <MetaTags>
@@ -144,13 +149,13 @@ function ListTeam(props){
                           )}
                         </Tbody>
                       </Table>
-                      {/* <CustomPagination
+                      <CustomPagination
                         {...props}
                         setSizePerPage={setSizePerPage}
                         sizePerPage={sizePerPage}
-                        onChange={loadProducts}
+                        onChange={loadTeams}
                         docs={props.docs}
-                      /> */}
+                      />
                     </div>
                   </div>
                 </CardBody>

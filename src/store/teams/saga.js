@@ -5,6 +5,7 @@ import {
   fetchTeamsSuccess, apiError, modalClear, addTeamsSuccess
 } from "./actions";
 import { getTeams, addTeam } from "apis/teams";
+import { showSuccessNotification } from "store/notifications/actions";
 import { 
   takeEvery, 
   call, 
@@ -24,11 +25,15 @@ function * fetchTeams({ payload :{ params } }){
  
 function * addTeams({ payload :{ params } }){
   try {
-    console.log(params);
     const result = yield call(addTeam, params);
     yield put(addTeamsSuccess(result));
+    yield put(showSuccessNotification("New member is added successfully"));
+    yield delay(1000);
+    yield put(modalClear());
   } catch (error){
     yield put(apiError(error));
+    yield delay(2000);
+    yield put(apiError(""));
   }
 }
 

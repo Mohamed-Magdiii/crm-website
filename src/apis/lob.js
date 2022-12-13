@@ -3,7 +3,6 @@ import qs from "qs";
 
 export async function fetchLob( params){
   try {
-    console.log(qs.stringify(params));
     const res = await axiosHelper.get(`/products?${qs.stringify(params)}`);
     return res;
   } catch (error) {
