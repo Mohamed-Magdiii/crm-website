@@ -5,6 +5,7 @@ import React, {
 import { connect } from "react-redux";
 //Import Icons
 import FeatherIcon from "feather-icons-react";
+
 // //Import Scrollbar
 import SimpleBar from "simplebar-react";
 
@@ -112,14 +113,19 @@ const SidebarContent = (props) => {
               </Link>
               <ul className="sub-menu">
                 <li>
-                  <Link to="/insurance/lof" >{props.t("Line Of Bussiness")}</Link>
+                  <Link to="/insurance/lob" >{props.t("Line Of Bussiness")}</Link>
                 </li>
                 <li>
                   <Link to="/insurance/products">{props.t("Products")}</Link>
                 </li> 
               </ul>
             </li>
-            
+            <li>
+              <Link to="/teams" className="">
+                <FeatherIcon icon="users" />
+                <span>{props.t("Teams")}</span>
+              </Link>
+            </li>
           </ul> 
         </div>
       </SimpleBar>

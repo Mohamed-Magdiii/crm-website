@@ -11273,10 +11273,10 @@
   dependencies:
     "prop-types" "^15.5.10"
 
-"react-super-responsive-table@^5.2.0":
-  "integrity" "sha512-gC6QX/+HNt7d5QDvhp83Q8AV8/44mbeRo4Z4UQ9KfBbY9dyHkQZUXRbaWPFp6CHmfSyVlJaRseTHzwMKmJjRKA=="
-  "resolved" "https://registry.npmjs.org/react-super-responsive-table/-/react-super-responsive-table-5.2.0.tgz"
-  "version" "5.2.0"
+"react-super-responsive-table@^5.2.1":
+  "integrity" "sha512-93DAJbI4FjR0Yops+0v1MZIUhIMRQOm/N//o35mk/g4NCZ99HIOB+gdZPorZwKX3mfr3h3H3ATcU4jLMfpuC9Q=="
+  "resolved" "https://registry.npmjs.org/react-super-responsive-table/-/react-super-responsive-table-5.2.1.tgz"
+  "version" "5.2.1"
 
 "react-switch@^6.0.0":
   "integrity" "sha512-QV3/6eRK5/5epdQzIqvDAHRoGLbCv/wDpHUi6yBMXY1Xco5XGuIZxvB49PHoV1v/SpEgOCJLD/Zo43iic+aEIw=="

@@ -4,9 +4,9 @@ import { initReactI18next } from "react-i18next";
 import backend from "i18next-http-backend";
 
 import translationGr from "./locales/gr/translation.json";
-import translationIT from "./locales/it/translation.json";
-import translationRS from "./locales/rs/translation.json";
-import translationSP from "./locales/sp/translation.json";
+// import translationIT from "./locales/it/translation.json";
+// import translationRS from "./locales/rs/translation.json";
+// import translationSP from "./locales/sp/translation.json";
 import translationENG from "./locales/eng/translation.json";
 import translationAR from "./locales/ar/translation.json";
 
@@ -15,15 +15,15 @@ const resources = {
   gr: {
     translation: translationGr,
   },
-  it: {
-    translation: translationIT,
-  },
-  rs: {
-    translation: translationRS,
-  },
-  sp: {
-    translation: translationSP,
-  },
+  // it: {
+  //   translation: translationIT,
+  // },
+  // rs: {
+  //   translation: translationRS,
+  // },
+  // sp: {
+  //   translation: translationSP,
+  // },
   eng: {
     translation: translationENG,
   },
